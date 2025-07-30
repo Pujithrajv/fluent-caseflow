@@ -49,7 +49,11 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export function Dashboard() {
+interface DashboardProps {
+  onCreateCase: () => void;
+}
+
+export function Dashboard({ onCreateCase }: DashboardProps) {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -59,7 +63,7 @@ export function Dashboard() {
             <h1 className="text-3xl font-semibold font-fluent text-foreground">Power Portal</h1>
             <p className="text-muted-foreground font-fluent">Case Management System</p>
           </div>
-          <Button size="lg" className="font-fluent">
+          <Button size="lg" className="font-fluent" onClick={onCreateCase}>
             <Plus className="mr-2 h-5 w-5" />
             Create New Case
           </Button>

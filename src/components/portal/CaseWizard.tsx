@@ -23,7 +23,11 @@ const wizardSteps = [
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
-export function CaseWizard() {
+interface CaseWizardProps {
+  onBack?: () => void;
+}
+
+export function CaseWizard({ onBack }: CaseWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
 
@@ -79,7 +83,7 @@ export function CaseWizard() {
               Step {currentStep + 1} of {wizardSteps.length}: {wizardSteps[currentStep].title}
             </p>
           </div>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={onBack}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>

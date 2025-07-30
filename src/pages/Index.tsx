@@ -6,10 +6,10 @@ const Index = () => {
   const [currentView, setCurrentView] = useState<"dashboard" | "wizard">("dashboard");
 
   if (currentView === "wizard") {
-    return <CaseWizard />;
+    return <CaseWizard onBack={() => setCurrentView("dashboard")} />;
   }
 
-  return <Dashboard />;
+  return <Dashboard onCreateCase={() => setCurrentView("wizard")} />;
 };
 
 export default Index;
