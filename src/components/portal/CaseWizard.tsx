@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Check } from "lucide-react";
 import { DepartmentTab } from "./wizard/DepartmentTab";
 import { PrimaryPartyTab } from "./wizard/PrimaryPartyTab";
 import { CaseDetailsTab } from "./wizard/CaseDetailsTab";
@@ -11,8 +11,9 @@ import { InvolvedPartiesTab } from "./wizard/InvolvedPartiesTab";
 import { RequestWizardTab } from "./wizard/RequestWizardTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
+import { RequestWizard } from "./RequestWizard";
 
-const wizardSteps = [
+const wizardTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
   { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
   { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
@@ -28,60 +29,33 @@ interface CaseWizardProps {
 }
 
 export function CaseWizard({ onBack }: CaseWizardProps) {
-  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
+  const [showRequestWizard, setShowRequestWizard] = useState(false);
 
   const updateFormData = (stepData: any) => {
     setFormData(prev => ({ ...prev, ...stepData }));
   };
 
-  const nextStep = () => {
-    if (currentStep < wizardSteps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+  const handleAddNewRequest = () => {
+    setShowRequestWizard(true);
   };
 
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
+  const handleRequestWizardBack = () => {
+    setShowRequestWizard(false);
   };
 
-  const renderStepContent = () => {
-    switch (wizardSteps[currentStep].id) {
-      case 'department':
-        return <DepartmentTab onDataChange={updateFormData} data={formData} />;
-      case 'primary-party':
-        return <PrimaryPartyTab onDataChange={updateFormData} data={formData} />;
-      case 'case-details':
-        return <CaseDetailsTab onDataChange={updateFormData} data={formData} />;
-      case 'case-questions':
-        return <CaseQuestionsTab onDataChange={updateFormData} data={formData} />;
-      case 'involved-parties':
-        return <InvolvedPartiesTab onDataChange={updateFormData} data={formData} />;
-      case 'requests':
-        return <RequestWizardTab onDataChange={updateFormData} data={formData} />;
-      case 'documents':
-        return <DocumentUploadTab onDataChange={updateFormData} data={formData} />;
-      case 'review':
-        return <ReviewSubmitTab formData={formData} />;
-      default:
-        return <DepartmentTab onDataChange={updateFormData} data={formData} />;
-    }
-  };
-
-  const progressPercentage = ((currentStep + 1) / wizardSteps.length) * 100;
+  if (showRequestWizard) {
+    return <RequestWizard onBack={handleRequestWizardBack} />;
+  }
 
   return (
     <div className="min-h-screen bg-background p-6">
-      <div className="mx-auto max-w-5xl space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-semibold font-fluent text-foreground">Create New Case</h1>
-            <p className="text-muted-foreground font-fluent">
-              Step {currentStep + 1} of {wizardSteps.length}: {wizardSteps[currentStep].title}
-            </p>
+            <p className="text-muted-foreground font-fluent">Complete all sections to submit your case</p>
           </div>
           <Button variant="ghost" size="sm" onClick={onBack}>
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -89,87 +63,143 @@ export function CaseWizard({ onBack }: CaseWizardProps) {
           </Button>
         </div>
 
-        {/* Progress */}
-        <Card className="shadow-fluent-8">
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              <div className="flex justify-between text-sm font-fluent text-muted-foreground">
-                <span>Progress</span>
-                <span>{Math.round(progressPercentage)}% Complete</span>
-              </div>
-              <Progress value={progressPercentage} className="h-2" />
+        {/* Vertical Tabs Layout */}
+        <Tabs defaultValue="department" className="w-full" orientation="vertical">
+          <div className="flex gap-6">
+            {/* Vertical Tab List */}
+            <Card className="shadow-fluent-8 w-80">
+              <CardContent className="p-4">
+                <TabsList className="flex flex-col h-auto w-full bg-transparent space-y-2">
+                  {wizardTabs.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className="w-full justify-start px-4 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    >
+                      <div className="text-left">
+                        <div className="font-fluent font-medium">{tab.title}</div>
+                        <div className="text-xs opacity-75">{tab.description}</div>
+                      </div>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </CardContent>
+            </Card>
+
+            {/* Tab Content */}
+            <div className="flex-1">
+              <TabsContent value="department" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Department</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Agency structure and personnel</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <DepartmentTab onDataChange={updateFormData} data={formData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="primary-party" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Primary Party</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Party information</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <PrimaryPartyTab onDataChange={updateFormData} data={formData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="case-details" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Case Details</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Case name and details</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CaseDetailsTab onDataChange={updateFormData} data={formData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="case-questions" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Case Questions</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Case type specific questions</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <CaseQuestionsTab onDataChange={updateFormData} data={formData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="involved-parties" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Involved Parties</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Additional parties</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <InvolvedPartiesTab onDataChange={updateFormData} data={formData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="requests" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Requests</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Associated requests</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <RequestWizardTab 
+                      onDataChange={updateFormData} 
+                      data={formData} 
+                      onAddNewRequest={handleAddNewRequest}
+                    />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="documents" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Documents</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Upload supporting documents</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <DocumentUploadTab onDataChange={updateFormData} data={formData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="review" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <CardTitle className="font-fluent font-semibold">Review & Submit</CardTitle>
+                    <p className="text-muted-foreground font-fluent">Verify and submit case</p>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <ReviewSubmitTab formData={formData} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Step Navigation */}
-        <Card className="shadow-fluent-8">
-          <CardContent className="p-4">
-            <div className="flex flex-wrap gap-2">
-              {wizardSteps.map((step, index) => (
-                <div 
-                  key={step.id}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-fluent transition-colors ${
-                    index === currentStep 
-                      ? 'bg-primary text-primary-foreground' 
-                      : index < currentStep 
-                        ? 'bg-success text-success-foreground'
-                        : 'bg-muted text-muted-foreground'
-                  }`}
-                >
-                  {index < currentStep ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    <span className="flex h-4 w-4 items-center justify-center text-xs font-bold">
-                      {index + 1}
-                    </span>
-                  )}
-                  <span className="hidden sm:inline">{step.title}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Step Content */}
-        <Card className="shadow-fluent-16">
-          <CardHeader>
-            <CardTitle className="font-fluent font-semibold">{wizardSteps[currentStep].title}</CardTitle>
-            <p className="text-muted-foreground font-fluent">{wizardSteps[currentStep].description}</p>
-          </CardHeader>
-          <CardContent className="p-6">
-            {renderStepContent()}
-          </CardContent>
-        </Card>
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between">
-          <Button 
-            variant="outline" 
-            onClick={prevStep}
-            disabled={currentStep === 0}
-            className="font-fluent"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Previous
-          </Button>
-          
-          <div className="flex space-x-3">
-            <Button variant="fluent" className="font-fluent">
-              Save Draft
-            </Button>
-            {currentStep === wizardSteps.length - 1 ? (
-              <Button className="font-fluent">
-                <Check className="mr-2 h-4 w-4" />
-                Submit Case
-              </Button>
-            ) : (
-              <Button onClick={nextStep} className="font-fluent">
-                Next
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            )}
           </div>
+        </Tabs>
+
+        {/* Submit Actions */}
+        <div className="flex justify-end space-x-3">
+          <Button variant="fluent" className="font-fluent">
+            Save Draft
+          </Button>
+          <Button className="font-fluent">
+            <Check className="mr-2 h-4 w-4" />
+            Submit Case
+          </Button>
         </div>
       </div>
     </div>

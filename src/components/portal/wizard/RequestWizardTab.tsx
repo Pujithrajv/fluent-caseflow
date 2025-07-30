@@ -6,6 +6,7 @@ import { Plus, FileText, Calendar, User } from "lucide-react";
 interface RequestWizardTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  onAddNewRequest?: () => void;
 }
 
 const mockRequests = [
@@ -34,7 +35,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export function RequestWizardTab({ onDataChange, data }: RequestWizardTabProps) {
+export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: RequestWizardTabProps) {
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -44,7 +45,7 @@ export function RequestWizardTab({ onDataChange, data }: RequestWizardTabProps) 
               <FileText className="h-5 w-5 text-primary" />
               <span>Associated Requests</span>
             </CardTitle>
-            <Button size="sm" className="font-fluent">
+            <Button size="sm" className="font-fluent" onClick={onAddNewRequest}>
               <Plus className="mr-2 h-4 w-4" />
               Add New Request
             </Button>
@@ -110,7 +111,7 @@ export function RequestWizardTab({ onDataChange, data }: RequestWizardTabProps) 
             <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center">
               <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="font-fluent text-muted-foreground">No requests associated with this case yet</p>
-              <Button variant="outline" size="sm" className="mt-4 font-fluent">
+              <Button variant="outline" size="sm" className="mt-4 font-fluent" onClick={onAddNewRequest}>
                 <Plus className="mr-2 h-4 w-4" />
                 Add First Request
               </Button>
