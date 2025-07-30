@@ -59,9 +59,16 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold font-fluent text-foreground">Power Portal</h1>
-            <p className="text-muted-foreground font-fluent">Case Management System</p>
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/lovable-uploads/a8ff40e4-1efe-4d80-9072-5c480ab49fa9.png" 
+              alt="Illinois Bureau of Administrative Hearings" 
+              className="h-16 w-auto"
+            />
+            <div>
+              <h1 className="text-3xl font-semibold font-fluent text-foreground">Power Portal</h1>
+              <p className="text-muted-foreground font-fluent">Case Management System</p>
+            </div>
           </div>
           <Button size="lg" className="font-fluent" onClick={onCreateCase}>
             <Plus className="mr-2 h-5 w-5" />
@@ -162,58 +169,6 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
             </div>
           </CardContent>
         </Card>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="shadow-fluent-8">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium font-fluent text-muted-foreground">Total Cases</p>
-                  <p className="text-2xl font-semibold font-fluent text-foreground">127</p>
-                </div>
-                <FileText className="h-8 w-8 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="shadow-fluent-8">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium font-fluent text-muted-foreground">Under Review</p>
-                  <p className="text-2xl font-semibold font-fluent text-foreground">23</p>
-                </div>
-                <div className="h-8 w-8 rounded-full bg-warning flex items-center justify-center">
-                  <span className="text-sm font-bold text-warning-foreground">!</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="shadow-fluent-8">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium font-fluent text-muted-foreground">Approved</p>
-                  <p className="text-2xl font-semibold font-fluent text-foreground">89</p>
-                </div>
-                <div className="h-8 w-8 rounded-full bg-success flex items-center justify-center">
-                  <span className="text-sm font-bold text-success-foreground">✓</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="shadow-fluent-8">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium font-fluent text-muted-foreground">This Month</p>
-                  <p className="text-2xl font-semibold font-fluent text-foreground">15</p>
-                </div>
-                <Calendar className="h-8 w-8 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
