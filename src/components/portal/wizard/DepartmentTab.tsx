@@ -1,0 +1,142 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Building2, Users } from "lucide-react";
+
+interface DepartmentTabProps {
+  onDataChange: (data: any) => void;
+  data: any;
+}
+
+export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
+  return (
+    <div className="space-y-6">
+      {/* Agency Structure */}
+      <Card className="shadow-fluent-8">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2 font-fluent">
+            <Building2 className="h-5 w-5 text-primary" />
+            <span>Agency Structure</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="department" className="font-fluent">Department *</Label>
+            <Select>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select Department" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="planning">Planning Department</SelectItem>
+                <SelectItem value="environmental">Environmental Services</SelectItem>
+                <SelectItem value="legal">Legal Department</SelectItem>
+                <SelectItem value="admin">Administration</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="division" className="font-fluent">Division</Label>
+            <Select>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select Division" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="zoning">Zoning Division</SelectItem>
+                <SelectItem value="permits">Permits Division</SelectItem>
+                <SelectItem value="compliance">Compliance Division</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="bureau" className="font-fluent">Bureau</Label>
+            <Select>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select Bureau" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="residential">Residential Bureau</SelectItem>
+                <SelectItem value="commercial">Commercial Bureau</SelectItem>
+                <SelectItem value="industrial">Industrial Bureau</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="caseType" className="font-fluent">Case Type *</Label>
+            <Select>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select Case Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="environmental">Environmental Review</SelectItem>
+                <SelectItem value="zoning">Zoning Variance</SelectItem>
+                <SelectItem value="permit">Permit Application</SelectItem>
+                <SelectItem value="foia">FOIA Request</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2 md:col-span-2">
+            <Label htmlFor="deptRef" className="font-fluent">Department Reference Number</Label>
+            <Input 
+              id="deptRef"
+              placeholder="Enter department reference number"
+              className="shadow-fluent-8 border-input-border"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Department Personnel */}
+      <Card className="shadow-fluent-8">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2 font-fluent">
+            <Users className="h-5 w-5 text-primary" />
+            <span>Department Personnel</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="coordinator" className="font-fluent">Case Coordinator *</Label>
+            <Select>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select Coordinator" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="john-smith">John Smith</SelectItem>
+                <SelectItem value="sarah-johnson">Sarah Johnson</SelectItem>
+                <SelectItem value="mike-wilson">Mike Wilson</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="attorney" className="font-fluent">Attorney</Label>
+            <Select>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select Attorney" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lisa-brown">Lisa Brown</SelectItem>
+                <SelectItem value="david-clark">David Clark</SelectItem>
+                <SelectItem value="jennifer-davis">Jennifer Davis</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2 md:col-span-2">
+            <Label htmlFor="representative" className="font-fluent">Department Representative</Label>
+            <Input 
+              id="representative"
+              placeholder="Enter representative name"
+              className="shadow-fluent-8 border-input-border"
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

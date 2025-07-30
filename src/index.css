@@ -2,41 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Fluent 2 Design System - Power Portal Theme
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Fluent 2 Color Palette */
+    --background: 220 14% 96%;
+    --foreground: 220 26% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 26% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 26% 14%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Fluent Communication Blue */
+    --primary: 208 100% 43%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 208 100% 47%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 26% 14%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 208 100% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Fluent Status Colors */
+    --success: 109 58% 40%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 39 100% 57%;
+    --warning-foreground: 220 26% 14%;
+    
+    --destructive: 354 70% 54%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 0 0% 100%;
+    --input-border: 220 13% 91%;
+    --ring: 208 100% 43%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
+
+    /* Fluent Elevation Shadows */
+    --shadow-fluent-8: 0 1.6px 3.6px 0 rgba(0,0,0,.132), 0 0.3px 0.9px 0 rgba(0,0,0,.108);
+    --shadow-fluent-16: 0 3.2px 7.2px 0 rgba(0,0,0,.132), 0 0.6px 1.8px 0 rgba(0,0,0,.108);
+    --shadow-fluent-64: 0 25.6px 57.6px 0 rgba(0,0,0,.22), 0 4.8px 14.4px 0 rgba(0,0,0,.18);
+
+    /* Custom Properties for Fluent Components */
+    --fluent-neutral-foreground-1: hsl(var(--foreground));
+    --fluent-neutral-foreground-2: hsl(var(--muted-foreground));
+    --fluent-neutral-background-1: hsl(var(--background));
+    --fluent-neutral-background-2: hsl(var(--card));
+    --fluent-neutral-stroke-1: hsl(var(--border));
 
     --sidebar-background: 0 0% 98%;
 
