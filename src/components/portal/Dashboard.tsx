@@ -1,42 +1,54 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Filter, FileText, Calendar, User } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, Search, Filter, FileText, Calendar, User, Shield, Car } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface CaseItem {
   id: string;
   name: string;
-  caseType: string;
-  dateSubmitted: string;
-  party: string;
-  status: "Submitted" | "Under Review" | "Approved" | "Returned";
+  description: string;
+  caseNumber?: string;
+  department: string;
+  section: string;
+  firstParty: string;
+  secondParty: string;
+  secondPartyType: string;
+  represented?: string;
+  status: "Draft" | "Submitted" | "Under Review" | "Approved" | "Returned";
+  stage: string;
+  icon: "shield" | "car" | "file";
 }
 
 const mockCases: CaseItem[] = [
   {
     id: "CASE-2024-001",
-    name: "Environmental Impact Assessment",
-    caseType: "Environmental",
-    dateSubmitted: "2024-01-15",
-    party: "City Planning Department",
-    status: "Under Review"
+    name: "DBE Certification Appeal for Eki Carver",
+    description: "Good Faith Effort Appeals",
+    department: "Department of Transportation",
+    section: "DBE Certification Section",
+    firstParty: "Petitionaire",
+    secondParty: "Eki Carver",
+    secondPartyType: "Litigant",
+    represented: "Todd Litgard, Attorney at Law",
+    status: "Draft",
+    stage: "Intake",
+    icon: "shield"
   },
   {
     id: "CASE-2024-002", 
-    name: "Public Records Request",
-    caseType: "FOIA",
-    dateSubmitted: "2024-01-14",
-    party: "Citizens Coalition",
-    status: "Approved"
-  },
-  {
-    id: "CASE-2024-003",
-    name: "Zoning Variance Application",
-    caseType: "Zoning",
-    dateSubmitted: "2024-01-12",
-    party: "Metro Development Corp",
-    status: "Submitted"
+    name: "FOID Card Denial for Abigayle Low",
+    description: "Card Denial",
+    caseNumber: "DNR-GA-FRR-SL-2025-00001",
+    department: "Department of State Police",
+    section: "Firearms Owners Identification Card",
+    firstParty: "Petitionaire",
+    secondParty: "Abigayle Low",
+    secondPartyType: "Respondant",
+    status: "Submitted",
+    stage: "Pending Case Acceptance",
+    icon: "car"
   }
 ];
 
@@ -44,8 +56,18 @@ const getStatusColor = (status: string) => {
   switch (status) {
     case "Approved": return "bg-success text-success-foreground";
     case "Under Review": return "bg-warning text-warning-foreground";
+    case "Submitted": return "bg-success text-success-foreground";
+    case "Draft": return "bg-destructive text-destructive-foreground";
     case "Returned": return "bg-destructive text-destructive-foreground";
     default: return "bg-muted text-muted-foreground";
+  }
+};
+
+const getCaseIcon = (iconType: string) => {
+  switch (iconType) {
+    case "shield": return Shield;
+    case "car": return Car;
+    default: return FileText;
   }
 };
 
@@ -77,98 +99,112 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
         </div>
 
         {/* Search and Filters */}
-        <Card className="shadow-fluent-8">
-          <CardContent className="p-4">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input 
-                  placeholder="Search cases by name, ID, or party..."
-                  className="pl-10 border-input-border font-fluent"
-                />
-              </div>
-              <Button variant="fluent" size="sm">
-                <Filter className="mr-2 h-4 w-4" />
-                Filters
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex items-center justify-between">
+          <Select defaultValue="all">
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter cases" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Cases</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="submitted">Submitted</SelectItem>
+              <SelectItem value="review">Under Review</SelectItem>
+              <SelectItem value="approved">Approved</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Plus className="mr-2 h-4 w-4" />
+            New Case
+          </Button>
+        </div>
 
         {/* Cases Table */}
-        <Card className="shadow-fluent-16">
-          <CardHeader>
-            <CardTitle className="font-fluent font-semibold">All Cases</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-muted/50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                      Case Details
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                      Type
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                      Date Submitted
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                      Party
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {mockCases.map((caseItem) => (
-                    <tr key={caseItem.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="px-6 py-4">
+        <div className="bg-background border border-border rounded-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-muted/30">
+                <tr>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    Case
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    Dept/Bureau
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    Participant/Type
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {mockCases.map((caseItem) => {
+                  const IconComponent = getCaseIcon(caseItem.icon);
+                  return (
+                    <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
+                      <td className="px-4 py-4">
                         <div className="flex items-center space-x-3">
-                          <FileText className="h-5 w-5 text-primary" />
-                          <div>
-                            <p className="font-medium font-fluent text-foreground">{caseItem.name}</p>
-                            <p className="text-sm text-muted-foreground font-fluent">{caseItem.id}</p>
+                          <div className="flex-shrink-0">
+                            <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                              <IconComponent className="h-5 w-5 text-muted-foreground" />
+                            </div>
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-primary hover:underline cursor-pointer">
+                              {caseItem.name}
+                            </p>
+                            <p className="text-sm text-muted-foreground">{caseItem.description}</p>
+                            {caseItem.caseNumber && (
+                              <p className="text-xs text-muted-foreground">
+                                Case #: {caseItem.caseNumber}
+                              </p>
+                            )}
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <span className="text-sm font-fluent text-foreground">{caseItem.caseType}</span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center space-x-2">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-fluent text-foreground">{caseItem.dateSubmitted}</span>
+                      <td className="px-4 py-4">
+                        <div>
+                          <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
+                          <p className="text-sm text-muted-foreground">{caseItem.section}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            <span className="font-medium">First Party:</span> {caseItem.firstParty}
+                          </p>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center space-x-2">
-                          <User className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-fluent text-foreground">{caseItem.party}</span>
+                      <td className="px-4 py-4">
+                        <div>
+                          <p className="text-sm font-medium text-foreground">{caseItem.secondParty}</p>
+                          <p className="text-sm text-muted-foreground">
+                            <span className="font-medium">Second Party:</span> {caseItem.secondPartyType}
+                          </p>
+                          {caseItem.represented && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              <span className="font-medium">Represented:</span> {caseItem.represented}
+                            </p>
+                          )}
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <Badge className={getStatusColor(caseItem.status)}>
-                          {caseItem.status}
-                        </Badge>
-                      </td>
-                      <td className="px-6 py-4">
-                        <Button variant="ghost" size="sm" className="font-fluent">
-                          View Details
-                        </Button>
+                      <td className="px-4 py-4">
+                        <div className="space-y-2">
+                          <Badge className={getStatusColor(caseItem.status)} variant="secondary">
+                            {caseItem.status}
+                          </Badge>
+                          <p className="text-xs text-muted-foreground">
+                            {caseItem.status === "Draft" ? "Pending Submission" : caseItem.stage}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            <span className="font-medium">Stage:</span> {caseItem.stage}
+                          </p>
+                        </div>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
