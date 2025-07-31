@@ -95,10 +95,6 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
               alt="Illinois Bureau of Administrative Hearings" 
               className="h-16 w-auto"
             />
-            <div>
-              <h1 className="text-3xl font-semibold font-fluent text-foreground">Power Portal</h1>
-              <p className="text-muted-foreground font-fluent">Case Management System</p>
-            </div>
           </div>
           <Button size="lg" className="font-fluent" onClick={onCreateCase}>
             <Plus className="mr-2 h-5 w-5" />
