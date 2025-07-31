@@ -81,7 +81,7 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
       {/* Watermark Logo */}
       <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
         <img 
-          src="/lovable-uploads/a8ff40e4-1efe-4d80-9072-5c480ab49fa9.png" 
+          src="/lovable-uploads/2cd68d92-0afb-499c-bc8f-3648820ae03b.png" 
           alt="Watermark" 
           className="w-96 h-96 object-contain opacity-10"
         />
@@ -120,10 +120,6 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
               <SelectItem value="approved">Approved</SelectItem>
             </SelectContent>
           </Select>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Plus className="mr-2 h-4 w-4" />
-            New Case
-          </Button>
         </div>
 
         {/* Cases Table */}
