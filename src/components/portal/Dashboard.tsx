@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Filter, FileText, Calendar, User, Shield, Car } from "lucide-react";
+import { Plus, Search, Filter, FileText, Calendar, User, Shield, Car, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 interface CaseItem {
@@ -73,9 +73,10 @@ const getCaseIcon = (iconType: string) => {
 
 interface DashboardProps {
   onCreateCase: () => void;
+  onViewCase: (caseId: string) => void;
 }
 
-export function Dashboard({ onCreateCase }: DashboardProps) {
+export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
   return (
     <div className="min-h-screen bg-background p-6 relative">
       {/* Watermark Logo */}
@@ -135,6 +136,9 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                     Status
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    Read Only
                   </th>
                 </tr>
               </thead>
@@ -197,6 +201,17 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
                             <span className="font-medium">Stage:</span> {caseItem.stage}
                           </p>
                         </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => onViewCase(caseItem.id)}
+                          className="flex items-center space-x-2"
+                        >
+                          <Eye className="h-4 w-4" />
+                          <span>View</span>
+                        </Button>
                       </td>
                     </tr>
                   );

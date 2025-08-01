@@ -26,9 +26,11 @@ const wizardTabs = [
 
 interface CaseWizardProps {
   onBack?: () => void;
+  initialTab?: string;
+  readOnly?: boolean;
 }
 
-export function CaseWizard({ onBack }: CaseWizardProps) {
+export function CaseWizard({ onBack, initialTab = "department", readOnly = false }: CaseWizardProps) {
   const [formData, setFormData] = useState({});
   const [showRequestWizard, setShowRequestWizard] = useState(false);
 
@@ -54,8 +56,12 @@ export function CaseWizard({ onBack }: CaseWizardProps) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-semibold font-fluent text-foreground">Create New Case</h1>
-            <p className="text-muted-foreground font-fluent">Complete all sections to submit your case</p>
+            <h1 className="text-3xl font-semibold font-fluent text-foreground">
+              {readOnly ? "View Case" : "Create New Case"}
+            </h1>
+            <p className="text-muted-foreground font-fluent">
+              {readOnly ? "Review case details and information" : "Complete all sections to submit your case"}
+            </p>
           </div>
           <Button variant="ghost" size="sm" onClick={onBack}>
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -64,7 +70,7 @@ export function CaseWizard({ onBack }: CaseWizardProps) {
         </div>
 
         {/* Vertical Tabs Layout */}
-        <Tabs defaultValue="department" className="w-full" orientation="vertical">
+        <Tabs defaultValue={initialTab} className="w-full" orientation="vertical">
           <div className="flex gap-6">
             {/* Vertical Tab List */}
             <Card className="shadow-fluent-8 w-80">
@@ -192,15 +198,17 @@ export function CaseWizard({ onBack }: CaseWizardProps) {
         </Tabs>
 
         {/* Submit Actions */}
-        <div className="flex justify-end space-x-3">
-          <Button variant="fluent" className="font-fluent">
-            Save Draft
-          </Button>
-          <Button className="font-fluent">
-            <Check className="mr-2 h-4 w-4" />
-            Submit Case
-          </Button>
-        </div>
+        {!readOnly && (
+          <div className="flex justify-end space-x-3">
+            <Button variant="fluent" className="font-fluent">
+              Save Draft
+            </Button>
+            <Button className="font-fluent">
+              <Check className="mr-2 h-4 w-4" />
+              Submit Case
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
