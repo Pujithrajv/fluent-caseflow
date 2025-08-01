@@ -119,7 +119,7 @@ export function Dashboard({ onCreateCase }: DashboardProps) {
         </div>
 
         {/* Cases Table */}
-        <div className="bg-white border border-border rounded-lg overflow-hidden">
+        <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-muted/30">
