@@ -86,6 +86,99 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
           </CardContent>
         </Card>
 
+        {/* Case Questions */}
+        <Card className="shadow-fluent-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="font-fluent">Case Questions</CardTitle>
+              <Button variant="ghost" size="sm">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Case Type</p>
+              <p className="font-medium font-fluent">Environmental Review</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Environmental Impact</p>
+              <p className="font-medium font-fluent">Yes - Moderate Impact</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Timeline Requirements</p>
+              <p className="font-medium font-fluent">Standard Processing</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Involved Parties */}
+        <Card className="shadow-fluent-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="font-fluent">Involved Parties</CardTitle>
+              <Button variant="ghost" size="sm">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Second Party</p>
+              <p className="font-medium font-fluent">Green Valley Development Corp.</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Third Party</p>
+              <p className="font-medium font-fluent">Local Environmental Group</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Total Parties</p>
+              <Badge variant="secondary">3 Parties</Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Additional Sections */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* Requests */}
+        <Card className="shadow-fluent-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="font-fluent">Associated Requests</CardTitle>
+              <Button variant="ghost" size="sm">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Total Requests</p>
+              <p className="font-medium font-fluent">2 Active Requests</p>
+            </div>
+            <div className="space-y-3">
+              <div className="border border-border rounded-lg p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium font-fluent text-sm">Environmental Impact Review</p>
+                    <p className="text-xs text-muted-foreground">Request Type: Review Request</p>
+                  </div>
+                  <Badge variant="secondary">Active</Badge>
+                </div>
+              </div>
+              <div className="border border-border rounded-lg p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium font-fluent text-sm">Site Inspection Request</p>
+                    <p className="text-xs text-muted-foreground">Request Type: Inspection Request</p>
+                  </div>
+                  <Badge variant="secondary">Pending</Badge>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Documents */}
         <Card className="shadow-fluent-8">
           <CardHeader>
@@ -99,7 +192,7 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
           <CardContent className="space-y-3">
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Total Files</p>
-              <p className="font-medium font-fluent">2 documents uploaded</p>
+              <p className="font-medium font-fluent">4 documents uploaded</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -110,6 +203,18 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-fluent">Site_Plans.dwg</span>
+                <Button variant="ghost" size="sm">
+                  <Eye className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-fluent">Legal_Notice.pdf</span>
+                <Button variant="ghost" size="sm">
+                  <Eye className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-fluent">Stakeholder_Comments.docx</span>
                 <Button variant="ghost" size="sm">
                   <Eye className="h-4 w-4" />
                 </Button>
