@@ -49,6 +49,35 @@ const mockCases: CaseItem[] = [
     status: "Submitted",
     stage: "Pending Case Acceptance",
     icon: "car"
+  },
+  {
+    id: "CASE-2024-003",
+    name: "Professional License Suspension Appeal",
+    description: "Healthcare Provider License Review",
+    caseNumber: "IDFPR-HC-2025-00047",
+    department: "Department of Financial and Professional Regulation",
+    section: "Professional Regulation Division",
+    firstParty: "Petitionaire",
+    secondParty: "Dr. Sarah Martinez",
+    secondPartyType: "Licensed Professional",
+    represented: "Law Offices of Johnson & Associates",
+    status: "Under Review",
+    stage: "Administrative Review",
+    icon: "file"
+  },
+  {
+    id: "CASE-2024-004",
+    name: "Environmental Violation Appeal",
+    description: "Air Quality Standards Compliance",
+    caseNumber: "EPA-AQ-2025-00123",
+    department: "Environmental Protection Agency",
+    section: "Air Quality Division",
+    firstParty: "Petitionaire",
+    secondParty: "Midwest Manufacturing LLC",
+    secondPartyType: "Corporate Entity",
+    status: "Approved",
+    stage: "Final Decision Issued",
+    icon: "shield"
   }
 ];
 
