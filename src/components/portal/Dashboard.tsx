@@ -19,6 +19,7 @@ interface CaseItem {
   status: "Draft" | "Submitted" | "Under Review" | "Approved" | "Returned";
   stage: string;
   icon: "shield" | "car" | "file";
+  caseAcceptedDate?: string;
 }
 
 const mockCases: CaseItem[] = [
@@ -26,6 +27,7 @@ const mockCases: CaseItem[] = [
     id: "CASE-2024-001",
     name: "DBE Certification Appeal for Eki Carver",
     description: "Good Faith Effort Appeals",
+    caseNumber: "DBE-2024-001-EC",
     department: "Department of Transportation",
     section: "DBE Certification Section",
     firstParty: "Petitionaire",
@@ -48,7 +50,8 @@ const mockCases: CaseItem[] = [
     secondPartyType: "Respondant",
     status: "Submitted",
     stage: "Pending Case Acceptance",
-    icon: "car"
+    icon: "car",
+    caseAcceptedDate: "2024-12-15"
   },
   {
     id: "CASE-2024-003",
@@ -63,7 +66,8 @@ const mockCases: CaseItem[] = [
     represented: "Law Offices of Johnson & Associates",
     status: "Under Review",
     stage: "Administrative Review",
-    icon: "file"
+    icon: "file",
+    caseAcceptedDate: "2024-11-28"
   },
   {
     id: "CASE-2024-004",
@@ -77,7 +81,8 @@ const mockCases: CaseItem[] = [
     secondPartyType: "Corporate Entity",
     status: "Approved",
     stage: "Final Decision Issued",
-    icon: "shield"
+    icon: "shield",
+    caseAcceptedDate: "2024-10-05"
   }
 ];
 
@@ -167,6 +172,9 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
                     Status
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    Case Accepted/Rejected Date
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                     Read Only
                   </th>
                 </tr>
@@ -229,6 +237,18 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
                           <p className="text-xs text-muted-foreground">
                             <span className="font-medium">Stage:</span> {caseItem.stage}
                           </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="text-sm text-foreground">
+                          {caseItem.caseAcceptedDate ? (
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
+                              <span>{new Date(caseItem.caseAcceptedDate).toLocaleDateString()}</span>
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground italic">Pending</span>
+                          )}
                         </div>
                       </td>
                       <td className="px-4 py-4">
