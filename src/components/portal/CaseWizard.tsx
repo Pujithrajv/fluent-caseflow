@@ -97,7 +97,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
                       {isTabCompleted(tab.id) && (
-                        <Check className="h-4 w-4 text-green-500" />
+                        <Check className="h-4 w-4 text-success" />
                       )}
                     </TabsTrigger>
                   ))}
