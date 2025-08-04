@@ -32,6 +32,7 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
                 <SelectItem value="environmental">Environmental Services</SelectItem>
                 <SelectItem value="legal">Legal Department</SelectItem>
                 <SelectItem value="admin">Administration</SelectItem>
+                <SelectItem value="agriculture">Department of Agriculture</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -46,6 +47,9 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
                 <SelectItem value="zoning">Zoning Division</SelectItem>
                 <SelectItem value="permits">Permits Division</SelectItem>
                 <SelectItem value="compliance">Compliance Division</SelectItem>
+                <SelectItem value="animal-health-welfare">Animal Health & Welfare</SelectItem>
+                <SelectItem value="weights-measures">Bureau of Weights and Measures</SelectItem>
+                <SelectItem value="agricultural-regulation">Division of Agricultural Industry Regulation</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -60,6 +64,8 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
                 <SelectItem value="residential">Residential Bureau</SelectItem>
                 <SelectItem value="commercial">Commercial Bureau</SelectItem>
                 <SelectItem value="industrial">Industrial Bureau</SelectItem>
+                <SelectItem value="adult-protective">Adult Protective Services</SelectItem>
+                <SelectItem value="animal-health-bureau">Animal Health & Welfare</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -75,6 +81,11 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
                 <SelectItem value="zoning">Zoning Variance</SelectItem>
                 <SelectItem value="permit">Permit Application</SelectItem>
                 <SelectItem value="foia">FOIA Request</SelectItem>
+                <SelectItem value="animal-health">Animal Health</SelectItem>
+                <SelectItem value="animal-welfare">Animal Welfare</SelectItem>
+                <SelectItem value="environment-protection">Environment Protection</SelectItem>
+                <SelectItem value="grain-dealer">Grain Dealer and Warehouse Licensing</SelectItem>
+                <SelectItem value="inspection-appeal">Inspection Notice of Fine Appeal</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -128,7 +139,7 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
           </div>
           
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="representative" className="font-fluent">Department Representative</Label>
+            <Label htmlFor="representative" className="font-fluent">Final Decision Maker</Label>
             <Input 
               id="representative"
               placeholder="Enter representative name"
