@@ -9,7 +9,6 @@ import { CaseDetailsTab } from "./wizard/CaseDetailsTab";
 import { CaseQuestionsTab } from "./wizard/CaseQuestionsTab";
 import { InvolvedPartiesTab } from "./wizard/InvolvedPartiesTab";
 import { RequestWizardTab } from "./wizard/RequestWizardTab";
-import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 import { RequestWizard } from "./RequestWizard";
 
@@ -20,7 +19,6 @@ const wizardTabs = [
   { id: 'case-questions', title: 'Case Questions', description: 'Case type specific questions' },
   { id: 'involved-parties', title: 'Involved Parties', description: 'Additional parties' },
   { id: 'requests', title: 'Requests', description: 'Associated requests' },
-  { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
@@ -179,18 +177,6 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                       data={formData} 
                       onAddNewRequest={handleAddNewRequest}
                     />
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="documents" className="mt-0">
-                <Card className="shadow-fluent-16">
-                  <CardHeader>
-                    <CardTitle className="font-fluent font-semibold">Documents</CardTitle>
-                    <p className="text-muted-foreground font-fluent">Upload supporting documents</p>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <DocumentUploadTab onDataChange={updateFormData} data={formData} />
                   </CardContent>
                 </Card>
               </TabsContent>
