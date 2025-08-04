@@ -118,7 +118,7 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
         <img 
           src="/lovable-uploads/ed443ced-22f0-4bb1-91d8-924f4ac238ac.png" 
           alt="Watermark" 
-          className="w-96 h-96 object-contain opacity-20"
+          className="w-96 h-96 object-contain opacity-40"
         />
       </div>
       <div className="mx-auto max-w-7xl space-y-6 relative z-10">
