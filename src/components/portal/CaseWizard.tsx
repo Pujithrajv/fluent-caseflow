@@ -33,9 +33,18 @@ interface CaseWizardProps {
 export function CaseWizard({ onBack, initialTab = "department", readOnly = false }: CaseWizardProps) {
   const [formData, setFormData] = useState({});
   const [showRequestWizard, setShowRequestWizard] = useState(false);
+  const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
   const updateFormData = (stepData: any) => {
     setFormData(prev => ({ ...prev, ...stepData }));
+  };
+
+  const markTabCompleted = (tabId: string) => {
+    setCompletedTabs(prev => prev.includes(tabId) ? prev : [...prev, tabId]);
+  };
+
+  const isTabCompleted = (tabId: string) => {
+    return completedTabs.includes(tabId);
   };
 
   const handleAddNewRequest = () => {
@@ -80,12 +89,16 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="w-full justify-start px-4 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      className="w-full justify-between px-4 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      onClick={() => markTabCompleted(tab.id)}
                     >
                       <div className="text-left">
                         <div className="font-fluent font-medium">{tab.title}</div>
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
+                      {isTabCompleted(tab.id) && (
+                        <Check className="h-4 w-4 text-green-500" />
+                      )}
                     </TabsTrigger>
                   ))}
                 </TabsList>
