@@ -125,7 +125,7 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="attorney" className="font-fluent">Attorney</Label>
+            <Label htmlFor="attorney" className="font-fluent">Assigned Attorney</Label>
             <Select>
               <SelectTrigger className="shadow-fluent-8 border-input-border">
                 <SelectValue placeholder="Select Attorney" />
@@ -140,11 +140,18 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
           
           <div className="space-y-2 md:col-span-2">
             <Label htmlFor="representative" className="font-fluent">Final Decision Maker</Label>
-            <Input 
-              id="representative"
-              placeholder="Enter representative name"
-              className="shadow-fluent-8 border-input-border"
-            />
+            <Select>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select Final Decision Maker" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="john-smith">John Smith</SelectItem>
+                <SelectItem value="sarah-johnson">Sarah Johnson</SelectItem>
+                <SelectItem value="mike-wilson">Mike Wilson</SelectItem>
+                <SelectItem value="lisa-brown">Lisa Brown</SelectItem>
+                <SelectItem value="david-clark">David Clark</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
