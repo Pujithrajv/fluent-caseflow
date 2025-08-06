@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,7 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { FileText, X } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { FileText, X, CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 interface DiscoveryDetailsTabProps {
@@ -24,6 +28,8 @@ const discoveryTypes = [
 export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabProps) {
   const [selectedDiscoveryTypes, setSelectedDiscoveryTypes] = useState<string[]>(data.discoveryTypes || []);
   const [discoverySchedule, setDiscoverySchedule] = useState(data.discoverySchedule || "");
+  const [discoveryStartDate, setDiscoveryStartDate] = useState<Date | undefined>(data.discoveryStartDate);
+  const [discoveryCutoffDate, setDiscoveryCutoffDate] = useState<Date | undefined>(data.discoveryCutoffDate);
 
   const handleDiscoveryTypeChange = (typeId: string, checked: boolean) => {
     const updatedTypes = checked 
@@ -43,6 +49,16 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
   const handleScheduleChange = (value: string) => {
     setDiscoverySchedule(value);
     onDataChange({ discoverySchedule: value });
+  };
+
+  const handleStartDateChange = (date: Date | undefined) => {
+    setDiscoveryStartDate(date);
+    onDataChange({ discoveryStartDate: date });
+  };
+
+  const handleCutoffDateChange = (date: Date | undefined) => {
+    setDiscoveryCutoffDate(date);
+    onDataChange({ discoveryCutoffDate: date });
   };
 
   return (
@@ -110,6 +126,62 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label className="font-fluent">Discovery Start Date *</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                      !discoveryStartDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {discoveryStartDate ? format(discoveryStartDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={discoveryStartDate}
+                    onSelect={handleStartDateChange}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="font-fluent">Discovery Cutoff Date *</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                      !discoveryCutoffDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {discoveryCutoffDate ? format(discoveryCutoffDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={discoveryCutoffDate}
+                    onSelect={handleCutoffDateChange}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 
