@@ -274,10 +274,9 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
           </Button>
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Cases Table - Takes up 2/3 on large screens */}
-          <div className="lg:col-span-2">
+        {/* Main Content - Full Width Cases Table */}
+        <div className="w-full">
+          <div className="w-full">
             <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -395,46 +394,6 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
             </div>
           </div>
 
-          {/* Upcoming Events Sidebar - Takes up 1/3 on large screens */}
-          <div className="lg:col-span-1">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 font-fluent">
-                  <Clock className="h-5 w-5 text-primary" />
-                  <span>Upcoming Events</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {mockEvents.map((event) => (
-                  <div key={event.id} className="border-l-4 border-primary pl-4 py-2">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-sm text-foreground">{event.title}</h4>
-                        <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
-                        <div className="flex items-center space-x-4 mt-2 text-xs text-muted-foreground">
-                          <div className="flex items-center space-x-1">
-                            <Calendar className="h-3 w-3" />
-                            <span>{new Date(event.date).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Clock className="h-3 w-3" />
-                            <span>{event.time}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-1 mt-1 text-xs text-muted-foreground">
-                          <MapPin className="h-3 w-3" />
-                          <span>{event.location}</span>
-                        </div>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {event.type}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </div>
     </div>
