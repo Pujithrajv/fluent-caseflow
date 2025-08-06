@@ -23,7 +23,8 @@ interface CaseItem {
   status: "Draft" | "Submitted" | "Under Review" | "Approved" | "Returned";
   stage: string;
   icon: "shield" | "car" | "file";
-  caseAcceptedDate?: string;
+  lastActionDate: string;
+  lastWizardTab: "department" | "primary-party" | "case-details" | "case-questions" | "involved-parties" | "requests" | "review-submit";
 }
 
 const mockCases: CaseItem[] = [
@@ -40,7 +41,9 @@ const mockCases: CaseItem[] = [
     represented: "Todd Litgard, Attorney at Law",
     status: "Draft",
     stage: "Intake",
-    icon: "shield"
+    icon: "shield",
+    lastActionDate: "2024-12-18",
+    lastWizardTab: "primary-party"
   },
   {
     id: "CASE-2024-002", 
@@ -55,7 +58,8 @@ const mockCases: CaseItem[] = [
     status: "Submitted",
     stage: "Pending Case Acceptance",
     icon: "car",
-    caseAcceptedDate: "2024-12-15"
+    lastActionDate: "2024-12-15",
+    lastWizardTab: "review-submit"
   },
   {
     id: "CASE-2024-003",
@@ -71,7 +75,8 @@ const mockCases: CaseItem[] = [
     status: "Under Review",
     stage: "Administrative Review",
     icon: "file",
-    caseAcceptedDate: "2024-11-28"
+    lastActionDate: "2024-11-28",
+    lastWizardTab: "case-details"
   },
   {
     id: "CASE-2024-004",
@@ -86,7 +91,8 @@ const mockCases: CaseItem[] = [
     status: "Approved",
     stage: "Final Decision Issued",
     icon: "shield",
-    caseAcceptedDate: "2024-10-05"
+    lastActionDate: "2024-10-05",
+    lastWizardTab: "requests"
   }
 ];
 
@@ -170,9 +176,23 @@ const getCaseIcon = (iconType: string) => {
 interface DashboardProps {
   onCreateCase: () => void;
   onViewCase: (caseId: string) => void;
+  onEditCase?: (caseId: string, tab: string) => void;
 }
 
-export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
+const getTabDisplayName = (tab: string) => {
+  switch (tab) {
+    case "department": return "Department";
+    case "primary-party": return "Primary Party";
+    case "case-details": return "Case Details";
+    case "case-questions": return "Case Questions";
+    case "involved-parties": return "Involved Parties";
+    case "requests": return "Requests";
+    case "review-submit": return "Review & Submit";
+    default: return tab;
+  }
+};
+
+export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
   return (
     <div className="min-h-screen bg-background p-6 relative">
       {/* Watermark Logo */}
@@ -295,7 +315,7 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
                         Status
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Case Accepted/Rejected Date
+                        Last Action
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                         Read Only
@@ -363,15 +383,20 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            <div className="text-sm text-foreground">
-                              {caseItem.caseAcceptedDate ? (
-                                <div className="flex items-center space-x-2">
-                                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                                  <span>{new Date(caseItem.caseAcceptedDate).toLocaleDateString()}</span>
-                                </div>
-                              ) : (
-                                <span className="text-muted-foreground italic">Pending</span>
-                              )}
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2 text-sm text-foreground">
+                                <Calendar className="h-4 w-4 text-muted-foreground" />
+                                <span>{new Date(caseItem.lastActionDate).toLocaleDateString()}</span>
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                Last worked on:{" "}
+                                <button
+                                  onClick={() => onEditCase?.(caseItem.id, caseItem.lastWizardTab)}
+                                  className="text-primary hover:underline font-medium"
+                                >
+                                  {getTabDisplayName(caseItem.lastWizardTab)}
+                                </button>
+                              </div>
                             </div>
                           </td>
                           <td className="px-4 py-4">

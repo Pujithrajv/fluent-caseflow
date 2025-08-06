@@ -11,6 +11,12 @@ const Index = () => {
     setCurrentView("review");
   };
 
+  const handleEditCase = (caseId: string, tab: string) => {
+    setSelectedCaseId(caseId);
+    setCurrentView("wizard");
+    // Note: CaseWizard would need to be updated to accept initialTab prop
+  };
+
   if (currentView === "wizard") {
     return <CaseWizard onBack={() => setCurrentView("dashboard")} />;
   }
@@ -23,6 +29,7 @@ const Index = () => {
     <Dashboard 
       onCreateCase={() => setCurrentView("wizard")} 
       onViewCase={handleViewCase}
+      onEditCase={handleEditCase}
     />
   );
 };
