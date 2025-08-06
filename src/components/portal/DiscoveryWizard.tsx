@@ -6,13 +6,26 @@ import { ArrowLeft, Check, HelpCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DiscoveryDetailsTab } from "./wizard/DiscoveryDetailsTab";
+import { InterrogatoriesQuestionsTab } from "./wizard/InterrogatoriesQuestionsTab";
+import { DocumentProductionQuestionsTab } from "./wizard/DocumentProductionQuestionsTab";
+import { DepositionQuestionsTab } from "./wizard/DepositionQuestionsTab";
+import { InspectionQuestionsTab } from "./wizard/InspectionQuestionsTab";
 import { RequestTypeQuestionsTab } from "./wizard/RequestTypeQuestionsTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
-const discoveryTabs = [
+const baseDiscoveryTabs = [
   { id: 'discovery-details', title: 'Discovery Details', description: 'Discovery request information' },
-  { id: 'discovery-questions', title: 'Discovery Questions', description: 'Type-specific questions' },
+];
+
+const discoveryTypeComponents = {
+  'interrogatories': { component: InterrogatoriesQuestionsTab, title: 'Interrogatories Questions' },
+  'document-production': { component: DocumentProductionQuestionsTab, title: 'Document Production Questions' },
+  'deposition': { component: DepositionQuestionsTab, title: 'Deposition Questions' },
+  'inspection': { component: InspectionQuestionsTab, title: 'Inspection Questions' }
+};
+
+const endTabs = [
   { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit discovery' }
 ];
@@ -60,9 +73,30 @@ interface DiscoveryWizardProps {
 export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
   const [formData, setFormData] = useState({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
+  const [selectedDiscoveryTypes, setSelectedDiscoveryTypes] = useState<string[]>([]);
+
+  // Generate dynamic tabs based on selected discovery types
+  const discoveryTabs = [
+    ...baseDiscoveryTabs,
+    ...selectedDiscoveryTypes.map(type => ({
+      id: `${type}-questions`,
+      title: discoveryTypeComponents[type as keyof typeof discoveryTypeComponents]?.title || `${type} Questions`,
+      description: 'Type-specific questions'
+    })),
+    ...endTabs
+  ];
 
   const updateFormData = (stepData: any) => {
-    setFormData(prev => ({ ...prev, ...stepData }));
+    setFormData(prev => {
+      const newData = { ...prev, ...stepData };
+      
+      // Update selected discovery types when they change
+      if (stepData.discoveryTypes) {
+        setSelectedDiscoveryTypes(stepData.discoveryTypes);
+      }
+      
+      return newData;
+    });
   };
 
   const markTabCompleted = (tabId: string) => {
@@ -158,7 +192,10 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
                     </CardHeader>
                     <CardContent className="p-6">
                       {tab.id === 'discovery-details' && <DiscoveryDetailsTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'discovery-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'interrogatories-questions' && <InterrogatoriesQuestionsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'document-production-questions' && <DocumentProductionQuestionsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'deposition-questions' && <DepositionQuestionsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'inspection-questions' && <InspectionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'review' && <ReviewSubmitTab formData={formData} />}
                     </CardContent>
