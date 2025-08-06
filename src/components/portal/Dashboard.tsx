@@ -395,6 +395,49 @@ export function Dashboard({ onCreateCase, onViewCase }: DashboardProps) {
           </div>
 
         </div>
+
+        {/* Upcoming Events Section - Below Table */}
+        <div className="w-full">
+          <Card className="shadow-fluent-8">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 font-fluent">
+                <Clock className="h-5 w-5 text-primary" />
+                <span>Upcoming Events</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {mockEvents.map((event) => (
+                  <div key={event.id} className="border-l-4 border-primary pl-4 py-3 bg-muted/20 rounded-r-lg">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm text-foreground">{event.title}</h4>
+                        <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
+                        <div className="flex items-center space-x-4 mt-2 text-xs text-muted-foreground">
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="h-3 w-3" />
+                            <span>{new Date(event.date).toLocaleDateString()}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Clock className="h-3 w-3" />
+                            <span>{event.time}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-1 mt-1 text-xs text-muted-foreground">
+                          <MapPin className="h-3 w-3" />
+                          <span>{event.location}</span>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        {event.type}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
