@@ -20,7 +20,7 @@ interface CaseItem {
   secondParty: string;
   secondPartyType: string;
   represented?: string;
-  status: "Draft" | "Submitted" | "Under Review" | "Approved" | "Returned";
+  status: "draft" | "submitted" | "accepted" | "complete" | "closed" | "archived";
   stage: string;
   icon: "shield" | "car" | "file";
   lastActionDate: string;
@@ -39,7 +39,7 @@ const mockCases: CaseItem[] = [
     secondParty: "Eki Carver",
     secondPartyType: "Litigant",
     represented: "Todd Litgard, Attorney at Law",
-    status: "Draft",
+    status: "draft",
     stage: "Intake",
     icon: "shield",
     lastActionDate: "2024-12-18",
@@ -55,7 +55,7 @@ const mockCases: CaseItem[] = [
     firstParty: "Petitionaire",
     secondParty: "Abigayle Low",
     secondPartyType: "Respondant",
-    status: "Submitted",
+    status: "submitted",
     stage: "Pending Case Acceptance",
     icon: "car",
     lastActionDate: "2024-12-15",
@@ -72,7 +72,7 @@ const mockCases: CaseItem[] = [
     secondParty: "Dr. Sarah Martinez",
     secondPartyType: "Licensed Professional",
     represented: "Law Offices of Johnson & Associates",
-    status: "Under Review",
+    status: "accepted",
     stage: "Administrative Review",
     icon: "file",
     lastActionDate: "2024-11-28",
@@ -88,7 +88,7 @@ const mockCases: CaseItem[] = [
     firstParty: "Petitionaire",
     secondParty: "Midwest Manufacturing LLC",
     secondPartyType: "Corporate Entity",
-    status: "Approved",
+    status: "complete",
     stage: "Final Decision Issued",
     icon: "shield",
     lastActionDate: "2024-10-05",
@@ -156,11 +156,12 @@ const faqData = [
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case "Approved": return "bg-success text-success-foreground";
-    case "Under Review": return "bg-warning text-warning-foreground";
-    case "Submitted": return "bg-success text-success-foreground";
-    case "Draft": return "bg-destructive text-destructive-foreground";
-    case "Returned": return "bg-destructive text-destructive-foreground";
+    case "accepted": return "bg-success text-success-foreground";
+    case "submitted": return "bg-warning text-warning-foreground";
+    case "draft": return "bg-destructive text-destructive-foreground";
+    case "complete": return "bg-success text-success-foreground";
+    case "closed": return "bg-muted text-muted-foreground";
+    case "archived": return "bg-muted text-muted-foreground";
     default: return "bg-muted text-muted-foreground";
   }
 };
@@ -275,23 +276,32 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
         {/* Second Row - Filter and Create Button */}
         <div className="flex items-center justify-between">
-          <Select defaultValue="all">
-            <SelectTrigger className="w-[180px]">
+          <Select defaultValue="active">
+            <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Filter cases" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Cases</SelectItem>
+              <SelectItem value="active">Active Cases</SelectItem>
               <SelectItem value="draft">Draft</SelectItem>
               <SelectItem value="submitted">Submitted</SelectItem>
-              <SelectItem value="review">Under Review</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="accepted">Accepted</SelectItem>
+              <SelectItem value="inactive">Inactive Cases</SelectItem>
+              <SelectItem value="complete">Complete</SelectItem>
+              <SelectItem value="closed">Closed</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
             </SelectContent>
           </Select>
           
-          <Button size="lg" className="font-fluent" onClick={onCreateCase}>
-            <Plus className="mr-2 h-5 w-5" />
-            Create New Case
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" size="lg" className="font-fluent">
+              <Search className="mr-2 h-5 w-5" />
+              Search
+            </Button>
+            <Button size="lg" className="font-fluent" onClick={onCreateCase}>
+              <Plus className="mr-2 h-5 w-5" />
+              Create New Case
+            </Button>
+          </div>
         </div>
 
         {/* Main Content - Full Width Cases Table */}
@@ -373,9 +383,9 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                               <Badge className={getStatusColor(caseItem.status)} variant="secondary">
                                 {caseItem.status}
                               </Badge>
-                              <p className="text-xs text-muted-foreground">
-                                {caseItem.status === "Draft" ? "Pending Submission" : caseItem.stage}
-                              </p>
+                               <p className="text-xs text-muted-foreground">
+                                 {caseItem.status === "draft" ? "Pending Submission" : caseItem.stage}
+                               </p>
                               <p className="text-xs text-muted-foreground">
                                 <span className="font-medium">Stage:</span> {caseItem.stage}
                               </p>

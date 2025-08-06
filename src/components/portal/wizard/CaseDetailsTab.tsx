@@ -18,7 +18,8 @@ interface CaseDetailsTabProps {
 }
 
 export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
-  const [notifiedDate, setNotifiedDate] = useState<Date>();
+  const [initiatingActionDate, setInitiatingActionDate] = useState<Date>();
+  const [responsiveActionDate, setResponsiveActionDate] = useState<Date>();
   const [selectedAccessibilityOptions, setSelectedAccessibilityOptions] = useState<string[]>([]);
   const [isAccessibilityDropdownOpen, setIsAccessibilityDropdownOpen] = useState(false);
 
@@ -144,40 +145,53 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
             </div>
           </div>
           
-          <div className="space-y-4">
-            <Label className="font-fluent">Expedited Processing *</Label>
-            <RadioGroup defaultValue="no" className="flex space-x-6">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="expedited-yes" />
-                <Label htmlFor="expedited-yes" className="font-fluent">Yes</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="expedited-no" />
-                <Label htmlFor="expedited-no" className="font-fluent">No</Label>
-              </div>
-            </RadioGroup>
-          </div>
-          
           <div className="space-y-2">
-            <Label className="font-fluent">Notified Date</Label>
+            <Label className="font-fluent">Initiating Action Date</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   className={cn(
                     "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                    !notifiedDate && "text-muted-foreground"
+                    !initiatingActionDate && "text-muted-foreground"
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {notifiedDate ? format(notifiedDate, "PPP") : <span>Select date</span>}
+                  {initiatingActionDate ? format(initiatingActionDate, "PPP") : <span>Select date</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={notifiedDate}
-                  onSelect={setNotifiedDate}
+                  selected={initiatingActionDate}
+                  onSelect={setInitiatingActionDate}
+                  initialFocus
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="font-fluent">Responsive Action Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                    !responsiveActionDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {responsiveActionDate ? format(responsiveActionDate, "PPP") : <span>Select date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={responsiveActionDate}
+                  onSelect={setResponsiveActionDate}
                   initialFocus
                   className="p-3 pointer-events-auto"
                 />

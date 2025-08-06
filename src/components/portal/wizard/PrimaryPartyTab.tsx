@@ -39,6 +39,11 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
     console.log("Add party functionality to be implemented");
   };
 
+  const handleSearchAttorney = () => {
+    // TODO: Implement attorney search functionality
+    console.log("Search attorney functionality to be implemented");
+  };
+
   const handleAddAttorney = () => {
     // TODO: Implement add attorney functionality
     console.log("Add attorney functionality to be implemented");
@@ -114,6 +119,15 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
                   onChange={(e) => handleAttorneyNameChange(e.target.value)}
                   className="shadow-fluent-8 border-input-border flex-1"
                 />
+                 <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleSearchAttorney}
+                  className="flex items-center space-x-2"
+                >
+                  <Search className="h-4 w-4" />
+                  <span>Search</span>
+                </Button>
                 <Button 
                   variant="outline" 
                   size="sm"
