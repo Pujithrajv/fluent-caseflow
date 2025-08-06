@@ -30,6 +30,7 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
   const [discoverySchedule, setDiscoverySchedule] = useState(data.discoverySchedule || "");
   const [discoveryStartDate, setDiscoveryStartDate] = useState<Date | undefined>(data.discoveryStartDate);
   const [discoveryCutoffDate, setDiscoveryCutoffDate] = useState<Date | undefined>(data.discoveryCutoffDate);
+  const [discoveryConferenceDate, setDiscoveryConferenceDate] = useState<Date | undefined>(data.discoveryConferenceDate);
 
   const handleDiscoveryTypeChange = (typeId: string, checked: boolean) => {
     const updatedTypes = checked 
@@ -59,6 +60,11 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
   const handleCutoffDateChange = (date: Date | undefined) => {
     setDiscoveryCutoffDate(date);
     onDataChange({ discoveryCutoffDate: date });
+  };
+
+  const handleConferenceDateChange = (date: Date | undefined) => {
+    setDiscoveryConferenceDate(date);
+    onDataChange({ discoveryConferenceDate: date });
   };
 
   return (
@@ -183,6 +189,36 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
                 </PopoverContent>
               </Popover>
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label className="font-fluent">Date for Discovery Conference to monitor progress of discovery</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                      !discoveryConferenceDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {discoveryConferenceDate ? format(discoveryConferenceDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={discoveryConferenceDate}
+                    onSelect={handleConferenceDateChange}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

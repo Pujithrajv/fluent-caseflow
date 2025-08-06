@@ -74,82 +74,9 @@ export function InterrogatoriesQuestionsTab({ onDataChange, data }: Interrogator
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="numberOfInterrogatories" className="font-fluent text-sm font-semibold">Number of Interrogatories *</Label>
-              <Tooltip>
-                <TooltipTrigger>
-                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Specify the total number of interrogatory questions you plan to ask</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            <Input 
-              id="numberOfInterrogatories"
-              type="number"
-              placeholder="Enter number of interrogatories"
-              className="shadow-fluent-8 border-input-border"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="interrogatoriesScope" className="font-fluent text-sm font-semibold">Scope of Interrogatories *</Label>
-              <Tooltip>
-                <TooltipTrigger>
-                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Describe the subject matter and scope of your interrogatory questions</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            <Textarea 
-              id="interrogatoriesScope"
-              placeholder="Describe the scope and subject matter of your interrogatories..."
-              className="shadow-fluent-8 border-input-border min-h-32"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="interrogatoriesJustification" className="font-fluent text-sm font-semibold">Justification for Interrogatories</Label>
-              <Tooltip>
-                <TooltipTrigger>
-                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Explain why these interrogatories are necessary and relevant to your case</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            <Textarea 
-              id="interrogatoriesJustification"
-              placeholder="Explain why these interrogatories are necessary and relevant to your case..."
-              className="shadow-fluent-8 border-input-border min-h-24"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="specificQuestions" className="font-fluent text-sm font-semibold">Specific Questions (Optional)</Label>
-              <Tooltip>
-                <TooltipTrigger>
-                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>List any specific interrogatory questions you want to include</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            <Textarea 
-              id="specificQuestions"
-              placeholder="List any specific interrogatory questions you want to include..."
-              className="shadow-fluent-8 border-input-border min-h-32"
-            />
-          </div>
+          <p className="text-sm text-muted-foreground">
+            Configure your interrogatory questions and delivery details below.
+          </p>
         </CardContent>
       </Card>
 
@@ -158,7 +85,7 @@ export function InterrogatoriesQuestionsTab({ onDataChange, data }: Interrogator
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
             <HelpCircle className="h-5 w-5 text-primary" />
-            <span>Interrogatory Delivery Details</span>
+            <span>Interrogatory Details</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-8">

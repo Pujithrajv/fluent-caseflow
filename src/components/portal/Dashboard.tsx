@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Filter, FileText, Calendar, User, Shield, Car, Eye, Bell, HelpCircle, Settings, LogOut, Clock, MapPin } from "lucide-react";
+import { Plus, Search, Filter, FileText, Calendar, User, Shield, Car, Eye, HelpCircle, Settings, LogOut, Clock, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -217,10 +217,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           
           <div className="flex items-center space-x-4">
             {/* Header Icons */}
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-            </Button>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -313,7 +309,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   <thead className="bg-muted/30">
                     <tr>
                       <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Case
+                        Case #
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                         Department
@@ -345,15 +341,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                 </div>
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="text-sm font-medium text-primary hover:underline cursor-pointer">
-                                  {caseItem.name}
-                                </p>
-                                <p className="text-sm text-muted-foreground">{caseItem.description}</p>
                                 {caseItem.caseNumber && (
-                                  <p className="text-xs text-muted-foreground">
-                                    Case #: {caseItem.caseNumber}
+                                  <p className="text-sm font-medium text-foreground">
+                                    {caseItem.caseNumber}
                                   </p>
                                 )}
+                                <p className="text-sm text-muted-foreground">{caseItem.description}</p>
                               </div>
                             </div>
                           </td>

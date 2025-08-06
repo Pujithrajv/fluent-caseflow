@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from "lucide-react";
 
 interface InspectionQuestionsTabProps {
@@ -21,74 +19,38 @@ export function InspectionQuestionsTab({ onDataChange, data }: InspectionQuestio
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="inspectionType" className="font-fluent">Type of Inspection *</Label>
-              <Select>
-                <SelectTrigger className="shadow-fluent-8 border-input-border">
-                  <SelectValue placeholder="Select inspection type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="property">Property Inspection</SelectItem>
-                  <SelectItem value="documents">Document Inspection</SelectItem>
-                  <SelectItem value="equipment">Equipment Inspection</SelectItem>
-                  <SelectItem value="premises">Premises Inspection</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="preferredDate" className="font-fluent">Preferred Inspection Date</Label>
-              <Input 
-                id="preferredDate"
-                type="date"
-                className="shadow-fluent-8 border-input-border"
-              />
-            </div>
-          </div>
-
           <div className="space-y-2">
-            <Label htmlFor="inspectionLocation" className="font-fluent">Location to be Inspected *</Label>
+            <Label htmlFor="whatToInspect" className="font-fluent">What is to be inspected?</Label>
             <Textarea 
-              id="inspectionLocation"
-              placeholder="Provide detailed address or description of the location/items to be inspected..."
+              id="whatToInspect"
+              placeholder="Describe what is to be inspected..."
               className="shadow-fluent-8 border-input-border min-h-24"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="inspectionPurpose" className="font-fluent">Purpose of Inspection *</Label>
+            <Label htmlFor="inspectionPurpose" className="font-fluent">What is the purpose of the inspection?</Label>
             <Textarea 
               id="inspectionPurpose"
-              placeholder="Explain what you hope to discover or verify through this inspection..."
-              className="shadow-fluent-8 border-input-border min-h-32"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="inspectionScope" className="font-fluent">Scope of Inspection</Label>
-            <Textarea 
-              id="inspectionScope"
-              placeholder="Describe the specific areas, items, or aspects you want to inspect..."
+              placeholder="Explain the purpose of the inspection..."
               className="shadow-fluent-8 border-input-border min-h-24"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="inspectionDuration" className="font-fluent">Estimated Duration</Label>
-            <Input 
-              id="inspectionDuration"
-              placeholder="e.g., 2 hours, half day"
-              className="shadow-fluent-8 border-input-border"
+            <Label htmlFor="whoPresent" className="font-fluent">Who is to be present at the inspection?</Label>
+            <Textarea 
+              id="whoPresent"
+              placeholder="Describe who should be present during the inspection..."
+              className="shadow-fluent-8 border-input-border min-h-24"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="specialEquipment" className="font-fluent">Special Equipment or Personnel Needed</Label>
+            <Label htmlFor="whoControls" className="font-fluent">Who controls the thing to be inspected?</Label>
             <Textarea 
-              id="specialEquipment"
-              placeholder="List any special equipment, experts, or personnel required for the inspection..."
+              id="whoControls"
+              placeholder="Identify who has control over the item/location to be inspected..."
               className="shadow-fluent-8 border-input-border min-h-24"
             />
           </div>
