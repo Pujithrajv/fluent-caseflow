@@ -1,12 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, FileText, Calendar, User } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Plus, FileText, Calendar, User, ChevronDown } from "lucide-react";
 
 interface RequestWizardTabProps {
   onDataChange: (data: any) => void;
   data: any;
-  onAddNewRequest?: () => void;
+  onAddNewRequest?: (type: string) => void;
 }
 
 const mockRequests = [
@@ -45,10 +46,35 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: Reques
               <FileText className="h-5 w-5 text-primary" />
               <span>Associated Requests</span>
             </CardTitle>
-            <Button size="sm" className="font-fluent" onClick={onAddNewRequest}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add New Request
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" className="font-fluent">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Create New
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[200px]">
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("motion")}>
+                  Motion
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("exhibit")}>
+                  Exhibit
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("discovery")}>
+                  Discovery
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
+                  Certificates
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("documents")}>
+                  Documents
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
+                  Notices
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </CardHeader>
         <CardContent>
@@ -111,10 +137,35 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: Reques
             <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center">
               <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="font-fluent text-muted-foreground">No requests associated with this case yet</p>
-              <Button variant="outline" size="sm" className="mt-4 font-fluent" onClick={onAddNewRequest}>
-                <Plus className="mr-2 h-4 w-4" />
-                Add First Request
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="mt-4 font-fluent">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create First Request
+                    <ChevronDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="w-[200px]">
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("motion")}>
+                    Motion
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("exhibit")}>
+                    Exhibit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("discovery")}>
+                    Discovery
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
+                    Certificates
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("documents")}>
+                    Documents
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
+                    Notices
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
         </CardContent>

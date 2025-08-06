@@ -13,6 +13,12 @@ import { InvolvedPartiesTab } from "./wizard/InvolvedPartiesTab";
 import { RequestWizardTab } from "./wizard/RequestWizardTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 import { RequestWizard } from "./RequestWizard";
+import { MotionWizard } from "./MotionWizard";
+import { ExhibitWizard } from "./ExhibitWizard";
+import { DiscoveryWizard } from "./DiscoveryWizard";
+import { CertificatesWizard } from "./CertificatesWizard";
+import { DocumentsWizard } from "./DocumentsWizard";
+import { NoticesWizard } from "./NoticesWizard";
 
 const wizardTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
@@ -155,6 +161,7 @@ interface CaseWizardProps {
 export function CaseWizard({ onBack, initialTab = "department", readOnly = false }: CaseWizardProps) {
   const [formData, setFormData] = useState({});
   const [showRequestWizard, setShowRequestWizard] = useState(false);
+  const [currentRequestType, setCurrentRequestType] = useState<string | null>(null);
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
   const updateFormData = (stepData: any) => {
@@ -169,16 +176,33 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
     return completedTabs.includes(tabId);
   };
 
-  const handleAddNewRequest = () => {
+  const handleAddNewRequest = (type: string) => {
+    setCurrentRequestType(type);
     setShowRequestWizard(true);
   };
 
   const handleRequestWizardBack = () => {
     setShowRequestWizard(false);
+    setCurrentRequestType(null);
   };
 
-  if (showRequestWizard) {
-    return <RequestWizard onBack={handleRequestWizardBack} />;
+  if (showRequestWizard && currentRequestType) {
+    switch (currentRequestType) {
+      case 'motion':
+        return <MotionWizard onBack={handleRequestWizardBack} />;
+      case 'exhibit':
+        return <ExhibitWizard onBack={handleRequestWizardBack} />;
+      case 'discovery':
+        return <DiscoveryWizard onBack={handleRequestWizardBack} />;
+      case 'certificates':
+        return <CertificatesWizard onBack={handleRequestWizardBack} />;
+      case 'documents':
+        return <DocumentsWizard onBack={handleRequestWizardBack} />;
+      case 'notices':
+        return <NoticesWizard onBack={handleRequestWizardBack} />;
+      default:
+        return <RequestWizard onBack={handleRequestWizardBack} />;
+    }
   }
 
   return (
