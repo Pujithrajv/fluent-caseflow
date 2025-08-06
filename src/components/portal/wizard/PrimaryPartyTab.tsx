@@ -2,14 +2,48 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { User, Search, Plus } from "lucide-react";
 
 interface PrimaryPartyTabProps {
   onDataChange: (data: any) => void;
   data: any;
 }
 
+interface PrimaryPartyData {
+  partyName?: string;
+  represented?: "yes" | "no";
+  attorneyName?: string;
+}
+
 export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
+  const handlePartyNameChange = (value: string) => {
+    onDataChange({ ...data, partyName: value });
+  };
+
+  const handleRepresentedChange = (value: "yes" | "no") => {
+    onDataChange({ ...data, represented: value, attorneyName: value === "no" ? undefined : data?.attorneyName });
+  };
+
+  const handleAttorneyNameChange = (value: string) => {
+    onDataChange({ ...data, attorneyName: value });
+  };
+
+  const handleSearchParty = () => {
+    // TODO: Implement party search functionality
+    console.log("Search party functionality to be implemented");
+  };
+
+  const handleAddParty = () => {
+    // TODO: Implement add party functionality
+    console.log("Add party functionality to be implemented");
+  };
+
+  const handleAddAttorney = () => {
+    // TODO: Implement add attorney functionality
+    console.log("Add attorney functionality to be implemented");
+  };
+
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -22,16 +56,42 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="partyName" className="font-fluent">Party Name *</Label>
-            <Input 
-              id="partyName"
-              placeholder="Enter party name"
-              className="shadow-fluent-8 border-input-border"
-            />
+            <div className="flex space-x-2">
+              <Input 
+                id="partyName"
+                placeholder="Enter party name"
+                value={data?.partyName || ""}
+                onChange={(e) => handlePartyNameChange(e.target.value)}
+                className="shadow-fluent-8 border-input-border flex-1"
+              />
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleSearchParty}
+                className="flex items-center space-x-2"
+              >
+                <Search className="h-4 w-4" />
+                <span>Search</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleAddParty}
+                className="flex items-center space-x-2"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Party</span>
+              </Button>
+            </div>
           </div>
           
           <div className="space-y-4">
             <Label className="font-fluent">Represented *</Label>
-            <RadioGroup defaultValue="no" className="flex space-x-6">
+            <RadioGroup 
+              value={data?.represented || "no"} 
+              onValueChange={handleRepresentedChange}
+              className="flex space-x-6"
+            >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="yes" id="represented-yes" />
                 <Label htmlFor="represented-yes" className="font-fluent">Yes</Label>
@@ -42,6 +102,30 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
               </div>
             </RadioGroup>
           </div>
+
+          {data?.represented === "yes" && (
+            <div className="space-y-2">
+              <Label htmlFor="attorneyName" className="font-fluent">Attorney Name</Label>
+              <div className="flex space-x-2">
+                <Input 
+                  id="attorneyName"
+                  placeholder="Enter attorney name"
+                  value={data?.attorneyName || ""}
+                  onChange={(e) => handleAttorneyNameChange(e.target.value)}
+                  className="shadow-fluent-8 border-input-border flex-1"
+                />
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleAddAttorney}
+                  className="flex items-center space-x-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Add Attorney</span>
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

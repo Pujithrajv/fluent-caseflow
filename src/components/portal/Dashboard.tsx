@@ -306,7 +306,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         Case
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Dept/Bureau
+                        Department
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                         Participant/Type
@@ -350,7 +350,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                           <td className="px-4 py-4">
                             <div>
                               <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
-                              <p className="text-sm text-muted-foreground">{caseItem.section}</p>
                               <p className="text-xs text-muted-foreground mt-1">
                                 <span className="font-medium">First Party:</span> {caseItem.firstParty}
                               </p>
