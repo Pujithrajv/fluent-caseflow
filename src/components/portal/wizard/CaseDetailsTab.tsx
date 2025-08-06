@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, FileText } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { CalendarIcon, FileText, ChevronDown, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -19,6 +19,51 @@ interface CaseDetailsTabProps {
 
 export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
   const [notifiedDate, setNotifiedDate] = useState<Date>();
+  const [selectedAccessibilityOptions, setSelectedAccessibilityOptions] = useState<string[]>([]);
+  const [isAccessibilityDropdownOpen, setIsAccessibilityDropdownOpen] = useState(false);
+
+  const accessibilityOptions = [
+    { value: "interpreter", label: "Sign Language Interpreter" },
+    { value: "wheelchair", label: "Wheelchair Accessible" },
+    { value: "audio", label: "Audio Enhancement" },
+    { value: "braille", label: "Braille Documents" },
+    { value: "largeprint", label: "Large Print Documents" },
+    { value: "assistive", label: "Assistive Technology Support" }
+  ];
+
+  const handleAccessibilityChange = (optionValue: string, checked: boolean) => {
+    let newSelection: string[];
+    if (checked) {
+      newSelection = [...selectedAccessibilityOptions, optionValue];
+    } else {
+      newSelection = selectedAccessibilityOptions.filter(item => item !== optionValue);
+    }
+    setSelectedAccessibilityOptions(newSelection);
+    onDataChange({ ...data, accessibilityOptions: newSelection });
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      const allValues = accessibilityOptions.map(option => option.value);
+      setSelectedAccessibilityOptions(allValues);
+      onDataChange({ ...data, accessibilityOptions: allValues });
+    } else {
+      setSelectedAccessibilityOptions([]);
+      onDataChange({ ...data, accessibilityOptions: [] });
+    }
+  };
+
+  const removeOption = (optionValue: string) => {
+    const newSelection = selectedAccessibilityOptions.filter(item => item !== optionValue);
+    setSelectedAccessibilityOptions(newSelection);
+    onDataChange({ ...data, accessibilityOptions: newSelection });
+  };
+
+  const getSelectedLabels = () => {
+    return selectedAccessibilityOptions.map(value => 
+      accessibilityOptions.find(option => option.value === value)?.label
+    ).filter(Boolean);
+  };
 
   return (
     <div className="space-y-6">
@@ -31,28 +76,72 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="caseName" className="font-fluent">Case Name *</Label>
-            <Input 
-              id="caseName"
-              placeholder="Enter case name"
-              className="shadow-fluent-8 border-input-border"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="accessibility" className="font-fluent">Accessibility Options</Label>
-            <Select>
-              <SelectTrigger className="shadow-fluent-8 border-input-border">
-                <SelectValue placeholder="Select accessibility options" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">None Required</SelectItem>
-                <SelectItem value="interpreter">Sign Language Interpreter</SelectItem>
-                <SelectItem value="wheelchair">Wheelchair Accessible</SelectItem>
-                <SelectItem value="audio">Audio Enhancement</SelectItem>
-                <SelectItem value="braille">Braille Documents</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label className="font-fluent">Accessibility Options</Label>
+            <div className="relative">
+              <Popover open={isAccessibilityDropdownOpen} onOpenChange={setIsAccessibilityDropdownOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-between text-left font-normal shadow-fluent-8 border-input-border h-auto min-h-[40px]",
+                      selectedAccessibilityOptions.length === 0 && "text-muted-foreground"
+                    )}
+                  >
+                    <div className="flex flex-wrap gap-1">
+                      {selectedAccessibilityOptions.length === 0 ? (
+                        <span>Select accessibility options</span>
+                      ) : (
+                        getSelectedLabels().map((label, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-sm"
+                          >
+                            <span>{label}</span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const optionValue = accessibilityOptions.find(opt => opt.label === label)?.value;
+                                if (optionValue) removeOption(optionValue);
+                              }}
+                              className="hover:bg-primary/20 rounded-full p-0.5"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0 z-50 bg-background border shadow-md" align="start">
+                  <div className="p-3 space-y-3">
+                    <div className="flex items-center space-x-2 pb-2 border-b">
+                      <Checkbox
+                        id="select-all"
+                        checked={selectedAccessibilityOptions.length === accessibilityOptions.length}
+                        onCheckedChange={handleSelectAll}
+                      />
+                      <Label htmlFor="select-all" className="font-medium">
+                        Select All
+                      </Label>
+                    </div>
+                    {accessibilityOptions.map((option) => (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={option.value}
+                          checked={selectedAccessibilityOptions.includes(option.value)}
+                          onCheckedChange={(checked) => handleAccessibilityChange(option.value, checked as boolean)}
+                        />
+                        <Label htmlFor={option.value} className="text-sm font-normal">
+                          {option.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
           
           <div className="space-y-4">
