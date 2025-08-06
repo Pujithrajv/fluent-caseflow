@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Check, HelpCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { RequestDetailsTab } from "./wizard/RequestDetailsTab";
+import { DiscoveryDetailsTab } from "./wizard/DiscoveryDetailsTab";
 import { RequestTypeQuestionsTab } from "./wizard/RequestTypeQuestionsTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
@@ -157,7 +157,7 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
                       </div>
                     </CardHeader>
                     <CardContent className="p-6">
-                      {tab.id === 'discovery-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'discovery-details' && <DiscoveryDetailsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'discovery-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'review' && <ReviewSubmitTab formData={formData} />}
