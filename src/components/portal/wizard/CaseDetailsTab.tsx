@@ -145,58 +145,60 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
             </div>
           </div>
           
-          <div className="space-y-2">
-            <Label className="font-fluent">Initiating Action Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                    !initiatingActionDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {initiatingActionDate ? format(initiatingActionDate, "PPP") : <span>Select date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={initiatingActionDate}
-                  onSelect={setInitiatingActionDate}
-                  initialFocus
-                  className="p-3 pointer-events-auto"
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="font-fluent">Initiating Action Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                      !initiatingActionDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {initiatingActionDate ? format(initiatingActionDate, "PPP") : <span>Select date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={initiatingActionDate}
+                    onSelect={setInitiatingActionDate}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
 
-          <div className="space-y-2">
-            <Label className="font-fluent">Responsive Action Date</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                    !responsiveActionDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {responsiveActionDate ? format(responsiveActionDate, "PPP") : <span>Select date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={responsiveActionDate}
-                  onSelect={setResponsiveActionDate}
-                  initialFocus
-                  className="p-3 pointer-events-auto"
-                />
-              </PopoverContent>
-            </Popover>
+            <div className="space-y-2">
+              <Label className="font-fluent">Responsive Action Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                      !responsiveActionDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {responsiveActionDate ? format(responsiveActionDate, "PPP") : <span>Select date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={responsiveActionDate}
+                    onSelect={setResponsiveActionDate}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
           
           <div className="space-y-2">
