@@ -112,32 +112,32 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
           {data?.represented === "yes" && (
             <div className="space-y-2">
               <Label htmlFor="attorneyName" className="font-fluent">Attorney Name</Label>
-              <div className="flex space-x-2">
+              <div className="relative">
                 <Input 
                   id="attorneyName"
                   placeholder="Enter attorney name"
                   value={data?.attorneyName || ""}
                   onChange={(e) => handleAttorneyNameChange(e.target.value)}
-                  className="shadow-fluent-8 border-input-border flex-1"
+                  className="shadow-fluent-8 border-input-border pr-20"
                 />
-                 <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={handleSearchAttorney}
-                  className="flex items-center space-x-2"
-                >
-                  <Search className="h-4 w-4" />
-                  <span>Search</span>
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={handleAddAttorney}
-                  className="flex items-center space-x-2"
-                >
-                  <Plus className="h-4 w-4" />
-                  <span>Add Attorney</span>
-                </Button>
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={handleSearchAttorney}
+                    className="h-7 w-7 p-0"
+                  >
+                    <Search className="h-4 w-4 text-gray-500" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={handleAddAttorney}
+                    className="h-7 w-7 p-0"
+                  >
+                    <Plus className="h-4 w-4 text-gray-500" />
+                  </Button>
+                </div>
               </div>
             </div>
           )}
