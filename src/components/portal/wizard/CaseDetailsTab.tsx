@@ -210,10 +210,10 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
           
           <div className="space-y-2">
             <Label htmlFor="captionNotation" className="font-fluent">Caption Notation</Label>
-            <Input 
+            <Textarea 
               id="captionNotation"
               placeholder="Enter caption notation"
-              className="shadow-fluent-8 border-input-border"
+              className="shadow-fluent-8 border-input-border min-h-[100px]"
             />
           </div>
         </CardContent>
