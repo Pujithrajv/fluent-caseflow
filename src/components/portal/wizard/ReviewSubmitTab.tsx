@@ -70,10 +70,6 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
               <p className="text-sm font-fluent text-muted-foreground">Case Type</p>
               <p className="font-medium font-fluent">Environmental Review</p>
             </div>
-            <div>
-              <p className="text-sm font-fluent text-muted-foreground">Expedited</p>
-              <Badge variant="secondary">No</Badge>
-            </div>
           </CardContent>
         </Card>
 
