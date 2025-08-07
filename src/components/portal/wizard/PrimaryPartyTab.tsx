@@ -4,7 +4,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { User, Search, Plus } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { User, Search, Plus, Eye } from "lucide-react";
+import { useState } from "react";
 
 interface PrimaryPartyTabProps {
   onDataChange: (data: any) => void;
@@ -17,7 +19,49 @@ interface PrimaryPartyData {
   attorneyName?: string;
 }
 
+const mockContacts = [
+  {
+    id: 1,
+    name: "Kirby Neroni",
+    title: "Chief Counsel",
+    organization: "Board of Higher Education",
+    phone: "630-308-4387",
+    email: "kirby.neroni@il.gov"
+  },
+  {
+    id: 2,
+    name: "Batsheva English",
+    title: "Executive Assistant",
+    organization: "Board of Higher Education",
+    phone: "217-786-3028",
+    email: "batsheva.english@il.gov"
+  },
+  {
+    id: 3,
+    name: "Abbey Higgins",
+    title: "Attorney at Law",
+    organization: "Royce Partners, LLC",
+    phone: "480-796-1707",
+    email: "abbey.higgins@royce.com"
+  },
+  {
+    id: 4,
+    name: "Aafjes-Soriano",
+    title: "Principle",
+    organization: "Sunny Day Schools",
+    phone: "",
+    email: ""
+  }
+];
+
 export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  const filteredContacts = mockContacts.filter(contact =>
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    contact.organization.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const handlePartyNameChange = (value: string) => {
     onDataChange({ ...data, partyName: value });
   };
@@ -31,8 +75,13 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
   };
 
   const handleSearchParty = () => {
-    // TODO: Implement party search functionality
-    console.log("Search party functionality to be implemented");
+    setIsSearchModalOpen(true);
+  };
+
+  const handleSelectContact = (contact: any) => {
+    handlePartyNameChange(contact.name);
+    setIsSearchModalOpen(false);
+    setSearchQuery("");
   };
 
   const handleAddParty = () => {
@@ -143,6 +192,63 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={isSearchModalOpen} onOpenChange={setIsSearchModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle>Search Contacts</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input 
+                placeholder="Search by name or organization" 
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            
+            <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden max-h-96 overflow-y-auto">
+              <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                <div className="grid grid-cols-4 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  <div>Name</div>
+                  <div>Title</div>
+                  <div>Organization</div>
+                  <div>Contact</div>
+                </div>
+              </div>
+              
+              <div className="divide-y divide-gray-200">
+                {filteredContacts.map((contact) => (
+                  <div 
+                    key={contact.id} 
+                    className="px-4 py-4 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={() => handleSelectContact(contact)}
+                  >
+                    <div className="grid grid-cols-4 gap-4 items-center">
+                      <div className="font-medium text-gray-900">{contact.name}</div>
+                      <div className="text-sm text-gray-900">{contact.title}</div>
+                      <div className="text-sm text-gray-900">{contact.organization}</div>
+                      <div className="text-sm text-gray-500">
+                        {contact.phone && <div>P. {contact.phone}</div>}
+                        {contact.email && <div>E. {contact.email}</div>}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {filteredContacts.length === 0 && (
+                  <div className="px-4 py-8 text-center text-gray-500">
+                    No contacts found matching your search.
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
