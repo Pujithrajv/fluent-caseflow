@@ -104,12 +104,12 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
                     
                     <div className="flex justify-between items-start">
                       <div className="text-sm text-gray-900 whitespace-pre-line">{party.organization}</div>
-                      <div className="flex space-x-2 ml-4">
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <Edit className="h-4 w-4 text-gray-400" />
+                      <div className="flex space-x-1 ml-4">
+                        <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                          <Edit className="h-3 w-3 text-gray-400" />
                         </Button>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <Trash2 className="h-4 w-4 text-red-400" />
+                        <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                          <Trash2 className="h-3 w-3 text-red-400" />
                         </Button>
                       </div>
                     </div>
