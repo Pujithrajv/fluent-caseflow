@@ -194,6 +194,8 @@ const getTabDisplayName = (tab: string) => {
 };
 
 export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <div className="min-h-screen bg-background p-6 relative">
       {/* Watermark Logo */}
@@ -289,10 +291,15 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           </Select>
           
           <div className="flex items-center space-x-2">
-            <Button variant="outline" size="lg" className="font-fluent">
-              <Search className="mr-2 h-5 w-5" />
-              Search
-            </Button>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input 
+                placeholder="Search cases..." 
+                className="pl-10 w-64 h-11 font-fluent"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
             <Button size="lg" className="font-fluent" onClick={onCreateCase}>
               <Plus className="mr-2 h-5 w-5" />
               Create New Case
