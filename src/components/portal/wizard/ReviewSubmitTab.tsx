@@ -103,7 +103,7 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
         <Card className="shadow-fluent-8">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="font-fluent">Case Questions</CardTitle>
+              <CardTitle className="font-fluent">Abandon Wells Questions</CardTitle>
               <Button variant="ghost" size="sm">
                 <Edit className="h-4 w-4" />
               </Button>

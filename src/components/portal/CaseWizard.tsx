@@ -25,7 +25,7 @@ const wizardTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
   { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
   { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
-  { id: 'case-questions', title: 'Case Questions', description: 'Case type specific questions' },
+  { id: 'case-questions', title: 'Abandon Wells Questions', description: 'Case type specific questions' },
   { id: 'involved-parties', title: 'Involved Parties', description: 'Additional parties' },
   { id: 'requests', title: 'Requests', description: 'Associated requests' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
@@ -395,7 +395,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="font-fluent font-semibold">Case Questions</CardTitle>
+                        <CardTitle className="font-fluent font-semibold">Abandon Wells Questions</CardTitle>
                         <p className="text-muted-foreground font-fluent">Case type specific questions</p>
                       </div>
                       <Sheet>
@@ -406,7 +406,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
-                            <SheetTitle>Case Questions Help</SheetTitle>
+                            <SheetTitle>Abandon Wells Questions Help</SheetTitle>
                           </SheetHeader>
                           <div className="mt-6">
                             <Accordion type="single" collapsible className="w-full">

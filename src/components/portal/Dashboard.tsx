@@ -186,7 +186,7 @@ const getTabDisplayName = (tab: string) => {
     case "department": return "Department";
     case "primary-party": return "Primary Party";
     case "case-details": return "Case Details";
-    case "case-questions": return "Case Questions";
+    case "case-questions": return "Abandon Wells Questions";
     case "involved-parties": return "Involved Parties";
     case "requests": return "Requests";
     case "review-submit": return "Review & Submit";
