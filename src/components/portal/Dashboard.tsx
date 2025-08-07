@@ -30,23 +30,6 @@ interface CaseItem {
 
 const mockCases: CaseItem[] = [
   {
-    id: "CASE-2024-001",
-    name: "DBE Certification Appeal for Eki Carver",
-    description: "Good Faith Effort Appeals",
-    caseNumber: "DBE-2024-001-EC",
-    department: "Department of Transportation",
-    section: "DBE Certification Section",
-    firstParty: "Petitionaire",
-    secondParty: "Eki Carver",
-    secondPartyType: "Litigant",
-    represented: "Todd Litgard, Attorney at Law",
-    status: "draft",
-    stage: "Intake",
-    icon: "shield",
-    lastActionDate: "2024-12-18",
-    lastWizardTab: "primary-party"
-  },
-  {
     id: "CASE-2024-002", 
     name: "FOID Card Denial for Abigayle Low",
     description: "Card Denial",
