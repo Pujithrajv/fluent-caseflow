@@ -364,23 +364,16 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         const IconComponent = getCaseIcon(caseItem.icon);
                         return (
                           <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
-                            <td className="px-4 py-4">
-                              <div className="flex items-center space-x-3">
-                                <div className="flex-shrink-0">
-                                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
-                                    <IconComponent className="h-5 w-5 text-muted-foreground" />
-                                  </div>
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  {caseItem.caseNumber && (
-                                    <p className="text-sm font-medium text-foreground">
-                                      {caseItem.caseNumber}
-                                    </p>
-                                  )}
-                                  <p className="text-sm text-muted-foreground">{caseItem.description}</p>
-                                </div>
-                              </div>
-                            </td>
+                             <td className="px-4 py-4">
+                               <div>
+                                 {caseItem.caseNumber && (
+                                   <p className="text-sm font-medium text-foreground">
+                                     {caseItem.caseNumber}
+                                   </p>
+                                 )}
+                                 <p className="text-sm text-muted-foreground">{caseItem.description}</p>
+                               </div>
+                             </td>
                             <td className="px-4 py-4">
                               <div>
                                 <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
