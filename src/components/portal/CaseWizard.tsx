@@ -218,7 +218,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
             />
             <div>
               <h1 className="text-3xl font-semibold font-fluent text-foreground">
-                {readOnly ? "View Case" : "Create New Case"}
+                {readOnly ? "" : "Create New Case"}
               </h1>
             </div>
           </div>
