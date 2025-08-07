@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Users, Trash2, Edit, Search, Eye, HelpCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -49,8 +50,7 @@ const mockContacts = [
 ];
 
 export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabProps) {
-  const [searchContactModalOpen, setSearchContactModalOpen] = useState(false);
-  const [addContactModalOpen, setAddContactModalOpen] = useState(false);
+  const [createPartyModalOpen, setCreatePartyModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedContact, setSelectedContact] = useState<any>(null);
 
@@ -62,13 +62,13 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
 
   const handleContactSelect = (contact: any) => {
     setSelectedContact(contact);
-    setSearchContactModalOpen(false);
+    setCreatePartyModalOpen(false);
     // Add logic to add the selected contact as a related party
   };
 
   const handleAddNewContact = (e: React.FormEvent) => {
     e.preventDefault();
-    setAddContactModalOpen(false);
+    setCreatePartyModalOpen(false);
     // Add logic to create new contact and add as related party
   };
 
@@ -98,104 +98,92 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
               </SelectContent>
             </Select>
             
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search parties" 
-                className="pl-10"
-              />
-            </div>
-            
-            <Dialog open={searchContactModalOpen} onOpenChange={setSearchContactModalOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="mr-2">
-                  <Search className="mr-2 h-4 w-4" />
-                  Search Contact
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>Search Contacts</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search by name, organization, or title..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                  <div className="max-h-64 overflow-y-auto">
-                    {filteredContacts.map((contact) => (
-                      <div
-                        key={contact.id}
-                        className="p-3 border rounded-lg cursor-pointer hover:bg-muted transition-colors"
-                        onClick={() => handleContactSelect(contact)}
-                      >
-                        <div className="font-semibold">{contact.name}</div>
-                        <div className="text-sm text-muted-foreground">{contact.title}</div>
-                        <div className="text-sm text-muted-foreground">{contact.organization}</div>
-                        <div className="text-sm text-muted-foreground">{contact.email}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-
-            <Dialog open={addContactModalOpen} onOpenChange={setAddContactModalOpen}>
+            <Dialog open={createPartyModalOpen} onOpenChange={setCreatePartyModalOpen}>
               <DialogTrigger asChild>
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Plus className="mr-2 h-4 w-4" />
                   Create Related Party
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md">
+              <DialogContent className="max-w-2xl">
                 <DialogHeader>
-                  <DialogTitle>Add New Contact</DialogTitle>
+                  <DialogTitle>Add Related Party</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleAddNewContact} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" required />
+                <Tabs defaultValue="search" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="search">Search Existing</TabsTrigger>
+                    <TabsTrigger value="create">Create New</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="search" className="space-y-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search by name, organization, or title..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10"
+                      />
                     </div>
-                    <div>
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" required />
+                    <div className="max-h-64 overflow-y-auto">
+                      {filteredContacts.map((contact) => (
+                        <div
+                          key={contact.id}
+                          className="p-3 border rounded-lg cursor-pointer hover:bg-muted transition-colors"
+                          onClick={() => handleContactSelect(contact)}
+                        >
+                          <div className="font-semibold">{contact.name}</div>
+                          <div className="text-sm text-muted-foreground">{contact.title}</div>
+                          <div className="text-sm text-muted-foreground">{contact.organization}</div>
+                          <div className="text-sm text-muted-foreground">{contact.email}</div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="title">Title</Label>
-                    <Input id="title" />
-                  </div>
-                  <div>
-                    <Label htmlFor="organization">Organization</Label>
-                    <Input id="organization" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="phone">Phone</Label>
-                      <Input id="phone" type="tel" />
-                    </div>
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="address">Address</Label>
-                    <Textarea id="address" rows={3} />
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <Button type="button" variant="outline" onClick={() => setAddContactModalOpen(false)}>
-                      Cancel
-                    </Button>
-                    <Button type="submit">Add Contact</Button>
-                  </div>
-                </form>
+                  </TabsContent>
+                  
+                  <TabsContent value="create" className="space-y-4">
+                    <form onSubmit={handleAddNewContact} className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="firstName">First Name</Label>
+                          <Input id="firstName" required />
+                        </div>
+                        <div>
+                          <Label htmlFor="lastName">Last Name</Label>
+                          <Input id="lastName" required />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="title">Title</Label>
+                        <Input id="title" />
+                      </div>
+                      <div>
+                        <Label htmlFor="organization">Organization</Label>
+                        <Input id="organization" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="phone">Phone</Label>
+                          <Input id="phone" type="tel" />
+                        </div>
+                        <div>
+                          <Label htmlFor="email">Email</Label>
+                          <Input id="email" type="email" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="address">Address</Label>
+                        <Textarea id="address" rows={3} />
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button type="button" variant="outline" onClick={() => setCreatePartyModalOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button type="submit">Add Contact</Button>
+                      </div>
+                    </form>
+                  </TabsContent>
+                </Tabs>
               </DialogContent>
             </Dialog>
           </div>
