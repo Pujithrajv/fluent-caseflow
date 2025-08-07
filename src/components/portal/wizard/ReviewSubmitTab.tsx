@@ -2,12 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Edit, Eye, AlertCircle } from "lucide-react";
+import { format } from "date-fns";
 
 interface ReviewSubmitTabProps {
   formData: any;
 }
 
 export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
+  // Generate reference number and current date
+  const referenceNumber = "CASE-000001";
+  const submissionDate = format(new Date(), "PPP");
+
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
@@ -49,6 +54,14 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Reference Number</p>
+              <p className="font-medium font-fluent">{referenceNumber}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Submission Date</p>
+              <p className="font-medium font-fluent">{submissionDate}</p>
+            </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Name</p>
               <p className="font-medium font-fluent">Environmental Impact Assessment</p>
