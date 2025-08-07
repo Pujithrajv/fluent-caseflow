@@ -93,8 +93,7 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
               {mockParties.map((party) => (
                 <div key={party.id} className="px-4 py-4 bg-white hover:bg-gray-50 transition-colors">
                   <div className="grid grid-cols-3 gap-4 items-start">
-                    <div className="flex items-start space-x-3">
-                      <Eye className="h-4 w-4 text-gray-400 mt-1" />
+                    <div>
                       <div className="text-sm text-gray-900 whitespace-pre-line">{party.party}</div>
                     </div>
                     
