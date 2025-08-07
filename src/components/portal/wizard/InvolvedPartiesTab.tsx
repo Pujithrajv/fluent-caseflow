@@ -30,16 +30,18 @@ const mockParties = [
 export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabProps) {
   return (
     <div className="space-y-6">
-      <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent">
-        Expedited
-      </Badge>
       <Card className="shadow-fluent-8">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center space-x-2 font-fluent">
-              <Users className="h-5 w-5 text-primary" />
-              <span>Involved Parties</span>
-            </CardTitle>
+            <div>
+              <CardTitle className="flex items-center space-x-2 font-fluent">
+                <Users className="h-5 w-5 text-primary" />
+                <span>Involved Parties</span>
+              </CardTitle>
+              <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent mt-2">
+                Expedited
+              </Badge>
+            </div>
             <Button size="sm" className="font-fluent">
               <Plus className="mr-2 h-4 w-4" />
               Create Related Party

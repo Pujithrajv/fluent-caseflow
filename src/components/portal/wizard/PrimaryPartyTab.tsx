@@ -52,15 +52,15 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
 
   return (
     <div className="space-y-6">
-      <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent">
-        Expedited
-      </Badge>
       <Card className="shadow-fluent-8">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
             <User className="h-5 w-5 text-primary" />
             <span>Primary Party Information</span>
           </CardTitle>
+          <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent mt-2">
+            Expedited
+          </Badge>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
