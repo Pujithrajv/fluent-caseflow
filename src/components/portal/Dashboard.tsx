@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 
 interface CaseItem {
@@ -195,6 +196,7 @@ const getTabDisplayName = (tab: string) => {
 
 export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("cases");
 
   return (
     <div className="min-h-screen bg-background p-6 relative">
@@ -272,206 +274,294 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           </div>
         </div>
 
-        {/* Second Row - Filter and Create Button */}
-        <div className="flex items-center justify-between">
-          <Select defaultValue="active">
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Filter cases" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="active">Active Cases</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="submitted">Submitted</SelectItem>
-              <SelectItem value="accepted">Accepted</SelectItem>
-              <SelectItem value="inactive">Inactive Cases</SelectItem>
-              <SelectItem value="complete">Complete</SelectItem>
-              <SelectItem value="closed">Closed</SelectItem>
-              <SelectItem value="archived">Archived</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input 
-                placeholder="Search cases..." 
-                className="pl-10 w-64 h-11 font-fluent"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <Button size="lg" className="font-fluent" onClick={onCreateCase}>
-              <Plus className="mr-2 h-5 w-5" />
-              Create New Case
-            </Button>
-          </div>
-        </div>
+        {/* Tabs Navigation */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-3 bg-muted/30 h-12">
+            <TabsTrigger 
+              value="cases" 
+              className="font-fluent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Cases
+            </TabsTrigger>
+            <TabsTrigger 
+              value="events" 
+              className="font-fluent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Upcoming Events
+            </TabsTrigger>
+            <TabsTrigger 
+              value="tasks" 
+              className="font-fluent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              Tasks and Alerts
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Main Content - Full Width Cases Table */}
-        <div className="w-full">
-          <div className="w-full">
-            <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-muted/30">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Case #
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Department
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Participant/Type
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Last Action
-                      </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                        Read Only
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {mockCases.map((caseItem) => {
-                      const IconComponent = getCaseIcon(caseItem.icon);
-                      return (
-                        <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
-                          <td className="px-4 py-4">
-                            <div className="flex items-center space-x-3">
-                              <div className="flex-shrink-0">
-                                <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
-                                  <IconComponent className="h-5 w-5 text-muted-foreground" />
-                                </div>
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                {caseItem.caseNumber && (
-                                  <p className="text-sm font-medium text-foreground">
-                                    {caseItem.caseNumber}
-                                  </p>
-                                )}
-                                <p className="text-sm text-muted-foreground">{caseItem.description}</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-4 py-4">
-                            <div>
-                              <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
-                              <p className="text-xs text-muted-foreground mt-1">
-                                <span className="font-medium">First Party:</span> {caseItem.firstParty}
-                              </p>
-                            </div>
-                          </td>
-                          <td className="px-4 py-4">
-                            <div>
-                              <p className="text-sm font-medium text-foreground">{caseItem.secondParty}</p>
-                              <p className="text-sm text-muted-foreground">
-                                <span className="font-medium">Second Party:</span> {caseItem.secondPartyType}
-                              </p>
-                              {caseItem.represented && (
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  <span className="font-medium">Represented:</span> {caseItem.represented}
-                                </p>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-4 py-4">
-                            <div className="space-y-2">
-                              <Badge className={getStatusColor(caseItem.status)} variant="secondary">
-                                {caseItem.status}
-                              </Badge>
-                               <p className="text-xs text-muted-foreground">
-                                 {caseItem.status === "draft" ? "Pending Submission" : caseItem.stage}
-                               </p>
-                              <p className="text-xs text-muted-foreground">
-                                <span className="font-medium">Stage:</span> {caseItem.stage}
-                              </p>
-                            </div>
-                          </td>
-                          <td className="px-4 py-4">
-                            <div className="space-y-2">
-                              <div className="flex items-center space-x-2 text-sm text-foreground">
-                                <Calendar className="h-4 w-4 text-muted-foreground" />
-                                <span>{new Date(caseItem.lastActionDate).toLocaleDateString()}</span>
-                              </div>
-                              <div className="text-xs text-muted-foreground">
-                                Last worked on:{" "}
-                                <button
-                                  onClick={() => onEditCase?.(caseItem.id, caseItem.lastWizardTab)}
-                                  className="text-primary hover:underline font-medium"
-                                >
-                                  {getTabDisplayName(caseItem.lastWizardTab)}
-                                </button>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-4 py-4">
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => onViewCase(caseItem.id)}
-                              className="flex items-center space-x-2"
-                            >
-                              <Eye className="h-4 w-4" />
-                              <span>View</span>
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+          {/* Cases Tab Content */}
+          <TabsContent value="cases" className="mt-6">
+            {/* Filter and Create Button Row */}
+            <div className="flex items-center justify-between mb-6">
+              <Select defaultValue="active">
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Filter cases" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active Cases</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="submitted">Submitted</SelectItem>
+                  <SelectItem value="accepted">Accepted</SelectItem>
+                  <SelectItem value="inactive">Inactive Cases</SelectItem>
+                  <SelectItem value="complete">Complete</SelectItem>
+                  <SelectItem value="closed">Closed</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <div className="flex items-center space-x-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search cases..." 
+                    className="pl-10 w-64 h-11 font-fluent"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Button size="lg" className="font-fluent" onClick={onCreateCase}>
+                  <Plus className="mr-2 h-5 w-5" />
+                  Create New Case
+                </Button>
               </div>
             </div>
-          </div>
 
-        </div>
+            {/* Cases Table */}
+            <div className="w-full">
+              <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-muted/30">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Case #
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Department
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Participant/Type
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Status
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Last Action
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Read Only
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {mockCases.map((caseItem) => {
+                        const IconComponent = getCaseIcon(caseItem.icon);
+                        return (
+                          <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
+                            <td className="px-4 py-4">
+                              <div className="flex items-center space-x-3">
+                                <div className="flex-shrink-0">
+                                  <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                                    <IconComponent className="h-5 w-5 text-muted-foreground" />
+                                  </div>
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  {caseItem.caseNumber && (
+                                    <p className="text-sm font-medium text-foreground">
+                                      {caseItem.caseNumber}
+                                    </p>
+                                  )}
+                                  <p className="text-sm text-muted-foreground">{caseItem.description}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <div>
+                                <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  <span className="font-medium">First Party:</span> {caseItem.firstParty}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <div>
+                                <p className="text-sm font-medium text-foreground">{caseItem.secondParty}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  <span className="font-medium">Second Party:</span> {caseItem.secondPartyType}
+                                </p>
+                                {caseItem.represented && (
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    <span className="font-medium">Represented:</span> {caseItem.represented}
+                                  </p>
+                                )}
+                              </div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <div className="space-y-2">
+                                <Badge className={getStatusColor(caseItem.status)} variant="secondary">
+                                  {caseItem.status}
+                                </Badge>
+                                 <p className="text-xs text-muted-foreground">
+                                   {caseItem.status === "draft" ? "Pending Submission" : caseItem.stage}
+                                 </p>
+                                <p className="text-xs text-muted-foreground">
+                                  <span className="font-medium">Stage:</span> {caseItem.stage}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <div className="space-y-2">
+                                <div className="flex items-center space-x-2 text-sm text-foreground">
+                                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                                  <span>{new Date(caseItem.lastActionDate).toLocaleDateString()}</span>
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  Last worked on:{" "}
+                                  <button
+                                    onClick={() => onEditCase?.(caseItem.id, caseItem.lastWizardTab)}
+                                    className="text-primary hover:underline font-medium"
+                                  >
+                                    {getTabDisplayName(caseItem.lastWizardTab)}
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => onViewCase(caseItem.id)}
+                                className="flex items-center space-x-2"
+                              >
+                                <Eye className="h-4 w-4" />
+                                <span>View</span>
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
 
-        {/* Upcoming Events Section - Below Table */}
-        <div className="w-full">
-          <Card className="shadow-fluent-8">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2 font-fluent">
-                <Clock className="h-5 w-5 text-primary" />
-                <span>Upcoming Events</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {mockEvents.map((event) => (
-                  <div key={event.id} className="border-l-4 border-primary pl-4 py-3 bg-muted/20 rounded-r-lg">
+          {/* Upcoming Events Tab Content */}
+          <TabsContent value="events" className="mt-6">
+            <Card className="shadow-fluent-8">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 font-fluent">
+                  <Clock className="h-5 w-5 text-primary" />
+                  <span>Upcoming Events</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {mockEvents.map((event) => (
+                    <div key={event.id} className="border-l-4 border-primary pl-4 py-3 bg-muted/20 rounded-r-lg">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h4 className="font-medium text-sm text-foreground">{event.title}</h4>
+                          <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
+                          <div className="flex items-center space-x-4 mt-2 text-xs text-muted-foreground">
+                            <div className="flex items-center space-x-1">
+                              <Calendar className="h-3 w-3" />
+                              <span>{new Date(event.date).toLocaleDateString()}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Clock className="h-3 w-3" />
+                              <span>{event.time}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-1 mt-1 text-xs text-muted-foreground">
+                            <MapPin className="h-3 w-3" />
+                            <span>{event.location}</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {event.type}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Tasks and Alerts Tab Content */}
+          <TabsContent value="tasks" className="mt-6">
+            <Card className="shadow-fluent-8">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2 font-fluent">
+                  <Clock className="h-5 w-5 text-primary" />
+                  <span>Tasks and Alerts</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="border-l-4 border-warning pl-4 py-3 bg-warning/10 rounded-r-lg">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h4 className="font-medium text-sm text-foreground">{event.title}</h4>
-                        <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
-                        <div className="flex items-center space-x-4 mt-2 text-xs text-muted-foreground">
-                          <div className="flex items-center space-x-1">
-                            <Calendar className="h-3 w-3" />
-                            <span>{new Date(event.date).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Clock className="h-3 w-3" />
-                            <span>{event.time}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-1 mt-1 text-xs text-muted-foreground">
-                          <MapPin className="h-3 w-3" />
-                          <span>{event.location}</span>
+                        <h4 className="font-medium text-sm text-foreground">Document Review Pending</h4>
+                        <p className="text-xs text-muted-foreground mt-1">FOID Card Appeal - Abigayle Low</p>
+                        <div className="flex items-center space-x-1 mt-2 text-xs text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          <span>Due: Dec 22, 2024</span>
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-xs">
-                        {event.type}
+                      <Badge variant="outline" className="text-xs bg-warning/20">
+                        High Priority
                       </Badge>
                     </div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                  
+                  <div className="border-l-4 border-primary pl-4 py-3 bg-primary/10 rounded-r-lg">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm text-foreground">Case Assignment Review</h4>
+                        <p className="text-xs text-muted-foreground mt-1">Professional License Suspension Appeal</p>
+                        <div className="flex items-center space-x-1 mt-2 text-xs text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          <span>Due: Dec 25, 2024</span>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        Medium Priority
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-success pl-4 py-3 bg-success/10 rounded-r-lg">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm text-foreground">Quarterly Report Preparation</h4>
+                        <p className="text-xs text-muted-foreground mt-1">Administrative hearing statistics compilation</p>
+                        <div className="flex items-center space-x-1 mt-2 text-xs text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          <span>Due: Dec 31, 2024</span>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="text-xs bg-success/20">
+                        Low Priority
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
       </div>
     </div>
   );
