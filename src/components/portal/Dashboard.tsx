@@ -364,7 +364,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         const IconComponent = getCaseIcon(caseItem.icon);
                         return (
                           <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
-                             <td className="px-4 py-4">
+                             <td className="px-4 py-4 align-top">
                                <Button 
                                  variant="outline" 
                                  size="sm"
@@ -374,7 +374,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                  <Eye className="h-4 w-4" />
                                </Button>
                              </td>
-                             <td className="px-4 py-4">
+                             <td className="px-4 py-4 align-top">
                                <div>
                                  {caseItem.caseNumber && (
                                    <p className="text-sm font-medium text-foreground">
@@ -384,7 +384,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                  <p className="text-sm text-muted-foreground">{caseItem.description}</p>
                                </div>
                              </td>
-                            <td className="px-4 py-4">
+                             <td className="px-4 py-4 align-top">
                               <div>
                                 <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
                                 <p className="text-xs text-muted-foreground mt-1">
@@ -392,7 +392,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                 </p>
                               </div>
                             </td>
-                            <td className="px-4 py-4">
+                             <td className="px-4 py-4 align-top">
                               <div>
                                 <p className="text-sm font-medium text-foreground">{caseItem.secondParty}</p>
                                 <p className="text-sm text-muted-foreground">
@@ -405,7 +405,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                 )}
                               </div>
                             </td>
-                            <td className="px-4 py-4">
+                             <td className="px-4 py-4 align-top">
                               <div className="space-y-2">
                                 <Badge className={getStatusColor(caseItem.status)} variant="secondary">
                                   {caseItem.status}
@@ -418,7 +418,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                 </p>
                               </div>
                             </td>
-                            <td className="px-4 py-4">
+                            <td className="px-4 py-4 align-top">
                               <div className="space-y-2">
                                 <div className="flex items-center space-x-2 text-sm text-foreground">
                                   <Calendar className="h-4 w-4 text-muted-foreground" />
