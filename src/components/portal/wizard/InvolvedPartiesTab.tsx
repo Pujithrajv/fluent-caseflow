@@ -30,14 +30,6 @@ const mockParties = [
 export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabProps) {
   return (
     <div className="space-y-6">
-      {/* Expedited Status */}
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-fluent text-muted-foreground">Expedited</p>
-          <Badge variant="secondary">No</Badge>
-        </div>
-      </div>
-      
       <Card className="shadow-fluent-8">
         <CardHeader>
           <div className="flex items-center justify-between">
