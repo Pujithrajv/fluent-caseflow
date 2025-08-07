@@ -295,7 +295,7 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
             <HelpCircle className="h-5 w-5 text-primary" />
-            <span>Abandon Wells Questions</span>
+            <span>Abandon Well Questions</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
