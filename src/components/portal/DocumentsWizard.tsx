@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Check, HelpCircle } from "lucide-react";
@@ -96,6 +97,13 @@ export function DocumentsWizard({ onBack }: DocumentsWizardProps) {
             Back to Case
           </Button>
         </div>
+
+      {/* Expedited Warning Badge */}
+      <div className="flex justify-center mb-4">
+        <Badge variant="destructive" className="px-4 py-2 text-sm font-fluent">
+          ⚠️ EXPEDITED
+        </Badge>
+      </div>
 
         {/* Vertical Tabs Layout */}
         <Tabs defaultValue="documents-details" className="w-full" orientation="vertical">
