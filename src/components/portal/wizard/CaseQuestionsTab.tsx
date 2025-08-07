@@ -126,7 +126,6 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
               readOnly
               className="bg-muted shadow-fluent-8 border-input-border"
             />
-            <p className="text-xs text-muted-foreground">Pulled from table based on case type</p>
           </div>
 
           {/* 2. Hearing Regulations */}
@@ -137,7 +136,6 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
               readOnly
               className="bg-muted shadow-fluent-8 border-input-border"
             />
-            <p className="text-xs text-muted-foreground">Pulled from table based on case type</p>
           </div>
 
           {/* 3. Case is Proper pursuant to */}
