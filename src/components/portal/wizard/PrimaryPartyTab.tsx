@@ -56,7 +56,19 @@ const mockContacts = [
 
 export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [newContact, setNewContact] = useState({
+    name: "",
+    title: "",
+    organization: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    state: "",
+    zipCode: ""
+  });
   
   const filteredContacts = mockContacts.filter(contact =>
     contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -85,8 +97,32 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
   };
 
   const handleAddParty = () => {
-    // TODO: Implement add party functionality
-    console.log("Add party functionality to be implemented");
+    setIsAddModalOpen(true);
+  };
+
+  const handleSaveNewContact = () => {
+    if (!newContact.name.trim()) return;
+    
+    // Add the new contact to the party name field
+    handlePartyNameChange(newContact.name);
+    
+    // Reset form and close modal
+    setNewContact({
+      name: "",
+      title: "",
+      organization: "",
+      phone: "",
+      email: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: ""
+    });
+    setIsAddModalOpen(false);
+  };
+
+  const handleNewContactChange = (field: string, value: string) => {
+    setNewContact(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSearchAttorney = () => {
@@ -245,6 +281,128 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add New Contact</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="newContactName">Name *</Label>
+                <Input 
+                  id="newContactName"
+                  placeholder="Enter full name"
+                  value={newContact.name}
+                  onChange={(e) => handleNewContactChange("name", e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="newContactTitle">Title</Label>
+                <Input 
+                  id="newContactTitle"
+                  placeholder="Job title"
+                  value={newContact.title}
+                  onChange={(e) => handleNewContactChange("title", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="newContactOrganization">Organization</Label>
+              <Input 
+                id="newContactOrganization"
+                placeholder="Company or organization name"
+                value={newContact.organization}
+                onChange={(e) => handleNewContactChange("organization", e.target.value)}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="newContactPhone">Phone</Label>
+                <Input 
+                  id="newContactPhone"
+                  placeholder="Phone number"
+                  value={newContact.phone}
+                  onChange={(e) => handleNewContactChange("phone", e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="newContactEmail">Email</Label>
+                <Input 
+                  id="newContactEmail"
+                  type="email"
+                  placeholder="Email address"
+                  value={newContact.email}
+                  onChange={(e) => handleNewContactChange("email", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="newContactAddress">Address</Label>
+              <Input 
+                id="newContactAddress"
+                placeholder="Street address"
+                value={newContact.address}
+                onChange={(e) => handleNewContactChange("address", e.target.value)}
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="newContactCity">City</Label>
+                <Input 
+                  id="newContactCity"
+                  placeholder="City"
+                  value={newContact.city}
+                  onChange={(e) => handleNewContactChange("city", e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="newContactState">State</Label>
+                <Input 
+                  id="newContactState"
+                  placeholder="State"
+                  value={newContact.state}
+                  onChange={(e) => handleNewContactChange("state", e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="newContactZip">Zip Code</Label>
+                <Input 
+                  id="newContactZip"
+                  placeholder="Zip code"
+                  value={newContact.zipCode}
+                  onChange={(e) => handleNewContactChange("zipCode", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setIsAddModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleSaveNewContact}
+                disabled={!newContact.name.trim()}
+              >
+                Save Contact
+              </Button>
             </div>
           </div>
         </DialogContent>
