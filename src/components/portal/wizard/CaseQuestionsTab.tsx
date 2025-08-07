@@ -298,9 +298,6 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
             <HelpCircle className="h-5 w-5 text-primary" />
             <span>Abandon Well Questions</span>
           </CardTitle>
-          <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent mt-2">
-            Expedited
-          </Badge>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Question 1: Permittee Number */}

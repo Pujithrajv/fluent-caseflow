@@ -42,15 +42,10 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: Reques
       <Card className="shadow-fluent-8">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="flex items-center space-x-2 font-fluent">
-                <FileText className="h-5 w-5 text-primary" />
-                <span>Associated Requests</span>
-              </CardTitle>
-              <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent mt-2">
-                Expedited
-              </Badge>
-            </div>
+            <CardTitle className="flex items-center space-x-2 font-fluent">
+              <FileText className="h-5 w-5 text-primary" />
+              <span>Associated Requests</span>
+            </CardTitle>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm" className="font-fluent">

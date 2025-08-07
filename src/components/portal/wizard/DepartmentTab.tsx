@@ -231,9 +231,6 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
             <Users className="h-5 w-5 text-primary" />
             <span>Department Personnel</span>
           </CardTitle>
-          <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent mt-2">
-            Expedited
-          </Badge>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="space-y-2">
