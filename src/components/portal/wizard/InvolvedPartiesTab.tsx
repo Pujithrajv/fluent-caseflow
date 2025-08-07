@@ -13,19 +13,27 @@ interface InvolvedPartiesTabProps {
 const mockParties = [
   {
     id: 1,
-    individual: "John Doe",
-    jobTitle: "Senior Analyst",
-    participationGroup: "Stakeholder",
-    type: "Individual",
-    description: "Primary stakeholder for environmental review"
+    party: "Kirby Neroni\nChief Counsel\nDepartment General Counsel",
+    contact: "P. 630-308-4387\nE. kirby.neroni@il.gov",
+    organization: "Board of Higher Education\nSpringfield, IL"
   },
   {
     id: 2,
-    individual: "Environmental Consulting LLC",
-    jobTitle: "Lead Consultant",
-    participationGroup: "Third Party",
-    type: "Organization",
-    description: "Technical consulting services"
+    party: "Batsheva English\nExecutive Assistant\nDepartment Representative",
+    contact: "P. 217-786-3028\nE. batsheva.english@il.gov",
+    organization: "Board of Higher Education\nSpringfield, IL"
+  },
+  {
+    id: 3,
+    party: "Aafjes-Soriano\nPrinciple\nAppellee",
+    contact: "",
+    organization: "Sunny Day Schools\nSt. Charles, IL"
+  },
+  {
+    id: 4,
+    party: "Abbey Higgins\nAttorney at Law\nParty Counsel",
+    contact: "P. 480-796-1707\nE. abbey.higgins@royce.com",
+    organization: "Royce Partners, LLC\nChicago, IL"
   }
 ];
 
@@ -74,37 +82,29 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
         <CardContent className="pt-0">
           <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
             <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
-              <div className="grid grid-cols-4 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
-                <div>Individual</div>
-                <div>Job Title</div>
-                <div>Participation Group</div>
-                <div>Type & Description</div>
+              <div className="grid grid-cols-3 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                <div>Party</div>
+                <div>Contact</div>
+                <div>Organization</div>
               </div>
             </div>
             
             <div className="divide-y divide-gray-200">
               {mockParties.map((party) => (
                 <div key={party.id} className="px-4 py-4 bg-white hover:bg-gray-50 transition-colors">
-                  <div className="grid grid-cols-4 gap-4 items-center">
-                    <div className="flex items-center space-x-3">
-                      <Eye className="h-4 w-4 text-gray-400" />
-                      <div className="font-medium text-gray-900">{party.individual}</div>
+                  <div className="grid grid-cols-3 gap-4 items-start">
+                    <div className="flex items-start space-x-3">
+                      <Eye className="h-4 w-4 text-gray-400 mt-1" />
+                      <div className="text-sm text-gray-900 whitespace-pre-line">{party.party}</div>
                     </div>
                     
-                    <div className="text-sm text-gray-900">
-                      {party.jobTitle}
+                    <div className="text-sm text-gray-900 whitespace-pre-line">
+                      {party.contact || "—"}
                     </div>
                     
-                    <div>
-                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 px-2 py-1 text-xs font-medium rounded">
-                        {party.participationGroup}
-                      </Badge>
-                    </div>
-                    
-                    <div className="flex flex-col items-start space-y-1">
-                      <div className="text-sm font-medium text-gray-900">{party.type}</div>
-                      <div className="text-xs text-gray-500">{party.description}</div>
-                      <div className="flex space-x-2 mt-2">
+                    <div className="flex justify-between items-start">
+                      <div className="text-sm text-gray-900 whitespace-pre-line">{party.organization}</div>
+                      <div className="flex space-x-2 ml-4">
                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                           <Edit className="h-4 w-4 text-gray-400" />
                         </Button>
