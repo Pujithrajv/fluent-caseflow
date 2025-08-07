@@ -15,6 +15,9 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
   return (
     <TooltipProvider>
       <div className="space-y-6">
+        <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent">
+          Expedited
+        </Badge>
         {/* Agency Structure */}
       <Card className="shadow-fluent-8">
         <CardHeader>

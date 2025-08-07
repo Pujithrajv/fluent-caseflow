@@ -292,6 +292,9 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
 
   return (
     <div className="space-y-6">
+      <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent">
+        Expedited
+      </Badge>
       <Card className="shadow-fluent-8">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">

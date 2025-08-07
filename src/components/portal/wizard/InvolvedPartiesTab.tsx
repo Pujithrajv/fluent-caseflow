@@ -30,6 +30,9 @@ const mockParties = [
 export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabProps) {
   return (
     <div className="space-y-6">
+      <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent">
+        Expedited
+      </Badge>
       <Card className="shadow-fluent-8">
         <CardHeader>
           <div className="flex items-center justify-between">
