@@ -62,32 +62,32 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="partyName" className="font-fluent">Party Name *</Label>
-            <div className="flex space-x-2">
+            <div className="relative">
               <Input 
                 id="partyName"
                 placeholder="Enter party name"
                 value={data?.partyName || ""}
                 onChange={(e) => handlePartyNameChange(e.target.value)}
-                className="shadow-fluent-8 border-input-border flex-1"
+                className="shadow-fluent-8 border-input-border pr-20"
               />
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={handleSearchParty}
-                className="flex items-center space-x-2"
-              >
-                <Search className="h-4 w-4" />
-                <span>Search</span>
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={handleAddParty}
-                className="flex items-center space-x-2"
-              >
-                <Plus className="h-4 w-4" />
-                <span>Add Party</span>
-              </Button>
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={handleSearchParty}
+                  className="h-7 w-7 p-0"
+                >
+                  <Search className="h-4 w-4 text-gray-500" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={handleAddParty}
+                  className="h-7 w-7 p-0"
+                >
+                  <Plus className="h-4 w-4 text-gray-500" />
+                </Button>
+              </div>
             </div>
           </div>
           
