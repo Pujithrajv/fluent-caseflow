@@ -101,13 +101,6 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
         </div>
       </div>
 
-      {/* Expedited Warning Badge */}
-      <div className="flex justify-center mb-4">
-        <Badge variant="destructive" className="px-4 py-2 text-sm font-fluent">
-          ⚠️ EXPEDITED
-        </Badge>
-      </div>
-
       {/* Main Content */}
       <div className="mx-auto max-w-6xl px-6 py-6">
 
