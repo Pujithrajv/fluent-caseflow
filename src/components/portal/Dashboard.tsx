@@ -223,7 +223,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
+                  <User className="h-6 w-6" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
@@ -246,7 +246,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <HelpCircle className="h-5 w-5" />
+                  <HelpCircle className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[400px] sm:w-[540px]">
