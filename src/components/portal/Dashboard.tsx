@@ -199,10 +199,11 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [activeTab, setActiveTab] = useState("cases");
 
   return (
-    <div className="min-h-screen bg-background p-6 relative">
-      <div className="mx-auto max-w-7xl space-y-6 relative z-10">
-        {/* Header */}
-        <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm border border-border">
+    <div className="min-h-screen bg-background relative">
+      {/* Header - Full Width */}
+      <div className="w-full bg-white border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-4">
+          <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <img 
               src="/lovable-uploads/a8ff40e4-1efe-4d80-9072-5c480ab49fa9.png" 
@@ -264,7 +265,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               </SheetContent>
             </Sheet>
           </div>
+          </div>
         </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="mx-auto max-w-7xl px-6 py-6 space-y-6">
 
         {/* Tabs Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
