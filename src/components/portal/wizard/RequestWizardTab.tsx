@@ -2,7 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Plus, FileText, Calendar, User, ChevronDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, FileText, Calendar, User, ChevronDown, Search, Eye, HelpCircle } from "lucide-react";
 
 interface RequestWizardTabProps {
   onDataChange: (data: any) => void;
@@ -13,26 +15,28 @@ interface RequestWizardTabProps {
 const mockRequests = [
   {
     id: 1,
-    request: "Environmental Impact Assessment",
-    submittedBy: "John Smith",
-    status: "In Progress",
-    date: "2024-01-15"
+    groupType: "Motion",
+    summary: "Motion to Expedite",
+    status: "Completed",
+    date: "2024-01-15",
+    submittedBy: "John Smith"
   },
   {
     id: 2,
-    request: "Document Review Request",
-    submittedBy: "Sarah Johnson",
-    status: "Completed",
-    date: "2024-01-12"
+    groupType: "Notice",
+    summary: "Notice of Initial Status Conference",
+    status: "In Progress",
+    date: "2024-01-15",
+    submittedBy: "Sarah Johnson"
   }
 ];
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case "Completed": return "bg-success text-success-foreground";
-    case "In Progress": return "bg-warning text-warning-foreground";
-    case "Pending": return "bg-muted text-muted-foreground";
-    default: return "bg-muted text-muted-foreground";
+    case "Completed": return "bg-green-100 text-green-800 border-green-200";
+    case "In Progress": return "bg-orange-100 text-orange-800 border-orange-200";
+    case "Pending": return "bg-gray-100 text-gray-800 border-gray-200";
+    default: return "bg-gray-100 text-gray-800 border-gray-200";
   }
 };
 
@@ -40,15 +44,40 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: Reques
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center space-x-2 font-fluent">
-              <FileText className="h-5 w-5 text-primary" />
-              <span>Associated Requests</span>
-            </CardTitle>
+        <CardHeader className="pb-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <CardTitle className="text-xl font-semibold text-foreground mb-1">
+                Requests
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">Associated requests</p>
+            </div>
+            <HelpCircle className="h-5 w-5 text-muted-foreground" />
+          </div>
+          
+          <div className="flex items-center gap-4 mt-6">
+            <Select defaultValue="active">
+              <SelectTrigger className="w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active Requests</SelectItem>
+                <SelectItem value="all">All Requests</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input 
+                placeholder="Search requests" 
+                className="pl-10"
+              />
+            </div>
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size="sm" className="font-fluent">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Plus className="mr-2 h-4 w-4" />
                   Create New
                   <ChevronDown className="ml-2 h-4 w-4" />
@@ -77,60 +106,53 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: Reques
             </DropdownMenu>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-hidden rounded-lg border border-border">
-            <table className="w-full">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                    Request
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                    Submitted By
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border bg-card">
-                {mockRequests.map((request) => (
-                  <tr key={request.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-4">
-                      <div className="font-medium font-fluent text-foreground">{request.request}</div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="flex items-center space-x-2">
-                        <User className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-fluent text-foreground">{request.submittedBy}</span>
+        
+        <CardContent className="pt-0">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
+            <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
+              <div className="grid grid-cols-3 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                <div>Group / Type</div>
+                <div>Summary</div>
+                <div>Status</div>
+              </div>
+            </div>
+            
+            <div className="divide-y divide-gray-200">
+              {mockRequests.map((request) => (
+                <div key={request.id} className="px-4 py-4 bg-white hover:bg-gray-50 transition-colors">
+                  <div className="grid grid-cols-3 gap-4 items-center">
+                    <div className="flex items-center space-x-3">
+                      <Eye className="h-4 w-4 text-gray-400" />
+                      <div>
+                        <div className="font-medium text-gray-900">{request.groupType}</div>
+                        <div className="text-sm text-gray-600">{request.summary}</div>
                       </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <Badge className={getStatusColor(request.status)}>
+                    </div>
+                    
+                    <div className="text-sm text-gray-900">
+                      {request.summary}
+                    </div>
+                    
+                    <div className="flex flex-col items-start space-y-1">
+                      <Badge 
+                        variant="outline" 
+                        className={`${getStatusColor(request.status)} px-2 py-1 text-xs font-medium rounded`}
+                      >
                         {request.status}
                       </Badge>
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-fluent text-foreground">{request.date}</span>
+                      <div className="flex items-center space-x-1 text-xs text-gray-500">
+                        <Calendar className="h-3 w-3" />
+                        <span>{request.date}</span>
                       </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <Button variant="ghost" size="sm" className="font-fluent">
-                        View Details
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      <div className="flex items-center space-x-1 text-xs text-gray-500">
+                        <User className="h-3 w-3" />
+                        <span>{request.submittedBy}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           
           {mockRequests.length === 0 && (
