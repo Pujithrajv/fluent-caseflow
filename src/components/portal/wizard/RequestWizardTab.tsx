@@ -39,18 +39,6 @@ const getStatusColor = (status: string) => {
 export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: RequestWizardTabProps) {
   return (
     <div className="space-y-6">
-      {/* Expedited Badge */}
-      <Card className="shadow-fluent-8 border-primary/20 bg-primary/5">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-fluent text-muted-foreground">Expedited Processing</p>
-              <Badge variant="secondary">No</Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       <Card className="shadow-fluent-8">
         <CardHeader>
           <div className="flex items-center justify-between">
