@@ -34,7 +34,7 @@ const faqData = {
     {
       id: "discovery-1",
       question: "What types of discovery requests can I make?",
-      answer: "You can request interrogatories, depositions, document production, requests for admission, and requests for inspection."
+      answer: "You can request Interrogatories, depositions, document production, requests for admission, and requests for inspection."
     },
     {
       id: "discovery-2",

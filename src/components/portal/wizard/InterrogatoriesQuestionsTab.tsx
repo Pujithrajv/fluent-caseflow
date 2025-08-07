@@ -101,7 +101,7 @@ export function InterrogatoriesQuestionsTab({ onDataChange, data }: Interrogator
                     <HelpCircle className="h-4 w-4 text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Add the recipients who will receive the interrogatories</p>
+                    <p>Add the recipients who will receive the Interrogatories</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -210,7 +210,7 @@ export function InterrogatoriesQuestionsTab({ onDataChange, data }: Interrogator
                   <HelpCircle className="h-4 w-4 text-muted-foreground" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Select the date when recipients will receive the interrogatories</p>
+                  <p>Select the date when recipients will receive the Interrogatories</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -245,7 +245,7 @@ export function InterrogatoriesQuestionsTab({ onDataChange, data }: Interrogator
                   <HelpCircle className="h-4 w-4 text-muted-foreground" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Select the deadline for responding to the interrogatories</p>
+                  <p>Select the deadline for responding to the Interrogatories</p>
                 </TooltipContent>
               </Tooltip>
             </div>

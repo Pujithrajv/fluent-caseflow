@@ -422,7 +422,7 @@ export function DepositionQuestionsTab({ onDataChange, data }: DepositionQuestio
               id="interrogatoriesAlternative"
               value={interrogatoriesAlternative}
               onChange={(e) => setInterrogatoriesAlternative(e.target.value)}
-              placeholder="Explain whether this testimony can be obtained through interrogatories instead..."
+              placeholder="Explain whether this testimony can be obtained through Interrogatories instead..."
               className="shadow-fluent-8 border-input-border min-h-24"
             />
           </div>
