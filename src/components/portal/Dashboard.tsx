@@ -351,13 +351,10 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                           Status
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                          Last Action
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                          Read Only
-                        </th>
-                      </tr>
+                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                           Last Action
+                         </th>
+                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
                       {mockCases.map((caseItem) => {
@@ -365,13 +362,23 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         return (
                           <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
                              <td className="px-4 py-4">
-                               <div>
-                                 {caseItem.caseNumber && (
-                                   <p className="text-sm font-medium text-foreground">
-                                     {caseItem.caseNumber}
-                                   </p>
-                                 )}
-                                 <p className="text-sm text-muted-foreground">{caseItem.description}</p>
+                               <div className="flex items-center justify-between">
+                                 <div>
+                                   {caseItem.caseNumber && (
+                                     <p className="text-sm font-medium text-foreground">
+                                       {caseItem.caseNumber}
+                                     </p>
+                                   )}
+                                   <p className="text-sm text-muted-foreground">{caseItem.description}</p>
+                                 </div>
+                                 <Button 
+                                   variant="outline" 
+                                   size="sm"
+                                   onClick={() => onViewCase(caseItem.id)}
+                                   className="p-2"
+                                 >
+                                   <Eye className="h-4 w-4" />
+                                 </Button>
                                </div>
                              </td>
                             <td className="px-4 py-4">
@@ -423,20 +430,9 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                     {getTabDisplayName(caseItem.lastWizardTab)}
                                   </button>
                                 </div>
-                              </div>
-                            </td>
-                            <td className="px-4 py-4">
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => onViewCase(caseItem.id)}
-                                className="flex items-center space-x-2"
-                              >
-                                <Eye className="h-4 w-4" />
-                                <span>View</span>
-                              </Button>
-                            </td>
-                          </tr>
+                               </div>
+                             </td>
+                           </tr>
                         );
                       })}
                     </tbody>
