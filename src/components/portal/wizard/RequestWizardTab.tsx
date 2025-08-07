@@ -28,6 +28,14 @@ const mockRequests = [
     status: "In Progress",
     date: "2024-01-15",
     submittedBy: "Sarah Johnson"
+  },
+  {
+    id: 3,
+    groupType: "Exhibit",
+    summary: "Summary of Physical Exhibit Item",
+    status: "Draft",
+    date: "2025-05-18",
+    submittedBy: "Tim O'Hara"
   }
 ];
 
@@ -35,6 +43,7 @@ const getStatusColor = (status: string) => {
   switch (status) {
     case "Completed": return "bg-green-100 text-green-800 border-green-200";
     case "In Progress": return "bg-orange-100 text-orange-800 border-orange-200";
+    case "Draft": return "bg-gray-100 text-gray-800 border-gray-200";
     case "Pending": return "bg-gray-100 text-gray-800 border-gray-200";
     default: return "bg-gray-100 text-gray-800 border-gray-200";
   }
