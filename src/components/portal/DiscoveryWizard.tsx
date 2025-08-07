@@ -108,28 +108,34 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="mx-auto max-w-6xl space-y-6">
-        {/* Header with Logo */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <img 
-              src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
-              alt="Illinois Bureau of Administrative Hearings" 
-              className="h-16 w-auto object-contain"
-            />
-            <div>
-              <h1 className="text-3xl font-semibold font-fluent text-foreground">New Discovery Request</h1>
-              <p className="text-muted-foreground font-fluent">
-                Complete all sections to submit your discovery request
-              </p>
+    <div className="min-h-screen bg-background relative">
+      {/* Header - Full Width */}
+      <div className="w-full bg-white border-b border-border">
+        <div className="mx-auto max-w-6xl px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <img 
+                src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
+                alt="Illinois Bureau of Administrative Hearings" 
+                className="h-16 w-auto object-contain"
+              />
+              <div>
+                <h1 className="text-3xl font-semibold font-fluent text-foreground">New Discovery Request</h1>
+                <p className="text-muted-foreground font-fluent">
+                  Complete all sections to submit your discovery request
+                </p>
+              </div>
             </div>
+            <Button variant="ghost" size="sm" onClick={onBack}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Case
+            </Button>
           </div>
-          <Button variant="ghost" size="sm" onClick={onBack}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Case
-          </Button>
         </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="mx-auto max-w-6xl px-6 py-6">
 
         {/* Vertical Tabs Layout */}
         <Tabs defaultValue="discovery-details" className="w-full" orientation="vertical">
