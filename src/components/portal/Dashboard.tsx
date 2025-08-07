@@ -339,8 +339,11 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   <table className="w-full">
                     <thead className="bg-muted/30">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                          Case #
+                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground w-16">
+                           
+                         </th>
+                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                           Case #
                         </th>
                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                           Department
@@ -362,23 +365,23 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         return (
                           <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
                              <td className="px-4 py-4">
-                               <div className="flex items-center justify-between">
-                                 <div>
-                                   {caseItem.caseNumber && (
-                                     <p className="text-sm font-medium text-foreground">
-                                       {caseItem.caseNumber}
-                                     </p>
-                                   )}
-                                   <p className="text-sm text-muted-foreground">{caseItem.description}</p>
-                                 </div>
-                                 <Button 
-                                   variant="outline" 
-                                   size="sm"
-                                   onClick={() => onViewCase(caseItem.id)}
-                                   className="p-2"
-                                 >
-                                   <Eye className="h-4 w-4" />
-                                 </Button>
+                               <Button 
+                                 variant="outline" 
+                                 size="sm"
+                                 onClick={() => onViewCase(caseItem.id)}
+                                 className="p-2"
+                               >
+                                 <Eye className="h-4 w-4" />
+                               </Button>
+                             </td>
+                             <td className="px-4 py-4">
+                               <div>
+                                 {caseItem.caseNumber && (
+                                   <p className="text-sm font-medium text-foreground">
+                                     {caseItem.caseNumber}
+                                   </p>
+                                 )}
+                                 <p className="text-sm text-muted-foreground">{caseItem.description}</p>
                                </div>
                              </td>
                             <td className="px-4 py-4">
