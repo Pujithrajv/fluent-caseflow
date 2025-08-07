@@ -66,19 +66,6 @@ export function InterrogatoriesQuestionsTab({ onDataChange, data }: Interrogator
 
   return (
     <div className="space-y-8">
-      <Card className="shadow-fluent-8">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 font-fluent">
-            <HelpCircle className="h-5 w-5 text-primary" />
-            <span>Interrogatories Questions</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            Configure your interrogatory questions and delivery details below.
-          </p>
-        </CardContent>
-      </Card>
 
       {/* Interrogatory Delivery Details Section */}
       <Card className="shadow-fluent-8">
