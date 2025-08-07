@@ -268,22 +268,22 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
         {/* Tabs Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-muted/30 h-12">
+          <TabsList className="justify-start bg-transparent border-b border-border h-12 rounded-none p-0">
             <TabsTrigger 
               value="cases" 
-              className="font-fluent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:shadow-none px-4 py-3"
             >
               Cases
             </TabsTrigger>
             <TabsTrigger 
               value="events" 
-              className="font-fluent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:shadow-none px-4 py-3"
             >
               Upcoming Events
             </TabsTrigger>
             <TabsTrigger 
               value="tasks" 
-              className="font-fluent data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:shadow-none px-4 py-3"
             >
               Tasks and Alerts
             </TabsTrigger>
