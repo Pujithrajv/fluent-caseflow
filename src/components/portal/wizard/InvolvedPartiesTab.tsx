@@ -13,7 +13,7 @@ interface InvolvedPartiesTabProps {
 const mockParties = [
   {
     id: 1,
-    party: "John Doe",
+    individual: "John Doe",
     jobTitle: "Senior Analyst",
     participationGroup: "Stakeholder",
     type: "Individual",
@@ -21,7 +21,7 @@ const mockParties = [
   },
   {
     id: 2,
-    party: "Environmental Consulting LLC",
+    individual: "Environmental Consulting LLC",
     jobTitle: "Lead Consultant",
     participationGroup: "Third Party",
     type: "Organization",
@@ -75,7 +75,7 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
           <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
             <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
               <div className="grid grid-cols-4 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
-                <div>Party</div>
+                <div>Individual</div>
                 <div>Job Title</div>
                 <div>Participation Group</div>
                 <div>Type & Description</div>
@@ -88,7 +88,7 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
                   <div className="grid grid-cols-4 gap-4 items-center">
                     <div className="flex items-center space-x-3">
                       <Eye className="h-4 w-4 text-gray-400" />
-                      <div className="font-medium text-gray-900">{party.party}</div>
+                      <div className="font-medium text-gray-900">{party.individual}</div>
                     </div>
                     
                     <div className="text-sm text-gray-900">
