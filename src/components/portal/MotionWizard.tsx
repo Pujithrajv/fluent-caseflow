@@ -183,7 +183,7 @@ export function MotionWizard({ onBack }: MotionWizardProps) {
         </Tabs>
 
         {/* Action Buttons */}
-        <div className="flex justify-between">
+        <div className="flex justify-between pt-6 pb-4">
           <Button variant="outline" onClick={onBack} className="font-fluent">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Requests

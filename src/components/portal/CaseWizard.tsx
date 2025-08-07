@@ -566,7 +566,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
 
         {/* Submit Actions */}
         {!readOnly && (
-          <div className="flex justify-end space-x-3">
+          <div className="flex justify-end space-x-3 pt-6 pb-4">
             <Button variant="fluent" className="font-fluent">
               Save Draft
             </Button>
