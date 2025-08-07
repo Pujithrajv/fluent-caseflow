@@ -220,9 +220,6 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
               <h1 className="text-3xl font-semibold font-fluent text-foreground">
                 {readOnly ? "View Case" : "Create New Case"}
               </h1>
-              <p className="text-muted-foreground font-fluent">
-                {readOnly ? "Review case details and information" : "Complete all sections to submit your case"}
-              </p>
             </div>
           </div>
           <Button variant="ghost" size="sm" onClick={onBack}>
