@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { HelpCircle, Plus, Trash2, AlertTriangle } from "lucide-react";
 
 interface CaseQuestionsTabProps {
@@ -291,6 +292,18 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
 
   return (
     <div className="space-y-6">
+      {/* Expedited Badge */}
+      <Card className="shadow-fluent-8 border-primary/20 bg-primary/5">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Expedited Processing</p>
+              <Badge variant="secondary">No</Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="shadow-fluent-8">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">

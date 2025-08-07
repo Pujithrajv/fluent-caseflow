@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { User, Search, Plus } from "lucide-react";
 
 interface PrimaryPartyTabProps {
@@ -51,6 +52,18 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
 
   return (
     <div className="space-y-6">
+      {/* Expedited Badge */}
+      <Card className="shadow-fluent-8 border-primary/20 bg-primary/5">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Expedited Processing</p>
+              <Badge variant="secondary">No</Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="shadow-fluent-8">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">

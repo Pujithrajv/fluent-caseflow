@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 import { Building2, Users } from "lucide-react";
 
 interface DepartmentTabProps {
@@ -14,7 +15,19 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
   return (
     <TooltipProvider>
       <div className="space-y-6">
-      {/* Agency Structure */}
+        {/* Expedited Badge */}
+        <Card className="shadow-fluent-8 border-primary/20 bg-primary/5">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-fluent text-muted-foreground">Expedited Processing</p>
+                <Badge variant="secondary">No</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Agency Structure */}
       <Card className="shadow-fluent-8">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
