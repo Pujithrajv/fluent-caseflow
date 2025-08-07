@@ -528,7 +528,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Review & Submit</CardTitle>
                         <p className="text-muted-foreground font-fluent">Verify and submit case</p>
                         <Badge variant="destructive" className="px-2 py-1 text-xs font-fluent mt-2">
-                          ⚠️ EXPEDITED
+                          EXPEDITED
                         </Badge>
                       </div>
                       <Sheet>
