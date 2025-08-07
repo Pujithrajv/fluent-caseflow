@@ -6,6 +6,7 @@ import { ArrowLeft, Check, HelpCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DiscoveryDetailsTab } from "./wizard/DiscoveryDetailsTab";
+import { InterrogatoriesQuestionsTab } from "./wizard/InterrogatoriesQuestionsTab";
 
 import { DocumentProductionQuestionsTab } from "./wizard/DocumentProductionQuestionsTab";
 import { DepositionQuestionsTab } from "./wizard/DepositionQuestionsTab";
@@ -19,6 +20,7 @@ const baseDiscoveryTabs = [
 ];
 
 const discoveryTypeComponents = {
+  'interrogatories': { component: InterrogatoriesQuestionsTab, title: 'Interrogatories Questions' },
   'document-production': { component: DocumentProductionQuestionsTab, title: 'Document Production Questions' },
   'deposition': { component: DepositionQuestionsTab, title: 'Deposition Questions' },
   'inspection': { component: InspectionQuestionsTab, title: 'Inspection Questions' }
@@ -204,6 +206,7 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
                     </CardHeader>
                     <CardContent className="p-6">
                       {tab.id === 'discovery-details' && <DiscoveryDetailsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'interrogatories-questions' && <InterrogatoriesQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'document-production-questions' && <DocumentProductionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'deposition-questions' && <DepositionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'inspection-questions' && <InspectionQuestionsTab onDataChange={updateFormData} data={formData} />}
