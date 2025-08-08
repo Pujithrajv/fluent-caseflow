@@ -212,27 +212,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
       <div className="w-full bg-white border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center space-x-4">
-                <img 
-                  src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
-                  alt="Illinois Bureau of Administrative Hearings" 
-                  className="h-16 w-auto object-contain"
-                />
-                <div>
-                  <h1 className="text-3xl font-semibold font-fluent text-foreground">
-                    {readOnly ? "" : "Create New Case"}
-                  </h1>
-                  <p className="text-muted-foreground font-fluent">
-                    Complete all sections to create a new case
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <Badge variant="outline" className="text-sm px-3 py-1">
-                  Status: Draft
-                </Badge>
-              </div>
+            <div className="flex items-center space-x-4">
+              <img 
+                src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
+                alt="Illinois Bureau of Administrative Hearings" 
+                className="h-16 w-auto object-contain"
+              />
             </div>
             <Button variant="ghost" size="sm" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -244,6 +229,21 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
 
       {/* Main Content */}
       <div className="mx-auto max-w-6xl px-6 py-6">
+        
+        {/* Page Header Above Navigation */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-3xl font-semibold font-fluent text-foreground">
+              {readOnly ? "" : "Create New Case"}
+            </h1>
+            <p className="text-muted-foreground font-fluent">
+              Complete all sections to create a new case
+            </p>
+          </div>
+          <Badge variant="outline" className="text-sm px-3 py-1">
+            Status: Draft
+          </Badge>
+        </div>
 
         {/* Vertical Tabs Layout */}
         <Tabs defaultValue={initialTab} className="w-full" orientation="vertical">
