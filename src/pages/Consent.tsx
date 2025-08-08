@@ -16,7 +16,7 @@ const Consent = () => {
 
   const handleAcceptAndContinue = () => {
     if (termsAccepted) {
-      navigate("/dashboard");
+      navigate("/portal");
     }
   };
 
