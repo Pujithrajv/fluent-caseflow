@@ -54,13 +54,7 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: Reques
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
         <CardHeader className="pb-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <CardTitle className="text-xl font-semibold text-foreground mb-1">
-                Requests
-              </CardTitle>
-              <p className="text-sm text-muted-foreground">Associated requests</p>
-            </div>
+          <div className="flex items-end justify-end">
             <HelpCircle className="h-5 w-5 text-muted-foreground" />
           </div>
           

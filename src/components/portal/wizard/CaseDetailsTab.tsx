@@ -70,11 +70,7 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 font-fluent">
-            <FileText className="h-5 w-5 text-primary" />
-            <span>Case Details</span>
-          </CardTitle>
+        <CardHeader className="pb-4">
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">

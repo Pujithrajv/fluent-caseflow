@@ -212,16 +212,26 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
       <div className="w-full bg-white border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <img 
-                src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
-                alt="Illinois Bureau of Administrative Hearings" 
-                className="h-16 w-auto object-contain"
-              />
-              <div>
-                <h1 className="text-3xl font-semibold font-fluent text-foreground">
-                  {readOnly ? "" : "Create New Case"}
-                </h1>
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center space-x-4">
+                <img 
+                  src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
+                  alt="Illinois Bureau of Administrative Hearings" 
+                  className="h-16 w-auto object-contain"
+                />
+                <div>
+                  <h1 className="text-3xl font-semibold font-fluent text-foreground">
+                    {readOnly ? "" : "Create New Case"}
+                  </h1>
+                  <p className="text-muted-foreground font-fluent">
+                    Complete all sections to create a new case
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <Badge variant="outline" className="text-sm px-3 py-1">
+                  Status: Draft
+                </Badge>
               </div>
             </div>
             <Button variant="ghost" size="sm" onClick={onBack}>
@@ -275,7 +285,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                        <Sheet>
                          <SheetTrigger asChild>
                            <Button variant="ghost" size="icon">
-                             <HelpCircle className="h-6 w-6" />
+                             <HelpCircle className="h-5 w-5" />
                            </Button>
                          </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
@@ -317,7 +327,7 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                        <Sheet>
                          <SheetTrigger asChild>
                            <Button variant="ghost" size="icon">
-                             <HelpCircle className="h-6 w-6" />
+                             <HelpCircle className="h-5 w-5" />
                            </Button>
                          </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
@@ -561,6 +571,18 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                   </CardHeader>
                   <CardContent className="p-6">
                     <ReviewSubmitTab formData={formData} />
+                    {/* Submit Case Button - Only on Review & Submit */}
+                    {!readOnly && (
+                      <div className="flex justify-between pt-6 border-t mt-6">
+                        <Button variant="outline">
+                          Previous
+                        </Button>
+                        <Button className="bg-primary hover:bg-primary/90">
+                          <Check className="mr-2 h-4 w-4" />
+                          Submit Case
+                        </Button>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -568,18 +590,6 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
           </div>
         </Tabs>
 
-        {/* Submit Actions */}
-        {!readOnly && (
-          <div className="flex justify-end space-x-3 pt-6 pb-4">
-            <Button variant="fluent" className="font-fluent">
-              Save Draft
-            </Button>
-            <Button className="font-fluent">
-              <Check className="mr-2 h-4 w-4" />
-              Submit Case
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

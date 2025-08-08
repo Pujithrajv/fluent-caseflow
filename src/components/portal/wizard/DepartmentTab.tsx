@@ -6,6 +6,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users } from "lucide-react";
 import { ContactPicker } from "@/components/shared/ContactPicker";
+import { Search, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 interface DepartmentTabProps {

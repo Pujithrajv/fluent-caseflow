@@ -33,7 +33,7 @@ const mockCases: CaseItem[] = [
     id: "CASE-2024-001",
     name: "Weights & Measures Inspections for Sniders Group",
     description: "Weights & Measures Inspections",
-    department: "Dept. of Agriculture • Assigned Attorney: Jaslyn Blom",
+    department: "Dept. of Agriculture",
     section: "Weights & Measures Division",
     firstParty: "Petitionaire",
     secondParty: "Sniders Group",
@@ -48,7 +48,7 @@ const mockCases: CaseItem[] = [
     id: "CASE-2024-002",
     name: "Vending Inspection – Midtown",
     description: "Weights & Measures Inspections",
-    department: "Dept. of Agriculture • Assigned Attorney: (not yet assigned)",
+    department: "Dept. of Agriculture",
     section: "Weights & Measures Division",
     firstParty: "Petitionaire",
     secondParty: "Midtown Vending LLC",
@@ -56,14 +56,14 @@ const mockCases: CaseItem[] = [
     status: "draft",
     stage: "Intake",
     icon: "shield",
-    lastActionDate: "",
+    lastActionDate: "2025-07-28",
     lastWizardTab: "department"
   },
   {
     id: "CASE-2024-003",
     name: "Food Safety – North District",
     description: "Food Safety",
-    department: "Dept. of Public Health • Assigned Attorney: (not yet assigned)",
+    department: "Dept. of Public Health",
     section: "Food Safety Division",
     firstParty: "Petitionaire",
     secondParty: "North District Foods",
@@ -71,8 +71,40 @@ const mockCases: CaseItem[] = [
     status: "draft",
     stage: "Intake",
     icon: "file",
-    lastActionDate: "",
+    lastActionDate: "2025-07-28",
     lastWizardTab: "primary-party"
+  },
+  {
+    id: "CASE-2024-004",
+    name: "Device Calibration – West Region",
+    description: "Weights & Measures Inspections",
+    caseNumber: "2025-00412",
+    department: "Department of Agriculture",
+    section: "Weights & Measures Division",
+    firstParty: "Petitionaire",
+    secondParty: "West Region Devices Inc",
+    secondPartyType: "Corporate Entity",
+    status: "accepted",
+    stage: "Case Processing",
+    icon: "shield",
+    lastActionDate: "2025-07-30",
+    lastWizardTab: "review-submit"
+  },
+  {
+    id: "CASE-2024-005",
+    name: "Food Safety – Routine Inspection",
+    description: "Food Safety",
+    caseNumber: "2025-00413",
+    department: "Department of Public Health",
+    section: "Food Safety Division",
+    firstParty: "Petitionaire",
+    secondParty: "City Restaurant Group",
+    secondPartyType: "Corporate Entity",
+    status: "accepted",
+    stage: "Case Processing",
+    icon: "file",
+    lastActionDate: "2025-07-30",
+    lastWizardTab: "review-submit"
   }
 ];
 
@@ -220,7 +252,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <HelpCircle className="h-12 w-12" />
+                  <HelpCircle className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[400px] sm:w-[540px]">
@@ -369,7 +401,13 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                               <div>
                                 <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
                                 <p className="text-xs text-muted-foreground mt-1">
-                                  <span className="font-medium">First Party:</span> {caseItem.firstParty}
+                                  Assigned Attorney: {
+                                    caseItem.status === "draft" 
+                                      ? "(not yet assigned)"
+                                      : caseItem.id === "CASE-2024-001" || caseItem.id === "CASE-2024-004"
+                                        ? "Jaslyn Blom"
+                                        : "Greg Miles"
+                                  }
                                 </p>
                               </div>
                             </td>
@@ -400,21 +438,25 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                               </div>
                             </td>
                              <td className="px-4 py-4 align-top">
-                               <div className="space-y-2">
-                                 <div className="flex items-center space-x-2 text-sm text-foreground">
-                                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                                   <span>{caseItem.lastActionDate ? new Date(caseItem.lastActionDate).toLocaleDateString() : "—"}</span>
-                                 </div>
-                                <div className="text-xs text-muted-foreground">
-                                  Last worked on:{" "}
-                                  <button
-                                    onClick={() => onEditCase?.(caseItem.id, caseItem.lastWizardTab)}
-                                    className="text-primary hover:underline font-medium"
-                                  >
-                                    {getTabDisplayName(caseItem.lastWizardTab)}
-                                  </button>
+                                 <div className="space-y-2">
+                                  <div className="flex items-center space-x-2 text-sm text-foreground">
+                                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                                    <span>
+                                      {caseItem.status === "draft" && `Draft saved — ${caseItem.lastActionDate}`}
+                                      {caseItem.status === "submitted" && `Submitted — ${caseItem.lastActionDate}`}
+                                      {caseItem.status === "accepted" && `Accepted — ${caseItem.lastActionDate}`}
+                                    </span>
+                                  </div>
+                                  {onEditCase && caseItem.status === "draft" && (
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm"
+                                      onClick={() => onEditCase(caseItem.id, caseItem.lastWizardTab)}
+                                    >
+                                      Continue Editing
+                                    </Button>
+                                  )}
                                 </div>
-                               </div>
                              </td>
                            </tr>
                         );
