@@ -277,17 +277,17 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
               <TabsContent value="department" className="mt-0">
                 <Card className="shadow-fluent-16">
                   <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="font-fluent font-semibold">Department</CardTitle>
-                        <p className="text-muted-foreground font-fluent">Agency structure and personnel</p>
-                      </div>
-                       <Sheet>
-                         <SheetTrigger asChild>
-                           <Button variant="ghost" size="icon">
-                             <HelpCircle className="h-5 w-5" />
-                           </Button>
-                         </SheetTrigger>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Department</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Agency structure and personnel</p>
+                       </div>
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                              <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                            </Button>
+                          </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Department Help</SheetTitle>
@@ -310,9 +310,17 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <DepartmentTab onDataChange={updateFormData} data={formData} />
-                  </CardContent>
+                   <CardContent className="p-6">
+                     <DepartmentTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-end mt-6 pt-4 border-t">
+                       <Button disabled className="opacity-50 cursor-not-allowed mr-auto">
+                         Previous
+                       </Button>
+                       <Button>
+                         Next
+                       </Button>
+                     </div>
+                   </CardContent>
                 </Card>
               </TabsContent>
 
@@ -324,12 +332,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Primary Party</CardTitle>
                         <p className="text-muted-foreground font-fluent">Party information</p>
                       </div>
-                       <Sheet>
-                         <SheetTrigger asChild>
-                           <Button variant="ghost" size="icon">
-                             <HelpCircle className="h-5 w-5" />
-                           </Button>
-                         </SheetTrigger>
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                              <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                            </Button>
+                          </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Primary Party Help</SheetTitle>
@@ -352,9 +360,17 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <PrimaryPartyTab onDataChange={updateFormData} data={formData} />
-                  </CardContent>
+                   <CardContent className="p-6">
+                     <PrimaryPartyTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between mt-6 pt-4 border-t">
+                       <Button variant="outline">
+                         Previous
+                       </Button>
+                       <Button>
+                         Next
+                       </Button>
+                     </div>
+                   </CardContent>
                 </Card>
               </TabsContent>
 
@@ -366,12 +382,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Case Details</CardTitle>
                         <p className="text-muted-foreground font-fluent">Case name and details</p>
                       </div>
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <HelpCircle className="h-5 w-5" />
-                          </Button>
-                        </SheetTrigger>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                             <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                           </Button>
+                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Case Details Help</SheetTitle>
@@ -394,9 +410,17 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <CaseDetailsTab onDataChange={updateFormData} data={formData} />
-                  </CardContent>
+                   <CardContent className="p-6">
+                     <CaseDetailsTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between mt-6 pt-4 border-t">
+                       <Button variant="outline">
+                         Previous
+                       </Button>
+                       <Button>
+                         Next
+                       </Button>
+                     </div>
+                   </CardContent>
                 </Card>
               </TabsContent>
 
@@ -408,12 +432,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Abandon Well Questions</CardTitle>
                         <p className="text-muted-foreground font-fluent">Case type specific questions</p>
                       </div>
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <HelpCircle className="h-5 w-5" />
-                          </Button>
-                        </SheetTrigger>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                             <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                           </Button>
+                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Abandon Well Questions Help</SheetTitle>
@@ -436,9 +460,17 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <CaseQuestionsTab onDataChange={updateFormData} data={formData} />
-                  </CardContent>
+                   <CardContent className="p-6">
+                     <CaseQuestionsTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between mt-6 pt-4 border-t">
+                       <Button variant="outline">
+                         Previous
+                       </Button>
+                       <Button>
+                         Next
+                       </Button>
+                     </div>
+                   </CardContent>
                 </Card>
               </TabsContent>
 
@@ -450,12 +482,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Involved Parties</CardTitle>
                         <p className="text-muted-foreground font-fluent">Additional parties</p>
                       </div>
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <HelpCircle className="h-5 w-5" />
-                          </Button>
-                        </SheetTrigger>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                             <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                           </Button>
+                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Involved Parties Help</SheetTitle>
@@ -478,9 +510,17 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <InvolvedPartiesTab onDataChange={updateFormData} data={formData} />
-                  </CardContent>
+                   <CardContent className="p-6">
+                     <InvolvedPartiesTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between mt-6 pt-4 border-t">
+                       <Button variant="outline">
+                         Previous
+                       </Button>
+                       <Button>
+                         Next
+                       </Button>
+                     </div>
+                   </CardContent>
                 </Card>
               </TabsContent>
 
@@ -492,12 +532,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Requests</CardTitle>
                         <p className="text-muted-foreground font-fluent">Associated requests</p>
                       </div>
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <HelpCircle className="h-5 w-5" />
-                          </Button>
-                        </SheetTrigger>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                             <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                           </Button>
+                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Requests Help</SheetTitle>
@@ -520,13 +560,21 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <RequestWizardTab 
-                      onDataChange={updateFormData} 
-                      data={formData} 
-                      onAddNewRequest={handleAddNewRequest}
-                    />
-                  </CardContent>
+                   <CardContent className="p-6">
+                     <RequestWizardTab 
+                       onDataChange={updateFormData} 
+                       data={formData} 
+                       onAddNewRequest={handleAddNewRequest}
+                     />
+                     <div className="flex justify-between mt-6 pt-4 border-t">
+                       <Button variant="outline">
+                         Previous
+                       </Button>
+                       <Button>
+                         Next
+                       </Button>
+                     </div>
+                   </CardContent>
                 </Card>
               </TabsContent>
 
@@ -541,12 +589,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                           Expedited
                         </Badge>
                       </div>
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <HelpCircle className="h-5 w-5" />
-                          </Button>
-                        </SheetTrigger>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                             <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                           </Button>
+                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Review & Submit Help</SheetTitle>

@@ -13,6 +13,13 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
   const referenceNumber = "CASE-000001";
   const submissionDate = format(new Date(), "PPP");
 
+  // Helper function to get display value
+  const getDisplayValue = (value: any) => {
+    if (!value || value === '') return 'Not provided';
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+    return value;
+  };
+
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
@@ -30,15 +37,23 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
           <CardContent className="space-y-3">
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Department</p>
-              <p className="font-medium font-fluent">Planning Department</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.department)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Division</p>
-              <p className="font-medium font-fluent">Zoning Division</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.division)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Coordinator</p>
-              <p className="font-medium font-fluent">John Smith</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.caseCoordinator)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Assigned Attorney</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.assignedAttorney)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Final Decision Maker</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.finalDecisionMaker)}</p>
             </div>
           </CardContent>
         </Card>
@@ -64,11 +79,15 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Name</p>
-              <p className="font-medium font-fluent">Environmental Impact Assessment</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.caseName)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Type</p>
-              <p className="font-medium font-fluent">Environmental Review</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.caseType)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Description</p>
+              <p className="font-medium font-fluent text-sm">{getDisplayValue(formData.caseDescription)}</p>
             </div>
           </CardContent>
         </Card>
@@ -85,12 +104,24 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
+              <p className="text-sm font-fluent text-muted-foreground">Party Type</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.partyType)}</p>
+            </div>
+            <div>
               <p className="text-sm font-fluent text-muted-foreground">Party Name</p>
-              <p className="font-medium font-fluent">City Planning Department</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.partyName || formData.firstName + ' ' + formData.lastName)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Email</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.email)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Phone</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.phone)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Represented</p>
-              <Badge variant="secondary">No</Badge>
+              <Badge variant="secondary">{getDisplayValue(formData.isRepresented)}</Badge>
             </div>
           </CardContent>
         </Card>
@@ -107,16 +138,20 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Case Type</p>
-              <p className="font-medium font-fluent">Environmental Review</p>
+              <p className="text-sm font-fluent text-muted-foreground">Well Location Description</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.wellLocation)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Well Type</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.wellType)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Environmental Impact</p>
-              <p className="font-medium font-fluent">Yes - Moderate Impact</p>
+              <p className="font-medium font-fluent">{getDisplayValue(formData.environmentalImpact)}</p>
             </div>
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Timeline Requirements</p>
-              <p className="font-medium font-fluent">Standard Processing</p>
+              <p className="text-sm font-fluent text-muted-foreground">Additional Comments</p>
+              <p className="font-medium font-fluent text-sm">{getDisplayValue(formData.additionalComments)}</p>
             </div>
           </CardContent>
         </Card>
@@ -132,18 +167,26 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div>
-              <p className="text-sm font-fluent text-muted-foreground">Second Party</p>
-              <p className="font-medium font-fluent">Green Valley Development Corp.</p>
-            </div>
-            <div>
-              <p className="text-sm font-fluent text-muted-foreground">Third Party</p>
-              <p className="font-medium font-fluent">Local Environmental Group</p>
-            </div>
-            <div>
-              <p className="text-sm font-fluent text-muted-foreground">Total Parties</p>
-              <Badge variant="secondary">3 Parties</Badge>
-            </div>
+            {formData.involvedParties && formData.involvedParties.length > 0 ? (
+              <>
+                {formData.involvedParties.map((party: any, index: number) => (
+                  <div key={index} className="border-b pb-2 last:border-b-0">
+                    <p className="text-sm font-fluent text-muted-foreground">Party {index + 2}</p>
+                    <p className="font-medium font-fluent">{getDisplayValue(party.name || party.firstName + ' ' + party.lastName)}</p>
+                    <p className="text-xs text-muted-foreground">{getDisplayValue(party.role)}</p>
+                  </div>
+                ))}
+                <div>
+                  <p className="text-sm font-fluent text-muted-foreground">Total Parties</p>
+                  <Badge variant="secondary">{formData.involvedParties.length + 1} Parties</Badge>
+                </div>
+              </>
+            ) : (
+              <div>
+                <p className="text-sm font-fluent text-muted-foreground">Additional Parties</p>
+                <p className="font-medium font-fluent">No additional parties added</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -161,30 +204,32 @@ export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <p className="text-sm font-fluent text-muted-foreground">Total Requests</p>
-              <p className="font-medium font-fluent">2 Active Requests</p>
-            </div>
-            <div className="space-y-3">
-              <div className="border border-border rounded-lg p-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium font-fluent text-sm">Environmental Impact Review</p>
-                    <p className="text-xs text-muted-foreground">Request Type: Review Request</p>
-                  </div>
-                  <Badge variant="secondary">Active</Badge>
+            {formData.requests && formData.requests.length > 0 ? (
+              <>
+                <div>
+                  <p className="text-sm font-fluent text-muted-foreground">Total Requests</p>
+                  <p className="font-medium font-fluent">{formData.requests.length} Request{formData.requests.length !== 1 ? 's' : ''}</p>
                 </div>
-              </div>
-              <div className="border border-border rounded-lg p-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium font-fluent text-sm">Site Inspection Request</p>
-                    <p className="text-xs text-muted-foreground">Request Type: Inspection Request</p>
-                  </div>
-                  <Badge variant="secondary">Pending</Badge>
+                <div className="space-y-3">
+                  {formData.requests.map((request: any, index: number) => (
+                    <div key={index} className="border border-border rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium font-fluent text-sm">{getDisplayValue(request.title || request.name)}</p>
+                          <p className="text-xs text-muted-foreground">Request Type: {getDisplayValue(request.type)}</p>
+                        </div>
+                        <Badge variant="secondary">{getDisplayValue(request.status || 'Draft')}</Badge>
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              </>
+            ) : (
+              <div>
+                <p className="text-sm font-fluent text-muted-foreground">Associated Requests</p>
+                <p className="font-medium font-fluent">No requests added</p>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 

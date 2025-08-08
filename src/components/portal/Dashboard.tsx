@@ -251,9 +251,9 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <HelpCircle className="h-5 w-5" />
-                </Button>
+              <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+              </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                 <SheetHeader>
