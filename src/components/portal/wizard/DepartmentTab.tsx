@@ -5,6 +5,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users } from "lucide-react";
+import { ContactPicker } from "@/components/shared/ContactPicker";
+import { useState } from "react";
 
 interface DepartmentTabProps {
   onDataChange: (data: any) => void;
@@ -12,6 +14,9 @@ interface DepartmentTabProps {
 }
 
 export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
+  const [caseCoordinator, setCaseCoordinator] = useState(null);
+  const [assignedAttorney, setAssignedAttorney] = useState(null);
+  const [finalDecisionMaker, setFinalDecisionMaker] = useState(null);
   return (
     <TooltipProvider>
       <div className="space-y-6">
@@ -235,46 +240,32 @@ export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="coordinator" className="font-fluent">Case Coordinator *</Label>
-            <Select>
-              <SelectTrigger className="shadow-fluent-8 border-input-border">
-                <SelectValue placeholder="Select Coordinator" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="john-smith">John Smith</SelectItem>
-                <SelectItem value="sarah-johnson">Sarah Johnson</SelectItem>
-                <SelectItem value="mike-wilson">Mike Wilson</SelectItem>
-              </SelectContent>
-            </Select>
+            <ContactPicker
+              value={caseCoordinator}
+              onChange={setCaseCoordinator}
+              placeholder="Select or search coordinator"
+              helperText="Search to link an existing contact or add a new one."
+            />
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="attorney" className="font-fluent">Assigned Attorney</Label>
-            <Select>
-              <SelectTrigger className="shadow-fluent-8 border-input-border">
-                <SelectValue placeholder="Select Attorney" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="lisa-brown">Lisa Brown</SelectItem>
-                <SelectItem value="david-clark">David Clark</SelectItem>
-                <SelectItem value="jennifer-davis">Jennifer Davis</SelectItem>
-              </SelectContent>
-            </Select>
+            <ContactPicker
+              value={assignedAttorney}
+              onChange={setAssignedAttorney}
+              placeholder="Select or search attorney"
+              helperText="Search to link an existing contact or add a new one."
+            />
           </div>
           
           <div className="space-y-2 md:col-span-2">
             <Label htmlFor="representative" className="font-fluent">Final Decision Maker</Label>
-            <Select>
-              <SelectTrigger className="shadow-fluent-8 border-input-border">
-                <SelectValue placeholder="Select Final Decision Maker" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="john-smith">John Smith</SelectItem>
-                <SelectItem value="sarah-johnson">Sarah Johnson</SelectItem>
-                <SelectItem value="mike-wilson">Mike Wilson</SelectItem>
-                <SelectItem value="lisa-brown">Lisa Brown</SelectItem>
-                <SelectItem value="david-clark">David Clark</SelectItem>
-              </SelectContent>
-            </Select>
+            <ContactPicker
+              value={finalDecisionMaker}
+              onChange={setFinalDecisionMaker}
+              placeholder="Select or search final decision maker"
+              helperText="Search to link an existing contact or add a new one."
+            />
           </div>
         </CardContent>
       </Card>

@@ -30,53 +30,49 @@ interface CaseItem {
 
 const mockCases: CaseItem[] = [
   {
-    id: "CASE-2024-002", 
-    name: "FOID Card Denial for Abigayle Low",
-    description: "Card Denial",
-    caseNumber: "DNR-GA-FRR-SL-2025-00001",
-    department: "Department of State Police",
-    section: "Firearms Owners Identification Card",
+    id: "CASE-2024-001",
+    name: "Weights & Measures Inspections for Sniders Group",
+    description: "Weights & Measures Inspections",
+    department: "Dept. of Agriculture • Assigned Attorney: Jaslyn Blom",
+    section: "Weights & Measures Division",
     firstParty: "Petitionaire",
-    secondParty: "Abigayle Low",
-    secondPartyType: "Respondant",
+    secondParty: "Sniders Group",
+    secondPartyType: "Corporate Entity",
     status: "submitted",
     stage: "Pending Case Acceptance",
-    icon: "car",
-    lastActionDate: "2024-12-15",
+    icon: "shield",
+    lastActionDate: "2024-06-04",
     lastWizardTab: "review-submit"
   },
   {
-    id: "CASE-2024-003",
-    name: "Professional License Suspension Appeal",
-    description: "Healthcare Provider License Review",
-    caseNumber: "IDFPR-HC-2025-00047",
-    department: "Department of Financial and Professional Regulation",
-    section: "Professional Regulation Division",
+    id: "CASE-2024-002",
+    name: "Vending Inspection – Midtown",
+    description: "Weights & Measures Inspections",
+    department: "Dept. of Agriculture • Assigned Attorney: (not yet assigned)",
+    section: "Weights & Measures Division",
     firstParty: "Petitionaire",
-    secondParty: "Dr. Sarah Martinez",
-    secondPartyType: "Licensed Professional",
-    represented: "Law Offices of Johnson & Associates",
-    status: "accepted",
-    stage: "Administrative Review",
-    icon: "file",
-    lastActionDate: "2024-11-28",
-    lastWizardTab: "case-details"
+    secondParty: "Midtown Vending LLC",
+    secondPartyType: "Corporate Entity",
+    status: "draft",
+    stage: "Intake",
+    icon: "shield",
+    lastActionDate: "",
+    lastWizardTab: "department"
   },
   {
-    id: "CASE-2024-004",
-    name: "Environmental Violation Appeal",
-    description: "Air Quality Standards Compliance",
-    caseNumber: "EPA-AQ-2025-00123",
-    department: "Environmental Protection Agency",
-    section: "Air Quality Division",
+    id: "CASE-2024-003",
+    name: "Food Safety – North District",
+    description: "Food Safety",
+    department: "Dept. of Public Health • Assigned Attorney: (not yet assigned)",
+    section: "Food Safety Division",
     firstParty: "Petitionaire",
-    secondParty: "Midwest Manufacturing LLC",
+    secondParty: "North District Foods",
     secondPartyType: "Corporate Entity",
-    status: "complete",
-    stage: "Final Decision Issued",
-    icon: "shield",
-    lastActionDate: "2024-10-05",
-    lastWizardTab: "requests"
+    status: "draft",
+    stage: "Intake",
+    icon: "file",
+    lastActionDate: "",
+    lastWizardTab: "primary-party"
   }
 ];
 
@@ -257,24 +253,24 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
         {/* Tabs Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="justify-start bg-transparent border-b border-border h-12 rounded-none p-0">
+          <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0">
             <TabsTrigger 
               value="cases" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:shadow-none px-4 py-3"
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               Cases
             </TabsTrigger>
             <TabsTrigger 
               value="events" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:shadow-none px-4 py-3"
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               Upcoming Events
             </TabsTrigger>
             <TabsTrigger 
               value="tasks" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:shadow-none px-4 py-3"
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
-              Tasks and Alerts
+              Tasks & Alerts
             </TabsTrigger>
           </TabsList>
 
@@ -283,7 +279,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             {/* Filter and Create Button Row */}
             <div className="flex items-center justify-between mb-6">
               <Select defaultValue="active">
-                <SelectTrigger className="w-[200px]">
+                <SelectTrigger className="w-[200px] h-11 border-gray-400 bg-gray-50 focus:ring-primary">
                   <SelectValue placeholder="Filter cases" />
                 </SelectTrigger>
                 <SelectContent>
@@ -303,7 +299,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input 
                     placeholder="Search cases..." 
-                    className="pl-10 w-64 h-11 font-fluent"
+                    className="pl-10 w-64 h-11 font-fluent border-gray-400 bg-gray-50 focus:ring-primary"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -358,15 +354,17 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                </Button>
                              </td>
                              <td className="px-4 py-4 align-top">
-                               <div>
-                                 {caseItem.caseNumber && (
-                                   <p className="text-sm font-medium text-foreground">
-                                     {caseItem.caseNumber}
-                                   </p>
-                                 )}
-                                 <p className="text-sm text-muted-foreground">{caseItem.description}</p>
-                               </div>
-                             </td>
+                                <div>
+                                  {caseItem.caseNumber ? (
+                                    <p className="text-sm font-medium text-foreground">
+                                      {caseItem.caseNumber}
+                                    </p>
+                                  ) : (
+                                    <p className="text-sm text-muted-foreground italic">—</p>
+                                  )}
+                                  <p className="text-sm text-muted-foreground">{caseItem.description}</p>
+                                </div>
+                              </td>
                              <td className="px-4 py-4 align-top">
                               <div>
                                 <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
@@ -401,12 +399,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                 </p>
                               </div>
                             </td>
-                            <td className="px-4 py-4 align-top">
-                              <div className="space-y-2">
-                                <div className="flex items-center space-x-2 text-sm text-foreground">
-                                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                                  <span>{new Date(caseItem.lastActionDate).toLocaleDateString()}</span>
-                                </div>
+                             <td className="px-4 py-4 align-top">
+                               <div className="space-y-2">
+                                 <div className="flex items-center space-x-2 text-sm text-foreground">
+                                   <Calendar className="h-4 w-4 text-muted-foreground" />
+                                   <span>{caseItem.lastActionDate ? new Date(caseItem.lastActionDate).toLocaleDateString() : "—"}</span>
+                                 </div>
                                 <div className="text-xs text-muted-foreground">
                                   Last worked on:{" "}
                                   <button

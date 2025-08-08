@@ -54,6 +54,14 @@ All colors MUST be HSL.
     --shadow-fluent-16: 0 3.2px 7.2px 0 rgba(0,0,0,.132), 0 0.6px 1.8px 0 rgba(0,0,0,.108);
     --shadow-fluent-64: 0 25.6px 57.6px 0 rgba(0,0,0,.22), 0 4.8px 14.4px 0 rgba(0,0,0,.18);
 
+    /* Power Portal Okta-like Colors */
+    --portal-background: 220 14% 97%;
+    --portal-card: 0 0% 100%;
+    --portal-primary: 213 93% 57%;
+    --portal-border: 220 13% 91%;
+    --portal-text: 222 84% 7%;
+    --portal-muted: 220 9% 46%;
+
     /* Custom Properties for Fluent Components */
     --fluent-neutral-foreground-1: hsl(var(--foreground));
     --fluent-neutral-foreground-2: hsl(var(--muted-foreground));

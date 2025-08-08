@@ -272,12 +272,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Department</CardTitle>
                         <p className="text-muted-foreground font-fluent">Agency structure and personnel</p>
                       </div>
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <HelpCircle className="h-5 w-5" />
-                          </Button>
-                        </SheetTrigger>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon">
+                             <HelpCircle className="h-6 w-6" />
+                           </Button>
+                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Department Help</SheetTitle>
@@ -314,12 +314,12 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                         <CardTitle className="font-fluent font-semibold">Primary Party</CardTitle>
                         <p className="text-muted-foreground font-fluent">Party information</p>
                       </div>
-                      <Sheet>
-                        <SheetTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <HelpCircle className="h-5 w-5" />
-                          </Button>
-                        </SheetTrigger>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon">
+                             <HelpCircle className="h-6 w-6" />
+                           </Button>
+                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
                             <SheetTitle>Primary Party Help</SheetTitle>
