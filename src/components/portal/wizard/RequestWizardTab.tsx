@@ -10,6 +10,7 @@ interface RequestWizardTabProps {
   onDataChange: (data: any) => void;
   data: any;
   onAddNewRequest?: (type: string) => void;
+  mode?: 'create' | 'view-edit';
 }
 
 const mockRequests = [
@@ -49,7 +50,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: RequestWizardTabProps) {
+export function RequestWizardTab({ onDataChange, data, onAddNewRequest, mode = 'view-edit' }: RequestWizardTabProps) {
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -111,7 +112,22 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest }: Reques
         </CardHeader>
         
         <CardContent className="pt-0">
-          <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
+            {/* Initialing Documents Row - Only in View/Edit Mode */}
+            {mode === 'view-edit' && (
+              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-blue-900">Initialing Documents</h4>
+                    <p className="text-sm text-blue-700">View documents uploaded during case creation</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="text-blue-700 border-blue-300">
+                    View Documents
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
             <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
               <div className="grid grid-cols-3 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
                 <div>Group / Type</div>

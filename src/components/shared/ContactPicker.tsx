@@ -113,6 +113,7 @@ export function ContactPicker({ value, onChange, placeholder, helperText }: Cont
                 variant="ghost"
                 size="sm"
                 className="h-6 w-6 p-0"
+                title="Search contacts"
               >
                 <Search className="h-3 w-3" />
               </Button>
@@ -266,6 +267,23 @@ export function ContactPicker({ value, onChange, placeholder, helperText }: Cont
               </Tabs>
             </DialogContent>
           </Dialog>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-6 w-6 p-0"
+            title="Add new contact"
+            onClick={() => {
+              setIsOpen(true);
+              // Auto-switch to create tab when clicking add icon
+              setTimeout(() => {
+                const createTab = document.querySelector('[data-value="create"]') as HTMLElement;
+                createTab?.click();
+              }, 100);
+            }}
+          >
+            <Plus className="h-3 w-3" />
+          </Button>
         </div>
       </div>
       {helperText && (

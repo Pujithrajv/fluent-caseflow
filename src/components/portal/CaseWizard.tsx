@@ -12,6 +12,7 @@ import { CaseDetailsTab } from "./wizard/CaseDetailsTab";
 import { CaseQuestionsTab } from "./wizard/CaseQuestionsTab";
 import { InvolvedPartiesTab } from "./wizard/InvolvedPartiesTab";
 import { RequestWizardTab } from "./wizard/RequestWizardTab";
+import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 import { RequestWizard } from "./RequestWizard";
 import { MotionWizard } from "./MotionWizard";
@@ -21,7 +22,17 @@ import { CertificatesWizard } from "./CertificatesWizard";
 import { DocumentsWizard } from "./DocumentsWizard";
 import { NoticesWizard } from "./NoticesWizard";
 
-const wizardTabs = [
+const createNewCaseTabs = [
+  { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
+  { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
+  { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
+  { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
+  { id: 'involved-parties', title: 'Involved Parties', description: 'Additional parties' },
+  { id: 'document-upload', title: 'Document Upload', description: 'Upload case documents' },
+  { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
+];
+
+const viewEditTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
   { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
   { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
@@ -156,14 +167,21 @@ const faqData = {
 interface CaseWizardProps {
   onBack?: () => void;
   initialTab?: string;
-  readOnly?: boolean;
+  mode?: 'create' | 'view-edit';
+  caseStatus?: 'draft' | 'submitted' | 'accepted';
+  caseId?: string;
 }
 
-export function CaseWizard({ onBack, initialTab = "department", readOnly = false }: CaseWizardProps) {
+export function CaseWizard({ onBack, initialTab = "department", mode = 'create', caseStatus = 'draft', caseId }: CaseWizardProps) {
   const [formData, setFormData] = useState({});
   const [showRequestWizard, setShowRequestWizard] = useState(false);
   const [currentRequestType, setCurrentRequestType] = useState<string | null>(null);
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
+  const [currentTab, setCurrentTab] = useState(initialTab);
+
+  const isReadOnly = mode === 'view-edit' && caseStatus === 'submitted';
+  const isCreateMode = mode === 'create';
+  const wizardTabs = isCreateMode ? createNewCaseTabs : viewEditTabs;
 
   const updateFormData = (stepData: any) => {
     setFormData(prev => ({ ...prev, ...stepData }));
@@ -176,6 +194,27 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
   const isTabCompleted = (tabId: string) => {
     return completedTabs.includes(tabId);
   };
+
+  const getCurrentTabIndex = () => {
+    return wizardTabs.findIndex(tab => tab.id === currentTab);
+  };
+
+  const handlePrevious = () => {
+    const currentIndex = getCurrentTabIndex();
+    if (currentIndex > 0) {
+      setCurrentTab(wizardTabs[currentIndex - 1].id);
+    }
+  };
+
+  const handleNext = () => {
+    const currentIndex = getCurrentTabIndex();
+    if (currentIndex < wizardTabs.length - 1) {
+      setCurrentTab(wizardTabs[currentIndex + 1].id);
+    }
+  };
+
+  const isFirstTab = getCurrentTabIndex() === 0;
+  const isLastTab = getCurrentTabIndex() === wizardTabs.length - 1;
 
   const handleAddNewRequest = (type: string) => {
     setCurrentRequestType(type);
@@ -234,19 +273,19 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-semibold font-fluent text-foreground">
-              {readOnly ? "" : "Create New Case"}
+              {isCreateMode ? "Create New Case" : `Case ${caseId || 'Details'}`}
             </h1>
             <p className="text-muted-foreground font-fluent">
-              Complete all sections to create a new case
+              {isCreateMode ? "Complete all sections to create a new case" : "View and edit case information"}
             </p>
           </div>
           <Badge variant="outline" className="text-sm px-3 py-1">
-            Status: Draft
+            Status: {caseStatus === 'draft' ? 'Draft' : caseStatus === 'submitted' ? 'Submitted' : 'Accepted'}
           </Badge>
         </div>
 
         {/* Vertical Tabs Layout */}
-        <Tabs defaultValue={initialTab} className="w-full" orientation="vertical">
+        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full" orientation="vertical">
           <div className="flex gap-6">
             {/* Vertical Tab List */}
             <Card className="shadow-fluent-8 w-80">
@@ -312,14 +351,18 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                   </CardHeader>
                    <CardContent className="p-6">
                      <DepartmentTab onDataChange={updateFormData} data={formData} />
-                     <div className="flex justify-end mt-6 pt-4 border-t">
-                       <Button disabled className="opacity-50 cursor-not-allowed mr-auto">
-                         Previous
-                       </Button>
-                       <Button>
-                         Next
-                       </Button>
-                     </div>
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
                    </CardContent>
                 </Card>
               </TabsContent>
@@ -362,14 +405,18 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                   </CardHeader>
                    <CardContent className="p-6">
                      <PrimaryPartyTab onDataChange={updateFormData} data={formData} />
-                     <div className="flex justify-between mt-6 pt-4 border-t">
-                       <Button variant="outline">
-                         Previous
-                       </Button>
-                       <Button>
-                         Next
-                       </Button>
-                     </div>
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
                    </CardContent>
                 </Card>
               </TabsContent>
@@ -412,14 +459,18 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                   </CardHeader>
                    <CardContent className="p-6">
                      <CaseDetailsTab onDataChange={updateFormData} data={formData} />
-                     <div className="flex justify-between mt-6 pt-4 border-t">
-                       <Button variant="outline">
-                         Previous
-                       </Button>
-                       <Button>
-                         Next
-                       </Button>
-                     </div>
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
                    </CardContent>
                 </Card>
               </TabsContent>
@@ -462,14 +513,18 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                   </CardHeader>
                    <CardContent className="p-6">
                      <CaseQuestionsTab onDataChange={updateFormData} data={formData} />
-                     <div className="flex justify-between mt-6 pt-4 border-t">
-                       <Button variant="outline">
-                         Previous
-                       </Button>
-                       <Button>
-                         Next
-                       </Button>
-                     </div>
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
                    </CardContent>
                 </Card>
               </TabsContent>
@@ -512,14 +567,70 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                   </CardHeader>
                    <CardContent className="p-6">
                      <InvolvedPartiesTab onDataChange={updateFormData} data={formData} />
-                     <div className="flex justify-between mt-6 pt-4 border-t">
-                       <Button variant="outline">
-                         Previous
-                       </Button>
-                       <Button>
-                         Next
-                       </Button>
-                     </div>
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
+                   </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="document-upload" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="font-fluent font-semibold">Document Upload</CardTitle>
+                        <p className="text-muted-foreground font-fluent">Upload case documents</p>
+                      </div>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                             <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                           </Button>
+                         </SheetTrigger>
+                        <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                          <SheetHeader>
+                            <SheetTitle>Document Upload Help</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-6">
+                            <Accordion type="single" collapsible className="w-full">
+                              <AccordionItem value="doc-1">
+                                <AccordionTrigger className="text-left">
+                                  What documents should I upload?
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                  Upload any supporting documents relevant to your case, such as contracts, correspondence, permits, or evidence.
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+                    </div>
+                  </CardHeader>
+                   <CardContent className="p-6">
+                     <DocumentUploadTab onDataChange={updateFormData} data={formData} />
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
                    </CardContent>
                 </Card>
               </TabsContent>
@@ -561,19 +672,24 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <RequestWizardTab 
-                       onDataChange={updateFormData} 
-                       data={formData} 
-                       onAddNewRequest={handleAddNewRequest}
-                     />
-                     <div className="flex justify-between mt-6 pt-4 border-t">
-                       <Button variant="outline">
-                         Previous
-                       </Button>
-                       <Button>
-                         Next
-                       </Button>
-                     </div>
+                      <RequestWizardTab 
+                        onDataChange={updateFormData} 
+                        data={formData} 
+                        onAddNewRequest={handleAddNewRequest}
+                        mode={mode}
+                      />
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
                    </CardContent>
                 </Card>
               </TabsContent>
@@ -618,19 +734,23 @@ export function CaseWizard({ onBack, initialTab = "department", readOnly = false
                     </div>
                   </CardHeader>
                   <CardContent className="p-6">
-                    <ReviewSubmitTab formData={formData} />
-                    {/* Submit Case Button - Only on Review & Submit */}
-                    {!readOnly && (
-                      <div className="flex justify-between pt-6 border-t mt-6">
-                        <Button variant="outline">
-                          Previous
-                        </Button>
-                        <Button className="bg-primary hover:bg-primary/90">
-                          <Check className="mr-2 h-4 w-4" />
-                          Submit Case
-                        </Button>
-                      </div>
-                    )}
+                    <ReviewSubmitTab formData={formData} mode={mode} />
+                     {/* Navigation Buttons */}
+                     <div className="flex justify-between pt-6 border-t mt-6">
+                       <Button 
+                         variant="outline" 
+                         onClick={handlePrevious}
+                         disabled={isFirstTab}
+                       >
+                         Previous
+                       </Button>
+                       {isCreateMode ? (
+                         <Button className="bg-primary hover:bg-primary/90">
+                           <Check className="mr-2 h-4 w-4" />
+                           Submit Case
+                         </Button>
+                       ) : null}
+                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>

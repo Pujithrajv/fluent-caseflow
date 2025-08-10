@@ -294,10 +294,7 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 font-fluent">
-            <HelpCircle className="h-5 w-5 text-primary" />
-            <span>Abandon Well Questions</span>
-          </CardTitle>
+          <CardTitle className="font-fluent">Abandon Well Questions</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Question 1: Permittee Number */}

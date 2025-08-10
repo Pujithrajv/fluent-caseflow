@@ -6,9 +6,10 @@ import { format } from "date-fns";
 
 interface ReviewSubmitTabProps {
   formData: any;
+  mode?: 'create' | 'view-edit';
 }
 
-export function ReviewSubmitTab({ formData }: ReviewSubmitTabProps) {
+export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabProps) {
   // Generate reference number and current date
   const referenceNumber = "CASE-000001";
   const submissionDate = format(new Date(), "PPP");
