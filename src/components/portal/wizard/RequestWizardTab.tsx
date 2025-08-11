@@ -101,8 +101,8 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                 <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
                   Certificates
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("documents")}>
-                  Documents
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("pleadings")}>
+                  Pleadings
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
                   Notices
@@ -201,8 +201,8 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                   <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
                     Certificates
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("documents")}>
-                    Documents
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("pleadings")}>
+                    Pleadings
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
                     Notices

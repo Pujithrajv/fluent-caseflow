@@ -70,6 +70,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				status: {
+					draft: 'hsl(var(--status-draft))',
+					'draft-foreground': 'hsl(var(--status-draft-foreground))',
+					submitted: 'hsl(var(--status-submitted))',
+					'submitted-foreground': 'hsl(var(--status-submitted-foreground))',
+					accepted: 'hsl(var(--status-accepted))',
+					'accepted-foreground': 'hsl(var(--status-accepted-foreground))',
+					rejected: 'hsl(var(--status-rejected))',
+					'rejected-foreground': 'hsl(var(--status-rejected-foreground))',
+					'in-progress': 'hsl(var(--status-in-progress))',
+					'in-progress-foreground': 'hsl(var(--status-in-progress-foreground))',
+					completed: 'hsl(var(--status-completed))',
+					'completed-foreground': 'hsl(var(--status-completed-foreground))'
 				}
 			},
 			borderRadius: {

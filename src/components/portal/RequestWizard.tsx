@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Check, HelpCircle } from "lucide-react";
@@ -91,11 +92,25 @@ const faqData = {
 
 interface RequestWizardProps {
   onBack?: () => void;
+  requestType?: string;
+  status?: "draft" | "submitted" | "accepted" | "rejected" | "in-progress" | "completed";
 }
 
-export function RequestWizard({ onBack }: RequestWizardProps) {
+export function RequestWizard({ onBack, requestType, status = "draft" }: RequestWizardProps) {
   const [formData, setFormData] = useState({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
+
+  const getRequestTitle = (type?: string) => {
+    switch (type?.toLowerCase()) {
+      case 'motion': case 'motions': return 'New Motion';
+      case 'exhibit': return 'New Exhibit';
+      case 'discovery': return 'New Discovery Request';
+      case 'certificates': case 'certificate': return 'New Certificate Request';
+      case 'pleadings': case 'documents': return 'New Pleading Submission';
+      case 'notices': case 'notice': return 'New Notice Filing';
+      default: return 'Add New Request';
+    }
+  };
 
   const updateFormData = (stepData: any) => {
     setFormData(prev => ({ ...prev, ...stepData }));
@@ -112,18 +127,21 @@ export function RequestWizard({ onBack }: RequestWizardProps) {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-6xl space-y-6">
-        {/* Header */}
+        {/* Dynamic Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-semibold font-fluent text-foreground">Add New Request</h1>
+            <h1 className="text-3xl font-semibold font-fluent text-foreground">{getRequestTitle(requestType)}</h1>
             <p className="text-muted-foreground font-fluent">
-              Complete all sections to submit your request
+              Complete all sections to create a new case.
             </p>
           </div>
-          <Button variant="ghost" size="sm" onClick={onBack}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Case
-          </Button>
+          <div className="flex items-center gap-4">
+            <StatusBadge status={status} />
+            <Button variant="ghost" size="sm" onClick={onBack}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Case
+            </Button>
+          </div>
         </div>
 
         {/* Vertical Tabs Layout */}

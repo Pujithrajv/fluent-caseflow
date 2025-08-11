@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Search, Filter, FileText, Calendar, User, Shield, Car, Eye, HelpCircle, Settings, LogOut, Clock, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -431,18 +432,18 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                               </div>
                             </td>
                              <td className="px-4 py-4 align-top">
-                              <div className="space-y-2">
-                                <Badge className={getStatusColor(caseItem.status)} variant="secondary">
-                                  {caseItem.status}
-                                </Badge>
+                               <div className="space-y-2">
+                                 <StatusBadge status={caseItem.status as "draft" | "submitted" | "accepted" | "rejected" | "in-progress" | "completed"}>
+                                   {caseItem.status.charAt(0).toUpperCase() + caseItem.status.slice(1)}
+                                 </StatusBadge>
+                                  <p className="text-xs text-muted-foreground">
+                                    {caseItem.status === "draft" ? "Pending Submission" : caseItem.stage}
+                                  </p>
                                  <p className="text-xs text-muted-foreground">
-                                   {caseItem.status === "draft" ? "Pending Submission" : caseItem.stage}
+                                   <span className="font-medium">Stage:</span> {caseItem.stage}
                                  </p>
-                                <p className="text-xs text-muted-foreground">
-                                  <span className="font-medium">Stage:</span> {caseItem.stage}
-                                </p>
-                              </div>
-                            </td>
+                               </div>
+                             </td>
                              <td className="px-4 py-4 align-top">
                                  <div className="space-y-2">
                                   <div className="flex items-center space-x-2 text-sm text-foreground">

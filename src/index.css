@@ -62,6 +62,20 @@ All colors MUST be HSL.
     --portal-text: 222 84% 7%;
     --portal-muted: 220 9% 46%;
 
+    /* Status Badge Colors - Pill Style */
+    --status-draft: 195 100% 85%;
+    --status-draft-foreground: 0 0% 0%;
+    --status-submitted: 45 100% 85%;
+    --status-submitted-foreground: 0 0% 0%;
+    --status-accepted: 120 50% 85%;
+    --status-accepted-foreground: 0 0% 0%;
+    --status-rejected: 0 70% 85%;
+    --status-rejected-foreground: 0 0% 0%;
+    --status-in-progress: 39 100% 85%;
+    --status-in-progress-foreground: 0 0% 0%;
+    --status-completed: 109 58% 85%;
+    --status-completed-foreground: 0 0% 0%;
+
     /* Custom Properties for Fluent Components */
     --fluent-neutral-foreground-1: hsl(var(--foreground));
     --fluent-neutral-foreground-2: hsl(var(--muted-foreground));
