@@ -6,6 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import SignInSelection from "./pages/SignInSelection";
+import ExternalSignIn from "./pages/ExternalSignIn";
+import OktaSignIn from "./pages/OktaSignIn";
+import Profile from "./pages/Profile";
 import Consent from "./pages/Consent";
 import PortalDashboard from "./pages/PortalDashboard";
 import NotFound from "./pages/NotFound";
@@ -21,8 +25,12 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/portal" element={<Index />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<SignInSelection />} />
+          <Route path="/sign-in" element={<SignInSelection />} />
+          <Route path="/login-external" element={<ExternalSignIn />} />
+          <Route path="/login-okta" element={<OktaSignIn />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/consent" element={<Consent />} />
           <Route path="/dashboard" element={<PortalDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
