@@ -75,7 +75,7 @@ const mockCases: CaseItem[] = [
     lastWizardTab: "primary-party"
   },
   {
-    id: "CASE-2024-004",
+    id: "DBE-2024-004-EC",
     name: "Device Calibration – West Region",
     description: "Weights & Measures Inspections",
     caseNumber: "2025-00412",
@@ -91,7 +91,7 @@ const mockCases: CaseItem[] = [
     lastWizardTab: "review-submit"
   },
   {
-    id: "CASE-2024-005",
+    id: "DBE-2024-005-EC",
     name: "Food Safety – Routine Inspection",
     description: "Food Safety",
     caseNumber: "2025-00413",
