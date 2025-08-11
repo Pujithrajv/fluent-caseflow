@@ -5,13 +5,16 @@ import { CheckCircle, Edit, Eye, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 
 interface ReviewSubmitTabProps {
-  formData: any;
+  data: any;
+  isLastTab?: boolean;
   mode?: 'create' | 'view-edit';
+  caseStatus?: 'draft' | 'submitted' | 'accepted';
+  caseNumber?: string;
 }
 
-export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabProps) {
+export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus = 'draft', caseNumber }: ReviewSubmitTabProps) {
   // Generate reference number and current date
-  const referenceNumber = "CASE-000001";
+  const referenceNumber = caseNumber || "DBE-2024-001-EC";
   const submissionDate = format(new Date(), "PPP");
 
   // Helper function to get display value
@@ -38,23 +41,27 @@ export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabPr
           <CardContent className="space-y-3">
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Department</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.department)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.department)}</p>
             </div>
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Division</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.division)}</p>
+              <p className="text-sm font-fluent text-muted-foreground">Section</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.section)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Reference Number</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.referenceNumber)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Coordinator</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.caseCoordinator)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.caseCoordinator)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Assigned Attorney</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.assignedAttorney)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.assignedAttorney)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Final Decision Maker</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.finalDecisionMaker)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.finalDecisionMaker)}</p>
             </div>
           </CardContent>
         </Card>
@@ -80,15 +87,15 @@ export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabPr
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Name</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.caseName)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.caseName)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Type</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.caseType)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.caseType)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Description</p>
-              <p className="font-medium font-fluent text-sm">{getDisplayValue(formData.caseDescription)}</p>
+              <p className="font-medium font-fluent text-sm">{getDisplayValue(data.caseDescription)}</p>
             </div>
           </CardContent>
         </Card>
@@ -106,23 +113,23 @@ export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabPr
           <CardContent className="space-y-3">
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Party Type</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.partyType)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.partyType)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Party Name</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.partyName || formData.firstName + ' ' + formData.lastName)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.partyName || (data.firstName && data.lastName ? data.firstName + ' ' + data.lastName : ''))}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Email</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.email)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.email)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Phone</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.phone)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.phone)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Represented</p>
-              <Badge variant="secondary">{getDisplayValue(formData.isRepresented)}</Badge>
+              <Badge variant="secondary">{getDisplayValue(data.isRepresented)}</Badge>
             </div>
           </CardContent>
         </Card>
@@ -140,19 +147,19 @@ export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabPr
           <CardContent className="space-y-3">
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Well Location Description</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.wellLocation)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.wellLocation)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Well Type</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.wellType)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.wellType)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Environmental Impact</p>
-              <p className="font-medium font-fluent">{getDisplayValue(formData.environmentalImpact)}</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.environmentalImpact)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Additional Comments</p>
-              <p className="font-medium font-fluent text-sm">{getDisplayValue(formData.additionalComments)}</p>
+              <p className="font-medium font-fluent text-sm">{getDisplayValue(data.additionalComments)}</p>
             </div>
           </CardContent>
         </Card>
@@ -168,18 +175,18 @@ export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabPr
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            {formData.involvedParties && formData.involvedParties.length > 0 ? (
+            {data.involvedParties && data.involvedParties.length > 0 ? (
               <>
-                {formData.involvedParties.map((party: any, index: number) => (
+                {data.involvedParties.map((party: any, index: number) => (
                   <div key={index} className="border-b pb-2 last:border-b-0">
                     <p className="text-sm font-fluent text-muted-foreground">Party {index + 2}</p>
-                    <p className="font-medium font-fluent">{getDisplayValue(party.name || party.firstName + ' ' + party.lastName)}</p>
+                    <p className="font-medium font-fluent">{getDisplayValue(party.name || (party.firstName && party.lastName ? party.firstName + ' ' + party.lastName : ''))}</p>
                     <p className="text-xs text-muted-foreground">{getDisplayValue(party.role)}</p>
                   </div>
                 ))}
                 <div>
                   <p className="text-sm font-fluent text-muted-foreground">Total Parties</p>
-                  <Badge variant="secondary">{formData.involvedParties.length + 1} Parties</Badge>
+                  <Badge variant="secondary">{data.involvedParties.length + 1} Parties</Badge>
                 </div>
               </>
             ) : (
@@ -205,14 +212,14 @@ export function ReviewSubmitTab({ formData, mode = 'create' }: ReviewSubmitTabPr
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {formData.requests && formData.requests.length > 0 ? (
+            {data.requests && data.requests.length > 0 ? (
               <>
                 <div>
                   <p className="text-sm font-fluent text-muted-foreground">Total Requests</p>
-                  <p className="font-medium font-fluent">{formData.requests.length} Request{formData.requests.length !== 1 ? 's' : ''}</p>
+                  <p className="font-medium font-fluent">{data.requests.length} Request{data.requests.length !== 1 ? 's' : ''}</p>
                 </div>
                 <div className="space-y-3">
-                  {formData.requests.map((request: any, index: number) => (
+                  {data.requests.map((request: any, index: number) => (
                     <div key={index} className="border border-border rounded-lg p-3">
                       <div className="flex items-center justify-between">
                         <div>

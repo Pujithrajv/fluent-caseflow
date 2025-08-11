@@ -13,9 +13,11 @@ import { useState } from "react";
 interface DepartmentTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  isReadOnly?: boolean;
+  isPartiallyEditable?: boolean;
 }
 
-export function DepartmentTab({ onDataChange, data }: DepartmentTabProps) {
+export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartiallyEditable = false }: DepartmentTabProps) {
   const [caseCoordinator, setCaseCoordinator] = useState(null);
   const [assignedAttorney, setAssignedAttorney] = useState(null);
   const [finalDecisionMaker, setFinalDecisionMaker] = useState(null);

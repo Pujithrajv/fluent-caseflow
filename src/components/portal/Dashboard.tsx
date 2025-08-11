@@ -379,7 +379,13 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                <Button 
                                  variant="outline" 
                                  size="sm"
-                                 onClick={() => onViewCase(caseItem.id)}
+                                 onClick={() => {
+                                   if (caseItem.status === 'draft') {
+                                     onEditCase?.(caseItem.id, caseItem.lastWizardTab);
+                                   } else {
+                                     onViewCase(caseItem.id);
+                                   }
+                                 }}
                                  className="p-2"
                                >
                                  <Eye className="h-4 w-4" />

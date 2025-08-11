@@ -168,7 +168,7 @@ export function DocumentsWizard({ onBack }: DocumentsWizardProps) {
                       {tab.id === 'documents-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'review' && <ReviewSubmitTab formData={formData} />}
+                      {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
                   </Card>
                 </TabsContent>

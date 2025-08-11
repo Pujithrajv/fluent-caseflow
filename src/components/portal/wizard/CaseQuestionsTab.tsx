@@ -13,6 +13,7 @@ import { HelpCircle, Plus, Trash2, AlertTriangle } from "lucide-react";
 interface CaseQuestionsTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  isReadOnly?: boolean;
 }
 
 interface UnpaidFeeEntry {
@@ -21,7 +22,7 @@ interface UnpaidFeeEntry {
   amount: string;
 }
 
-export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) {
+export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false }: CaseQuestionsTabProps) {
   const [permitteeNumber, setPermitteeNumber] = useState("");
   const [permitNumber, setPermitNumber] = useState("");
   const [numberOfWells, setNumberOfWells] = useState("");
@@ -293,9 +294,6 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
-        <CardHeader>
-          <CardTitle className="font-fluent">Abandon Well Questions</CardTitle>
-        </CardHeader>
         <CardContent className="space-y-6">
           {/* Question 1: Permittee Number */}
           <div className="space-y-2">
@@ -307,6 +305,7 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
               placeholder="Enter permittee number"
               className="shadow-fluent-8 border-input-border"
               max={999999}
+              readOnly={isReadOnly}
             />
             {permitteeNumber && !validateInteger(permitteeNumber, 1000000) && (
               <Alert className="border-warning bg-warning/10">
@@ -328,6 +327,7 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
               placeholder="Enter permit number"
               className="shadow-fluent-8 border-input-border"
               max={999999}
+              readOnly={isReadOnly}
             />
             {permitNumber && !validateInteger(permitNumber, 1000000) && (
               <Alert className="border-warning bg-warning/10">
@@ -349,6 +349,7 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
               placeholder="Enter number of wells"
               className="shadow-fluent-8 border-input-border"
               max={499}
+              readOnly={isReadOnly}
             />
             {numberOfWells && !validateInteger(numberOfWells, 500) && (
               <Alert className="border-warning bg-warning/10">
@@ -363,7 +364,7 @@ export function CaseQuestionsTab({ onDataChange, data }: CaseQuestionsTabProps) 
           {/* Question 4: Case Initiated Reason (Dropdown) */}
           <div className="space-y-2">
             <Label className="font-fluent">This Case is initiated because of:</Label>
-            <Select value={caseInitiatedReason} onValueChange={setCaseInitiatedReason}>
+            <Select value={caseInitiatedReason} onValueChange={setCaseInitiatedReason} disabled={isReadOnly}>
               <SelectTrigger className="shadow-fluent-8 border-input-border bg-background">
                 <SelectValue placeholder="Select reason" />
               </SelectTrigger>

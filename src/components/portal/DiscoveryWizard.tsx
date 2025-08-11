@@ -212,7 +212,7 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
                       {tab.id === 'deposition-questions' && <DepositionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'inspection-questions' && <InspectionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'review' && <ReviewSubmitTab formData={formData} />}
+                      {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
                   </Card>
                 </TabsContent>

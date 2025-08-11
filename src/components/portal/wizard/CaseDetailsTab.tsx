@@ -16,6 +16,7 @@ import { useState } from "react";
 interface CaseDetailsTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  isReadOnly?: boolean;
 }
 
 export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {

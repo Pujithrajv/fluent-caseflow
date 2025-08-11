@@ -7,10 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, FileText, Calendar, User, ChevronDown, Search, Eye, HelpCircle } from "lucide-react";
 
 interface RequestWizardTabProps {
-  onDataChange: (data: any) => void;
-  data: any;
   onAddNewRequest?: (type: string) => void;
-  mode?: 'create' | 'view-edit';
+  data: any;
+  isReadOnly?: boolean;
+  isPartiallyEditable?: boolean;
 }
 
 const mockRequests = [
@@ -50,7 +50,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export function RequestWizardTab({ onDataChange, data, onAddNewRequest, mode = 'view-edit' }: RequestWizardTabProps) {
+export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, isPartiallyEditable = false }: RequestWizardTabProps) {
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -112,8 +112,8 @@ export function RequestWizardTab({ onDataChange, data, onAddNewRequest, mode = '
         </CardHeader>
         
         <CardContent className="pt-0">
-            {/* Initialing Documents Row - Only in View/Edit Mode */}
-            {mode === 'view-edit' && (
+            {/* Initialing Documents Row - Only when partially editable (accepted status) */}
+            {isPartiallyEditable && (
               <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>

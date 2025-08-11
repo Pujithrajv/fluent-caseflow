@@ -13,6 +13,7 @@ import { useState } from "react";
 interface InvolvedPartiesTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  isReadOnly?: boolean;
 }
 
 const mockParties = [

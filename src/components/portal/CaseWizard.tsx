@@ -32,7 +32,17 @@ const createNewCaseTabs = [
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
-const viewEditTabs = [
+const viewEditSubmittedTabs = [
+  { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
+  { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
+  { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
+  { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
+  { id: 'involved-parties', title: 'Involved Parties', description: 'Additional parties' },
+  { id: 'document-upload', title: 'Document Upload', description: 'Uploaded case documents' },
+  { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
+];
+
+const viewEditAcceptedTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
   { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
   { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
@@ -181,7 +191,23 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
 
   const isReadOnly = mode === 'view-edit' && caseStatus === 'submitted';
   const isCreateMode = mode === 'create';
-  const wizardTabs = isCreateMode ? createNewCaseTabs : viewEditTabs;
+  const isPartiallyEditable = mode === 'view-edit' && caseStatus === 'accepted';
+  
+  // Generate case number format: DBE-YYYY-###-EC
+  const generateCaseNumber = () => {
+    const year = new Date().getFullYear();
+    const number = Math.floor(Math.random() * 999) + 1;
+    return `DBE-${year}-${number.toString().padStart(3, '0')}-EC`;
+  };
+  
+  let wizardTabs;
+  if (isCreateMode) {
+    wizardTabs = createNewCaseTabs;
+  } else if (caseStatus === 'submitted') {
+    wizardTabs = viewEditSubmittedTabs;
+  } else {
+    wizardTabs = viewEditAcceptedTabs;
+  }
 
   const updateFormData = (stepData: any) => {
     setFormData(prev => ({ ...prev, ...stepData }));
@@ -350,7 +376,12 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <DepartmentTab onDataChange={updateFormData} data={formData} />
+                     <DepartmentTab 
+                       onDataChange={updateFormData} 
+                       data={formData} 
+                       isReadOnly={isReadOnly}
+                       isPartiallyEditable={isPartiallyEditable}
+                     />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -404,7 +435,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <PrimaryPartyTab onDataChange={updateFormData} data={formData} />
+                     <PrimaryPartyTab 
+                       onDataChange={updateFormData} 
+                       data={formData}
+                       isReadOnly={isReadOnly}
+                     />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -458,7 +493,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <CaseDetailsTab onDataChange={updateFormData} data={formData} />
+                     <CaseDetailsTab 
+                       onDataChange={updateFormData} 
+                       data={formData}
+                       isReadOnly={isReadOnly}
+                     />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -512,7 +551,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <CaseQuestionsTab onDataChange={updateFormData} data={formData} />
+                     <CaseQuestionsTab 
+                       onDataChange={updateFormData} 
+                       data={formData}
+                       isReadOnly={isReadOnly}
+                     />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -566,7 +609,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <InvolvedPartiesTab onDataChange={updateFormData} data={formData} />
+                     <InvolvedPartiesTab 
+                       onDataChange={updateFormData} 
+                       data={formData}
+                       isReadOnly={isReadOnly}
+                     />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -672,12 +719,12 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                      <RequestWizardTab 
-                        onDataChange={updateFormData} 
-                        data={formData} 
-                        onAddNewRequest={handleAddNewRequest}
-                        mode={mode}
-                      />
+                     <RequestWizardTab 
+                       onAddNewRequest={handleAddNewRequest} 
+                       data={formData}
+                       isReadOnly={isReadOnly}
+                       isPartiallyEditable={isPartiallyEditable}
+                     />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -734,7 +781,13 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                   <CardContent className="p-6">
-                    <ReviewSubmitTab formData={formData} mode={mode} />
+                     <ReviewSubmitTab 
+                       data={formData} 
+                       isLastTab={isLastTab}
+                       mode={mode}
+                       caseStatus={caseStatus}
+                       caseNumber={generateCaseNumber()}
+                     />
                      {/* Navigation Buttons */}
                      <div className="flex justify-between pt-6 border-t mt-6">
                        <Button 

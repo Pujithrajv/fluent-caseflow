@@ -11,6 +11,7 @@ import { useState } from "react";
 interface PrimaryPartyTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  isReadOnly?: boolean;
 }
 
 interface PrimaryPartyData {

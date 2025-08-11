@@ -318,7 +318,7 @@ export function RequestWizard({ onBack }: RequestWizardProps) {
                     </div>
                   </CardHeader>
                   <CardContent className="p-6">
-                    <ReviewSubmitTab formData={formData} />
+                    <ReviewSubmitTab data={formData} />
                   </CardContent>
                 </Card>
               </TabsContent>

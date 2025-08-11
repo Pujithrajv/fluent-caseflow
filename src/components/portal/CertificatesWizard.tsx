@@ -174,7 +174,7 @@ export function CertificatesWizard({ onBack }: CertificatesWizardProps) {
                       {tab.id === 'certificates-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'certificates-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'review' && <ReviewSubmitTab formData={formData} />}
+                      {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
                   </Card>
                 </TabsContent>

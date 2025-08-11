@@ -168,7 +168,7 @@ export function NoticesWizard({ onBack }: NoticesWizardProps) {
                       {tab.id === 'notices-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'notices-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'review' && <ReviewSubmitTab formData={formData} />}
+                      {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
                   </Card>
                 </TabsContent>
