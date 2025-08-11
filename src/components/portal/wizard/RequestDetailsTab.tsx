@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 interface RequestDetailsTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  requestType?: string;
 }
 
 interface CustomQuestion {
@@ -24,7 +25,7 @@ interface CustomQuestion {
   answer: boolean;
 }
 
-export function RequestDetailsTab({ onDataChange, data }: RequestDetailsTabProps) {
+export function RequestDetailsTab({ onDataChange, data, requestType = "motion" }: RequestDetailsTabProps) {
   const [motionType, setMotionType] = useState("");
   const [consultOtherSide, setConsultOtherSide] = useState(false);
   const [outcome, setOutcome] = useState("");
@@ -91,82 +92,98 @@ export function RequestDetailsTab({ onDataChange, data }: RequestDetailsTabProps
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
             <FileText className="h-5 w-5 text-primary" />
-            <span>Motion Details</span>
+            <span>{requestType === "exhibit" ? "Exhibit Details" : "Motion Details"}</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <TooltipProvider>
-            {/* Type of Motion */}
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Label htmlFor="motionType" className="font-fluent font-semibold text-sm">Type of Motion *</Label>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Select the specific type of motion you are filing</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <Select value={motionType} onValueChange={setMotionType}>
-                <SelectTrigger className="shadow-fluent-8 border-input-border">
-                  <SelectValue placeholder="Select motion type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {motionTypeOptions.map((option) => (
-                    <SelectItem key={option} value={option}>{option}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {/* Only show motion-specific fields for motion requests */}
+            {requestType === "motion" && (
+              <>
+                {/* Type of Motion */}
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Label htmlFor="motionType" className="font-fluent font-semibold text-sm">Type of Motion *</Label>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Select the specific type of motion you are filing</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <Select value={motionType} onValueChange={setMotionType}>
+                    <SelectTrigger className="shadow-fluent-8 border-input-border">
+                      <SelectValue placeholder="Select motion type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {motionTypeOptions.map((option) => (
+                        <SelectItem key={option} value={option}>{option}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            {/* Consult Other Side */}
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2">
-                <Label htmlFor="consultOtherSide" className="font-fluent font-semibold text-sm">Consult other side?</Label>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Did you consult with the opposing party before filing this motion?</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="consultOtherSide"
-                  checked={consultOtherSide}
-                  onCheckedChange={setConsultOtherSide}
+                {/* Consult Other Side */}
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Label htmlFor="consultOtherSide" className="font-fluent font-semibold text-sm">Consult other side?</Label>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Did you consult with the opposing party before filing this motion?</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="consultOtherSide"
+                      checked={consultOtherSide}
+                      onCheckedChange={setConsultOtherSide}
+                    />
+                    <Label htmlFor="consultOtherSide" className="text-sm">
+                      {consultOtherSide ? "Yes" : "No"}
+                    </Label>
+                  </div>
+                </div>
+
+                {/* What was the outcome */}
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Label htmlFor="outcome" className="font-fluent font-semibold text-sm">What was the outcome?</Label>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Describe the outcome of consulting with the other side or why consultation was not possible</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <Textarea 
+                    id="outcome"
+                    value={outcome}
+                    onChange={(e) => setOutcome(e.target.value)}
+                    placeholder="Describe the outcome or explain why consultation was not possible..."
+                    className="shadow-fluent-8 border-input-border min-h-24"
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Exhibit-specific fields can be added here for exhibit requests */}
+            {requestType === "exhibit" && (
+              <div className="space-y-2">
+                <Label className="font-fluent font-semibold text-sm">Exhibit Description *</Label>
+                <Textarea 
+                  placeholder="Describe the exhibit you are submitting..."
+                  className="shadow-fluent-8 border-input-border min-h-24"
                 />
-                <Label htmlFor="consultOtherSide" className="text-sm">
-                  {consultOtherSide ? "Yes" : "No"}
-                </Label>
               </div>
-            </div>
-
-            {/* What was the outcome */}
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Label htmlFor="outcome" className="font-fluent font-semibold text-sm">What was the outcome?</Label>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Describe the outcome of consulting with the other side or why consultation was not possible</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <Textarea 
-                id="outcome"
-                value={outcome}
-                onChange={(e) => setOutcome(e.target.value)}
-                placeholder="Describe the outcome or explain why consultation was not possible..."
-                className="shadow-fluent-8 border-input-border min-h-24"
-              />
-            </div>
+            )}
 
             {/* Custom Questions Section */}
             <div className="space-y-4 pt-4 border-t">

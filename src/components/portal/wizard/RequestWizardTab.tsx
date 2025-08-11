@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -5,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, FileText, Calendar, User, ChevronDown, Search, Eye, HelpCircle } from "lucide-react";
+import { DocumentViewerModal } from "../DocumentViewerModal";
 
 interface RequestWizardTabProps {
   onAddNewRequest?: (type: string) => void;
@@ -51,6 +53,8 @@ const getStatusColor = (status: string) => {
 };
 
 export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, isPartiallyEditable = false }: RequestWizardTabProps) {
+  const [showDocumentModal, setShowDocumentModal] = useState(false);
+
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -122,7 +126,12 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                     <h4 className="font-medium text-blue-900">Initialing Documents</h4>
                     <p className="text-sm text-blue-700">View documents uploaded during case creation</p>
                   </div>
-                  <Button variant="outline" size="sm" className="text-blue-700 border-blue-300">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-blue-700 border-blue-300"
+                    onClick={() => setShowDocumentModal(true)}
+                  >
                     View Documents
                   </Button>
                 </div>
@@ -213,6 +222,11 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
           )}
         </CardContent>
       </Card>
+      
+      <DocumentViewerModal 
+        open={showDocumentModal}
+        onOpenChange={setShowDocumentModal}
+      />
     </div>
   );
 }

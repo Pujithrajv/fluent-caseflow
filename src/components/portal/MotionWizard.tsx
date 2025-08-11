@@ -13,7 +13,6 @@ import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
 const motionTabs = [
   { id: 'motion-details', title: 'Motion Details', description: 'Motion information and summary' },
-  { id: 'motion-questions', title: 'Motion Type Questions', description: 'Type-specific questions' },
   { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit motion' }
 ];
@@ -172,7 +171,6 @@ export function MotionWizard({ onBack }: MotionWizardProps) {
                     </CardHeader>
                     <CardContent className="p-6">
                       {tab.id === 'motion-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'motion-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
