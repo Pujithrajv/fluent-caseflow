@@ -4,9 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, FileText, Calendar, User, ChevronDown, Search, Eye, HelpCircle, Download, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Plus, FileText, Calendar, User, ChevronDown, Search, Eye, HelpCircle } from "lucide-react";
 
 interface RequestWizardTabProps {
   onAddNewRequest?: (type: string) => void;
@@ -52,26 +50,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const mockDocuments = [
-  {
-    id: 1,
-    name: "Environmental_Report_2024.pdf",
-    type: "Environmental Report",
-    size: "2.4 MB",
-    uploadedDate: "2024-01-15"
-  },
-  {
-    id: 2,
-    name: "Site_Plans.dwg",
-    type: "Technical Drawing",
-    size: "5.1 MB", 
-    uploadedDate: "2024-01-14"
-  }
-];
-
 export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, isPartiallyEditable = false }: RequestWizardTabProps) {
-  const [showDocumentsModal, setShowDocumentsModal] = useState(false);
-
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -121,8 +100,8 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                 <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
                   Certificates
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("pleadings")}>
-                  Pleadings
+                <DropdownMenuItem onClick={() => onAddNewRequest?.("documents")}>
+                  Documents
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
                   Notices
@@ -141,7 +120,7 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                     <h4 className="font-medium text-blue-900">Initialing Documents</h4>
                     <p className="text-sm text-blue-700">View documents uploaded during case creation</p>
                   </div>
-                  <Button variant="outline" size="sm" className="text-blue-700 border-blue-300" onClick={() => setShowDocumentsModal(true)}>
+                  <Button variant="outline" size="sm" className="text-blue-700 border-blue-300">
                     View Documents
                   </Button>
                 </div>
@@ -220,8 +199,8 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                   <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
                     Certificates
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("pleadings")}>
-                    Pleadings
+                  <DropdownMenuItem onClick={() => onAddNewRequest?.("documents")}>
+                    Documents
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
                     Notices
@@ -232,77 +211,6 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
           )}
         </CardContent>
       </Card>
-
-      {/* Documents Modal */}
-      <Dialog open={showDocumentsModal} onOpenChange={setShowDocumentsModal}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Initialing Documents</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Documents uploaded during case creation
-            </p>
-            
-            {mockDocuments.length > 0 ? (
-              <div className="overflow-hidden rounded-lg border border-border">
-                <table className="w-full">
-                  <thead className="bg-muted/50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Document
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Type
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Size
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Uploaded
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border bg-card">
-                    {mockDocuments.map((doc) => (
-                      <tr key={doc.id} className="hover:bg-muted/30 transition-colors">
-                        <td className="px-4 py-4">
-                          <div className="flex items-center space-x-3">
-                            <FileText className="h-5 w-5 text-primary" />
-                            <span className="font-medium text-foreground">{doc.name}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className="text-sm text-foreground">{doc.type}</span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className="text-sm text-foreground">{doc.size}</span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className="text-sm text-foreground">{doc.uploadedDate}</span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <Button variant="ghost" size="sm">
-                            <Download className="h-4 w-4" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center">
-                <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No documents found</p>
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

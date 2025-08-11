@@ -13,6 +13,7 @@ import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
 const exhibitTabs = [
   { id: 'exhibit-details', title: 'Exhibit Details', description: 'Exhibit information and description' },
+  { id: 'exhibit-questions', title: 'Exhibit Questions', description: 'Type-specific questions' },
   { id: 'documents', title: 'Documents', description: 'Upload exhibit files' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit exhibit' }
 ];
@@ -171,6 +172,7 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
                     </CardHeader>
                     <CardContent className="p-6">
                       {tab.id === 'exhibit-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'exhibit-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
