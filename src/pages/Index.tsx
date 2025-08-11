@@ -12,7 +12,7 @@ const Index = () => {
     
     // Mock case status detection based on caseId
     let status: 'draft' | 'submitted' | 'accepted';
-    if (caseId === "CASE-2024-004" || caseId === "CASE-2024-005") {
+    if (caseId === "CASE-2024-004" || caseId === "CASE-2024-005" || caseId === "DBE-2024-001-EC") {
       status = 'accepted';
     } else if (caseId === "CASE-2024-001") {
       status = 'submitted';
