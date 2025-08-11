@@ -47,12 +47,16 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
               <p className="font-medium font-fluent">{getDisplayValue(data.department)}</p>
             </div>
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Section</p>
-              <p className="font-medium font-fluent">{getDisplayValue(data.section)}</p>
+              <p className="text-sm font-fluent text-muted-foreground">Division</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.division)}</p>
             </div>
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Reference Number</p>
-              <p className="font-medium font-fluent">{getDisplayValue(data.referenceNumber)}</p>
+              <p className="text-sm font-fluent text-muted-foreground">Bureau</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.bureau)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Case Type</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.caseType)}</p>
             </div>
             <div>
               <p className="text-sm font-fluent text-muted-foreground">Case Coordinator</p>
@@ -137,33 +141,69 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
           </CardContent>
         </Card>
 
-        {/* Case Questions */}
+        {/* Case Details Additional */}
         <Card className="shadow-fluent-8">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="font-fluent">Abandon Well Questions</CardTitle>
-              <Button variant="ghost" size="sm">
-                <Edit className="h-4 w-4" />
-              </Button>
+              <CardTitle className="font-fluent">Case Details</CardTitle>
+              {!isReadOnly && (
+                <Button variant="ghost" size="sm">
+                  <Edit className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Well Location Description</p>
-              <p className="font-medium font-fluent">{getDisplayValue(data.wellLocation)}</p>
+              <p className="text-sm font-fluent text-muted-foreground">Accessibility Options</p>
+              <p className="font-medium font-fluent">{Array.isArray(data.accessibilityOptions) ? data.accessibilityOptions.join(', ') : getDisplayValue(data.accessibilityOptions)}</p>
             </div>
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Well Type</p>
-              <p className="font-medium font-fluent">{getDisplayValue(data.wellType)}</p>
+              <p className="text-sm font-fluent text-muted-foreground">Initiating Action Date</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.initiatingActionDate)}</p>
             </div>
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Environmental Impact</p>
-              <p className="font-medium font-fluent">{getDisplayValue(data.environmentalImpact)}</p>
+              <p className="text-sm font-fluent text-muted-foreground">Responsive Action Date</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.responsiveActionDate)}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Abandon Well Questions */}
+        <Card className="shadow-fluent-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="font-fluent">Abandon Well Questions</CardTitle>
+              {!isReadOnly && (
+                <Button variant="ghost" size="sm">
+                  <Edit className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Permittee Number</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.permitteeNumber)}</p>
             </div>
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Additional Comments</p>
-              <p className="font-medium font-fluent text-sm">{getDisplayValue(data.additionalComments)}</p>
+              <p className="text-sm font-fluent text-muted-foreground">Permit Number</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.permitNumber)}</p>
             </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Number of Wells</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.numberOfWells)}</p>
+            </div>
+            <div>
+              <p className="text-sm font-fluent text-muted-foreground">Case Initiated Reason</p>
+              <p className="font-medium font-fluent">{getDisplayValue(data.caseInitiatedReason)}</p>
+            </div>
+            {data.productionIssue && (
+              <div>
+                <p className="text-sm font-fluent text-muted-foreground">Production Issue</p>
+                <p className="font-medium font-fluent">{getDisplayValue(data.productionIssue)}</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 

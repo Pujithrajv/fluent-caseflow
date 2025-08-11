@@ -30,6 +30,23 @@ interface CaseItem {
 
 const mockCases: CaseItem[] = [
   {
+    id: "DBE-2024-001-EC",
+    name: "Grain Dealer and Warehouse Licensing - Kirby Neroni",
+    description: "Grain Dealer and Warehouse Licensing",
+    caseNumber: "DBE-2024-001-EC",
+    department: "Department of Agriculture",
+    section: "Division of Agricultural Industry Regulation",
+    firstParty: "Petitioner",
+    secondParty: "Kirby Neroni",
+    secondPartyType: "Individual",
+    represented: "No",
+    status: "accepted",
+    stage: "Case Processing",
+    icon: "shield",
+    lastActionDate: "2025-08-11",
+    lastWizardTab: "review-submit"
+  },
+  {
     id: "CASE-2024-001",
     name: "Weights & Measures Inspections for Sniders Group",
     description: "Weights & Measures Inspections",

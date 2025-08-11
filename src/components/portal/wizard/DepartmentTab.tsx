@@ -15,15 +15,20 @@ interface DepartmentTabProps {
   data: any;
   isReadOnly?: boolean;
   isPartiallyEditable?: boolean;
+  isSeededCase?: boolean;
 }
 
-export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartiallyEditable = false }: DepartmentTabProps) {
+export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartiallyEditable = false, isSeededCase = false }: DepartmentTabProps) {
   const [caseCoordinator, setCaseCoordinator] = useState(null);
   const [assignedAttorney, setAssignedAttorney] = useState(null);
   const [finalDecisionMaker, setFinalDecisionMaker] = useState(null);
   
   const shouldLockField = (fieldName: string) => {
     if (isReadOnly) return true;
+    if (isSeededCase) {
+      // All fields are locked for seeded case
+      return true;
+    }
     if (isPartiallyEditable) {
       // Only these fields are editable in partially editable mode
       return !['departmentRefNumber', 'caseCoordinator', 'assignedAttorney'].includes(fieldName);
@@ -59,7 +64,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Select disabled={shouldLockField('department')}>
+                <Select disabled={shouldLockField('department')} value={data.department || ""} onValueChange={(value) => onDataChange({ department: value })}>
                   <SelectTrigger className="shadow-fluent-8 border-input-border">
                     <SelectValue placeholder="Select Department" />
                   </SelectTrigger>
@@ -68,7 +73,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="environmental">Environmental Services</SelectItem>
                     <SelectItem value="legal">Legal Department</SelectItem>
                     <SelectItem value="admin">Administration</SelectItem>
-                    <SelectItem value="agriculture">Department of Agriculture</SelectItem>
+                    <SelectItem value="Department of Agriculture">Department of Agriculture</SelectItem>
                   </SelectContent>
                 </Select>
               </TooltipTrigger>
@@ -99,7 +104,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Select>
+                <Select disabled={shouldLockField('division')} value={data.division || ""} onValueChange={(value) => onDataChange({ division: value })}>
                   <SelectTrigger className="shadow-fluent-8 border-input-border">
                     <SelectValue placeholder="Select Division" />
                   </SelectTrigger>
@@ -109,7 +114,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="compliance">Compliance Division</SelectItem>
                     <SelectItem value="animal-health-welfare">Animal Health & Welfare</SelectItem>
                     <SelectItem value="weights-measures">Bureau of Weights and Measures</SelectItem>
-                    <SelectItem value="agricultural-regulation">Division of Agricultural Industry Regulation</SelectItem>
+                    <SelectItem value="Division of Agricultural Industry Regulation">Division of Agricultural Industry Regulation</SelectItem>
                   </SelectContent>
                 </Select>
               </TooltipTrigger>
@@ -140,7 +145,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Select>
+                <Select disabled={shouldLockField('bureau')} value={data.bureau || ""} onValueChange={(value) => onDataChange({ bureau: value })}>
                   <SelectTrigger className="shadow-fluent-8 border-input-border">
                     <SelectValue placeholder="Select Bureau" />
                   </SelectTrigger>
@@ -149,7 +154,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="commercial">Commercial Bureau</SelectItem>
                     <SelectItem value="industrial">Industrial Bureau</SelectItem>
                     <SelectItem value="adult-protective">Adult Protective Services</SelectItem>
-                    <SelectItem value="animal-health-bureau">Animal Health & Welfare</SelectItem>
+                    <SelectItem value="Animal Health & Welfare">Animal Health & Welfare</SelectItem>
                   </SelectContent>
                 </Select>
               </TooltipTrigger>
@@ -180,7 +185,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Select>
+                <Select disabled={shouldLockField('caseType')} value={data.caseType || ""} onValueChange={(value) => onDataChange({ caseType: value })}>
                   <SelectTrigger className="shadow-fluent-8 border-input-border">
                     <SelectValue placeholder="Select Case Type" />
                   </SelectTrigger>
@@ -192,7 +197,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="animal-health">Animal Health</SelectItem>
                     <SelectItem value="animal-welfare">Animal Welfare</SelectItem>
                     <SelectItem value="environment-protection">Environment Protection</SelectItem>
-                    <SelectItem value="grain-dealer">Grain Dealer and Warehouse Licensing</SelectItem>
+                    <SelectItem value="Grain Dealer and Warehouse Licensing">Grain Dealer and Warehouse Licensing</SelectItem>
                     <SelectItem value="inspection-appeal">Inspection Notice of Fine Appeal</SelectItem>
                   </SelectContent>
                 </Select>
@@ -229,6 +234,8 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                   placeholder="Enter department reference number"
                   className="shadow-fluent-8 border-input-border"
                   disabled={shouldLockField('departmentRefNumber')}
+                  value={data.departmentRefNumber || ""}
+                  onChange={(e) => onDataChange({ departmentRefNumber: e.target.value })}
                 />
               </TooltipTrigger>
               <TooltipContent 
@@ -255,8 +262,11 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
           <div className="space-y-2">
             <Label htmlFor="coordinator" className="font-fluent">Case Coordinator *</Label>
             <ContactPicker
-              value={caseCoordinator}
-              onChange={setCaseCoordinator}
+              value={data.caseCoordinator || caseCoordinator}
+              onChange={(value) => {
+                setCaseCoordinator(value);
+                onDataChange({ caseCoordinator: value });
+              }}
               placeholder="Select or search coordinator"
               helperText="Search to link an existing contact or add a new one."
               disabled={shouldLockField('caseCoordinator')}
@@ -266,8 +276,11 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
           <div className="space-y-2">
             <Label htmlFor="attorney" className="font-fluent">Assigned Attorney</Label>
             <ContactPicker
-              value={assignedAttorney}
-              onChange={setAssignedAttorney}
+              value={data.assignedAttorney || assignedAttorney}
+              onChange={(value) => {
+                setAssignedAttorney(value);
+                onDataChange({ assignedAttorney: value });
+              }}
               placeholder="Select or search attorney"
               helperText="Search to link an existing contact or add a new one."
               disabled={shouldLockField('assignedAttorney')}
@@ -277,8 +290,11 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
           <div className="space-y-2 md:col-span-2">
             <Label htmlFor="representative" className="font-fluent">Final Decision Maker</Label>
             <ContactPicker
-              value={finalDecisionMaker}
-              onChange={setFinalDecisionMaker}
+              value={data.finalDecisionMaker || finalDecisionMaker}
+              onChange={(value) => {
+                setFinalDecisionMaker(value);
+                onDataChange({ finalDecisionMaker: value });
+              }}
               placeholder="Select or search final decision maker"
               helperText="Search to link an existing contact or add a new one."
               disabled={shouldLockField('finalDecisionMaker')}

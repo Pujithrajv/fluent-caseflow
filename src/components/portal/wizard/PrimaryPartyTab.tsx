@@ -12,6 +12,7 @@ interface PrimaryPartyTabProps {
   onDataChange: (data: any) => void;
   data: any;
   isReadOnly?: boolean;
+  isSeededCase?: boolean;
 }
 
 interface PrimaryPartyData {
@@ -55,7 +56,7 @@ const mockContacts = [
   }
 ];
 
-export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false }: PrimaryPartyTabProps) {
+export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeededCase = false }: PrimaryPartyTabProps) {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAttorneySearchModalOpen, setIsAttorneySearchModalOpen] = useState(false);
@@ -203,9 +204,9 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false }: Prim
                 value={data?.partyName || ""}
                 onChange={(e) => handlePartyNameChange(e.target.value)}
                 className="shadow-fluent-8 border-input-border pr-20"
-                disabled={isReadOnly}
+                disabled={isReadOnly || isSeededCase}
               />
-              {!isReadOnly && (
+              {!isReadOnly && !isSeededCase && (
                 <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
                   <Button 
                     variant="ghost" 
@@ -234,7 +235,7 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false }: Prim
               value={data?.represented || "no"} 
               onValueChange={handleRepresentedChange}
               className="flex space-x-6"
-              disabled={isReadOnly}
+              disabled={isReadOnly || isSeededCase}
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="yes" id="represented-yes" />

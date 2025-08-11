@@ -184,7 +184,33 @@ interface CaseWizardProps {
 }
 
 export function CaseWizard({ onBack, initialTab = "department", mode = 'create', caseStatus = 'draft', caseId }: CaseWizardProps) {
-  const [formData, setFormData] = useState({});
+  // Seeded data for DBE-2024-001-EC
+  const getSeededData = () => {
+    if (caseId === "DBE-2024-001-EC") {
+      return {
+        department: "Department of Agriculture",
+        division: "Division of Agricultural Industry Regulation", 
+        bureau: "Animal Health & Welfare",
+        caseType: "Grain Dealer and Warehouse Licensing",
+        caseCoordinator: "Jaslyn Blom",
+        assignedAttorney: "Sarah Johnson",
+        finalDecisionMaker: "Jaslyn Blom",
+        partyName: "Kirby Neroni",
+        isRepresented: "No",
+        accessibilityOptions: ["All options"],
+        initiatingActionDate: "2025-08-11",
+        responsiveActionDate: "2025-08-14",
+        permitteeNumber: "5",
+        permitNumber: "123",
+        numberOfWells: "56",
+        caseInitiatedReason: "Inadequate Production",
+        productionIssue: "No production for 24 months or more"
+      };
+    }
+    return {};
+  };
+
+  const [formData, setFormData] = useState(getSeededData());
   const [showRequestWizard, setShowRequestWizard] = useState(false);
   const [currentRequestType, setCurrentRequestType] = useState<string | null>(null);
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
@@ -193,6 +219,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
   const isReadOnly = mode === 'view-edit' && caseStatus === 'submitted';
   const isCreateMode = mode === 'create';
   const isPartiallyEditable = mode === 'view-edit' && caseStatus === 'accepted';
+  const isSeededCase = caseId === "DBE-2024-001-EC";
   
   // Generate case number format: DBE-YYYY-###-EC (only for accepted cases)
   const generateCaseNumber = () => {
@@ -387,6 +414,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                        data={formData} 
                        isReadOnly={isReadOnly}
                        isPartiallyEditable={isPartiallyEditable}
+                       isSeededCase={isSeededCase}
                      />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
@@ -445,6 +473,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                         onDataChange={updateFormData} 
                         data={formData}
                         isReadOnly={isReadOnly}
+                        isSeededCase={isSeededCase}
                       />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
@@ -503,6 +532,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                         onDataChange={updateFormData} 
                         data={formData}
                         isReadOnly={isReadOnly}
+                        isSeededCase={isSeededCase}
                       />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
@@ -561,6 +591,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                        onDataChange={updateFormData} 
                        data={formData}
                        isReadOnly={isReadOnly}
+                       isSeededCase={isSeededCase}
                      />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 

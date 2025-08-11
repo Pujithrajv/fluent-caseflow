@@ -17,12 +17,19 @@ interface CaseDetailsTabProps {
   onDataChange: (data: any) => void;
   data: any;
   isReadOnly?: boolean;
+  isSeededCase?: boolean;
 }
 
-export function CaseDetailsTab({ onDataChange, data, isReadOnly = false }: CaseDetailsTabProps) {
-  const [initiatingActionDate, setInitiatingActionDate] = useState<Date>();
-  const [responsiveActionDate, setResponsiveActionDate] = useState<Date>();
-  const [selectedAccessibilityOptions, setSelectedAccessibilityOptions] = useState<string[]>([]);
+export function CaseDetailsTab({ onDataChange, data, isReadOnly = false, isSeededCase = false }: CaseDetailsTabProps) {
+  const [initiatingActionDate, setInitiatingActionDate] = useState<Date>(
+    data.initiatingActionDate ? new Date(data.initiatingActionDate) : undefined
+  );
+  const [responsiveActionDate, setResponsiveActionDate] = useState<Date>(
+    data.responsiveActionDate ? new Date(data.responsiveActionDate) : undefined
+  );
+  const [selectedAccessibilityOptions, setSelectedAccessibilityOptions] = useState<string[]>(
+    data.accessibilityOptions || []
+  );
   const [isAccessibilityDropdownOpen, setIsAccessibilityDropdownOpen] = useState(false);
 
   const accessibilityOptions = [
@@ -85,12 +92,16 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false }: CaseD
                       "w-full justify-between text-left font-normal shadow-fluent-8 border-input-border h-auto min-h-[40px]",
                       selectedAccessibilityOptions.length === 0 && "text-muted-foreground"
                     )}
-                    disabled={isReadOnly}
+                    disabled={isReadOnly || isSeededCase}
                   >
                     <div className="flex flex-wrap gap-1">
-                      {selectedAccessibilityOptions.length === 0 ? (
+                      {(data.accessibilityOptions?.length || selectedAccessibilityOptions.length) === 0 ? (
                         <span>Select accessibility options</span>
                       ) : (
+                        (data.accessibilityOptions || selectedAccessibilityOptions).includes("All options") ? 
+                          [<div key="all" className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-sm">
+                            <span>All accessibility options selected</span>
+                          </div>] :
                         getSelectedLabels().map((label, index) => (
                           <div
                             key={index}
@@ -155,10 +166,12 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false }: CaseD
                       "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
                       !initiatingActionDate && "text-muted-foreground"
                     )}
-                    disabled={isReadOnly}
+                    disabled={isReadOnly || isSeededCase}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {initiatingActionDate ? format(initiatingActionDate, "PPP") : <span>Select date</span>}
+                    {data.initiatingActionDate || initiatingActionDate ? 
+                      format(data.initiatingActionDate ? new Date(data.initiatingActionDate) : initiatingActionDate, "PPP") : 
+                      <span>Select date</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -183,10 +196,12 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false }: CaseD
                       "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
                       !responsiveActionDate && "text-muted-foreground"
                     )}
-                    disabled={isReadOnly}
+                    disabled={isReadOnly || isSeededCase}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {responsiveActionDate ? format(responsiveActionDate, "PPP") : <span>Select date</span>}
+                    {data.responsiveActionDate || responsiveActionDate ? 
+                      format(data.responsiveActionDate ? new Date(data.responsiveActionDate) : responsiveActionDate, "PPP") : 
+                      <span>Select date</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -208,7 +223,7 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false }: CaseD
               id="specialInstructions"
               placeholder="Enter any special instructions or notes"
               className="shadow-fluent-8 border-input-border min-h-[100px]"
-              disabled={isReadOnly}
+              disabled={isReadOnly || isSeededCase}
             />
           </div>
           
@@ -218,7 +233,7 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false }: CaseD
               id="captionNotation"
               placeholder="Enter caption notation"
               className="shadow-fluent-8 border-input-border min-h-[100px]"
-              disabled={isReadOnly}
+              disabled={isReadOnly || isSeededCase}
             />
           </div>
         </CardContent>

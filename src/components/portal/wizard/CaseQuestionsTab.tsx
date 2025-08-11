@@ -14,6 +14,7 @@ interface CaseQuestionsTabProps {
   onDataChange: (data: any) => void;
   data: any;
   isReadOnly?: boolean;
+  isSeededCase?: boolean;
 }
 
 interface UnpaidFeeEntry {
@@ -22,7 +23,7 @@ interface UnpaidFeeEntry {
   amount: string;
 }
 
-export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false }: CaseQuestionsTabProps) {
+export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false, isSeededCase = false }: CaseQuestionsTabProps) {
   const [permitteeNumber, setPermitteeNumber] = useState("");
   const [permitNumber, setPermitNumber] = useState("");
   const [numberOfWells, setNumberOfWells] = useState("");
@@ -226,7 +227,14 @@ export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false }: Cas
             </CardHeader>
             <CardContent className="space-y-4">
               <Label className="font-fluent">Choose One:</Label>
-              <RadioGroup value={productionIssue} onValueChange={setProductionIssue}>
+                <RadioGroup 
+                  value={data.productionIssue || productionIssue} 
+                  onValueChange={(value) => {
+                    setProductionIssue(value);
+                    onDataChange({ ...data, productionIssue: value });
+                  }}
+                  disabled={isReadOnly || isSeededCase}
+                >
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="no-production-24-months" id="no-production" />
@@ -300,12 +308,15 @@ export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false }: Cas
             <Label className="font-fluent">What is the permittee number?</Label>
             <Input
               type="number"
-              value={permitteeNumber}
-              onChange={(e) => setPermitteeNumber(e.target.value)}
+              value={data.permitteeNumber || permitteeNumber}
+              onChange={(e) => {
+                setPermitteeNumber(e.target.value);
+                onDataChange({ ...data, permitteeNumber: e.target.value });
+              }}
               placeholder="Enter permittee number"
               className="shadow-fluent-8 border-input-border"
               max={999999}
-              readOnly={isReadOnly}
+              readOnly={isReadOnly || isSeededCase}
             />
             {permitteeNumber && !validateInteger(permitteeNumber, 1000000) && (
               <Alert className="border-warning bg-warning/10">
@@ -322,12 +333,15 @@ export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false }: Cas
             <Label className="font-fluent">What is the Permit Number? <span className="text-muted-foreground">(Optional)</span></Label>
             <Input
               type="number"
-              value={permitNumber}
-              onChange={(e) => setPermitNumber(e.target.value)}
+              value={data.permitNumber || permitNumber}
+              onChange={(e) => {
+                setPermitNumber(e.target.value);
+                onDataChange({ ...data, permitNumber: e.target.value });
+              }}
               placeholder="Enter permit number"
               className="shadow-fluent-8 border-input-border"
               max={999999}
-              readOnly={isReadOnly}
+              readOnly={isReadOnly || isSeededCase}
             />
             {permitNumber && !validateInteger(permitNumber, 1000000) && (
               <Alert className="border-warning bg-warning/10">
@@ -344,12 +358,15 @@ export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false }: Cas
             <Label className="font-fluent">What is the number of wells addressed by this Case?</Label>
             <Input
               type="number"
-              value={numberOfWells}
-              onChange={(e) => setNumberOfWells(e.target.value)}
+              value={data.numberOfWells || numberOfWells}
+              onChange={(e) => {
+                setNumberOfWells(e.target.value);
+                onDataChange({ ...data, numberOfWells: e.target.value });
+              }}
               placeholder="Enter number of wells"
               className="shadow-fluent-8 border-input-border"
               max={499}
-              readOnly={isReadOnly}
+              readOnly={isReadOnly || isSeededCase}
             />
             {numberOfWells && !validateInteger(numberOfWells, 500) && (
               <Alert className="border-warning bg-warning/10">
@@ -364,7 +381,14 @@ export function CaseQuestionsTab({ onDataChange, data, isReadOnly = false }: Cas
           {/* Question 4: Case Initiated Reason (Dropdown) */}
           <div className="space-y-2">
             <Label className="font-fluent">This Case is initiated because of:</Label>
-            <Select value={caseInitiatedReason} onValueChange={setCaseInitiatedReason} disabled={isReadOnly}>
+            <Select 
+              value={data.caseInitiatedReason || caseInitiatedReason} 
+              onValueChange={(value) => {
+                setCaseInitiatedReason(value);
+                onDataChange({ ...data, caseInitiatedReason: value });
+              }}
+              disabled={isReadOnly || isSeededCase}
+            >
               <SelectTrigger className="shadow-fluent-8 border-input-border bg-background">
                 <SelectValue placeholder="Select reason" />
               </SelectTrigger>
