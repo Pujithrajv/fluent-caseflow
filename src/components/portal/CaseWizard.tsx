@@ -192,9 +192,9 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
         division: "Division of Agricultural Industry Regulation", 
         bureau: "Animal Health & Welfare",
         caseType: "Grain Dealer and Warehouse Licensing",
-        caseCoordinator: "Jaslyn Blom",
-        assignedAttorney: "Sarah Johnson",
-        finalDecisionMaker: "Jaslyn Blom",
+        caseCoordinator: { name: "Jaslyn Blom", email: "jblom@illinois.gov" },
+        assignedAttorney: { name: "Sarah Johnson", email: "sjohnson@illinois.gov" },
+        finalDecisionMaker: { name: "Jaslyn Blom", email: "jblom@illinois.gov" },
         partyName: "Kirby Neroni",
         isRepresented: "No",
         accessibilityOptions: ["All options"],
@@ -332,15 +332,21 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-semibold font-fluent text-foreground">
-              {isCreateMode ? "Create New Case" : `Case ${caseId || 'Details'}`}
+              {isCreateMode ? "Create New Case" : caseId === "DBE-2024-001-EC" ? "Case - DBE-2024-001-EC" : `Case ${caseId || 'Details'}`}
             </h1>
             <p className="text-muted-foreground font-fluent">
               {isCreateMode ? "Complete all sections to create a new case" : "View and edit case information"}
             </p>
           </div>
-          <Badge variant="outline" className="text-sm px-3 py-1">
-            Status: {caseStatus === 'draft' ? 'Draft' : caseStatus === 'submitted' ? 'Submitted' : 'Accepted'}
-          </Badge>
+          {caseId === "DBE-2024-001-EC" ? (
+            <Badge variant="default" className="bg-[#3DA546] text-white text-sm px-3 py-1">
+              Accepted
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="text-sm px-3 py-1">
+              Status: {caseStatus === 'draft' ? 'Draft' : caseStatus === 'submitted' ? 'Submitted' : 'Accepted'}
+            </Badge>
+          )}
         </div>
 
         {/* Vertical Tabs Layout */}
