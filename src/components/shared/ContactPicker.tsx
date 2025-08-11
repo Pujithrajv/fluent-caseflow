@@ -28,9 +28,10 @@ interface ContactPickerProps {
   onChange: (contact: Contact | null) => void;
   placeholder: string;
   helperText?: string;
+  disabled?: boolean;
 }
 
-export function ContactPicker({ value, onChange, placeholder, helperText }: ContactPickerProps) {
+export function ContactPicker({ value, onChange, placeholder, helperText, disabled = false }: ContactPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [newContact, setNewContact] = useState({
@@ -92,10 +93,11 @@ export function ContactPicker({ value, onChange, placeholder, helperText }: Cont
           value={value ? value.name : ""}
           placeholder={placeholder}
           readOnly
+          disabled={disabled}
           className="pr-20"
         />
         <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-1">
-          {value && (
+          {value && !disabled && (
             <Button
               type="button"
               variant="ghost"
@@ -114,6 +116,7 @@ export function ContactPicker({ value, onChange, placeholder, helperText }: Cont
                 size="sm"
                 className="h-6 w-6 p-0"
                 title="Search contacts"
+                disabled={disabled}
               >
                 <Search className="h-3 w-3" />
               </Button>
@@ -273,6 +276,7 @@ export function ContactPicker({ value, onChange, placeholder, helperText }: Cont
             size="sm"
             className="h-6 w-6 p-0"
             title="Add new contact"
+            disabled={disabled}
             onClick={() => {
               setIsOpen(true);
               // Auto-switch to create tab when clicking add icon

@@ -21,6 +21,15 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
   const [caseCoordinator, setCaseCoordinator] = useState(null);
   const [assignedAttorney, setAssignedAttorney] = useState(null);
   const [finalDecisionMaker, setFinalDecisionMaker] = useState(null);
+  
+  const shouldLockField = (fieldName: string) => {
+    if (isReadOnly) return true;
+    if (isPartiallyEditable) {
+      // Only these fields are editable in partially editable mode
+      return !['departmentRefNumber', 'caseCoordinator', 'assignedAttorney'].includes(fieldName);
+    }
+    return false;
+  };
   return (
     <TooltipProvider>
       <div className="space-y-6">
@@ -50,7 +59,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Select>
+                <Select disabled={shouldLockField('department')}>
                   <SelectTrigger className="shadow-fluent-8 border-input-border">
                     <SelectValue placeholder="Select Department" />
                   </SelectTrigger>
@@ -219,6 +228,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                   id="deptRef"
                   placeholder="Enter department reference number"
                   className="shadow-fluent-8 border-input-border"
+                  disabled={shouldLockField('departmentRefNumber')}
                 />
               </TooltipTrigger>
               <TooltipContent 
@@ -249,6 +259,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
               onChange={setCaseCoordinator}
               placeholder="Select or search coordinator"
               helperText="Search to link an existing contact or add a new one."
+              disabled={shouldLockField('caseCoordinator')}
             />
           </div>
           
@@ -259,6 +270,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
               onChange={setAssignedAttorney}
               placeholder="Select or search attorney"
               helperText="Search to link an existing contact or add a new one."
+              disabled={shouldLockField('assignedAttorney')}
             />
           </div>
           
@@ -269,6 +281,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
               onChange={setFinalDecisionMaker}
               placeholder="Select or search final decision maker"
               helperText="Search to link an existing contact or add a new one."
+              disabled={shouldLockField('finalDecisionMaker')}
             />
           </div>
         </CardContent>

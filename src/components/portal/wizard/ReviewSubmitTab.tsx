@@ -10,9 +10,10 @@ interface ReviewSubmitTabProps {
   mode?: 'create' | 'view-edit';
   caseStatus?: 'draft' | 'submitted' | 'accepted';
   caseNumber?: string;
+  isReadOnly?: boolean;
 }
 
-export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus = 'draft', caseNumber }: ReviewSubmitTabProps) {
+export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus = 'draft', caseNumber, isReadOnly = false }: ReviewSubmitTabProps) {
   // Generate reference number and current date
   const referenceNumber = caseNumber || "DBE-2024-001-EC";
   const submissionDate = format(new Date(), "PPP");
@@ -33,9 +34,11 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="font-fluent">Department Information</CardTitle>
-              <Button variant="ghost" size="sm">
-                <Edit className="h-4 w-4" />
-              </Button>
+              {!isReadOnly && (
+                <Button variant="ghost" size="sm">
+                  <Edit className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-3">

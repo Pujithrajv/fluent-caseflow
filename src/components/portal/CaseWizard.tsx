@@ -193,11 +193,14 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
   const isCreateMode = mode === 'create';
   const isPartiallyEditable = mode === 'view-edit' && caseStatus === 'accepted';
   
-  // Generate case number format: DBE-YYYY-###-EC
+  // Generate case number format: DBE-YYYY-###-EC (only for accepted cases)
   const generateCaseNumber = () => {
-    const year = new Date().getFullYear();
-    const number = Math.floor(Math.random() * 999) + 1;
-    return `DBE-${year}-${number.toString().padStart(3, '0')}-EC`;
+    if (caseStatus === 'accepted') {
+      const year = new Date().getFullYear();
+      const number = Math.floor(Math.random() * 999) + 1;
+      return `DBE-${year}-${number.toString().padStart(3, '0')}-EC`;
+    }
+    return null;
   };
   
   let wizardTabs;
@@ -435,11 +438,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <PrimaryPartyTab 
-                       onDataChange={updateFormData} 
-                       data={formData}
-                       isReadOnly={isReadOnly}
-                     />
+                      <PrimaryPartyTab 
+                        onDataChange={updateFormData} 
+                        data={formData}
+                        isReadOnly={isReadOnly}
+                      />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -493,11 +496,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <CaseDetailsTab 
-                       onDataChange={updateFormData} 
-                       data={formData}
-                       isReadOnly={isReadOnly}
-                     />
+                      <CaseDetailsTab 
+                        onDataChange={updateFormData} 
+                        data={formData}
+                        isReadOnly={isReadOnly}
+                      />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -609,11 +612,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <InvolvedPartiesTab 
-                       onDataChange={updateFormData} 
-                       data={formData}
-                       isReadOnly={isReadOnly}
-                     />
+                      <InvolvedPartiesTab 
+                        onDataChange={updateFormData} 
+                        data={formData}
+                        isReadOnly={isReadOnly}
+                      />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -665,7 +668,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                     <DocumentUploadTab onDataChange={updateFormData} data={formData} />
+                     <DocumentUploadTab 
+                       onDataChange={updateFormData} 
+                       data={formData}
+                       isReadOnly={isReadOnly}
+                     />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
@@ -781,13 +788,14 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                   <CardContent className="p-6">
-                     <ReviewSubmitTab 
-                       data={formData} 
-                       isLastTab={isLastTab}
-                       mode={mode}
-                       caseStatus={caseStatus}
-                       caseNumber={generateCaseNumber()}
-                     />
+                      <ReviewSubmitTab 
+                        data={formData} 
+                        isLastTab={isLastTab}
+                        mode={mode}
+                        caseStatus={caseStatus}
+                        caseNumber={generateCaseNumber()}
+                        isReadOnly={isReadOnly}
+                      />
                      {/* Navigation Buttons */}
                      <div className="flex justify-between pt-6 border-t mt-6">
                        <Button 

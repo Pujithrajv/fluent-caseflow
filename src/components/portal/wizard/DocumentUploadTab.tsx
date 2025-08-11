@@ -6,6 +6,7 @@ import { Upload, FileText, Trash2, Download } from "lucide-react";
 interface DocumentUploadTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  isReadOnly?: boolean;
 }
 
 const mockDocuments = [
@@ -25,7 +26,7 @@ const mockDocuments = [
   }
 ];
 
-export function DocumentUploadTab({ onDataChange, data }: DocumentUploadTabProps) {
+export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: DocumentUploadTabProps) {
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -37,15 +38,17 @@ export function DocumentUploadTab({ onDataChange, data }: DocumentUploadTabProps
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Upload Area */}
-          <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center hover:border-primary transition-colors cursor-pointer">
-            <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-            <p className="font-fluent text-foreground mb-2">Drag and drop files here, or click to browse</p>
-            <p className="text-sm font-fluent text-muted-foreground">Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG (Max 10MB)</p>
-            <Button variant="outline" size="sm" className="mt-4 font-fluent">
-              <Upload className="mr-2 h-4 w-4" />
-              Browse Files
-            </Button>
-          </div>
+          {!isReadOnly && (
+            <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center hover:border-primary transition-colors cursor-pointer">
+              <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <p className="font-fluent text-foreground mb-2">Drag and drop files here, or click to browse</p>
+              <p className="text-sm font-fluent text-muted-foreground">Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG (Max 10MB)</p>
+              <Button variant="outline" size="sm" className="mt-4 font-fluent">
+                <Upload className="mr-2 h-4 w-4" />
+                Browse Files
+              </Button>
+            </div>
+          )}
           
           {/* Uploaded Documents Table */}
           <div className="space-y-4">
@@ -83,7 +86,7 @@ export function DocumentUploadTab({ onDataChange, data }: DocumentUploadTabProps
                           </div>
                         </td>
                         <td className="px-4 py-4">
-                          <Select defaultValue={doc.type}>
+                          <Select defaultValue={doc.type} disabled={isReadOnly}>
                             <SelectTrigger className="w-48 shadow-fluent-8 border-input-border">
                               <SelectValue />
                             </SelectTrigger>
@@ -108,9 +111,11 @@ export function DocumentUploadTab({ onDataChange, data }: DocumentUploadTabProps
                             <Button variant="ghost" size="sm">
                               <Download className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="sm">
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
+                            {!isReadOnly && (
+                              <Button variant="ghost" size="sm">
+                                <Trash2 className="h-4 w-4 text-destructive" />
+                              </Button>
+                            )}
                           </div>
                         </td>
                       </tr>

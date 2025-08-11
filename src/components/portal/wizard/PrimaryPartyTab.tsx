@@ -55,7 +55,7 @@ const mockContacts = [
   }
 ];
 
-export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
+export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false }: PrimaryPartyTabProps) {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAttorneySearchModalOpen, setIsAttorneySearchModalOpen] = useState(false);
@@ -203,25 +203,28 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
                 value={data?.partyName || ""}
                 onChange={(e) => handlePartyNameChange(e.target.value)}
                 className="shadow-fluent-8 border-input-border pr-20"
+                disabled={isReadOnly}
               />
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={handleSearchParty}
-                  className="h-7 w-7 p-0"
-                >
-                  <Search className="h-4 w-4 text-gray-500" />
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={handleAddParty}
-                  className="h-7 w-7 p-0"
-                >
-                  <Plus className="h-4 w-4 text-gray-500" />
-                </Button>
-              </div>
+              {!isReadOnly && (
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={handleSearchParty}
+                    className="h-7 w-7 p-0"
+                  >
+                    <Search className="h-4 w-4 text-gray-500" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={handleAddParty}
+                    className="h-7 w-7 p-0"
+                  >
+                    <Plus className="h-4 w-4 text-gray-500" />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
           
@@ -231,6 +234,7 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
               value={data?.represented || "no"} 
               onValueChange={handleRepresentedChange}
               className="flex space-x-6"
+              disabled={isReadOnly}
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="yes" id="represented-yes" />
@@ -253,25 +257,28 @@ export function PrimaryPartyTab({ onDataChange, data }: PrimaryPartyTabProps) {
                   value={data?.attorneyName || ""}
                   onChange={(e) => handleAttorneyNameChange(e.target.value)}
                   className="shadow-fluent-8 border-input-border pr-20"
+                  disabled={isReadOnly}
                 />
-                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={handleSearchAttorney}
-                    className="h-7 w-7 p-0"
-                  >
-                    <Search className="h-4 w-4 text-gray-500" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={handleAddAttorney}
-                    className="h-7 w-7 p-0"
-                  >
-                    <Plus className="h-4 w-4 text-gray-500" />
-                  </Button>
-                </div>
+                {!isReadOnly && (
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={handleSearchAttorney}
+                      className="h-7 w-7 p-0"
+                    >
+                      <Search className="h-4 w-4 text-gray-500" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={handleAddAttorney}
+                      className="h-7 w-7 p-0"
+                    >
+                      <Plus className="h-4 w-4 text-gray-500" />
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           )}

@@ -11,16 +11,18 @@ const Index = () => {
     setSelectedCaseId(caseId);
     
     // Mock case status detection based on caseId
+    let status: 'draft' | 'submitted' | 'accepted';
     if (caseId === "CASE-2024-004" || caseId === "CASE-2024-005") {
-      setCaseStatus('accepted');
+      status = 'accepted';
     } else if (caseId === "CASE-2024-001") {
-      setCaseStatus('submitted');
+      status = 'submitted';
     } else {
-      setCaseStatus('draft');
+      status = 'draft';
     }
+    setCaseStatus(status);
 
     // If status is draft, open in create mode, otherwise view-edit
-    if (caseStatus === 'draft') {
+    if (status === 'draft') {
       setCurrentView("create-case");
     } else {
       setCurrentView("view-edit");

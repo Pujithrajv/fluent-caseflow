@@ -19,7 +19,7 @@ interface CaseDetailsTabProps {
   isReadOnly?: boolean;
 }
 
-export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
+export function CaseDetailsTab({ onDataChange, data, isReadOnly = false }: CaseDetailsTabProps) {
   const [initiatingActionDate, setInitiatingActionDate] = useState<Date>();
   const [responsiveActionDate, setResponsiveActionDate] = useState<Date>();
   const [selectedAccessibilityOptions, setSelectedAccessibilityOptions] = useState<string[]>([]);
@@ -85,6 +85,7 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
                       "w-full justify-between text-left font-normal shadow-fluent-8 border-input-border h-auto min-h-[40px]",
                       selectedAccessibilityOptions.length === 0 && "text-muted-foreground"
                     )}
+                    disabled={isReadOnly}
                   >
                     <div className="flex flex-wrap gap-1">
                       {selectedAccessibilityOptions.length === 0 ? (
@@ -154,6 +155,7 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
                       "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
                       !initiatingActionDate && "text-muted-foreground"
                     )}
+                    disabled={isReadOnly}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {initiatingActionDate ? format(initiatingActionDate, "PPP") : <span>Select date</span>}
@@ -181,6 +183,7 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
                       "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
                       !responsiveActionDate && "text-muted-foreground"
                     )}
+                    disabled={isReadOnly}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {responsiveActionDate ? format(responsiveActionDate, "PPP") : <span>Select date</span>}
@@ -205,6 +208,7 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
               id="specialInstructions"
               placeholder="Enter any special instructions or notes"
               className="shadow-fluent-8 border-input-border min-h-[100px]"
+              disabled={isReadOnly}
             />
           </div>
           
@@ -214,6 +218,7 @@ export function CaseDetailsTab({ onDataChange, data }: CaseDetailsTabProps) {
               id="captionNotation"
               placeholder="Enter caption notation"
               className="shadow-fluent-8 border-input-border min-h-[100px]"
+              disabled={isReadOnly}
             />
           </div>
         </CardContent>

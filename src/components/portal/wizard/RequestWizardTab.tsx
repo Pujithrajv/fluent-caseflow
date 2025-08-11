@@ -79,14 +79,15 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
               />
             </div>
             
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create New
-                  <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
+            {!isReadOnly && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create New
+                    <ChevronDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[200px]">
                 <DropdownMenuItem onClick={() => onAddNewRequest?.("motion")}>
                   Motion
@@ -108,6 +109,7 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            )}
           </div>
         </CardHeader>
         

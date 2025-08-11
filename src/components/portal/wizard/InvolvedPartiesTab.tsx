@@ -49,7 +49,7 @@ const mockContacts = [
   { id: 3, name: "Mike Davis", role: "Consultant", organization: "Davis Consulting", email: "mike@davis.com" },
 ];
 
-export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabProps) {
+export function InvolvedPartiesTab({ onDataChange, data, isReadOnly = false }: InvolvedPartiesTabProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [newContact, setNewContact] = useState({
     firstName: "",
@@ -111,13 +111,14 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
               />
             </div>
             
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create Related Party
-                </Button>
-              </DialogTrigger>
+            {!isReadOnly && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Related Party
+                  </Button>
+                </DialogTrigger>
               <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Create Related Party</DialogTitle>
@@ -245,6 +246,7 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
                 </Tabs>
               </DialogContent>
             </Dialog>
+            )}
           </div>
         </CardHeader>
         
@@ -272,14 +274,16 @@ export function InvolvedPartiesTab({ onDataChange, data }: InvolvedPartiesTabPro
                     
                     <div className="flex justify-between items-start">
                       <div className="text-sm text-gray-900 whitespace-pre-line">{party.organization}</div>
-                      <div className="flex ml-4">
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                          <Edit className="h-3 w-3 text-gray-400" />
-                        </Button>
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                          <Trash2 className="h-3 w-3 text-red-400" />
-                        </Button>
-                      </div>
+                      {!isReadOnly && (
+                        <div className="flex ml-4">
+                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                            <Edit className="h-3 w-3 text-gray-400" />
+                          </Button>
+                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                            <Trash2 className="h-3 w-3 text-red-400" />
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
