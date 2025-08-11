@@ -62,13 +62,16 @@ All colors MUST be HSL.
     --portal-text: 222 84% 7%;
     --portal-muted: 220 9% 46%;
 
-    /* Status Badge Colors - Pill Style */
-    --status-draft: 195 100% 85%;
-    --status-draft-foreground: 0 0% 0%;
-    --status-submitted: 45 100% 85%;
-    --status-submitted-foreground: 0 0% 0%;
+    /* Status Badge Colors - Updated with specific colors */
+    --status-draft: 0 100% 96%;
+    --status-draft-foreground: 0 0% 100%;
+    --status-draft-bg: 354 70% 54%;
+    --status-submitted: 39 100% 85%;
+    --status-submitted-foreground: 0 0% 100%;
+    --status-submitted-bg: 39 95% 48%;
     --status-accepted: 120 50% 85%;
-    --status-accepted-foreground: 0 0% 0%;
+    --status-accepted-foreground: 0 0% 100%;
+    --status-accepted-bg: 120 48% 38%;
     --status-rejected: 0 70% 85%;
     --status-rejected-foreground: 0 0% 0%;
     --status-in-progress: 39 100% 85%;

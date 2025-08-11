@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CaseItem {
   id: string;
@@ -209,6 +210,7 @@ const getTabDisplayName = (tab: string) => {
 export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("cases");
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -216,9 +218,9 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
       <div className="w-full bg-white border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4">
             <img 
-              src="/lovable-uploads/a8ff40e4-1efe-4d80-9072-5c480ab49fa9.png" 
+              src="/lovable-uploads/34438d6b-1c2f-4220-9e05-ab41b2d386d9.png" 
               alt="Illinois Bureau of Administrative Hearings" 
               className="h-16 w-auto"
             />
@@ -238,12 +240,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   <Settings className="mr-2 h-4 w-4" />
                   Account Settings
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/profile")}>
                   <User className="mr-2 h-4 w-4" />
                   Profile
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
+                <DropdownMenuItem className="text-red-600" onClick={() => navigate("/")}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Log Out
                 </DropdownMenuItem>
@@ -432,16 +434,10 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                               </div>
                             </td>
                              <td className="px-4 py-4 align-top">
-                               <div className="space-y-2">
+                               <div className="flex justify-center">
                                  <StatusBadge status={caseItem.status as "draft" | "submitted" | "accepted" | "rejected" | "in-progress" | "completed"}>
                                    {caseItem.status.charAt(0).toUpperCase() + caseItem.status.slice(1)}
                                  </StatusBadge>
-                                  <p className="text-xs text-muted-foreground">
-                                    {caseItem.status === "draft" ? "Pending Submission" : caseItem.stage}
-                                  </p>
-                                 <p className="text-xs text-muted-foreground">
-                                   <span className="font-medium">Stage:</span> {caseItem.stage}
-                                 </p>
                                </div>
                              </td>
                              <td className="px-4 py-4 align-top">
