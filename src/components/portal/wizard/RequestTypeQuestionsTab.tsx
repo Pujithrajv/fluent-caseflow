@@ -7,6 +7,7 @@ import { HelpCircle, ExternalLink } from "lucide-react";
 interface RequestTypeQuestionsTabProps {
   onDataChange: (data: any) => void;
   data: any;
+  requestType?: string;
 }
 
 const questionSets = [
@@ -46,7 +47,16 @@ const questionSets = [
   }
 ];
 
-export function RequestTypeQuestionsTab({ onDataChange, data }: RequestTypeQuestionsTabProps) {
+export function RequestTypeQuestionsTab({ onDataChange, data, requestType }: RequestTypeQuestionsTabProps) {
+  // Don't show any questions for certificate requests
+  if (requestType === "certificate") {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">No additional questions required for certificate requests.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {questionSets.map((questionSet) => (

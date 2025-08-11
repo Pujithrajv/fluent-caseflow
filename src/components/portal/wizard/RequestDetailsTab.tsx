@@ -92,7 +92,12 @@ export function RequestDetailsTab({ onDataChange, data, requestType = "motion" }
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
             <FileText className="h-5 w-5 text-primary" />
-            <span>{requestType === "exhibit" ? "Exhibit Details" : "Motion Details"}</span>
+            <span>
+              {requestType === "exhibit" ? "Exhibit Details" : 
+               requestType === "pleadings" ? "Pleading Details" :
+               requestType === "certificate" ? "Certificate Details" : 
+               "Motion Details"}
+            </span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -182,6 +187,24 @@ export function RequestDetailsTab({ onDataChange, data, requestType = "motion" }
                   placeholder="Describe the exhibit you are submitting..."
                   className="shadow-fluent-8 border-input-border min-h-24"
                 />
+              </div>
+            )}
+
+            {/* Pleadings-specific fields */}
+            {requestType === "pleadings" && (
+              <div className="space-y-2">
+                <Label className="font-fluent font-semibold text-sm">Pleading Description *</Label>
+                <Textarea 
+                  placeholder="Describe the pleading you are submitting..."
+                  className="shadow-fluent-8 border-input-border min-h-24"
+                />
+              </div>
+            )}
+
+            {/* Certificate requests - no specific fields needed */}
+            {requestType === "certificate" && (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">Certificate details will be collected in the documents section.</p>
               </div>
             )}
 

@@ -11,54 +11,54 @@ import { RequestTypeQuestionsTab } from "./wizard/RequestTypeQuestionsTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
-const certificatesTabs = [
-  { id: 'certificates-details', title: 'Certificate Details', description: 'Certificate request information' },
-  { id: 'certificates-questions', title: 'Certificate Questions', description: 'Type-specific questions' },
-  { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
-  { id: 'review', title: 'Review & Submit', description: 'Verify and submit certificate request' }
+const pleadingsTabs = [
+  { id: 'pleadings-details', title: 'Pleading Details', description: 'Pleading information and summary' },
+  { id: 'pleadings-questions', title: 'Pleading Questions', description: 'Type-specific questions' },
+  { id: 'documents', title: 'Documents', description: 'Upload pleading documents' },
+  { id: 'review', title: 'Review & Submit', description: 'Verify and submit pleading' }
 ];
 
 const faqData = {
-  "certificates-details": [
+  "pleadings-details": [
     {
-      id: "cert-1",
-      question: "What types of certificates can I request?",
-      answer: "You can request certificates of service, compliance certificates, authenticity certificates, and other official certifications."
+      id: "pleading-1",
+      question: "What types of pleadings can I file?",
+      answer: "You can file various types of pleadings including complaints, answers, counterclaims, cross-claims, and amended pleadings."
     },
     {
-      id: "cert-2",
-      question: "What information is needed for a certificate request?",
-      answer: "Provide details about what needs to be certified, the purpose of the certificate, and any specific requirements or standards that apply."
+      id: "pleading-2",
+      question: "What should I include in the pleading summary?",
+      answer: "Provide a clear statement of the claims or defenses, factual allegations, and legal theories. Include all relevant parties and causes of action."
     }
   ],
-  "certificates-questions": [
+  "pleadings-questions": [
     {
       id: "questions-1",
-      question: "What type of certificate do I need?",
-      answer: "Specify the exact type of certificate required and its intended use - this helps ensure you receive the correct certification."
+      question: "What type of pleading am I filing?",
+      answer: "Specify whether this is an initial pleading, responsive pleading, or amended pleading, and identify the specific type."
     }
   ],
   documents: [
     {
       id: "docs-1",
-      question: "What documents are needed for certificate requests?",
-      answer: "Include any documents that need to be certified, supporting evidence, and any forms or applications required for the specific certificate type."
+      question: "What documents are required for pleadings?",
+      answer: "Include the pleading document itself, any supporting exhibits, affidavits, and verification forms as required by court rules."
     }
   ],
   review: [
     {
       id: "review-1",
-      question: "How long does certificate processing take?",
-      answer: "Processing times vary by certificate type. Most certificates are processed within 5-10 business days unless expedited processing is requested."
+      question: "What happens after I submit my pleading?",
+      answer: "Your pleading will be reviewed for compliance with court rules, filed with the court, and served on other parties as appropriate."
     }
   ]
 };
 
-interface CertificatesWizardProps {
+interface PleadingsWizardProps {
   onBack?: () => void;
 }
 
-export function CertificatesWizard({ onBack }: CertificatesWizardProps) {
+export function PleadingsWizard({ onBack }: PleadingsWizardProps) {
   const [formData, setFormData] = useState({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
@@ -87,9 +87,9 @@ export function CertificatesWizard({ onBack }: CertificatesWizardProps) {
                 className="h-16 w-auto object-contain"
               />
               <div>
-                <h1 className="text-3xl font-semibold font-fluent text-foreground">New Certificate Request</h1>
+                <h1 className="text-3xl font-semibold font-fluent text-foreground">New Pleading Submission</h1>
                 <p className="text-muted-foreground font-fluent">
-                  Complete all sections to submit your certificate request
+                  Complete all sections to submit your pleading
                 </p>
               </div>
             </div>
@@ -105,13 +105,13 @@ export function CertificatesWizard({ onBack }: CertificatesWizardProps) {
       <div className="mx-auto max-w-6xl px-6 py-6">
 
         {/* Vertical Tabs Layout */}
-        <Tabs defaultValue="certificates-details" className="w-full" orientation="vertical">
+        <Tabs defaultValue="pleadings-details" className="w-full" orientation="vertical">
           <div className="flex gap-6">
             {/* Vertical Tab List */}
             <Card className="shadow-fluent-8 w-80">
               <CardContent className="p-4">
                 <TabsList className="flex flex-col h-auto w-full bg-transparent space-y-2">
-                  {certificatesTabs.map((tab) => (
+                  {pleadingsTabs.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
@@ -133,7 +133,7 @@ export function CertificatesWizard({ onBack }: CertificatesWizardProps) {
 
             {/* Tab Content */}
             <div className="flex-1">
-              {certificatesTabs.map((tab) => (
+              {pleadingsTabs.map((tab) => (
                 <TabsContent key={tab.id} value={tab.id} className="mt-0">
                   <Card className="shadow-fluent-16">
                     <CardHeader>
@@ -171,8 +171,8 @@ export function CertificatesWizard({ onBack }: CertificatesWizardProps) {
                       </div>
                     </CardHeader>
                     <CardContent className="p-6">
-                      {tab.id === 'certificates-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} requestType="certificate" />}
-                      {tab.id === 'certificates-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} requestType="certificate" />}
+                      {tab.id === 'pleadings-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} requestType="pleadings" />}
+                      {tab.id === 'pleadings-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
@@ -196,7 +196,7 @@ export function CertificatesWizard({ onBack }: CertificatesWizardProps) {
             </Button>
             <Button className="font-fluent" onClick={onBack}>
               <Check className="mr-2 h-4 w-4" />
-              Submit Certificate Request
+              Submit Pleading
             </Button>
           </div>
         </div>
