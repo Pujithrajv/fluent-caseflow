@@ -22,6 +22,7 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
   const getDisplayValue = (value: any) => {
     if (!value || value === '') return 'Not provided';
     if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+    if (typeof value === 'object' && value.name) return value.name;
     return value;
   };
 
