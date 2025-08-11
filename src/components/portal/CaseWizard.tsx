@@ -207,6 +207,29 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
         productionIssue: "No production for 24 months or more"
       };
     }
+
+    if (caseId === "CASE-2024-001") {
+      return {
+        department: "Department of Agriculture",
+        division: "Weights & Measures Division", 
+        bureau: "Inspection Services",
+        caseType: "Weights & Measures Inspections",
+        caseCoordinator: { name: "Jaslyn Blom", email: "jblom@illinois.gov" },
+        assignedAttorney: { name: "Sarah Johnson", email: "sjohnson@illinois.gov" },
+        finalDecisionMaker: { name: "Jaslyn Blom", email: "jblom@illinois.gov" },
+        partyName: "Sniders Group",
+        isRepresented: "No",
+        accessibilityOptions: ["All options"],
+        initiatingActionDate: "2024-06-04",
+        responsiveActionDate: "2024-06-10",
+        permitteeNumber: "8",
+        permitNumber: "456",
+        numberOfWells: "0",
+        caseInitiatedReason: "Routine Inspection",
+        productionIssue: "Equipment calibration verification required"
+      };
+    }
+
     return {};
   };
 
@@ -219,7 +242,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
   const isReadOnly = mode === 'view-edit' && caseStatus === 'submitted';
   const isCreateMode = mode === 'create';
   const isPartiallyEditable = mode === 'view-edit' && caseStatus === 'accepted';
-  const isSeededCase = caseId === "DBE-2024-001-EC";
+  const isSeededCase = caseId === "DBE-2024-001-EC" || caseId === "CASE-2024-001";
   
   // Generate case number format: DBE-YYYY-###-EC (only for accepted cases)
   const generateCaseNumber = () => {
