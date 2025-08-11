@@ -1,21 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Shield, User } from "lucide-react";
+import { Header } from "@/components/shared/Header";
 
 const SignInSelection = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background font-fluent">
+      <Header showUserActions={false} />
       <div className="max-w-4xl mx-auto px-6 py-8">
-        {/* Header with Logo */}
-        <div className="mb-12">
-          <img 
-            src="/lovable-uploads/34438d6b-1c2f-4220-9e05-ab41b2d386d9.png" 
-            alt="Illinois Bureau of Administrative Hearings" 
-            className="h-16 w-auto"
-          />
-        </div>
 
         {/* Page Title */}
         <div className="text-center mb-12">
@@ -39,7 +33,7 @@ const SignInSelection = () => {
                 State Users Only
               </h2>
               <Button
-                onClick={() => navigate("/login-okta")}
+                onClick={() => navigate("/portal")}
                 className="w-full h-12 bg-primary hover:bg-primary-hover text-primary-foreground font-medium mb-4"
               >
                 Sign in with Okta

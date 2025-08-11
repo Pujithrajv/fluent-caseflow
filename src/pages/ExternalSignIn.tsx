@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
+import { Header } from "@/components/shared/Header";
 
 const ExternalSignIn = () => {
   const [username, setUsername] = useState("");
@@ -36,27 +37,20 @@ const ExternalSignIn = () => {
 
   return (
     <div className="min-h-screen bg-background font-fluent">
+      <Header showUserActions={false} />
       <div className="max-w-md mx-auto px-6 py-8">
-        {/* Header with Logo */}
-        <div className="mb-12">
-          <img 
-            src="/lovable-uploads/34438d6b-1c2f-4220-9e05-ab41b2d386d9.png" 
-            alt="Illinois Bureau of Administrative Hearings" 
-            className="h-16 w-auto"
-          />
+
+        {/* Page Title */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-foreground mb-2">
+            External User Sign-In
+          </h1>
+          <p className="text-muted-foreground">
+            Enter your credentials to continue
+          </p>
         </div>
 
         <div className="bg-card rounded-lg shadow-fluent-16 p-8 border border-border">
-          {/* Page Title */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-foreground mb-2">
-              External User Sign-In
-            </h1>
-            <p className="text-muted-foreground">
-              Enter your credentials to continue
-            </p>
-          </div>
-
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -112,7 +106,14 @@ const ExternalSignIn = () => {
               )}
             </div>
 
-            <div className="text-right">
+            <Button
+              type="submit"
+              className="w-full h-12 bg-primary hover:bg-primary-hover text-primary-foreground font-medium"
+            >
+              Sign In
+            </Button>
+
+            <div className="text-center">
               <button
                 type="button"
                 className="text-sm text-primary hover:text-primary-hover"
@@ -121,22 +122,17 @@ const ExternalSignIn = () => {
                 Forgot password?
               </button>
             </div>
-
-            <Button
-              type="submit"
-              className="w-full h-12 bg-primary hover:bg-primary-hover text-primary-foreground font-medium"
-            >
-              Sign In
-            </Button>
           </form>
 
           {/* Footer Links */}
-          <div className="mt-8 flex justify-center space-x-4 text-sm text-muted-foreground">
-            <button className="hover:text-foreground">Privacy Policy</button>
-            <span>•</span>
-            <button className="hover:text-foreground">Terms of Service</button>
-            <span>•</span>
-            <button className="hover:text-foreground">Support</button>
+          <div className="mt-8 text-center space-y-2">
+            <div className="flex justify-center space-x-4 text-sm text-muted-foreground">
+              <button className="hover:text-foreground">Privacy Policy</button>
+              <span>•</span>
+              <button className="hover:text-foreground">Terms of Service</button>
+              <span>•</span>
+              <button className="hover:text-foreground">Support</button>
+            </div>
           </div>
         </div>
       </div>

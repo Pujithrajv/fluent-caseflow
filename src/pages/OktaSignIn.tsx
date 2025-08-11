@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
+import { Header } from "@/components/shared/Header";
 
 const OktaSignIn = () => {
   const [username, setUsername] = useState("");
@@ -32,33 +33,26 @@ const OktaSignIn = () => {
     }
     
     if (!hasErrors) {
-      navigate("/consent");
+      navigate("/portal");
     }
   };
 
   return (
     <div className="min-h-screen bg-background font-fluent">
+      <Header showUserActions={false} />
       <div className="max-w-md mx-auto px-6 py-8">
-        {/* Header with Logo */}
-        <div className="mb-12">
-          <img 
-            src="/lovable-uploads/34438d6b-1c2f-4220-9e05-ab41b2d386d9.png" 
-            alt="Illinois Bureau of Administrative Hearings" 
-            className="h-16 w-auto"
-          />
+
+        {/* Page Title */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-foreground mb-2">
+            Sign in to your account
+          </h1>
+          <p className="text-muted-foreground">
+            Use your organizational account
+          </p>
         </div>
 
         <div className="bg-card rounded-lg shadow-fluent-16 p-8 border border-border">
-          {/* Page Title */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-foreground mb-2">
-              Sign In
-            </h1>
-            <p className="text-muted-foreground">
-              Enter your credentials to access your account
-            </p>
-          </div>
-
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -70,6 +64,7 @@ const OktaSignIn = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
                 className="mt-1 h-12 border-input focus:border-ring focus:ring-ring"
                 aria-describedby={errors.username ? "username-error" : undefined}
               />
@@ -113,19 +108,18 @@ const OktaSignIn = () => {
               )}
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="keep-signed-in"
-                checked={keepSignedIn}
-                onCheckedChange={(checked) => setKeepSignedIn(checked === true)}
-                className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-              />
-              <Label htmlFor="keep-signed-in" className="text-sm text-foreground">
-                Keep me signed in
-              </Label>
-            </div>
-
-            <div className="text-right">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="keep-signed-in"
+                  checked={keepSignedIn}
+                  onCheckedChange={(checked) => setKeepSignedIn(checked === true)}
+                />
+                <Label htmlFor="keep-signed-in" className="text-sm text-foreground">
+                  Keep me signed in
+                </Label>
+              </div>
+              
               <button
                 type="button"
                 className="text-sm text-primary hover:text-primary-hover"
@@ -143,38 +137,33 @@ const OktaSignIn = () => {
             </Button>
           </form>
 
-          {/* Divider */}
-          <div className="my-8 flex items-center">
-            <div className="flex-1 border-t border-border" />
-            <span className="px-4 text-sm text-muted-foreground">Or continue with</span>
-            <div className="flex-1 border-t border-border" />
-          </div>
+          {/* Social Sign-In Options */}
+          <div className="mt-8">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-card text-muted-foreground">Or continue with</span>
+              </div>
+            </div>
 
-          {/* Social Sign In */}
-          <div className="space-y-3">
-            <Button
-              variant="outline"
-              className="w-full h-12 border-border text-foreground hover:bg-secondary"
-              onClick={() => {}}
-            >
-              Sign in with Google
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full h-12 border-border text-foreground hover:bg-secondary"
-              onClick={() => {}}
-            >
-              Sign in with Microsoft
-            </Button>
-          </div>
-
-          {/* Footer Links */}
-          <div className="mt-8 flex justify-center space-x-4 text-sm text-muted-foreground">
-            <button className="hover:text-foreground">Privacy Policy</button>
-            <span>•</span>
-            <button className="hover:text-foreground">Terms</button>
-            <span>•</span>
-            <button className="hover:text-foreground">Support</button>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <Button
+                variant="outline"
+                className="w-full h-12 border-border text-foreground hover:bg-secondary"
+                onClick={() => {}}
+              >
+                Google
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full h-12 border-border text-foreground hover:bg-secondary"
+                onClick={() => {}}
+              >
+                Microsoft
+              </Button>
+            </div>
           </div>
         </div>
       </div>
