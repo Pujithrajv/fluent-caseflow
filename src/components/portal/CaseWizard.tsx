@@ -211,9 +211,9 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
     if (caseId === "CASE-2024-001") {
       return {
         department: "Department of Agriculture",
-        division: "Weights & Measures Division", 
-        bureau: "Inspection Services",
-        caseType: "Weights & Measures Inspections",
+        division: "Animal Health & Welfare", 
+        bureau: "Adult Protective Services",
+        caseType: "Environment Protection",
         caseCoordinator: { name: "Jaslyn Blom", email: "jblom@illinois.gov" },
         assignedAttorney: { name: "Sarah Johnson", email: "sjohnson@illinois.gov" },
         finalDecisionMaker: { name: "Jaslyn Blom", email: "jblom@illinois.gov" },
