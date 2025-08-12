@@ -13,7 +13,6 @@ import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
 const noticesTabs = [
   { id: 'notices-details', title: 'Notice Details', description: 'Notice filing information' },
-  { id: 'notices-questions', title: 'Notice Questions', description: 'Type-specific questions' },
   { id: 'documents', title: 'Documents', description: 'Upload notice documents' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit notice' }
 ];
@@ -78,25 +77,37 @@ export function NoticesWizard({ onBack }: NoticesWizardProps) {
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Header with Logo */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <img 
-              src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
-              alt="Illinois Bureau of Administrative Hearings" 
-              className="h-16 w-auto object-contain"
-            />
-            <div>
-              <h1 className="text-3xl font-semibold font-fluent text-foreground">New Notice Filing</h1>
-              <p className="text-muted-foreground font-fluent">
-                Complete all sections to submit your notice
-              </p>
+        <div className="w-full bg-white border-b border-border">
+          <div className="mx-auto max-w-6xl px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <img 
+                  src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
+                  alt="Illinois Bureau of Administrative Hearings" 
+                  className="h-16 w-auto object-contain"
+                />
+              </div>
+              <Button variant="ghost" size="sm" onClick={onBack}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Case
+              </Button>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={onBack}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Case
-          </Button>
         </div>
+
+        {/* Main Content */}
+        <div className="mx-auto max-w-6xl px-6 py-6">
+        
+          {/* Dynamic Header Above Navigation */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-semibold font-fluent text-foreground">New Notice Filing</h1>
+              <p className="text-muted-foreground font-fluent">Complete all sections to create a new case</p>
+            </div>
+            <Badge variant="outline" className="text-sm px-3 py-1">
+              Status: Draft
+            </Badge>
+          </div>
 
         {/* Vertical Tabs Layout */}
         <Tabs defaultValue="notices-details" className="w-full" orientation="vertical">
@@ -166,7 +177,6 @@ export function NoticesWizard({ onBack }: NoticesWizardProps) {
                     </CardHeader>
                     <CardContent className="p-6">
                       {tab.id === 'notices-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'notices-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
@@ -193,6 +203,7 @@ export function NoticesWizard({ onBack }: NoticesWizardProps) {
               Submit Notice
             </Button>
           </div>
+        </div>
         </div>
       </div>
     </div>

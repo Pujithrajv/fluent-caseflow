@@ -86,12 +86,6 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
                 alt="Illinois Bureau of Administrative Hearings" 
                 className="h-16 w-auto object-contain"
               />
-              <div>
-                <h1 className="text-3xl font-semibold font-fluent text-foreground">New Exhibit</h1>
-                <p className="text-muted-foreground font-fluent">
-                  Complete all sections to submit your exhibit
-                </p>
-              </div>
             </div>
             <Button variant="ghost" size="sm" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -103,6 +97,17 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
 
       {/* Main Content */}
       <div className="mx-auto max-w-6xl px-6 py-6">
+        
+        {/* Dynamic Header Above Navigation */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-semibold font-fluent text-foreground">New Exhibit</h1>
+            <p className="text-muted-foreground font-fluent">Complete all sections to create a new case</p>
+          </div>
+          <Badge variant="outline" className="text-sm px-3 py-1">
+            Status: Draft
+          </Badge>
+        </div>
 
         {/* Vertical Tabs Layout */}
         <Tabs defaultValue="exhibit-details" className="w-full" orientation="vertical">

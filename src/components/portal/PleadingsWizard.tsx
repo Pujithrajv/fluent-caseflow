@@ -13,7 +13,6 @@ import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
 const pleadingsTabs = [
   { id: 'pleadings-details', title: 'Pleading Details', description: 'Pleading information and summary' },
-  { id: 'pleadings-questions', title: 'Pleading Questions', description: 'Type-specific questions' },
   { id: 'documents', title: 'Documents', description: 'Upload pleading documents' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit pleading' }
 ];
@@ -86,12 +85,6 @@ export function PleadingsWizard({ onBack }: PleadingsWizardProps) {
                 alt="Illinois Bureau of Administrative Hearings" 
                 className="h-16 w-auto object-contain"
               />
-              <div>
-                <h1 className="text-3xl font-semibold font-fluent text-foreground">New Pleading Submission</h1>
-                <p className="text-muted-foreground font-fluent">
-                  Complete all sections to submit your pleading
-                </p>
-              </div>
             </div>
             <Button variant="ghost" size="sm" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -103,6 +96,17 @@ export function PleadingsWizard({ onBack }: PleadingsWizardProps) {
 
       {/* Main Content */}
       <div className="mx-auto max-w-6xl px-6 py-6">
+        
+        {/* Dynamic Header Above Navigation */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-semibold font-fluent text-foreground">New Pleading Submission</h1>
+            <p className="text-muted-foreground font-fluent">Complete all sections to create a new case</p>
+          </div>
+          <Badge variant="outline" className="text-sm px-3 py-1">
+            Status: Draft
+          </Badge>
+        </div>
 
         {/* Vertical Tabs Layout */}
         <Tabs defaultValue="pleadings-details" className="w-full" orientation="vertical">
@@ -172,7 +176,6 @@ export function PleadingsWizard({ onBack }: PleadingsWizardProps) {
                     </CardHeader>
                     <CardContent className="p-6">
                       {tab.id === 'pleadings-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} requestType="pleadings" />}
-                      {tab.id === 'pleadings-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
