@@ -91,38 +91,6 @@ const mockCases: CaseItem[] = [
     lastActionDate: "2025-07-28",
     lastWizardTab: "primary-party"
   },
-  {
-    id: "CASE-2024-004",
-    name: "Device Calibration – West Region",
-    description: "Weights & Measures Inspections",
-    caseNumber: "2025-00412",
-    department: "Department of Agriculture",
-    section: "Weights & Measures Division",
-    firstParty: "Petitionaire",
-    secondParty: "West Region Devices Inc",
-    secondPartyType: "Corporate Entity",
-    status: "accepted",
-    stage: "Case Processing",
-    icon: "shield",
-    lastActionDate: "2025-07-30",
-    lastWizardTab: "review-submit"
-  },
-  {
-    id: "CASE-2024-005",
-    name: "Food Safety – Routine Inspection",
-    description: "Food Safety",
-    caseNumber: "2025-00413",
-    department: "Department of Public Health",
-    section: "Food Safety Division",
-    firstParty: "Petitionaire",
-    secondParty: "City Restaurant Group",
-    secondPartyType: "Corporate Entity",
-    status: "accepted",
-    stage: "Case Processing",
-    icon: "file",
-    lastActionDate: "2025-07-30",
-    lastWizardTab: "review-submit"
-  }
 ];
 
 const mockEvents = [
