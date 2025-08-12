@@ -22,7 +22,20 @@ const Profile = () => {
     email: "",
     phone: "",
     organization: "",
-    role: ""
+    address: "",
+    city: "",
+    state: "",
+    zipCode: ""
+  });
+
+  const [accountProfile, setAccountProfile] = useState({
+    organizationName: "",
+    website: "",
+    telephone: "",
+    address: "",
+    city: "",
+    state: "",
+    zipCode: ""
   });
 
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -32,6 +45,30 @@ const Profile = () => {
 
   const handleCreateChange = (field: string, value: string) => {
     setCreateProfile(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleAccountChange = (field: string, value: string) => {
+    setAccountProfile(prev => ({ ...prev, [field]: value }));
+  };
+
+  const validateURL = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const formatPhone = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    if (cleaned.length <= 3) return cleaned;
+    if (cleaned.length <= 6) return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
+  };
+
+  const formatZip = (value: string) => {
+    return value.replace(/\D/g, '').slice(0, 5);
   };
 
   return (
@@ -161,12 +198,43 @@ const Profile = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="create-role">Role</Label>
+                    <Label htmlFor="create-address">Address</Label>
                     <Input
-                      id="create-role"
-                      value={createProfile.role}
-                      onChange={(e) => handleCreateChange("role", e.target.value)}
+                      id="create-address"
+                      value={createProfile.address}
+                      onChange={(e) => handleCreateChange("address", e.target.value)}
                       className="bg-gray-50 border-gray-300"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="create-city">City</Label>
+                    <Input
+                      id="create-city"
+                      value={createProfile.city}
+                      onChange={(e) => handleCreateChange("city", e.target.value)}
+                      className="bg-gray-50 border-gray-300"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="create-state">State</Label>
+                    <Input
+                      id="create-state"
+                      value={createProfile.state}
+                      onChange={(e) => handleCreateChange("state", e.target.value)}
+                      className="bg-gray-50 border-gray-300"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="create-zipCode">Zip Code</Label>
+                    <Input
+                      id="create-zipCode"
+                      value={createProfile.zipCode}
+                      onChange={(e) => handleCreateChange("zipCode", formatZip(e.target.value))}
+                      className="bg-gray-50 border-gray-300"
+                      placeholder="12345"
                     />
                   </div>
                 </div>
@@ -182,10 +250,94 @@ const Profile = () => {
               <CardHeader>
                 <CardTitle>Account Settings</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Account settings content will be displayed here.
-                </p>
+              <CardContent className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Organization Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="account-organizationName">Organization Name *</Label>
+                      <Input
+                        id="account-organizationName"
+                        value={accountProfile.organizationName}
+                        onChange={(e) => handleAccountChange("organizationName", e.target.value)}
+                        className="bg-gray-50 border-gray-300"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="account-website">Website</Label>
+                      <Input
+                        id="account-website"
+                        type="url"
+                        value={accountProfile.website}
+                        onChange={(e) => handleAccountChange("website", e.target.value)}
+                        className={`bg-gray-50 border-gray-300 ${
+                          accountProfile.website && !validateURL(accountProfile.website) 
+                            ? 'border-red-500' 
+                            : ''
+                        }`}
+                        placeholder="https://example.com"
+                      />
+                      {accountProfile.website && !validateURL(accountProfile.website) && (
+                        <p className="text-sm text-red-500">Please enter a valid URL</p>
+                      )}
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="account-telephone">Telephone</Label>
+                      <Input
+                        id="account-telephone"
+                        value={accountProfile.telephone}
+                        onChange={(e) => handleAccountChange("telephone", formatPhone(e.target.value))}
+                        className="bg-gray-50 border-gray-300"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="account-address">Address</Label>
+                      <Input
+                        id="account-address"
+                        value={accountProfile.address}
+                        onChange={(e) => handleAccountChange("address", e.target.value)}
+                        className="bg-gray-50 border-gray-300"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="account-city">City</Label>
+                      <Input
+                        id="account-city"
+                        value={accountProfile.city}
+                        onChange={(e) => handleAccountChange("city", e.target.value)}
+                        className="bg-gray-50 border-gray-300"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="account-state">State</Label>
+                      <Input
+                        id="account-state"
+                        value={accountProfile.state}
+                        onChange={(e) => handleAccountChange("state", e.target.value)}
+                        className="bg-gray-50 border-gray-300"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="account-zipCode">Zip Code</Label>
+                      <Input
+                        id="account-zipCode"
+                        value={accountProfile.zipCode}
+                        onChange={(e) => handleAccountChange("zipCode", formatZip(e.target.value))}
+                        className="bg-gray-50 border-gray-300"
+                        placeholder="12345"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button className="w-full mt-6">Update Organization Information</Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
