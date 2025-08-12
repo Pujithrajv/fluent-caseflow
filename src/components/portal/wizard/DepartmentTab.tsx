@@ -112,7 +112,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="zoning">Zoning Division</SelectItem>
                     <SelectItem value="permits">Permits Division</SelectItem>
                     <SelectItem value="compliance">Compliance Division</SelectItem>
-                    <SelectItem value="animal-health-welfare">Animal Health & Welfare</SelectItem>
+                    <SelectItem value="Animal Health & Welfare">Animal Health & Welfare</SelectItem>
                     <SelectItem value="weights-measures">Bureau of Weights and Measures</SelectItem>
                     <SelectItem value="Division of Agricultural Industry Regulation">Division of Agricultural Industry Regulation</SelectItem>
                   </SelectContent>
@@ -153,7 +153,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="residential">Residential Bureau</SelectItem>
                     <SelectItem value="commercial">Commercial Bureau</SelectItem>
                     <SelectItem value="industrial">Industrial Bureau</SelectItem>
-                    <SelectItem value="adult-protective">Adult Protective Services</SelectItem>
+                    <SelectItem value="Adult Protective Services">Adult Protective Services</SelectItem>
                     <SelectItem value="Animal Health & Welfare">Animal Health & Welfare</SelectItem>
                   </SelectContent>
                 </Select>
@@ -196,7 +196,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="foia">FOIA Request</SelectItem>
                     <SelectItem value="animal-health">Animal Health</SelectItem>
                     <SelectItem value="animal-welfare">Animal Welfare</SelectItem>
-                    <SelectItem value="environment-protection">Environment Protection</SelectItem>
+                    <SelectItem value="Environment Protection">Environment Protection</SelectItem>
                     <SelectItem value="Grain Dealer and Warehouse Licensing">Grain Dealer and Warehouse Licensing</SelectItem>
                     <SelectItem value="inspection-appeal">Inspection Notice of Fine Appeal</SelectItem>
                   </SelectContent>
