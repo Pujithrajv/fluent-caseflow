@@ -132,7 +132,7 @@ export function RequestDetailsTab({ onDataChange, data, requestType = "motion" }
 
                 {/* Consult Other Side */}
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-4">
                     <Label htmlFor="consultOtherSide" className="font-fluent font-semibold text-sm">Consult other side?</Label>
                     <Tooltip>
                       <TooltipTrigger>
@@ -142,17 +142,43 @@ export function RequestDetailsTab({ onDataChange, data, requestType = "motion" }
                         <p>Did you consult with the opposing party before filing this motion?</p>
                       </TooltipContent>
                     </Tooltip>
+                    
+                    {/* Custom Toggle */}
+                    <div className="relative">
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={consultOtherSide}
+                        aria-labelledby="consultOtherSide-label"
+                        onClick={() => setConsultOtherSide(!consultOtherSide)}
+                        className={cn(
+                          "relative inline-flex h-11 w-24 items-center rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#0078D4] focus:ring-offset-2",
+                          "hover:brightness-[0.92]",
+                          consultOtherSide ? "bg-[#107C10]" : "bg-[#8A8886]"
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "absolute inset-0 flex items-center justify-center text-xs font-medium text-white transition-opacity duration-200",
+                            consultOtherSide ? "opacity-100" : "opacity-0"
+                          )}
+                        >
+                          Yes
+                        </span>
+                        <span
+                          className={cn(
+                            "absolute inset-0 flex items-center justify-center text-xs font-medium text-white transition-opacity duration-200",
+                            !consultOtherSide ? "opacity-100" : "opacity-0"
+                          )}
+                        >
+                          No
+                        </span>
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="consultOtherSide"
-                      checked={consultOtherSide}
-                      onCheckedChange={setConsultOtherSide}
-                    />
-                    <Label htmlFor="consultOtherSide" className="text-sm">
-                      {consultOtherSide ? "Yes" : "No"}
-                    </Label>
-                  </div>
+                  <p className="text-xs text-muted-foreground ml-4">
+                    Indicate whether you conferred with the other party before filing.
+                  </p>
                 </div>
 
                 {/* What was the outcome */}

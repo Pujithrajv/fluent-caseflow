@@ -49,7 +49,9 @@ const questionSets = [
 
 export function RequestTypeQuestionsTab({ onDataChange, data, requestType }: RequestTypeQuestionsTabProps) {
   // Don't show any questions for certificate, pleadings, or notices requests
-  if (requestType === "certificate" || requestType === "pleadings" || requestType === "notices") {
+  // Also skip pleading questions and notice questions specifically
+  if (requestType === "certificate" || requestType === "pleadings" || requestType === "notices" || 
+      requestType === "pleading questions" || requestType === "notice questions") {
     return (
       <div className="text-center py-8">
         <p className="text-muted-foreground">No additional questions required for {requestType} requests.</p>
