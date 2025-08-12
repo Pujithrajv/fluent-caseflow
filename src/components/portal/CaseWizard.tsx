@@ -391,7 +391,9 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
                       {isTabCompleted(tab.id) && (
-                        <Check className="h-4 w-4 text-success" />
+                        <div className="bg-success rounded-full w-5 h-5 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-white" />
+                        </div>
                       )}
                     </TabsTrigger>
                   ))}
