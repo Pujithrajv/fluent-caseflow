@@ -28,8 +28,8 @@ const createNewCaseTabs = [
   { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
   { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
   { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
-  { id: 'involved-parties', title: 'Involved Parties', description: 'Additional parties' },
-  { id: 'document-upload', title: 'Document Upload', description: 'Upload case documents' },
+  { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
+  { id: 'document-upload', title: 'Initial Documents', description: 'Upload case documents' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
@@ -38,8 +38,8 @@ const viewEditSubmittedTabs = [
   { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
   { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
   { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
-  { id: 'involved-parties', title: 'Involved Parties', description: 'Additional parties' },
-  { id: 'document-upload', title: 'Document Upload', description: 'Uploaded case documents' },
+  { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
+  { id: 'document-upload', title: 'Initial Documents', description: 'Uploaded case documents' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
@@ -48,7 +48,7 @@ const viewEditAcceptedTabs = [
   { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
   { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
   { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
-  { id: 'involved-parties', title: 'Involved Parties', description: 'Additional parties' },
+  { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
   { id: 'requests', title: 'Requests', description: 'Associated requests' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
