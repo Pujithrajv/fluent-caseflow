@@ -400,7 +400,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
           <Button 
             className="bg-blue-600 hover:bg-blue-700 text-white"
             onClick={onNext}
-            disabled={!onNext || missingDocuments.length > 0}
+            disabled={!onNext}
           >
             Next
           </Button>
