@@ -19,6 +19,10 @@ interface RequiredDocument {
 const requiredDocumentsByCase: Record<string, RequiredDocument[]> = {
   'Abandoned Well': [
     { name: 'Notice of Violation', hasTemplate: true, templateUrl: '#' },
+    { name: 'Notice to Caregiver', hasTemplate: true, templateUrl: '#' },
+    { name: 'Police Reports', hasTemplate: false },
+    { name: 'Request for Appeal', hasTemplate: true, templateUrl: '#' },
+    { name: 'Responsive Document', hasTemplate: false },
     { name: 'Well Inspection Report', hasTemplate: true, templateUrl: '#' },
     { name: 'Well Records of the Inspector', hasTemplate: false }
   ],
