@@ -383,15 +383,17 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="w-full justify-between px-4 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      className="w-full justify-between px-4 py-3 min-h-[56px] rounded-lg transition-all duration-200 bg-background text-foreground border border-border hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-l-4 data-[state=active]:border-l-primary data-[state=active]:font-medium"
                       onClick={() => markTabCompleted(tab.id)}
+                      aria-current={tab.id === currentTab ? "step" : undefined}
+                      aria-checked={isTabCompleted(tab.id) ? "true" : "false"}
                     >
                       <div className="text-left">
                         <div className="font-fluent font-medium">{tab.title}</div>
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
                       {isTabCompleted(tab.id) && (
-                        <div className="bg-success rounded-full w-5 h-5 flex items-center justify-center">
+                        <div className="bg-[#107C10] rounded-full w-5 h-5 flex items-center justify-center">
                           <Check className="h-3 w-3 text-white" />
                         </div>
                       )}

@@ -156,14 +156,18 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
                 {exhibitTabs.map((tab, index) => (
                   <div
                     key={tab.id}
-                    className={`w-full justify-between px-4 py-3 rounded-lg cursor-pointer transition-colors ${
+                    className={`w-full justify-between px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[56px] ${
                       currentStep === index 
-                        ? 'bg-primary text-primary-foreground' 
-                        : currentStep > index 
-                          ? 'bg-success/10 text-success border border-success/20' 
-                          : 'bg-muted/50 text-muted-foreground'
+                        ? 'bg-primary/10 text-primary border-l-4 border-l-primary font-medium' 
+                        : currentStep > index || isTabCompleted(tab.id)
+                          ? 'bg-background text-foreground border border-border hover:bg-muted/50' 
+                          : 'bg-background text-muted-foreground border border-border hover:bg-muted/50'
                     }`}
                     onClick={() => currentStep > index ? goToStep(index) : undefined}
+                    role="button"
+                    tabIndex={0}
+                    aria-current={currentStep === index ? "step" : undefined}
+                    aria-checked={isTabCompleted(tab.id) ? "true" : "false"}
                   >
                     <div className="flex items-center justify-between">
                       <div className="text-left">
@@ -171,7 +175,9 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
                       {isTabCompleted(tab.id) && (
-                        <Check className="h-4 w-4" />
+                        <div className="bg-[#107C10] rounded-full w-5 h-5 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-white" />
+                        </div>
                       )}
                     </div>
                   </div>
