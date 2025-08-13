@@ -71,6 +71,7 @@ interface RequestsWizardProps {
 
 export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
   const defaultCaseData = { caseType: 'Abandoned Well', ...caseData };
+  const [currentTab, setCurrentTab] = useState("request");
   const [formData, setFormData] = useState<any>({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
@@ -84,6 +85,21 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
 
   const isTabCompleted = (tabId: string) => {
     return completedTabs.includes(tabId);
+  };
+
+  // Navigation functions
+  const goToNextTab = () => {
+    const currentIndex = requestSteps.findIndex(step => step.id === currentTab);
+    if (currentIndex < requestSteps.length - 1) {
+      setCurrentTab(requestSteps[currentIndex + 1].id);
+    }
+  };
+
+  const goToPreviousTab = () => {
+    const currentIndex = requestSteps.findIndex(step => step.id === currentTab);
+    if (currentIndex > 0) {
+      setCurrentTab(requestSteps[currentIndex - 1].id);
+    }
   };
 
   // Check if we can proceed to next step
@@ -145,7 +161,7 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
                 <CardTitle className="font-fluent text-lg">Request Steps</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <Tabs orientation="vertical" defaultValue="request" className="w-full">
+                <Tabs orientation="vertical" value={currentTab} onValueChange={setCurrentTab} className="w-full">
                   <TabsList className="grid w-full grid-rows-4 h-auto bg-transparent p-0">
                     {requestSteps.map((step, index) => (
                       <TabsTrigger
@@ -196,8 +212,8 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
 
           {/* Main Content Area */}
           <div className="flex-1 min-w-0">
-            <div className="space-y-6">
-              <Tabs orientation="vertical" defaultValue="request" className="w-full">
+              <div className="space-y-6">
+                <Tabs orientation="vertical" value={currentTab} onValueChange={setCurrentTab} className="w-full">
                 
                 {/* Request Selection */}
                 <TabsContent value="request" className="mt-0">
@@ -234,6 +250,7 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
                     onDataChange={updateFormData} 
                     data={formData}
                     onComplete={() => markTabCompleted('request')}
+                    onNext={goToNextTab}
                   />
                 </TabsContent>
 
@@ -272,6 +289,8 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
                     onDataChange={updateFormData} 
                     data={formData}
                     onComplete={() => markTabCompleted('details')}
+                    onNext={goToNextTab}
+                    onPrevious={goToPreviousTab}
                   />
                 </TabsContent>
 

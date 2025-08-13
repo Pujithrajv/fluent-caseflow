@@ -9,6 +9,7 @@ interface RequestSelectionTabProps {
   onDataChange: (data: any) => void;
   data: any;
   onComplete: () => void;
+  onNext?: () => void;
 }
 
 const requestGroups = [
@@ -62,7 +63,7 @@ const exhibitTypes = [
   "Physical Item"
 ];
 
-export function RequestSelectionTab({ onDataChange, data, onComplete }: RequestSelectionTabProps) {
+export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: RequestSelectionTabProps) {
   const [requestGroup, setRequestGroup] = useState(data.requestGroup || "");
   const [requestType, setRequestType] = useState(data.requestType || "");
 
@@ -161,6 +162,7 @@ export function RequestSelectionTab({ onDataChange, data, onComplete }: RequestS
             <Button 
               disabled={!canContinue}
               className="bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={onNext}
             >
               Next
             </Button>

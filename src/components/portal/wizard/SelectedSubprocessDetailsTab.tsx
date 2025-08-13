@@ -15,6 +15,8 @@ interface SelectedSubprocessDetailsTabProps {
   onDataChange: (data: any) => void;
   data: any;
   onComplete: () => void;
+  onNext?: () => void;
+  onPrevious?: () => void;
 }
 
 const physicalItemCategories = [
@@ -27,7 +29,7 @@ const physicalItemCategories = [
   "Other"
 ];
 
-export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete }: SelectedSubprocessDetailsTabProps) {
+export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, onNext, onPrevious }: SelectedSubprocessDetailsTabProps) {
   // Motion-specific states
   const [consultOtherSide, setConsultOtherSide] = useState(data.consultOtherSide || false);
   const [outcome, setOutcome] = useState(data.outcome || "");
@@ -554,12 +556,13 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete }:
       
       {/* Navigation */}
       <div className="flex justify-between pt-4">
-        <Button variant="outline">
+        <Button variant="outline" onClick={onPrevious}>
           Previous
         </Button>
         <Button 
           disabled={!canContinue()}
           className="bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={onNext}
         >
           Next
         </Button>
