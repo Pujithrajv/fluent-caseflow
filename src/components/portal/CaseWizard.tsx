@@ -362,9 +362,26 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
             </p>
           </div>
           {caseId === "DBE-2024-001-EC" ? (
-            <Badge variant="default" className="bg-[#3DA546] text-white text-sm px-3 py-1">
-              Accepted
-            </Badge>
+            <div className="flex flex-col gap-2">
+              {/* Top row: Accepted + Confidential */}
+              <div className="flex items-center gap-2">
+                <Badge className="bg-[#4CAF50] text-white text-sm px-3 py-1 rounded-full">
+                  Accepted
+                </Badge>
+                <Badge className="bg-[#6A1B9A] text-white text-sm px-3 py-1 rounded-full">
+                  Confidential
+                </Badge>
+              </div>
+              {/* Bottom row: Expedited + Complex */}
+              <div className="flex items-center gap-2">
+                <Badge className="bg-[#D32F2F] text-white text-sm px-3 py-1 rounded-full">
+                  Expedited
+                </Badge>
+                <Badge className="bg-[#F57C00] text-white text-sm px-3 py-1 rounded-full">
+                  Complex
+                </Badge>
+              </div>
+            </div>
           ) : (
             <Badge variant="outline" className="text-sm px-3 py-1">
               Status: {caseStatus === 'draft' ? 'Draft' : caseStatus === 'submitted' ? 'Submitted' : 'Accepted'}
@@ -822,9 +839,6 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                       <div>
                         <CardTitle className="font-fluent font-semibold">Review & Submit</CardTitle>
                         <p className="text-muted-foreground font-fluent">Verify and submit case</p>
-                        <Badge variant="destructive" className="px-4 py-1 text-xs font-fluent mt-2">
-                          Expedited
-                        </Badge>
                       </div>
                        <Sheet>
                          <SheetTrigger asChild>
