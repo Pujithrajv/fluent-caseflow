@@ -22,6 +22,7 @@ import { CertificatesWizard } from "./CertificatesWizard";
 import { DocumentsWizard } from "./DocumentsWizard";
 import { PleadingsWizard } from "./PleadingsWizard";
 import { NoticesWizard } from "./NoticesWizard";
+import { RequestsWizard } from "./RequestsWizard";
 
 const createNewCaseTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
@@ -308,6 +309,8 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
 
   if (showRequestWizard && currentRequestType) {
     switch (currentRequestType) {
+      case 'requests':
+        return <RequestsWizard onBack={handleRequestWizardBack} caseData={formData} />;
       case 'motion':
         return <MotionWizard onBack={handleRequestWizardBack} caseData={formData} />;
       case 'exhibit':

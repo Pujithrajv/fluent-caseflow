@@ -84,35 +84,13 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
             </div>
             
             {!isReadOnly && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create New
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[200px]">
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("motion")}>
-                  Motion
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("exhibit")}>
-                  Exhibit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("discovery")}>
-                  Discovery
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
-                  Certificates
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("pleadings")}>
-                  Pleadings
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
-                  Notices
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => onAddNewRequest?.("requests")}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Requests
+              </Button>
             )}
           </div>
         </CardHeader>
@@ -189,35 +167,15 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
             <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center">
               <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="font-fluent text-muted-foreground">No requests associated with this case yet</p>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="mt-4 font-fluent">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create First Request
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-[200px]">
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("motion")}>
-                    Motion
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("exhibit")}>
-                    Exhibit
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("discovery")}>
-                    Discovery
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("certificates")}>
-                    Certificates
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("pleadings")}>
-                    Pleadings
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onAddNewRequest?.("notices")}>
-                    Notices
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-4 font-fluent"
+                onClick={() => onAddNewRequest?.("requests")}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Create First Request
+              </Button>
             </div>
           )}
         </CardContent>
