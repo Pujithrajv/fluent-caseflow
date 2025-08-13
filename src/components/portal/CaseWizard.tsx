@@ -309,7 +309,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
   if (showRequestWizard && currentRequestType) {
     switch (currentRequestType) {
       case 'motion':
-        return <MotionWizard onBack={handleRequestWizardBack} />;
+        return <MotionWizard onBack={handleRequestWizardBack} caseData={formData} />;
       case 'exhibit':
         return <ExhibitWizard onBack={handleRequestWizardBack} />;
       case 'discovery':

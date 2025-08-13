@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, FileText, Trash2, Download } from "lucide-react";
+import { Upload, FileText, Trash2, Download, Check, ExternalLink } from "lucide-react";
 
 interface DocumentUploadTabProps {
   onDataChange: (data: any) => void;
@@ -9,26 +9,128 @@ interface DocumentUploadTabProps {
   isReadOnly?: boolean;
 }
 
+interface RequiredDocument {
+  name: string;
+  hasTemplate?: boolean;
+  templateUrl?: string;
+}
+
+// Case type to required documents mapping
+const requiredDocumentsByCase: Record<string, RequiredDocument[]> = {
+  'Abandoned Well': [
+    { name: 'Notice of Violation', hasTemplate: true, templateUrl: '#' },
+    { name: 'Well Inspection Report', hasTemplate: true, templateUrl: '#' },
+    { name: 'Well Records of the Inspector', hasTemplate: false }
+  ],
+  'Environmental Compliance': [
+    { name: 'Environmental Impact Assessment', hasTemplate: true, templateUrl: '#' },
+    { name: 'Soil Test Results', hasTemplate: false },
+    { name: 'Water Quality Report', hasTemplate: false }
+  ],
+  'Safety Violation': [
+    { name: 'Incident Report', hasTemplate: true, templateUrl: '#' },
+    { name: 'Safety Inspection Report', hasTemplate: true, templateUrl: '#' },
+    { name: 'Witness Statements', hasTemplate: false }
+  ]
+};
+
 const mockDocuments = [
   {
     id: 1,
-    name: "Environmental_Report_2024.pdf",
-    type: "Environmental Report",
-    size: "2.4 MB",
+    name: "Notice_of_Violation_2024.pdf",
+    type: "Notice of Violation",
+    size: "1.2 MB",
     uploadedDate: "2024-01-15"
   },
   {
     id: 2,
-    name: "Site_Plans.dwg",
-    type: "Technical Drawing",
-    size: "5.1 MB", 
+    name: "Well_Inspection_Report_2024.pdf",
+    type: "Well Inspection Report",
+    size: "2.8 MB", 
     uploadedDate: "2024-01-14"
+  },
+  {
+    id: 3,
+    name: "Environmental_Assessment.pdf",
+    type: "Supporting Evidence",
+    size: "3.1 MB",
+    uploadedDate: "2024-01-13"
   }
 ];
 
 export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: DocumentUploadTabProps) {
+  // Get the case type from form data to determine required documents
+  const caseType = data.caseType || data.selectedCategory;
+  const requiredDocuments = requiredDocumentsByCase[caseType] || [];
+  
+  // Helper function to check if a required document has been uploaded
+  const isDocumentUploaded = (requiredDocName: string) => {
+    return mockDocuments.some(doc => 
+      doc.name.toLowerCase().includes(requiredDocName.toLowerCase()) ||
+      doc.type.toLowerCase().includes(requiredDocName.toLowerCase())
+    );
+  };
+
   return (
     <div className="space-y-6">
+      {/* Required Documents Section */}
+      {requiredDocuments.length > 0 && (
+        <Card className="shadow-fluent-8 border-l-4 border-l-primary">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2 font-fluent">
+              <FileText className="h-5 w-5 text-primary" />
+              <span>Required Documents for This Case Type</span>
+            </CardTitle>
+            <p className="text-sm text-muted-foreground font-fluent">
+              The following documents are required for {caseType} cases. Please ensure all are uploaded before submission.
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {requiredDocuments.map((doc, index) => {
+                const isUploaded = isDocumentUploaded(doc.name);
+                return (
+                  <div key={index} className="flex items-center justify-between p-3 rounded-lg border border-border bg-card/50">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                        isUploaded 
+                          ? 'bg-success text-success-foreground' 
+                          : 'bg-muted border border-muted-foreground'
+                      }`}>
+                        {isUploaded && <Check className="h-3 w-3" />}
+                      </div>
+                      <div>
+                        {doc.hasTemplate ? (
+                          <button 
+                            className="text-primary hover:text-primary/80 font-medium font-fluent underline flex items-center space-x-1"
+                            onClick={() => window.open(doc.templateUrl, '_blank')}
+                          >
+                            <span>{doc.name}</span>
+                            <ExternalLink className="h-3 w-3" />
+                          </button>
+                        ) : (
+                          <span className="font-medium font-fluent text-foreground">{doc.name}</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-sm font-fluent">
+                      {isUploaded ? (
+                        <span className="text-success flex items-center space-x-1">
+                          <Check className="h-4 w-4" />
+                          <span>Uploaded</span>
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">Not yet uploaded</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <Card className="shadow-fluent-8">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">

@@ -55,9 +55,12 @@ const faqData = {
 
 interface MotionWizardProps {
   onBack?: () => void;
+  caseData?: any; // Pass case data from parent to determine required documents
 }
 
-export function MotionWizard({ onBack }: MotionWizardProps) {
+export function MotionWizard({ onBack, caseData }: MotionWizardProps) {
+  // Set default case type for demonstration if not provided
+  const defaultCaseData = { caseType: 'Abandoned Well', ...caseData };
   const [formData, setFormData] = useState({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
@@ -176,7 +179,7 @@ export function MotionWizard({ onBack }: MotionWizardProps) {
                     </CardHeader>
                     <CardContent className="p-6">
                       {tab.id === 'motion-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={{...formData, ...defaultCaseData}} />}
                       {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
                   </Card>
