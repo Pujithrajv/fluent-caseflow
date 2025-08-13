@@ -55,10 +55,38 @@ const mockDocuments = [
   },
   {
     id: 3,
-    name: "Environmental_Assessment.pdf",
-    type: "Supporting Evidence",
-    size: "3.1 MB",
+    name: "Notice_to_Caregiver_2024.pdf",
+    type: "Notice to Caregiver",
+    size: "0.9 MB",
     uploadedDate: "2024-01-13"
+  },
+  {
+    id: 4,
+    name: "Police_Reports_2024.pdf",
+    type: "Police Reports",
+    size: "3.2 MB",
+    uploadedDate: "2024-01-12"
+  },
+  {
+    id: 5,
+    name: "Request_for_Appeal_2024.pdf",
+    type: "Request for Appeal",
+    size: "1.5 MB",
+    uploadedDate: "2024-01-11"
+  },
+  {
+    id: 6,
+    name: "Responsive_Document_2024.pdf",
+    type: "Responsive Document",
+    size: "2.1 MB",
+    uploadedDate: "2024-01-10"
+  },
+  {
+    id: 7,
+    name: "Well_Records_Inspector_2024.pdf",
+    type: "Well Records of the Inspector",
+    size: "4.3 MB",
+    uploadedDate: "2024-01-09"
   }
 ];
 
