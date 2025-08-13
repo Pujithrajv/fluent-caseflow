@@ -141,12 +141,9 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
       {/* Main Content */}
       <div className="mx-auto max-w-6xl px-6 py-8">
         {/* Dynamic Header */}
-        <div className="mb-8 text-center">
-          <div className="flex items-center justify-center space-x-4 mb-4">
-            <h1 className="text-2xl font-semibold text-foreground font-fluent">
-              Requests
-            </h1>
-            <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200 font-fluent">
+        <div className="mb-8">
+          <div className="flex items-center justify-end mb-4">
+            <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200 font-fluent">
               In Progress
             </Badge>
           </div>
