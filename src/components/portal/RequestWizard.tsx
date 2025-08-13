@@ -9,15 +9,46 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RequestDetailsTab } from "./wizard/RequestDetailsTab";
 import { RequestTypeQuestionsTab } from "./wizard/RequestTypeQuestionsTab";
+import { SelectedSubprocessDetailsTab } from "./wizard/SelectedSubprocessDetailsTab";
+import { InterrogatoriesQuestionsTab } from "./wizard/InterrogatoriesQuestionsTab";
+import { DocumentProductionQuestionsTab } from "./wizard/DocumentProductionQuestionsTab";
+import { DepositionQuestionsTab } from "./wizard/DepositionQuestionsTab";
+import { InspectionQuestionsTab } from "./wizard/InspectionQuestionsTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
-const requestTabs = [
-  { id: 'request-details', title: 'Request Details', description: 'Request information and summary' },
-  { id: 'request-questions', title: 'Request Type Questions', description: 'Type-specific questions' },
-  { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
-  { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
-];
+const getRequestTabs = (formData: any) => {
+  const baseTabs = [
+    { id: 'request-details', title: 'Request Details', description: 'Request information and summary' },
+    { id: 'request-questions', title: 'Request Type Questions', description: 'Type-specific questions' }
+  ];
+
+  // Add selected subprocess details tab if discovery is selected
+  if (formData.requestGroup === 'discovery' && formData.requestType === 'discovery') {
+    baseTabs.push({ id: 'selected-subprocess-details', title: 'Discovery Information', description: 'Discovery details and configuration' });
+
+    // Add dynamic discovery tabs based on selected types
+    if (formData.discoveryTypes?.includes('interrogatories')) {
+      baseTabs.push({ id: 'interrogatories-questions', title: 'Interrogatories', description: 'Interrogatories questions and details' });
+    }
+    if (formData.discoveryTypes?.includes('document-production')) {
+      baseTabs.push({ id: 'document-production-questions', title: 'Document Production', description: 'Document production details' });
+    }
+    if (formData.discoveryTypes?.includes('deposition')) {
+      baseTabs.push({ id: 'deposition-questions', title: 'Deposition', description: 'Deposition scheduling and details' });
+    }
+    if (formData.discoveryTypes?.includes('inspection')) {
+      baseTabs.push({ id: 'inspection-questions', title: 'Inspection', description: 'Inspection requirements and details' });
+    }
+  }
+
+  baseTabs.push(
+    { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
+    { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
+  );
+
+  return baseTabs;
+};
 
 const faqData = {
   "request-details": [
@@ -99,6 +130,8 @@ interface RequestWizardProps {
 export function RequestWizard({ onBack, requestType, status = "draft" }: RequestWizardProps) {
   const [formData, setFormData] = useState({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
+  
+  const requestTabs = getRequestTabs(formData);
 
   const getRequestTitle = (type?: string) => {
     switch (type?.toLowerCase()) {
@@ -251,11 +284,95 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />
-                  </CardContent>
-                </Card>
-              </TabsContent>
+                   <CardContent className="p-6">
+                     <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />
+                   </CardContent>
+                 </Card>
+               </TabsContent>
+
+               <TabsContent value="selected-subprocess-details" className="mt-0">
+                 <Card className="shadow-fluent-16">
+                   <CardHeader>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Discovery Information</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Discovery details and configuration</p>
+                       </div>
+                     </div>
+                   </CardHeader>
+                    <CardContent className="p-6">
+                      <SelectedSubprocessDetailsTab 
+                        onDataChange={updateFormData} 
+                        data={formData} 
+                        onComplete={() => markTabCompleted('selected-subprocess-details')}
+                      />
+                    </CardContent>
+                 </Card>
+               </TabsContent>
+
+               <TabsContent value="interrogatories-questions" className="mt-0">
+                 <Card className="shadow-fluent-16">
+                   <CardHeader>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Interrogatories</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Interrogatories questions and details</p>
+                       </div>
+                     </div>
+                   </CardHeader>
+                   <CardContent className="p-6">
+                     <InterrogatoriesQuestionsTab onDataChange={updateFormData} data={formData} />
+                   </CardContent>
+                 </Card>
+               </TabsContent>
+
+               <TabsContent value="document-production-questions" className="mt-0">
+                 <Card className="shadow-fluent-16">
+                   <CardHeader>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Document Production</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Document production details</p>
+                       </div>
+                     </div>
+                   </CardHeader>
+                   <CardContent className="p-6">
+                     <DocumentProductionQuestionsTab onDataChange={updateFormData} data={formData} />
+                   </CardContent>
+                 </Card>
+               </TabsContent>
+
+               <TabsContent value="deposition-questions" className="mt-0">
+                 <Card className="shadow-fluent-16">
+                   <CardHeader>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Deposition</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Deposition scheduling and details</p>
+                       </div>
+                     </div>
+                   </CardHeader>
+                   <CardContent className="p-6">
+                     <DepositionQuestionsTab onDataChange={updateFormData} data={formData} />
+                   </CardContent>
+                 </Card>
+               </TabsContent>
+
+               <TabsContent value="inspection-questions" className="mt-0">
+                 <Card className="shadow-fluent-16">
+                   <CardHeader>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Inspection</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Inspection requirements and details</p>
+                       </div>
+                     </div>
+                   </CardHeader>
+                   <CardContent className="p-6">
+                     <InspectionQuestionsTab onDataChange={updateFormData} data={formData} />
+                   </CardContent>
+                 </Card>
+               </TabsContent>
 
               <TabsContent value="documents" className="mt-0">
                 <Card className="shadow-fluent-16">
