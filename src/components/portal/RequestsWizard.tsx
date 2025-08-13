@@ -9,7 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { RequestSelectionTab } from "./wizard/RequestSelectionTab";
 import { SelectedSubprocessDetailsTab } from "./wizard/SelectedSubprocessDetailsTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
-import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
+import { RequestReviewSubmitTab } from "./wizard/RequestReviewSubmitTab";
 
 const requestSteps = [
   { id: 'request', title: 'Request', description: 'Select request group and type' },
@@ -361,8 +361,13 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
                       </SheetContent>
                     </Sheet>
                   </div>
-                  <ReviewSubmitTab 
+                  <RequestReviewSubmitTab 
                     data={formData}
+                    onPrevious={goToPreviousTab}
+                    onSubmit={() => {
+                      // Handle submission logic here
+                      console.log('Submitting request:', formData);
+                    }}
                   />
                 </TabsContent>
 
