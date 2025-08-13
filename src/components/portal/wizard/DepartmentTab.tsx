@@ -31,7 +31,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
     }
     if (isPartiallyEditable) {
       // Only these fields are editable in partially editable mode
-      return !['departmentRefNumber', 'caseCoordinator', 'assignedAttorney'].includes(fieldName);
+      return !['departmentRefNumber', 'caseCoordinator', 'assignedAttorney', 'finalDecisionMaker'].includes(fieldName);
     }
     return false;
   };
@@ -73,7 +73,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="environmental">Environmental Services</SelectItem>
                     <SelectItem value="legal">Legal Department</SelectItem>
                     <SelectItem value="admin">Administration</SelectItem>
-                    <SelectItem value="Department of Agriculture">Department of Agriculture</SelectItem>
+                    <SelectItem value="Department of Natural Resources">Department of Natural Resources</SelectItem>
                   </SelectContent>
                 </Select>
               </TooltipTrigger>
@@ -114,7 +114,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="compliance">Compliance Division</SelectItem>
                     <SelectItem value="Animal Health & Welfare">Animal Health & Welfare</SelectItem>
                     <SelectItem value="weights-measures">Bureau of Weights and Measures</SelectItem>
-                    <SelectItem value="Division of Agricultural Industry Regulation">Division of Agricultural Industry Regulation</SelectItem>
+                    <SelectItem value="Office of Oil and Gas Resource Management">Office of Oil and Gas Resource Management</SelectItem>
                   </SelectContent>
                 </Select>
               </TooltipTrigger>
@@ -154,7 +154,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="commercial">Commercial Bureau</SelectItem>
                     <SelectItem value="industrial">Industrial Bureau</SelectItem>
                     <SelectItem value="Adult Protective Services">Adult Protective Services</SelectItem>
-                    <SelectItem value="Animal Health & Welfare">Animal Health & Welfare</SelectItem>
+                    <SelectItem value="Plugging and Restoration">Plugging and Restoration</SelectItem>
                   </SelectContent>
                 </Select>
               </TooltipTrigger>
@@ -197,7 +197,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectItem value="animal-health">Animal Health</SelectItem>
                     <SelectItem value="animal-welfare">Animal Welfare</SelectItem>
                     <SelectItem value="Environment Protection">Environment Protection</SelectItem>
-                    <SelectItem value="Grain Dealer and Warehouse Licensing">Grain Dealer and Warehouse Licensing</SelectItem>
+                    <SelectItem value="Abandoned Well">Abandoned Well</SelectItem>
                     <SelectItem value="inspection-appeal">Inspection Notice of Fine Appeal</SelectItem>
                   </SelectContent>
                 </Select>
