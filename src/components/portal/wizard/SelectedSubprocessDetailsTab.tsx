@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -7,8 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { HelpCircle, Upload, AlertTriangle, Info } from "lucide-react";
+import { HelpCircle, Upload, AlertTriangle, Info, FileText, X, CalendarIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 interface SelectedSubprocessDetailsTabProps {
@@ -27,6 +32,13 @@ const physicalItemCategories = [
   "Personal Items",
   "Industrial Equipment",
   "Other"
+];
+
+const discoveryTypes = [
+  { id: "interrogatories", label: "Interrogatories" },
+  { id: "document-production", label: "Document Production" },
+  { id: "deposition", label: "Deposition" },
+  { id: "inspection", label: "Inspection" }
 ];
 
 export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, onNext, onPrevious }: SelectedSubprocessDetailsTabProps) {
@@ -58,6 +70,14 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
   const [evidenceJustification, setEvidenceJustification] = useState(data.evidenceJustification || "");
   const [itemPhoto, setItemPhoto] = useState(data.itemPhoto || null);
 
+  // Discovery-specific states
+  const [selectedDiscoveryTypes, setSelectedDiscoveryTypes] = useState<string[]>(data.discoveryTypes || []);
+  const [discoverySchedule, setDiscoverySchedule] = useState(data.discoverySchedule || "");
+  const [discoveryStartDate, setDiscoveryStartDate] = useState<Date | undefined>(data.discoveryStartDate);
+  const [discoveryCutoffDate, setDiscoveryCutoffDate] = useState<Date | undefined>(data.discoveryCutoffDate);
+  const [discoveryConferenceDate, setDiscoveryConferenceDate] = useState<Date | undefined>(data.discoveryConferenceDate);
+  const [discoverySummary, setDiscoverySummary] = useState(data.discoverySummary || "");
+
   // General states for other request types
   const [description, setDescription] = useState(data.description || "");
 
@@ -88,6 +108,12 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
       specialHandlingDescription,
       evidenceJustification,
       itemPhoto,
+      selectedDiscoveryTypes,
+      discoverySchedule,
+      discoveryStartDate,
+      discoveryCutoffDate,
+      discoveryConferenceDate,
+      discoverySummary,
       description
     };
     onDataChange(updatedData);
@@ -96,7 +122,8 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
     hasProtectiveOrder, exhibitIdNumber, physicalItemCategory, itemName, itemDescription,
     estimatedSize, estimatedWeight, hasBiologicalHazard, hasChemicalHazard, hasRadiationHazard,
     hasLithiumBattery, deliverableByCarrier, specialHandling, specialHandlingDescription,
-    evidenceJustification, itemPhoto, description, onDataChange
+    evidenceJustification, itemPhoto, selectedDiscoveryTypes, discoverySchedule, discoveryStartDate,
+    discoveryCutoffDate, discoveryConferenceDate, discoverySummary, description, onDataChange
   ]);
 
   // Validation logic
@@ -128,7 +155,12 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
              (hasConfidentialInfo !== "yes" || hasProtectiveOrder !== "no" || exhibitIdNumber.trim());
     }
     
-    // For discovery, certificate, pleading, notices
+    if (requestGroup === "discovery") {
+      return selectedDiscoveryTypes.length > 0 && discoverySchedule && 
+             discoveryStartDate && discoveryCutoffDate && discoverySummary.trim() !== "";
+    }
+    
+    // For certificate, pleading, notices
     return description.trim() !== "";
   };
 
@@ -510,9 +542,210 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
     </Card>
   );
 
+  const handleDiscoveryTypeChange = (typeId: string, checked: boolean) => {
+    const updatedTypes = checked 
+      ? [...selectedDiscoveryTypes, typeId]
+      : selectedDiscoveryTypes.filter(id => id !== typeId);
+    
+    setSelectedDiscoveryTypes(updatedTypes);
+  };
+
+  const removeDiscoveryType = (typeId: string) => {
+    const updatedTypes = selectedDiscoveryTypes.filter(id => id !== typeId);
+    setSelectedDiscoveryTypes(updatedTypes);
+  };
+
+  const renderDiscoveryDetails = () => (
+    <Card className="shadow-fluent-8">
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2 font-fluent">
+          <FileText className="h-5 w-5 text-primary" />
+          <span>Discovery Information</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="discoverySchedule" className="font-fluent">Set Discovery Schedule *</Label>
+            <Select value={discoverySchedule} onValueChange={setDiscoverySchedule}>
+              <SelectTrigger className="shadow-fluent-8 border-input-border">
+                <SelectValue placeholder="Select discovery schedule" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="by-alj-order">By ALJ Order</SelectItem>
+                <SelectItem value="by-agreed-order">By Agreed Order</SelectItem>
+                <SelectItem value="at-pre-hearing-conference">At Pre-Hearing Conference</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="font-fluent">Type of Discovery Allowed *</Label>
+            <div className="space-y-3">
+              {discoveryTypes.map((type) => (
+                <div key={type.id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={type.id}
+                    checked={selectedDiscoveryTypes.includes(type.id)}
+                    onCheckedChange={(checked) => handleDiscoveryTypeChange(type.id, checked as boolean)}
+                  />
+                  <Label htmlFor={type.id} className="font-fluent cursor-pointer">
+                    {type.label}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            
+            {selectedDiscoveryTypes.length > 0 && (
+              <div className="mt-3">
+                <Label className="font-fluent text-sm text-muted-foreground">Selected Discovery Types:</Label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {selectedDiscoveryTypes.map((typeId) => {
+                    const type = discoveryTypes.find(t => t.id === typeId);
+                    return (
+                      <Badge key={typeId} variant="secondary" className="flex items-center gap-1">
+                        {type?.label}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-4 w-4 p-0 hover:bg-transparent"
+                          onClick={() => removeDiscoveryType(typeId)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </Badge>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label className="font-fluent">Discovery Start Date *</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                    !discoveryStartDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {discoveryStartDate ? format(discoveryStartDate, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={discoveryStartDate}
+                  onSelect={setDiscoveryStartDate}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="font-fluent">Discovery Cutoff Date *</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                    !discoveryCutoffDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {discoveryCutoffDate ? format(discoveryCutoffDate, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={discoveryCutoffDate}
+                  onSelect={setDiscoveryCutoffDate}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label className="font-fluent">Date for Discovery Conference to monitor progress of discovery</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                    !discoveryConferenceDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {discoveryConferenceDate ? format(discoveryConferenceDate, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={discoveryConferenceDate}
+                  onSelect={setDiscoveryConferenceDate}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="caseId" className="font-fluent">Case ID</Label>
+            <Input 
+              id="caseId"
+              value="AUTO-GENERATED"
+              disabled
+              className="shadow-fluent-8 border-input-border bg-muted"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="processStage" className="font-fluent">Process Stage</Label>
+            <Input 
+              id="processStage"
+              value="Initial Review"
+              disabled
+              className="shadow-fluent-8 border-input-border bg-muted"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="discoverySummary" className="font-fluent">Discovery Summary *</Label>
+          <Textarea 
+            id="discoverySummary"
+            value={discoverySummary}
+            onChange={(e) => setDiscoverySummary(e.target.value)}
+            placeholder="Provide a detailed summary of your discovery request..."
+            className="shadow-fluent-8 border-input-border min-h-32"
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   const renderOtherDetails = () => {
-    const title = requestGroup === "discovery" ? "Discovery Details" :
-                  requestGroup === "certificate" ? "Certificate Details" :
+    const title = requestGroup === "certificate" ? "Certificate Details" :
                   requestGroup === "pleading" ? "Pleading Details" : "Notice Details";
 
     return (
@@ -545,6 +778,10 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
     
     if (requestGroup === "exhibit") {
       return renderExhibitQuestions();
+    }
+    
+    if (requestGroup === "discovery") {
+      return renderDiscoveryDetails();
     }
     
     return renderOtherDetails();
