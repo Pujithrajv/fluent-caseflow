@@ -1,7 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, FileText, Trash2, Download, Check, ExternalLink } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Upload, FileText, Trash2, Download, Check, ExternalLink, AlertTriangle, X } from "lucide-react";
+import { useState } from "react";
 
 interface DocumentUploadTabProps {
   onDataChange: (data: any) => void;
@@ -13,95 +15,146 @@ interface RequiredDocument {
   name: string;
   hasTemplate?: boolean;
   templateUrl?: string;
+  description?: string;
 }
 
-// Case type to required documents mapping
+interface UploadedDocument {
+  id: number;
+  name: string;
+  type: string;
+  size: string;
+  uploadedDate: string;
+  mappedToRequired?: string;
+}
+
+// Case type to required documents mapping - admin configurable
 const requiredDocumentsByCase: Record<string, RequiredDocument[]> = {
   'Abandoned Well': [
-    { name: 'Notice of Violation', hasTemplate: true, templateUrl: '#' },
-    { name: 'Notice to Caregiver', hasTemplate: true, templateUrl: '#' },
-    { name: 'Police Reports', hasTemplate: false },
-    { name: 'Request for Appeal', hasTemplate: true, templateUrl: '#' },
-    { name: 'Responsive Document', hasTemplate: false },
-    { name: 'Well Inspection Report', hasTemplate: true, templateUrl: '#' },
-    { name: 'Well Records of the Inspector', hasTemplate: false }
+    { 
+      name: 'Notice of Violation', 
+      hasTemplate: true, 
+      templateUrl: '/templates/notice-of-violation.pdf',
+      description: 'Official notice documenting the violation'
+    },
+    { 
+      name: 'Well Inspection Report', 
+      hasTemplate: true, 
+      templateUrl: '/templates/well-inspection-report.pdf',
+      description: 'Technical inspection documentation'
+    },
+    { 
+      name: 'Well Records of the Inspector', 
+      hasTemplate: false,
+      description: 'Historical records and documentation'
+    }
   ],
   'Environmental Compliance': [
-    { name: 'Environmental Impact Assessment', hasTemplate: true, templateUrl: '#' },
-    { name: 'Soil Test Results', hasTemplate: false },
-    { name: 'Water Quality Report', hasTemplate: false }
+    { 
+      name: 'Environmental Impact Assessment', 
+      hasTemplate: true, 
+      templateUrl: '/templates/environmental-impact.pdf',
+      description: 'Assessment of environmental impact'
+    },
+    { 
+      name: 'Soil Test Results', 
+      hasTemplate: false,
+      description: 'Laboratory soil analysis results'
+    },
+    { 
+      name: 'Water Quality Report', 
+      hasTemplate: false,
+      description: 'Water quality testing documentation'
+    }
   ],
   'Safety Violation': [
-    { name: 'Incident Report', hasTemplate: true, templateUrl: '#' },
-    { name: 'Safety Inspection Report', hasTemplate: true, templateUrl: '#' },
-    { name: 'Witness Statements', hasTemplate: false }
+    { 
+      name: 'Incident Report', 
+      hasTemplate: true, 
+      templateUrl: '/templates/incident-report.pdf',
+      description: 'Detailed incident documentation'
+    },
+    { 
+      name: 'Safety Inspection Report', 
+      hasTemplate: true, 
+      templateUrl: '/templates/safety-inspection.pdf',
+      description: 'Safety compliance inspection results'
+    },
+    { 
+      name: 'Witness Statements', 
+      hasTemplate: false,
+      description: 'Statements from witnesses'
+    }
   ]
 };
 
-const mockDocuments = [
+// Mock uploaded documents - in real app this would come from props/state
+const mockDocuments: UploadedDocument[] = [
   {
     id: 1,
     name: "Notice_of_Violation_2024.pdf",
     type: "Notice of Violation",
     size: "1.2 MB",
-    uploadedDate: "2024-01-15"
+    uploadedDate: "2024-01-15",
+    mappedToRequired: "Notice of Violation"
   },
   {
     id: 2,
     name: "Well_Inspection_Report_2024.pdf",
     type: "Well Inspection Report",
     size: "2.8 MB", 
-    uploadedDate: "2024-01-14"
+    uploadedDate: "2024-01-14",
+    mappedToRequired: "Well Inspection Report"
   },
   {
     id: 3,
-    name: "Notice_to_Caregiver_2024.pdf",
-    type: "Notice to Caregiver",
+    name: "Additional_Documentation.pdf",
+    type: "Supporting Evidence",
     size: "0.9 MB",
     uploadedDate: "2024-01-13"
-  },
-  {
-    id: 4,
-    name: "Police_Reports_2024.pdf",
-    type: "Police Reports",
-    size: "3.2 MB",
-    uploadedDate: "2024-01-12"
-  },
-  {
-    id: 5,
-    name: "Request_for_Appeal_2024.pdf",
-    type: "Request for Appeal",
-    size: "1.5 MB",
-    uploadedDate: "2024-01-11"
-  },
-  {
-    id: 6,
-    name: "Responsive_Document_2024.pdf",
-    type: "Responsive Document",
-    size: "2.1 MB",
-    uploadedDate: "2024-01-10"
-  },
-  {
-    id: 7,
-    name: "Well_Records_Inspector_2024.pdf",
-    type: "Well Records of the Inspector",
-    size: "4.3 MB",
-    uploadedDate: "2024-01-09"
   }
 ];
 
 export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: DocumentUploadTabProps) {
+  const [uploadedDocuments, setUploadedDocuments] = useState<UploadedDocument[]>(mockDocuments);
+  
   // Get the case type from form data to determine required documents
-  const caseType = data.caseType || data.selectedCategory;
+  const caseType = data?.caseDetails?.caseType || data?.selectedCategory || 'Abandoned Well';
   const requiredDocuments = requiredDocumentsByCase[caseType] || [];
   
   // Helper function to check if a required document has been uploaded
   const isDocumentUploaded = (requiredDocName: string) => {
-    return mockDocuments.some(doc => 
-      doc.name.toLowerCase().includes(requiredDocName.toLowerCase()) ||
-      doc.type.toLowerCase().includes(requiredDocName.toLowerCase())
+    return uploadedDocuments.some(doc => doc.mappedToRequired === requiredDocName);
+  };
+
+  // Get missing required documents
+  const missingDocuments = requiredDocuments.filter(doc => !isDocumentUploaded(doc.name));
+  const allRequiredUploaded = missingDocuments.length === 0;
+
+  // Handle document type change
+  const handleDocumentTypeChange = (documentId: number, newType: string) => {
+    setUploadedDocuments(prev => 
+      prev.map(doc => 
+        doc.id === documentId 
+          ? { ...doc, type: newType, mappedToRequired: requiredDocuments.find(req => req.name === newType)?.name }
+          : doc
+      )
     );
   };
+
+  // Handle document deletion
+  const handleDeleteDocument = (documentId: number) => {
+    setUploadedDocuments(prev => prev.filter(doc => doc.id !== documentId));
+  };
+
+  // Available document types for dropdown
+  const availableDocumentTypes = [
+    ...requiredDocuments.map(doc => doc.name),
+    'Supporting Evidence',
+    'Correspondence', 
+    'Legal Document',
+    'Technical Drawing',
+    'Other'
+  ];
 
   return (
     <div className="space-y-6">
@@ -111,10 +164,10 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 font-fluent">
               <FileText className="h-5 w-5 text-primary" />
-              <span>Required Documents for This Case Type</span>
+              <span>Required Documents</span>
             </CardTitle>
             <p className="text-sm text-muted-foreground font-fluent">
-              The following documents are required for {caseType} cases. Please ensure all are uploaded before submission.
+              You must upload all required documents before submitting this case.
             </p>
           </CardHeader>
           <CardContent>
@@ -122,37 +175,44 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
               {requiredDocuments.map((doc, index) => {
                 const isUploaded = isDocumentUploaded(doc.name);
                 return (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg border border-border bg-card/50">
+                  <div key={index} className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-muted/30 transition-colors">
                     <div className="flex items-center space-x-3">
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 ${
                         isUploaded 
-                          ? 'bg-success text-success-foreground' 
-                          : 'bg-muted border border-muted-foreground'
+                          ? 'bg-green-500 border-green-500 text-white' 
+                          : 'bg-transparent border-gray-300'
                       }`}>
-                        {isUploaded && <Check className="h-3 w-3" />}
+                        {isUploaded && <Check className="h-4 w-4" />}
                       </div>
-                      <div>
-                        {doc.hasTemplate ? (
-                          <button 
-                            className="text-primary hover:text-primary/80 font-medium font-fluent underline flex items-center space-x-1"
-                            onClick={() => window.open(doc.templateUrl, '_blank')}
-                          >
-                            <span>{doc.name}</span>
-                            <ExternalLink className="h-3 w-3" />
-                          </button>
-                        ) : (
-                          <span className="font-medium font-fluent text-foreground">{doc.name}</span>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2">
+                          {doc.hasTemplate ? (
+                            <button 
+                              className="text-primary hover:text-primary/80 font-medium font-fluent underline flex items-center space-x-1"
+                              onClick={() => window.open(doc.templateUrl, '_blank')}
+                            >
+                              <span>{doc.name}</span>
+                              <ExternalLink className="h-3 w-3" />
+                            </button>
+                          ) : (
+                            <span className="font-medium font-fluent text-foreground">{doc.name}</span>
+                          )}
+                        </div>
+                        {doc.description && (
+                          <p className="text-sm text-muted-foreground font-fluent mt-1">{doc.description}</p>
                         )}
                       </div>
                     </div>
-                    <div className="text-sm font-fluent">
+                    <div className="flex items-center space-x-2">
                       {isUploaded ? (
-                        <span className="text-success flex items-center space-x-1">
+                        <div className="flex items-center space-x-1 text-green-600">
                           <Check className="h-4 w-4" />
-                          <span>Uploaded</span>
-                        </span>
+                          <span className="text-sm font-medium">Uploaded</span>
+                        </div>
                       ) : (
-                        <span className="text-muted-foreground">Not yet uploaded</span>
+                        <div className="flex items-center space-x-1 text-muted-foreground">
+                          <span className="text-sm">Required</span>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -163,6 +223,25 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
         </Card>
       )}
 
+      {/* Missing Documents Warning */}
+      {!allRequiredUploaded && missingDocuments.length > 0 && (
+        <Alert className="border-amber-200 bg-amber-50">
+          <AlertTriangle className="h-4 w-4 text-amber-600" />
+          <AlertDescription className="text-amber-800">
+            <div>
+              <p className="font-medium mb-2">Missing Required Documents</p>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                {missingDocuments.map((doc, index) => (
+                  <li key={index}>{doc.name}</li>
+                ))}
+              </ul>
+              <p className="text-sm mt-2">You cannot proceed to submission until all required documents are uploaded.</p>
+            </div>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Document Upload Section */}
       <Card className="shadow-fluent-8">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
@@ -176,8 +255,10 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
             <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center hover:border-primary transition-colors cursor-pointer">
               <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="font-fluent text-foreground mb-2">Drag and drop files here, or click to browse</p>
-              <p className="text-sm font-fluent text-muted-foreground">Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG (Max 10MB)</p>
-              <Button variant="outline" size="sm" className="mt-4 font-fluent">
+              <p className="text-sm font-fluent text-muted-foreground mb-4">
+                Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG (Max 10MB per file)
+              </p>
+              <Button variant="outline" size="sm" className="font-fluent">
                 <Upload className="mr-2 h-4 w-4" />
                 Browse Files
               </Button>
@@ -188,13 +269,13 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
           <div className="space-y-4">
             <h3 className="font-semibold font-fluent text-foreground">Uploaded Documents</h3>
             
-            {mockDocuments.length > 0 ? (
-              <div className="overflow-hidden rounded-lg border border-border">
+            {uploadedDocuments.length > 0 ? (
+              <div className="overflow-hidden rounded-lg border">
                 <table className="w-full">
                   <thead className="bg-muted/50">
                     <tr>
                       <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                        Document
+                        Document Name
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
                         Type
@@ -203,7 +284,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
                         Size
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                        Uploaded
+                        Uploaded Date
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
                         Actions
@@ -211,26 +292,32 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border bg-card">
-                    {mockDocuments.map((doc) => (
+                    {uploadedDocuments.map((doc) => (
                       <tr key={doc.id} className="hover:bg-muted/30 transition-colors">
                         <td className="px-4 py-4">
                           <div className="flex items-center space-x-3">
-                            <FileText className="h-5 w-5 text-primary" />
+                            <FileText className="h-5 w-5 text-primary flex-shrink-0" />
                             <span className="font-medium font-fluent text-foreground">{doc.name}</span>
+                            {doc.mappedToRequired && (
+                              <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                            )}
                           </div>
                         </td>
                         <td className="px-4 py-4">
-                          <Select defaultValue={doc.type} disabled={isReadOnly}>
-                            <SelectTrigger className="w-48 shadow-fluent-8 border-input-border">
+                          <Select 
+                            value={doc.type} 
+                            onValueChange={(value) => handleDocumentTypeChange(doc.id, value)}
+                            disabled={isReadOnly}
+                          >
+                            <SelectTrigger className="w-48">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Environmental Report">Environmental Report</SelectItem>
-                              <SelectItem value="Technical Drawing">Technical Drawing</SelectItem>
-                              <SelectItem value="Legal Document">Legal Document</SelectItem>
-                              <SelectItem value="Supporting Evidence">Supporting Evidence</SelectItem>
-                              <SelectItem value="Correspondence">Correspondence</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
+                              {availableDocumentTypes.map((type) => (
+                                <SelectItem key={type} value={type}>
+                                  {type}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </td>
@@ -246,7 +333,11 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
                               <Download className="h-4 w-4" />
                             </Button>
                             {!isReadOnly && (
-                              <Button variant="ghost" size="sm">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => handleDeleteDocument(doc.id)}
+                              >
                                 <Trash2 className="h-4 w-4 text-destructive" />
                               </Button>
                             )}
@@ -261,11 +352,38 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
               <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center">
                 <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                 <p className="font-fluent text-muted-foreground">No documents uploaded yet</p>
+                {!isReadOnly && (
+                  <p className="text-sm font-fluent text-muted-foreground mt-2">
+                    Upload your first document using the area above
+                  </p>
+                )}
               </div>
             )}
           </div>
         </CardContent>
       </Card>
+
+      {/* Progress Indicator */}
+      {requiredDocuments.length > 0 && (
+        <Card className="shadow-fluent-8">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <span className="font-medium font-fluent">
+                Required Documents Progress
+              </span>
+              <span className="text-sm font-fluent text-muted-foreground">
+                {requiredDocuments.length - missingDocuments.length} of {requiredDocuments.length} uploaded
+              </span>
+            </div>
+            <div className="w-full bg-muted rounded-full h-2 mt-2">
+              <div 
+                className="bg-primary h-2 rounded-full transition-all duration-300"
+                style={{ width: `${((requiredDocuments.length - missingDocuments.length) / requiredDocuments.length) * 100}%` }}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

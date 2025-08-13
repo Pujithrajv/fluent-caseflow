@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Plus, Users, Trash2, Edit, Search, Eye, HelpCircle, UserPlus } from "lucide-react";
 import { useState } from "react";
 
-interface InvolvedPartiesTabProps {
+interface ParticipantsTabProps {
   onDataChange: (data: any) => void;
   data: any;
   isReadOnly?: boolean;
@@ -49,7 +49,7 @@ const mockContacts = [
   { id: 3, name: "Mike Davis", role: "Consultant", organization: "Davis Consulting", email: "mike@davis.com" },
 ];
 
-export function InvolvedPartiesTab({ onDataChange, data, isReadOnly = false }: InvolvedPartiesTabProps) {
+export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: ParticipantsTabProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [newContact, setNewContact] = useState({
     firstName: "",
@@ -106,7 +106,7 @@ export function InvolvedPartiesTab({ onDataChange, data, isReadOnly = false }: I
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
-                placeholder="Search parties" 
+                placeholder="Search participants" 
                 className="pl-10"
               />
             </div>
@@ -116,12 +116,12 @@ export function InvolvedPartiesTab({ onDataChange, data, isReadOnly = false }: I
                 <DialogTrigger asChild>
                   <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                     <Plus className="mr-2 h-4 w-4" />
-                    Create Related Party
+                    Add Participant
                   </Button>
                 </DialogTrigger>
               <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle>Create Related Party</DialogTitle>
+                  <DialogTitle>Add Participant</DialogTitle>
                 </DialogHeader>
                 
                 <Tabs defaultValue="search" className="w-full">
@@ -294,10 +294,10 @@ export function InvolvedPartiesTab({ onDataChange, data, isReadOnly = false }: I
           {mockParties.length === 0 && (
             <div className="rounded-lg border-2 border-dashed border-muted p-8 text-center">
               <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <p className="font-fluent text-muted-foreground">No involved parties added yet</p>
+              <p className="font-fluent text-muted-foreground">No participants added yet</p>
               <Button variant="outline" size="sm" className="mt-4 font-fluent">
                 <Plus className="mr-2 h-4 w-4" />
-                Add First Party
+                Add First Participant
               </Button>
             </div>
           )}

@@ -10,7 +10,7 @@ import { DepartmentTab } from "./wizard/DepartmentTab";
 import { PrimaryPartyTab } from "./wizard/PrimaryPartyTab";
 import { CaseDetailsTab } from "./wizard/CaseDetailsTab";
 import { CaseQuestionsTab } from "./wizard/CaseQuestionsTab";
-import { InvolvedPartiesTab } from "./wizard/InvolvedPartiesTab";
+import { ParticipantsTab } from "./wizard/ParticipantsTab";
 import { RequestWizardTab } from "./wizard/RequestWizardTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
@@ -664,8 +664,8 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="font-fluent font-semibold">Involved Parties</CardTitle>
-                        <p className="text-muted-foreground font-fluent">Additional parties</p>
+                         <CardTitle className="font-fluent font-semibold">Participants</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Additional parties</p>
                       </div>
                        <Sheet>
                          <SheetTrigger asChild>
@@ -675,7 +675,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                          </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
-                            <SheetTitle>Involved Parties Help</SheetTitle>
+                            <SheetTitle>Participants Help</SheetTitle>
                           </SheetHeader>
                           <div className="mt-6">
                             <Accordion type="single" collapsible className="w-full">
@@ -696,11 +696,11 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                     </div>
                   </CardHeader>
                    <CardContent className="p-6">
-                      <InvolvedPartiesTab 
-                        onDataChange={updateFormData} 
-                        data={formData}
-                        isReadOnly={isReadOnly}
-                      />
+                       <ParticipantsTab 
+                         onDataChange={updateFormData} 
+                         data={formData}
+                         isReadOnly={isReadOnly}
+                       />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
                           variant="outline" 
