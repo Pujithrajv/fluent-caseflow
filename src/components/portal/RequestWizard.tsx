@@ -15,37 +15,45 @@ import { DocumentProductionQuestionsTab } from "./wizard/DocumentProductionQuest
 import { DepositionQuestionsTab } from "./wizard/DepositionQuestionsTab";
 import { InspectionQuestionsTab } from "./wizard/InspectionQuestionsTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
-import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
+import { RequestReviewSubmitTab } from "./wizard/RequestReviewSubmitTab";
 
 const getRequestTabs = (formData: any) => {
-  const baseTabs = [
-    { id: 'request-details', title: 'Request Details', description: 'Request information and summary' },
-    { id: 'request-questions', title: 'Request Type Questions', description: 'Type-specific questions' }
-  ];
-
-  // Add selected subprocess details tab if discovery is selected
+  // Discovery request structure 
   if (formData.requestGroup === 'discovery' && formData.requestType === 'discovery') {
-    baseTabs.push({ id: 'selected-subprocess-details', title: 'Discovery Information', description: 'Discovery details and configuration' });
+    const tabs = [
+      { id: 'request-details', title: 'Request', description: 'Request group and type' },
+      { id: 'selected-subprocess-details', title: 'Selected Subprocess Details', description: 'Discovery Information' }
+    ];
 
-    // Add dynamic discovery tabs based on selected types
+    // Add dynamic discovery sub-tabs based on selected types
     if (formData.discoveryTypes?.includes('interrogatories')) {
-      baseTabs.push({ id: 'interrogatories-questions', title: 'Interrogatories', description: 'Interrogatories questions and details' });
+      tabs.push({ id: 'interrogatories-questions', title: 'Interrogatories Questions', description: 'Interrogatories details' });
     }
     if (formData.discoveryTypes?.includes('document-production')) {
-      baseTabs.push({ id: 'document-production-questions', title: 'Document Production', description: 'Document production details' });
+      tabs.push({ id: 'document-production-questions', title: 'Document Production Questions', description: 'Document production details' });
     }
     if (formData.discoveryTypes?.includes('deposition')) {
-      baseTabs.push({ id: 'deposition-questions', title: 'Deposition', description: 'Deposition scheduling and details' });
+      tabs.push({ id: 'deposition-questions', title: 'Deposition Questions', description: 'Deposition scheduling and details' });
     }
     if (formData.discoveryTypes?.includes('inspection')) {
-      baseTabs.push({ id: 'inspection-questions', title: 'Inspection', description: 'Inspection requirements and details' });
+      tabs.push({ id: 'inspection-questions', title: 'Inspection Questions', description: 'Inspection requirements and details' });
     }
+
+    tabs.push(
+      { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
+      { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
+    );
+
+    return tabs;
   }
 
-  baseTabs.push(
+  // Default structure for other request types
+  const baseTabs = [
+    { id: 'request-details', title: 'Request Details', description: 'Request information and summary' },
+    { id: 'request-questions', title: 'Request Type Questions', description: 'Type-specific questions' },
     { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
     { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
-  );
+  ];
 
   return baseTabs;
 };
@@ -128,8 +136,12 @@ interface RequestWizardProps {
 }
 
 export function RequestWizard({ onBack, requestType, status = "draft" }: RequestWizardProps) {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ 
+    requestGroup: requestType === 'discovery' ? 'discovery' : '',
+    requestType: requestType === 'discovery' ? 'discovery' : ''
+  });
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
+  const [currentTab, setCurrentTab] = useState('request-details');
   
   const requestTabs = getRequestTabs(formData);
 
@@ -157,6 +169,27 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
     return completedTabs.includes(tabId);
   };
 
+  const getCurrentTabIndex = () => {
+    return requestTabs.findIndex(tab => tab.id === currentTab);
+  };
+
+  const goToNextTab = () => {
+    const currentIndex = getCurrentTabIndex();
+    if (currentIndex < requestTabs.length - 1) {
+      setCurrentTab(requestTabs[currentIndex + 1].id);
+    }
+  };
+
+  const goToPreviousTab = () => {
+    const currentIndex = getCurrentTabIndex();
+    if (currentIndex > 0) {
+      setCurrentTab(requestTabs[currentIndex - 1].id);
+    }
+  };
+
+  const isFirstTab = getCurrentTabIndex() === 0;
+  const isLastTab = getCurrentTabIndex() === requestTabs.length - 1;
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-6xl space-y-6">
@@ -178,25 +211,30 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
         </div>
 
         {/* Vertical Tabs Layout */}
-        <Tabs defaultValue="request-details" className="w-full" orientation="vertical">
+        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full" orientation="vertical">
           <div className="flex gap-6">
             {/* Vertical Tab List */}
             <Card className="shadow-fluent-8 w-80">
+              <CardHeader>
+                <CardTitle className="font-fluent text-lg">Request Steps</CardTitle>
+              </CardHeader>
               <CardContent className="p-4">
                 <TabsList className="flex flex-col h-auto w-full bg-transparent space-y-2">
-                  {requestTabs.map((tab) => (
+                  {requestTabs.map((tab, index) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
                       className="w-full justify-between px-4 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                      onClick={() => markTabCompleted(tab.id)}
+                      disabled={index > getCurrentTabIndex() + 1}
                     >
                       <div className="text-left">
                         <div className="font-fluent font-medium">{tab.title}</div>
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
                       {isTabCompleted(tab.id) && (
-                        <Check className="h-4 w-4 text-success" />
+                        <div className="w-5 h-5 rounded-full bg-success flex items-center justify-center">
+                          <Check className="h-3 w-3 text-white" />
+                        </div>
                       )}
                     </TabsTrigger>
                   ))}
@@ -211,8 +249,12 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="font-fluent font-semibold">Request Details</CardTitle>
-                        <p className="text-muted-foreground font-fluent">Request information and summary</p>
+                        <CardTitle className="font-fluent font-semibold">
+                          {formData.requestGroup === 'discovery' ? 'Request' : 'Request Details'}
+                        </CardTitle>
+                        <p className="text-muted-foreground font-fluent">
+                          {formData.requestGroup === 'discovery' ? 'Request group and type' : 'Request information and summary'}
+                        </p>
                       </div>
                       <Sheet>
                         <SheetTrigger asChild>
@@ -242,8 +284,14 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
+                  <CardContent className="space-y-6">
                     <RequestDetailsTab onDataChange={updateFormData} data={formData} />
+                    <div className="flex justify-between pt-4">
+                      <div></div>
+                      <Button onClick={goToNextTab} disabled={isLastTab}>
+                        Next
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -298,13 +346,27 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                          <CardTitle className="font-fluent font-semibold">Discovery Information</CardTitle>
                          <p className="text-muted-foreground font-fluent">Discovery details and configuration</p>
                        </div>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon">
+                             <HelpCircle className="h-5 w-5" />
+                           </Button>
+                         </SheetTrigger>
+                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                           <SheetHeader>
+                             <SheetTitle>Discovery Information Help</SheetTitle>
+                           </SheetHeader>
+                         </SheetContent>
+                       </Sheet>
                      </div>
                    </CardHeader>
-                    <CardContent className="p-6">
+                    <CardContent className="space-y-6">
                       <SelectedSubprocessDetailsTab 
                         onDataChange={updateFormData} 
                         data={formData} 
                         onComplete={() => markTabCompleted('selected-subprocess-details')}
+                        onPrevious={goToPreviousTab}
+                        onNext={goToNextTab}
                       />
                     </CardContent>
                  </Card>
@@ -315,13 +377,33 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                    <CardHeader>
                      <div className="flex items-center justify-between">
                        <div>
-                         <CardTitle className="font-fluent font-semibold">Interrogatories</CardTitle>
+                         <CardTitle className="font-fluent font-semibold">Interrogatories Questions</CardTitle>
                          <p className="text-muted-foreground font-fluent">Interrogatories questions and details</p>
                        </div>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon">
+                             <HelpCircle className="h-5 w-5" />
+                           </Button>
+                         </SheetTrigger>
+                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                           <SheetHeader>
+                             <SheetTitle>Interrogatories Help</SheetTitle>
+                           </SheetHeader>
+                         </SheetContent>
+                       </Sheet>
                      </div>
                    </CardHeader>
-                   <CardContent className="p-6">
+                   <CardContent className="space-y-6">
                      <InterrogatoriesQuestionsTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between pt-4">
+                       <Button variant="outline" onClick={goToPreviousTab} disabled={isFirstTab}>
+                         Previous
+                       </Button>
+                       <Button onClick={goToNextTab} disabled={isLastTab}>
+                         Next
+                       </Button>
+                     </div>
                    </CardContent>
                  </Card>
                </TabsContent>
@@ -331,13 +413,33 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                    <CardHeader>
                      <div className="flex items-center justify-between">
                        <div>
-                         <CardTitle className="font-fluent font-semibold">Document Production</CardTitle>
+                         <CardTitle className="font-fluent font-semibold">Document Production Questions</CardTitle>
                          <p className="text-muted-foreground font-fluent">Document production details</p>
                        </div>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon">
+                             <HelpCircle className="h-5 w-5" />
+                           </Button>
+                         </SheetTrigger>
+                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                           <SheetHeader>
+                             <SheetTitle>Document Production Help</SheetTitle>
+                           </SheetHeader>
+                         </SheetContent>
+                       </Sheet>
                      </div>
                    </CardHeader>
-                   <CardContent className="p-6">
+                   <CardContent className="space-y-6">
                      <DocumentProductionQuestionsTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between pt-4">
+                       <Button variant="outline" onClick={goToPreviousTab} disabled={isFirstTab}>
+                         Previous
+                       </Button>
+                       <Button onClick={goToNextTab} disabled={isLastTab}>
+                         Next
+                       </Button>
+                     </div>
                    </CardContent>
                  </Card>
                </TabsContent>
@@ -347,13 +449,33 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                    <CardHeader>
                      <div className="flex items-center justify-between">
                        <div>
-                         <CardTitle className="font-fluent font-semibold">Deposition</CardTitle>
+                         <CardTitle className="font-fluent font-semibold">Deposition Questions</CardTitle>
                          <p className="text-muted-foreground font-fluent">Deposition scheduling and details</p>
                        </div>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon">
+                             <HelpCircle className="h-5 w-5" />
+                           </Button>
+                         </SheetTrigger>
+                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                           <SheetHeader>
+                             <SheetTitle>Deposition Help</SheetTitle>
+                           </SheetHeader>
+                         </SheetContent>
+                       </Sheet>
                      </div>
                    </CardHeader>
-                   <CardContent className="p-6">
+                   <CardContent className="space-y-6">
                      <DepositionQuestionsTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between pt-4">
+                       <Button variant="outline" onClick={goToPreviousTab} disabled={isFirstTab}>
+                         Previous
+                       </Button>
+                       <Button onClick={goToNextTab} disabled={isLastTab}>
+                         Next
+                       </Button>
+                     </div>
                    </CardContent>
                  </Card>
                </TabsContent>
@@ -363,13 +485,33 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                    <CardHeader>
                      <div className="flex items-center justify-between">
                        <div>
-                         <CardTitle className="font-fluent font-semibold">Inspection</CardTitle>
+                         <CardTitle className="font-fluent font-semibold">Inspection Questions</CardTitle>
                          <p className="text-muted-foreground font-fluent">Inspection requirements and details</p>
                        </div>
+                       <Sheet>
+                         <SheetTrigger asChild>
+                           <Button variant="ghost" size="icon">
+                             <HelpCircle className="h-5 w-5" />
+                           </Button>
+                         </SheetTrigger>
+                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                           <SheetHeader>
+                             <SheetTitle>Inspection Help</SheetTitle>
+                           </SheetHeader>
+                         </SheetContent>
+                       </Sheet>
                      </div>
                    </CardHeader>
-                   <CardContent className="p-6">
+                   <CardContent className="space-y-6">
                      <InspectionQuestionsTab onDataChange={updateFormData} data={formData} />
+                     <div className="flex justify-between pt-4">
+                       <Button variant="outline" onClick={goToPreviousTab} disabled={isFirstTab}>
+                         Previous
+                       </Button>
+                       <Button onClick={goToNextTab} disabled={isLastTab}>
+                         Next
+                       </Button>
+                     </div>
                    </CardContent>
                  </Card>
                </TabsContent>
@@ -410,8 +552,16 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
+                  <CardContent className="space-y-6">
                     <DocumentUploadTab onDataChange={updateFormData} data={formData} />
+                    <div className="flex justify-between pt-4">
+                      <Button variant="outline" onClick={goToPreviousTab} disabled={isFirstTab}>
+                        Previous
+                      </Button>
+                      <Button onClick={goToNextTab} disabled={isLastTab}>
+                        Next
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -452,8 +602,12 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                       </Sheet>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
-                    <ReviewSubmitTab data={formData} />
+                  <CardContent className="space-y-6">
+                    <RequestReviewSubmitTab 
+                      data={formData} 
+                      onPrevious={goToPreviousTab}
+                      onSubmit={() => console.log('Submit Discovery Request')}
+                    />
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -461,23 +615,6 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
           </div>
         </Tabs>
 
-        {/* Action Buttons */}
-        <div className="flex justify-between pt-6 pb-4">
-          <Button variant="outline" onClick={onBack} className="font-fluent">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Requests
-          </Button>
-          
-          <div className="flex space-x-3">
-            <Button variant="fluent" className="font-fluent">
-              Save Draft
-            </Button>
-            <Button className="font-fluent" onClick={onBack}>
-              <Check className="mr-2 h-4 w-4" />
-              Submit Request
-            </Button>
-          </div>
-        </div>
       </div>
     </div>
   );
