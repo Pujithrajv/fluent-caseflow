@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dashboard } from "@/components/portal/Dashboard";
 import { CaseWizard } from "@/components/portal/CaseWizard";
+import { AljWarningModal } from "@/components/portal/AljWarningModal";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<"dashboard" | "create-case" | "view-edit">("dashboard");
@@ -43,11 +44,14 @@ const Index = () => {
   }
 
   return (
-    <Dashboard 
-      onCreateCase={() => setCurrentView("create-case")} 
-      onViewCase={handleViewCase}
-      onEditCase={handleEditCase}
-    />
+    <>
+      <AljWarningModal onAcknowledge={() => {}} />
+      <Dashboard 
+        onCreateCase={() => setCurrentView("create-case")} 
+        onViewCase={handleViewCase}
+        onEditCase={handleEditCase}
+      />
+    </>
   );
 };
 
