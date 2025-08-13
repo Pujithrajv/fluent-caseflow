@@ -328,6 +328,8 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
                   <DocumentUploadTab 
                     onDataChange={updateFormData} 
                     data={{...defaultCaseData, ...formData}}
+                    onNext={goToNextTab}
+                    onPrevious={goToPreviousTab}
                   />
                 </TabsContent>
 

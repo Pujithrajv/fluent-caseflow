@@ -9,6 +9,8 @@ interface DocumentUploadTabProps {
   onDataChange: (data: any) => void;
   data: any;
   isReadOnly?: boolean;
+  onNext?: () => void;
+  onPrevious?: () => void;
 }
 
 interface RequiredDocument {
@@ -114,7 +116,7 @@ const mockDocuments: UploadedDocument[] = [
   }
 ];
 
-export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: DocumentUploadTabProps) {
+export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNext, onPrevious }: DocumentUploadTabProps) {
   const [uploadedDocuments, setUploadedDocuments] = useState<UploadedDocument[]>(mockDocuments);
   
   // Get the case type from form data to determine required documents
@@ -383,6 +385,26 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false }: Do
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* Navigation Buttons */}
+      {(onNext || onPrevious) && (
+        <div className="flex justify-between pt-4">
+          <Button 
+            variant="outline" 
+            onClick={onPrevious}
+            disabled={!onPrevious}
+          >
+            Previous
+          </Button>
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={onNext}
+            disabled={!onNext || missingDocuments.length > 0}
+          >
+            Next
+          </Button>
+        </div>
       )}
     </div>
   );
