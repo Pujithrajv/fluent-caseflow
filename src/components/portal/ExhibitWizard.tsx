@@ -6,50 +6,54 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Check, HelpCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { RequestDetailsTab } from "./wizard/RequestDetailsTab";
-import { RequestTypeQuestionsTab } from "./wizard/RequestTypeQuestionsTab";
-import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
-import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
+import { ExhibitDepartmentTab } from "./wizard/ExhibitDepartmentTab";
+import { ExhibitTypeTab } from "./wizard/ExhibitTypeTab";
+import { ExhibitQuestionsTab } from "./wizard/ExhibitQuestionsTab";
+import { ExhibitUploadTab } from "./wizard/ExhibitUploadTab";
+import { ExhibitConfirmationTab } from "./wizard/ExhibitConfirmationTab";
 
 const exhibitTabs = [
-  { id: 'exhibit-details', title: 'Exhibit Details', description: 'Exhibit information and description' },
-  { id: 'exhibit-questions', title: 'Exhibit Questions', description: 'Type-specific questions' },
-  { id: 'documents', title: 'Documents', description: 'Upload exhibit files' },
-  { id: 'review', title: 'Review & Submit', description: 'Verify and submit exhibit' }
+  { id: 'department', title: 'Department & Rules', description: 'Department identification and rules acknowledgment' },
+  { id: 'exhibit-type', title: 'Exhibit Type', description: 'Select type and provide details' },
+  { id: 'questions', title: 'Content Review', description: 'Answer content and privacy questions' },
+  { id: 'upload', title: 'Upload', description: 'Upload exhibit files' },
+  { id: 'confirmation', title: 'Confirmation', description: 'Review submission confirmation' }
 ];
 
 const faqData = {
-  "exhibit-details": [
+  "department": [
     {
-      id: "exhibit-1",
-      question: "What is an exhibit?",
-      answer: "An exhibit is a document, object, or other item presented as evidence in a legal proceeding."
-    },
-    {
-      id: "exhibit-2",
-      question: "How should I label my exhibit?",
-      answer: "Exhibits should be clearly labeled with letters (A, B, C) or numbers (1, 2, 3) and include a brief description."
+      id: "dept-1",
+      question: "What are the rules for exhibit submission?",
+      answer: "All exhibits must be relevant, properly formatted, and free of inappropriate content. PII must be redacted and confidential information requires protective orders."
     }
   ],
-  "exhibit-questions": [
+  "exhibit-type": [
+    {
+      id: "type-1",
+      question: "What's the difference between document types?",
+      answer: "Regular documents can be uploaded directly. Oversized documents require special handling. Physical items need approval and have specific requirements."
+    }
+  ],
+  questions: [
     {
       id: "questions-1",
-      question: "What type of exhibit am I submitting?",
-      answer: "Specify whether it's a document, photograph, physical object, digital file, or other type of evidence."
+      question: "What is considered inappropriate content?",
+      answer: "Content that is embarrassing, not suitable for public viewing, or contains inappropriate depictions of persons or places."
     }
   ],
-  documents: [
+  upload: [
     {
-      id: "docs-1",
-      question: "What file formats are accepted for exhibits?",
-      answer: "Most common formats are accepted including PDF, JPEG, PNG, TIFF for documents and images, and MP4 for video exhibits."
+      id: "upload-1",
+      question: "What file formats are accepted?",
+      answer: "PDF, DOC, DOCX, JPG, PNG, MP4 and other common formats up to 25MB."
     }
   ],
-  review: [
+  confirmation: [
     {
-      id: "review-1",
-      question: "How will my exhibit be processed?",
-      answer: "Your exhibit will be reviewed for relevance and admissibility, then marked and entered into the case record."
+      id: "confirm-1",
+      question: "What happens after I submit?",
+      answer: "You'll receive email confirmation and exhibits will be reviewed for admissibility before being entered into the case record."
     }
   ]
 };
@@ -59,6 +63,7 @@ interface ExhibitWizardProps {
 }
 
 export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
@@ -73,6 +78,39 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
   const isTabCompleted = (tabId: string) => {
     return completedTabs.includes(tabId);
   };
+
+  const goToNextStep = () => {
+    if (currentStep < exhibitTabs.length - 1) {
+      const currentTabId = exhibitTabs[currentStep].id;
+      markTabCompleted(currentTabId);
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const goToStep = (stepIndex: number) => {
+    setCurrentStep(stepIndex);
+  };
+
+  const skipToUpload = () => {
+    markTabCompleted(exhibitTabs[currentStep].id);
+    setCurrentStep(3); // Upload tab
+  };
+
+  const skipToEnd = () => {
+    markTabCompleted(exhibitTabs[currentStep].id);
+    setCurrentStep(4); // Confirmation tab
+  };
+
+  const restartFlow = () => {
+    setCurrentStep(1); // Go back to exhibit type selection
+  };
+
+  const redirectToMotions = () => {
+    // In a real implementation, this would navigate to the motions page
+    alert("Redirecting to Motions page to file Motion for Protective Order");
+  };
+
+  const currentTabId = exhibitTabs[currentStep]?.id;
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -109,102 +147,136 @@ export function ExhibitWizard({ onBack }: ExhibitWizardProps) {
           </Badge>
         </div>
 
-        {/* Vertical Tabs Layout */}
-        <Tabs defaultValue="exhibit-details" className="w-full" orientation="vertical">
-          <div className="flex gap-6">
-            {/* Vertical Tab List */}
-            <Card className="shadow-fluent-8 w-80">
-              <CardContent className="p-4">
-                <TabsList className="flex flex-col h-auto w-full bg-transparent space-y-2">
-                  {exhibitTabs.map((tab) => (
-                    <TabsTrigger
-                      key={tab.id}
-                      value={tab.id}
-                      className="w-full justify-between px-4 py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                      onClick={() => markTabCompleted(tab.id)}
-                    >
+        {/* Step-based Layout */}
+        <div className="flex gap-6">
+          {/* Vertical Step List */}
+          <Card className="shadow-fluent-8 w-80">
+            <CardContent className="p-4">
+              <div className="flex flex-col space-y-2">
+                {exhibitTabs.map((tab, index) => (
+                  <div
+                    key={tab.id}
+                    className={`w-full justify-between px-4 py-3 rounded-lg cursor-pointer transition-colors ${
+                      currentStep === index 
+                        ? 'bg-primary text-primary-foreground' 
+                        : currentStep > index 
+                          ? 'bg-success/10 text-success border border-success/20' 
+                          : 'bg-muted/50 text-muted-foreground'
+                    }`}
+                    onClick={() => currentStep > index ? goToStep(index) : undefined}
+                  >
+                    <div className="flex items-center justify-between">
                       <div className="text-left">
                         <div className="font-fluent font-medium">{tab.title}</div>
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
                       {isTabCompleted(tab.id) && (
-                        <Check className="h-4 w-4 text-success" />
+                        <Check className="h-4 w-4" />
                       )}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Step Content */}
+          <div className="flex-1">
+            <Card className="shadow-fluent-16">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="font-fluent font-semibold">{exhibitTabs[currentStep]?.title}</CardTitle>
+                    <p className="text-muted-foreground font-fluent">{exhibitTabs[currentStep]?.description}</p>
+                  </div>
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <HelpCircle className="h-5 w-5" />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                      <SheetHeader>
+                        <SheetTitle>{exhibitTabs[currentStep]?.title} Help</SheetTitle>
+                      </SheetHeader>
+                      <div className="mt-6">
+                        <Accordion type="single" collapsible className="w-full">
+                          {faqData[currentTabId as keyof typeof faqData]?.map((faq) => (
+                            <AccordionItem key={faq.id} value={faq.id}>
+                              <AccordionTrigger className="text-left">
+                                {faq.question}
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                {faq.answer}
+                              </AccordionContent>
+                            </AccordionItem>
+                          ))}
+                        </Accordion>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                {currentTabId === 'department' && (
+                  <ExhibitDepartmentTab 
+                    onDataChange={updateFormData} 
+                    data={formData} 
+                    onNext={goToNextStep} 
+                  />
+                )}
+                {currentTabId === 'exhibit-type' && (
+                  <ExhibitTypeTab 
+                    onDataChange={updateFormData} 
+                    data={formData} 
+                    onNext={goToNextStep}
+                    onSkipToUpload={skipToUpload}
+                    onSkipToEnd={skipToEnd}
+                  />
+                )}
+                {currentTabId === 'questions' && (
+                  <ExhibitQuestionsTab 
+                    onDataChange={updateFormData} 
+                    data={formData} 
+                    onNext={goToNextStep}
+                    onRedirectToMotions={redirectToMotions}
+                  />
+                )}
+                {currentTabId === 'upload' && (
+                  <ExhibitUploadTab 
+                    onDataChange={updateFormData} 
+                    data={formData} 
+                    onNext={goToNextStep}
+                    onUploadAnother={restartFlow}
+                  />
+                )}
+                {currentTabId === 'confirmation' && (
+                  <ExhibitConfirmationTab 
+                    onDataChange={updateFormData} 
+                    data={formData} 
+                    onFinish={onBack}
+                  />
+                )}
               </CardContent>
             </Card>
-
-            {/* Tab Content */}
-            <div className="flex-1">
-              {exhibitTabs.map((tab) => (
-                <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                  <Card className="shadow-fluent-16">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <CardTitle className="font-fluent font-semibold">{tab.title}</CardTitle>
-                          <p className="text-muted-foreground font-fluent">{tab.description}</p>
-                        </div>
-                        <Sheet>
-                          <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <HelpCircle className="h-5 w-5" />
-                            </Button>
-                          </SheetTrigger>
-                          <SheetContent side="right" className="w-[400px] sm:w-[540px]">
-                            <SheetHeader>
-                              <SheetTitle>{tab.title} Help</SheetTitle>
-                            </SheetHeader>
-                            <div className="mt-6">
-                              <Accordion type="single" collapsible className="w-full">
-                                {faqData[tab.id as keyof typeof faqData]?.map((faq) => (
-                                  <AccordionItem key={faq.id} value={faq.id}>
-                                    <AccordionTrigger className="text-left">
-                                      {faq.question}
-                                    </AccordionTrigger>
-                                    <AccordionContent>
-                                      {faq.answer}
-                                    </AccordionContent>
-                                  </AccordionItem>
-                                ))}
-                              </Accordion>
-                            </div>
-                          </SheetContent>
-                        </Sheet>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                      {tab.id === 'exhibit-details' && <RequestDetailsTab onDataChange={updateFormData} data={formData} requestType="exhibit" />}
-                      {tab.id === 'exhibit-questions' && <RequestTypeQuestionsTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              ))}
-            </div>
-          </div>
-        </Tabs>
-
-        {/* Action Buttons */}
-        <div className="flex justify-between pt-6 pb-4">
-          <Button variant="outline" onClick={onBack} className="font-fluent">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Requests
-          </Button>
-          
-          <div className="flex space-x-3">
-            <Button variant="fluent" className="font-fluent">
-              Save Draft
-            </Button>
-            <Button className="font-fluent" onClick={onBack}>
-              <Check className="mr-2 h-4 w-4" />
-              Submit Exhibit
-            </Button>
           </div>
         </div>
+
+        {/* Action Buttons - Only show on certain steps */}
+        {currentTabId !== 'confirmation' && (
+          <div className="flex justify-between pt-6 pb-4">
+            <Button variant="outline" onClick={onBack} className="font-fluent">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Requests
+            </Button>
+            
+            <div className="flex space-x-3">
+              <Button variant="outline" className="font-fluent">
+                Save Draft
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
