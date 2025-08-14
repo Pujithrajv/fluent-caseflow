@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -85,8 +85,11 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
     })
   ];
 
-  console.log('Selected discovery types:', selectedDiscoveryTypes); // Debug log
-  console.log('Generated tabs:', discoveryTabs); // Debug log
+  // Debug logs to track state changes
+  useEffect(() => {
+    console.log('Selected discovery types changed:', selectedDiscoveryTypes);
+    console.log('Generated tabs:', discoveryTabs);
+  }, [selectedDiscoveryTypes, discoveryTabs]);
 
   const updateFormData = (stepData: any) => {
     console.log('Updating form data:', stepData); // Debug log
