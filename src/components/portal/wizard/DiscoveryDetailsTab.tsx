@@ -31,6 +31,7 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
   const [discoveryStartDate, setDiscoveryStartDate] = useState<Date | undefined>(data.discoveryStartDate);
   const [discoveryCutoffDate, setDiscoveryCutoffDate] = useState<Date | undefined>(data.discoveryCutoffDate);
   const [discoveryConferenceDate, setDiscoveryConferenceDate] = useState<Date | undefined>(data.discoveryConferenceDate);
+  const [discoverySummary, setDiscoverySummary] = useState(data.discoverySummary || "");
 
   const handleDiscoveryTypeChange = (typeId: string, checked: boolean) => {
     const updatedTypes = checked 
@@ -65,6 +66,11 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
   const handleConferenceDateChange = (date: Date | undefined) => {
     setDiscoveryConferenceDate(date);
     onDataChange({ discoveryConferenceDate: date });
+  };
+
+  const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDiscoverySummary(e.target.value);
+    onDataChange({ discoverySummary: e.target.value });
   };
 
   return (
@@ -247,6 +253,8 @@ export function DiscoveryDetailsTab({ onDataChange, data }: DiscoveryDetailsTabP
             <Label htmlFor="discoverySummary" className="font-fluent">Discovery Summary *</Label>
             <Textarea 
               id="discoverySummary"
+              value={discoverySummary}
+              onChange={handleSummaryChange}
               placeholder="Provide a detailed summary of your discovery request..."
               className="shadow-fluent-8 border-input-border min-h-32"
             />

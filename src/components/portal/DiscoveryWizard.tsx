@@ -83,11 +83,13 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
   ];
 
   const updateFormData = (stepData: any) => {
+    console.log('Updating form data:', stepData); // Debug log
     setFormData(prev => {
       const newData = { ...prev, ...stepData };
       
       // Update selected discovery types when they change
       if (stepData.discoveryTypes) {
+        console.log('Setting discovery types:', stepData.discoveryTypes); // Debug log
         setSelectedDiscoveryTypes(stepData.discoveryTypes);
       }
       
