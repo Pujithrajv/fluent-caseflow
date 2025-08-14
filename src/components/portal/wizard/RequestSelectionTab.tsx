@@ -106,70 +106,57 @@ export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: 
 
   return (
     <div className="space-y-6">
-      <Card className="shadow-fluent-8">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 font-fluent">
-            <FileText className="h-5 w-5 text-primary" />
-            <span>Request</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          
-          {/* Request Group */}
-          <div className="space-y-2">
-            <Label htmlFor="requestGroup" className="font-fluent font-semibold text-sm">Request Group *</Label>
-            <Select value={requestGroup} onValueChange={handleRequestGroupChange}>
-              <SelectTrigger className="shadow-fluent-8 border-input-border">
-                <SelectValue placeholder="Select request group" />
-              </SelectTrigger>
-              <SelectContent>
-                {requestGroups.map((group) => {
-                  const Icon = group.icon;
-                  return (
-                    <SelectItem key={group.value} value={group.value}>
-                      <div className="flex items-center space-x-2">
-                        <Icon className="h-4 w-4" />
-                        <span>{group.label}</span>
-                      </div>
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-          </div>
+      {/* Request Group */}
+      <div className="space-y-2">
+        <Label htmlFor="requestGroup" className="font-fluent font-semibold text-sm">Request Group *</Label>
+        <Select value={requestGroup} onValueChange={handleRequestGroupChange}>
+          <SelectTrigger className="shadow-fluent-8 border-input-border">
+            <SelectValue placeholder="Select request group" />
+          </SelectTrigger>
+          <SelectContent>
+            {requestGroups.map((group) => {
+              const Icon = group.icon;
+              return (
+                <SelectItem key={group.value} value={group.value}>
+                  <div className="flex items-center space-x-2">
+                    <Icon className="h-4 w-4" />
+                    <span>{group.label}</span>
+                  </div>
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+      </div>
 
-          {/* Request Type - Only show when group is selected */}
-          {requestGroup && (
-            <div className="space-y-2">
-              <Label htmlFor="requestType" className="font-fluent font-semibold text-sm">Request Type *</Label>
-              <Select value={requestType} onValueChange={handleRequestTypeChange}>
-                <SelectTrigger className="shadow-fluent-8 border-input-border">
-                  <SelectValue placeholder="Select request type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {getRequestTypes().map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
+      {/* Request Type - Only show when group is selected */}
+      {requestGroup && (
+        <div className="space-y-2">
+          <Label htmlFor="requestType" className="font-fluent font-semibold text-sm">Request Type *</Label>
+          <Select value={requestType} onValueChange={handleRequestTypeChange}>
+            <SelectTrigger className="shadow-fluent-8 border-input-border">
+              <SelectValue placeholder="Select request type" />
+            </SelectTrigger>
+            <SelectContent>
+              {getRequestTypes().map((type) => (
+                <SelectItem key={type} value={type}>
+                  {type}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
-          {/* Next Button */}
-          <div className="flex justify-end pt-4">
-            <Button 
-              disabled={!canContinue}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-              onClick={onNext}
-            >
-              Next
-            </Button>
-          </div>
-
-        </CardContent>
-      </Card>
+      {/* Next Button */}
+      <div className="flex justify-end pt-4">
+        <Button 
+          disabled={!canContinue}
+          onClick={onNext}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

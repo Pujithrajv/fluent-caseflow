@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Check, HelpCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { RequestDetailsTab } from "./wizard/RequestDetailsTab";
+import { RequestSelectionTab } from "./wizard/RequestSelectionTab";
 import { RequestTypeQuestionsTab } from "./wizard/RequestTypeQuestionsTab";
 import { SelectedSubprocessDetailsTab } from "./wizard/SelectedSubprocessDetailsTab";
 import { InterrogatoriesQuestionsTab } from "./wizard/InterrogatoriesQuestionsTab";
@@ -18,44 +18,35 @@ import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { RequestReviewSubmitTab } from "./wizard/RequestReviewSubmitTab";
 
 const getRequestTabs = (formData: any) => {
-  // Discovery request structure 
-  if (formData.requestGroup === 'discovery' && formData.requestType === 'discovery') {
-    const tabs = [
-      { id: 'request-details', title: 'Request', description: 'Request group and type' },
-      { id: 'selected-subprocess-details', title: 'Selected Subprocess Details', description: 'Discovery Information' }
-    ];
-
-    // Add dynamic discovery sub-tabs based on selected types
-    if (formData.discoveryTypes?.includes('interrogatories')) {
-      tabs.push({ id: 'interrogatories-questions', title: 'Interrogatories Questions', description: 'Interrogatories details' });
-    }
-    if (formData.discoveryTypes?.includes('document-production')) {
-      tabs.push({ id: 'document-production-questions', title: 'Document Production Questions', description: 'Document production details' });
-    }
-    if (formData.discoveryTypes?.includes('deposition')) {
-      tabs.push({ id: 'deposition-questions', title: 'Deposition Questions', description: 'Deposition scheduling and details' });
-    }
-    if (formData.discoveryTypes?.includes('inspection')) {
-      tabs.push({ id: 'inspection-questions', title: 'Inspection Questions', description: 'Inspection requirements and details' });
-    }
-
-    tabs.push(
-      { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
-      { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
-    );
-
-    return tabs;
-  }
-
-  // Default structure for other request types
-  const baseTabs = [
-    { id: 'request-details', title: 'Request Details', description: 'Request information and summary' },
-    { id: 'request-questions', title: 'Request Type Questions', description: 'Type-specific questions' },
-    { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
-    { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
+  // All request types start with Request step and Selected Subprocess Details
+  const tabs = [
+    { id: 'request', title: 'Request', description: 'Request group and type' },
+    { id: 'selected-subprocess-details', title: 'Selected Subprocess Details', description: 'Request specific details' }
   ];
 
-  return baseTabs;
+  // Add dynamic discovery sub-tabs based on selected types for Discovery requests
+  if (formData.requestGroup === 'discovery') {
+    if (formData.selectedDiscoveryTypes?.includes('interrogatories')) {
+      tabs.push({ id: 'interrogatories-questions', title: 'Interrogatories Questions', description: 'Interrogatories details' });
+    }
+    if (formData.selectedDiscoveryTypes?.includes('document-production')) {
+      tabs.push({ id: 'document-production-questions', title: 'Document Production Questions', description: 'Document production details' });
+    }
+    if (formData.selectedDiscoveryTypes?.includes('deposition')) {
+      tabs.push({ id: 'deposition-questions', title: 'Deposition Questions', description: 'Deposition scheduling and details' });
+    }
+    if (formData.selectedDiscoveryTypes?.includes('inspection')) {
+      tabs.push({ id: 'inspection-questions', title: 'Inspection Questions', description: 'Inspection requirements and details' });
+    }
+  }
+
+  // Add final steps
+  tabs.push(
+    { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
+    { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
+  );
+
+  return tabs;
 };
 
 const faqData = {
@@ -141,7 +132,7 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
     requestType: requestType === 'discovery' ? 'discovery' : ''
   });
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
-  const [currentTab, setCurrentTab] = useState('request-details');
+  const [currentTab, setCurrentTab] = useState('request');
   
   const requestTabs = getRequestTabs(formData);
 
@@ -244,17 +235,13 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
 
             {/* Tab Content */}
             <div className="flex-1">
-              <TabsContent value="request-details" className="mt-0">
+              <TabsContent value="request" className="mt-0">
                 <Card className="shadow-fluent-16">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="font-fluent font-semibold">
-                          {formData.requestGroup === 'discovery' ? 'Request' : 'Request Details'}
-                        </CardTitle>
-                        <p className="text-muted-foreground font-fluent">
-                          {formData.requestGroup === 'discovery' ? 'Request group and type' : 'Request information and summary'}
-                        </p>
+                        <CardTitle className="font-fluent font-semibold">Request</CardTitle>
+                        <p className="text-muted-foreground font-fluent">Select request group and type</p>
                       </div>
                       <Sheet>
                         <SheetTrigger asChild>
@@ -264,7 +251,7 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                         </SheetTrigger>
                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
                           <SheetHeader>
-                            <SheetTitle>Request Details Help</SheetTitle>
+                            <SheetTitle>Request Help</SheetTitle>
                           </SheetHeader>
                           <div className="mt-6">
                             <Accordion type="single" collapsible className="w-full">
@@ -285,13 +272,12 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <RequestDetailsTab onDataChange={updateFormData} data={formData} />
-                    <div className="flex justify-between pt-4">
-                      <div></div>
-                      <Button onClick={goToNextTab} disabled={isLastTab}>
-                        Next
-                      </Button>
-                    </div>
+                    <RequestSelectionTab 
+                      onDataChange={updateFormData} 
+                      data={formData} 
+                      onComplete={() => markTabCompleted('request')}
+                      onNext={goToNextTab}
+                    />
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -338,39 +324,48 @@ export function RequestWizard({ onBack, requestType, status = "draft" }: Request
                  </Card>
                </TabsContent>
 
-               <TabsContent value="selected-subprocess-details" className="mt-0">
-                 <Card className="shadow-fluent-16">
-                   <CardHeader>
-                     <div className="flex items-center justify-between">
-                       <div>
-                         <CardTitle className="font-fluent font-semibold">Discovery Information</CardTitle>
-                         <p className="text-muted-foreground font-fluent">Discovery details and configuration</p>
-                       </div>
-                       <Sheet>
-                         <SheetTrigger asChild>
-                           <Button variant="ghost" size="icon">
-                             <HelpCircle className="h-5 w-5" />
-                           </Button>
-                         </SheetTrigger>
-                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
-                           <SheetHeader>
-                             <SheetTitle>Discovery Information Help</SheetTitle>
-                           </SheetHeader>
-                         </SheetContent>
-                       </Sheet>
-                     </div>
-                   </CardHeader>
-                    <CardContent className="space-y-6">
-                      <SelectedSubprocessDetailsTab 
-                        onDataChange={updateFormData} 
-                        data={formData} 
-                        onComplete={() => markTabCompleted('selected-subprocess-details')}
-                        onPrevious={goToPreviousTab}
-                        onNext={goToNextTab}
-                      />
-                    </CardContent>
-                 </Card>
-               </TabsContent>
+                <TabsContent value="selected-subprocess-details" className="mt-0">
+                  <Card className="shadow-fluent-16">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="font-fluent font-semibold">
+                            {formData.requestGroup === 'motion' ? 'Motion Details' :
+                             formData.requestGroup === 'exhibit' ? 'Exhibit Type Questions' :
+                             formData.requestGroup === 'discovery' ? 'Discovery Information' :
+                             'Request Details'}
+                          </CardTitle>
+                          <p className="text-muted-foreground font-fluent">
+                            {formData.requestGroup === 'discovery' ? 'Discovery details and configuration' : 'Request specific details'}
+                          </p>
+                        </div>
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <HelpCircle className="h-5 w-5" />
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                            <SheetHeader>
+                              <SheetTitle>
+                                {formData.requestGroup === 'discovery' ? 'Discovery Information Help' : 'Request Details Help'}
+                              </SheetTitle>
+                            </SheetHeader>
+                          </SheetContent>
+                        </Sheet>
+                      </div>
+                    </CardHeader>
+                     <CardContent className="space-y-6">
+                       <SelectedSubprocessDetailsTab 
+                         onDataChange={updateFormData} 
+                         data={formData} 
+                         onComplete={() => markTabCompleted('selected-subprocess-details')}
+                         onPrevious={goToPreviousTab}
+                         onNext={goToNextTab}
+                       />
+                     </CardContent>
+                  </Card>
+                </TabsContent>
 
                <TabsContent value="interrogatories-questions" className="mt-0">
                  <Card className="shadow-fluent-16">

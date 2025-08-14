@@ -109,6 +109,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
       evidenceJustification,
       itemPhoto,
       selectedDiscoveryTypes,
+      discoveryTypes: selectedDiscoveryTypes, // Also pass as discoveryTypes for backward compatibility
       discoverySchedule,
       discoveryStartDate,
       discoveryCutoffDate,
