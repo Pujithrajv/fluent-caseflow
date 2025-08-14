@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Check, HelpCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
 import { RequestSelectionTab } from "./wizard/RequestSelectionTab";
 import { SelectedSubprocessDetailsTab } from "./wizard/SelectedSubprocessDetailsTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
@@ -154,55 +155,76 @@ export function RequestsWizard({ onBack, caseData }: RequestsWizardProps) {
           {/* Left Navigation */}
           <div className="lg:w-80 shrink-0">
             <Card className="sticky top-8 shadow-fluent-8">
-              <CardHeader>
+              <CardHeader className="pb-4">
                 <CardTitle className="font-fluent text-lg">Request Steps</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
-                <Tabs orientation="vertical" value={currentTab} onValueChange={setCurrentTab} className="w-full">
-                  <TabsList className="grid w-full grid-rows-4 h-auto bg-transparent p-0">
-                    {requestSteps.map((step, index) => (
-                      <TabsTrigger
-                        key={step.id}
-                        value={step.id}
-                        className={`
-                          w-full justify-start px-4 py-4 text-left data-[state=active]:bg-accent rounded-none
-                          ${index !== requestSteps.length - 1 ? 'border-b border-border' : ''}
-                          ${step.id === 'details' && !canProceedToDetails() ? 'opacity-50 cursor-not-allowed' : ''}
-                          ${step.id === 'documents' && !canProceedToDocuments() ? 'opacity-50 cursor-not-allowed' : ''}
-                        `}
-                        disabled={
-                          (step.id === 'details' && !canProceedToDetails()) ||
-                          (step.id === 'documents' && !canProceedToDocuments()) ||
-                          (step.id === 'review' && !canProceedToDocuments())
-                        }
-                      >
-                        <div className="flex items-start space-x-3 w-full">
-                          <div className={`
-                            w-6 h-6 rounded-full border-2 flex items-center justify-center mt-0.5 shrink-0
-                            ${isTabCompleted(step.id) 
-                              ? 'bg-green-500 border-green-500 text-white' 
-                              : 'border-muted-foreground/30 text-muted-foreground'
-                            }
-                          `}>
-                            {isTabCompleted(step.id) ? (
-                              <Check className="w-3 h-3" />
-                            ) : (
-                              <span className="text-xs font-medium">{index + 1}</span>
-                            )}
+              <CardContent className="p-4 space-y-3">
+                {requestSteps.map((step, index) => {
+                  const isCurrentStep = step.id === currentTab;
+                  const isCompleted = isTabCompleted(step.id);
+                  const isDisabled = 
+                    (step.id === 'details' && !canProceedToDetails()) ||
+                    (step.id === 'documents' && !canProceedToDocuments()) ||
+                    (step.id === 'review' && !canProceedToDocuments());
+
+                  return (
+                    <button
+                      key={step.id}
+                      onClick={() => !isDisabled && setCurrentTab(step.id)}
+                      disabled={isDisabled}
+                      className={cn(
+                        "w-full rounded-lg border-l-4 p-3.5 text-left transition-all duration-200 group relative",
+                        "hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+                        isCurrentStep
+                          ? "bg-blue-600 border-l-blue-800 text-white shadow-sm"
+                          : isCompleted
+                          ? "bg-white border-l-transparent text-gray-900 hover:border-l-gray-200 hover:shadow-sm"
+                          : isDisabled
+                          ? "bg-white border-l-transparent text-gray-400 cursor-not-allowed"
+                          : "bg-white border-l-transparent text-gray-900 hover:border-l-gray-200 hover:shadow-sm cursor-pointer"
+                      )}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3 min-w-0 flex-1">
+                          {/* Step number or check */}
+                          <div className={cn(
+                            "w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 text-xs font-medium",
+                            isCurrentStep
+                              ? "bg-white border-white text-blue-600"
+                              : isCompleted
+                              ? "hidden" // Hide when completed, show check on right instead
+                              : "bg-gray-50 border-gray-300 text-gray-500"
+                          )}>
+                            {!isCompleted && (index + 1)}
                           </div>
-                          <div className="text-left min-w-0 flex-1">
-                            <div className="font-medium text-sm font-fluent leading-tight">
+                          
+                          {/* Step content */}
+                          <div className="min-w-0 flex-1">
+                            <div className={cn(
+                              "font-semibold text-base leading-6 truncate",
+                              isCurrentStep ? "text-white" : "text-gray-900"
+                            )}>
                               {step.title}
                             </div>
-                            <div className="text-xs text-muted-foreground font-fluent mt-1 leading-tight">
+                            <div className={cn(
+                              "text-sm leading-5 truncate",
+                              isCurrentStep ? "text-blue-100" : "text-gray-500"
+                            )}>
                               {step.description}
                             </div>
                           </div>
                         </div>
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
-                </Tabs>
+                        
+                        {/* Completed check */}
+                        {isCompleted && (
+                          <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                            <Check className="w-3.5 h-3.5 text-white stroke-2" />
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
               </CardContent>
             </Card>
           </div>
