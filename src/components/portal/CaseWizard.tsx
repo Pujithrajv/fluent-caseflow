@@ -14,7 +14,6 @@ import { ParticipantsTab } from "./wizard/ParticipantsTab";
 import { RequestWizardTab } from "./wizard/RequestWizardTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
-import { DiscoveryTab } from "./wizard/DiscoveryTab";
 import { RequestWizard } from "./RequestWizard";
 import { MotionWizard } from "./MotionWizard";
 import { ExhibitWizard } from "./ExhibitWizard";
@@ -52,7 +51,6 @@ const viewEditAcceptedTabs = [
   { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
   { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
   { id: 'requests', title: 'Requests', description: 'Associated requests' },
-  { id: 'discovery', title: 'Discovery', description: 'Discovery requests and details' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
@@ -820,69 +818,6 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                        data={formData}
                        isReadOnly={isReadOnly}
                        isPartiallyEditable={isPartiallyEditable}
-                     />
-                      <div className="flex justify-between mt-6 pt-4 border-t">
-                        <Button 
-                          variant="outline" 
-                          onClick={handlePrevious}
-                          disabled={isFirstTab}
-                        >
-                          Previous
-                        </Button>
-                        <Button onClick={handleNext} disabled={isLastTab}>
-                          Next
-                        </Button>
-                      </div>
-                   </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="discovery" className="mt-0">
-                <Card className="shadow-fluent-16">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="font-fluent font-semibold">Discovery</CardTitle>
-                        <p className="text-muted-foreground font-fluent">Discovery requests and details</p>
-                      </div>
-                       <Sheet>
-                         <SheetTrigger asChild>
-                           <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
-                             <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
-                           </Button>
-                         </SheetTrigger>
-                        <SheetContent side="right" className="w-[400px] sm:w-[540px]">
-                          <SheetHeader>
-                            <SheetTitle>Discovery Help</SheetTitle>
-                          </SheetHeader>
-                          <div className="mt-6">
-                            <Accordion type="single" collapsible className="w-full">
-                              <AccordionItem value="discovery-1">
-                                <AccordionTrigger className="text-left">
-                                  What types of discovery requests can I make?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                  You can request Interrogatories, depositions, document production, requests for admission, and requests for inspection.
-                                </AccordionContent>
-                              </AccordionItem>
-                              <AccordionItem value="discovery-2">
-                                <AccordionTrigger className="text-left">
-                                  What should I include in my discovery request?
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                  Be specific about what information or documents you're seeking. Include relevant time periods, parties involved, and the scope of your request.
-                                </AccordionContent>
-                              </AccordionItem>
-                            </Accordion>
-                          </div>
-                        </SheetContent>
-                      </Sheet>
-                    </div>
-                  </CardHeader>
-                   <CardContent className="p-6">
-                     <DiscoveryTab 
-                       onDataChange={updateFormData} 
-                       data={formData}
                      />
                       <div className="flex justify-between mt-6 pt-4 border-t">
                         <Button 
