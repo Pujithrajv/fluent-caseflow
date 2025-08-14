@@ -75,12 +75,18 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
   // Generate dynamic tabs based on selected discovery types
   const discoveryTabs = [
     ...baseDiscoveryTabs,
-    ...selectedDiscoveryTypes.map(type => ({
-      id: `${type}-questions`,
-      title: discoveryTypeComponents[type as keyof typeof discoveryTypeComponents]?.title || `${type} Questions`,
-      description: 'Type-specific questions'
-    }))
+    ...selectedDiscoveryTypes.map(type => {
+      const componentInfo = discoveryTypeComponents[type as keyof typeof discoveryTypeComponents];
+      return {
+        id: `${type}-questions`,
+        title: componentInfo?.title || `${type.charAt(0).toUpperCase() + type.slice(1)} Questions`,
+        description: 'Type-specific questions'
+      };
+    })
   ];
+
+  console.log('Selected discovery types:', selectedDiscoveryTypes); // Debug log
+  console.log('Generated tabs:', discoveryTabs); // Debug log
 
   const updateFormData = (stepData: any) => {
     console.log('Updating form data:', stepData); // Debug log
