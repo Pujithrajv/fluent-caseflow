@@ -64,8 +64,8 @@ const exhibitTypes = [
 ];
 
 export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: RequestSelectionTabProps) {
-  const [requestGroup, setRequestGroup] = useState(data.requestGroup || "");
-  const [requestType, setRequestType] = useState(data.requestType || "");
+  const [requestGroup, setRequestGroup] = useState(data.requestGroup || "discovery");
+  const [requestType, setRequestType] = useState(data.requestType || "Discovery");
 
   const handleRequestGroupChange = (value: string) => {
     setRequestGroup(value);
@@ -99,10 +99,14 @@ export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: 
   const canContinue = requestGroup && requestType;
 
   useEffect(() => {
+    // Auto-set defaults and mark as complete
+    if (!data.requestGroup) {
+      onDataChange({ requestGroup: "discovery", requestType: "Discovery" });
+    }
     if (canContinue) {
       onComplete();
     }
-  }, [canContinue, onComplete]);
+  }, [canContinue, onComplete, data.requestGroup, onDataChange]);
 
   return (
     <div className="space-y-6">
@@ -118,9 +122,9 @@ export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: 
           {/* Request Group */}
           <div className="space-y-2">
             <Label htmlFor="requestGroup" className="font-fluent font-semibold text-sm">Request Group *</Label>
-            <Select value={requestGroup} onValueChange={handleRequestGroupChange}>
-              <SelectTrigger className="shadow-fluent-8 border-input-border">
-                <SelectValue placeholder="Select request group" />
+            <Select value={requestGroup} onValueChange={handleRequestGroupChange} disabled>
+              <SelectTrigger className="shadow-fluent-8 border-input-border bg-muted">
+                <SelectValue placeholder="Defaulted to Discovery" />
               </SelectTrigger>
               <SelectContent>
                 {requestGroups.map((group) => {
@@ -142,9 +146,9 @@ export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: 
           {requestGroup && (
             <div className="space-y-2">
               <Label htmlFor="requestType" className="font-fluent font-semibold text-sm">Request Type *</Label>
-              <Select value={requestType} onValueChange={handleRequestTypeChange}>
-                <SelectTrigger className="shadow-fluent-8 border-input-border">
-                  <SelectValue placeholder="Select request type" />
+              <Select value={requestType} onValueChange={handleRequestTypeChange} disabled>
+                <SelectTrigger className="shadow-fluent-8 border-input-border bg-muted">
+                  <SelectValue placeholder="Defaulted to Discovery" />
                 </SelectTrigger>
                 <SelectContent>
                   {getRequestTypes().map((type) => (

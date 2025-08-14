@@ -8,16 +8,14 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DiscoveryDetailsTab } from "./wizard/DiscoveryDetailsTab";
 import { InterrogatoriesQuestionsTab } from "./wizard/InterrogatoriesQuestionsTab";
-
 import { DocumentProductionQuestionsTab } from "./wizard/DocumentProductionQuestionsTab";
 import { DepositionQuestionsTab } from "./wizard/DepositionQuestionsTab";
 import { InspectionQuestionsTab } from "./wizard/InspectionQuestionsTab";
-import { RequestTypeQuestionsTab } from "./wizard/RequestTypeQuestionsTab";
-import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
-import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
+import { RequestSelectionTab } from "./wizard/RequestSelectionTab";
 
-const baseDiscoveryTabs = [
-  { id: 'discovery-details', title: 'Discovery Details', description: 'Discovery request information' },
+const baseTabs = [
+  { id: 'request', title: 'Request', description: 'Select request group and type' },
+  { id: 'discovery-details', title: 'Selected Subprocess Details', description: 'Discovery request information' },
 ];
 
 const discoveryTypeComponents = {
@@ -26,11 +24,6 @@ const discoveryTypeComponents = {
   'deposition': { component: DepositionQuestionsTab, title: 'Deposition Questions' },
   'inspection': { component: InspectionQuestionsTab, title: 'Inspection Questions' }
 };
-
-const endTabs = [
-  { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
-  { id: 'review', title: 'Review & Submit', description: 'Verify and submit discovery' }
-];
 
 const faqData = {
   "discovery-details": [
@@ -79,13 +72,12 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
 
   // Generate dynamic tabs based on selected discovery types
   const discoveryTabs = [
-    ...baseDiscoveryTabs,
+    ...baseTabs,
     ...selectedDiscoveryTypes.map(type => ({
       id: `${type}-questions`,
       title: discoveryTypeComponents[type as keyof typeof discoveryTypeComponents]?.title || `${type} Questions`,
       description: 'Type-specific questions'
-    })),
-    ...endTabs
+    }))
   ];
 
   const updateFormData = (stepData: any) => {
@@ -145,7 +137,7 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
         </div>
 
         {/* Vertical Tabs Layout */}
-        <Tabs defaultValue="discovery-details" className="w-full" orientation="vertical">
+        <Tabs defaultValue="request" className="w-full" orientation="vertical">
           <div className="flex gap-6">
             {/* Vertical Tab List */}
             <Card className="shadow-fluent-8 w-80">
@@ -214,13 +206,12 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
                       </div>
                     </CardHeader>
                     <CardContent className="p-6">
+                      {tab.id === 'request' && <RequestSelectionTab onDataChange={updateFormData} data={formData} onComplete={() => markTabCompleted('request')} />}
                       {tab.id === 'discovery-details' && <DiscoveryDetailsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'interrogatories-questions' && <InterrogatoriesQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'document-production-questions' && <DocumentProductionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'deposition-questions' && <DepositionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'inspection-questions' && <InspectionQuestionsTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -231,20 +222,20 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
 
         {/* Action Buttons */}
         <div className="flex justify-between pt-6 pb-4">
-          <Button variant="outline" onClick={onBack} className="font-fluent">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Requests
-          </Button>
-          
-          <div className="flex space-x-3">
-            <Button variant="fluent" className="font-fluent">
-              Save Draft
+            <Button variant="outline" onClick={onBack} className="font-fluent">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Requests
             </Button>
-            <Button className="font-fluent" onClick={onBack}>
-              <Check className="mr-2 h-4 w-4" />
-              Submit Discovery Request
-            </Button>
-          </div>
+            
+            <div className="flex space-x-3">
+              <Button variant="fluent" className="font-fluent">
+                Save Draft
+              </Button>
+              <Button className="font-fluent" onClick={onBack}>
+                <Check className="mr-2 h-4 w-4" />
+                Submit Discovery Request
+              </Button>
+            </div>
         </div>
       </div>
     </div>
