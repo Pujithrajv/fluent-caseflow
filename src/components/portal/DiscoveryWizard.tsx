@@ -17,7 +17,7 @@ import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
 
 const baseDiscoveryTabs = [
-  { id: 'discovery-details', title: 'Discovery Details', description: 'Discovery request information' },
+  { id: 'discovery-information', title: 'Discovery Information', description: 'Set discovery schedule and types' },
 ];
 
 const discoveryTypeComponents = {
@@ -27,13 +27,8 @@ const discoveryTypeComponents = {
   'inspection': { component: InspectionQuestionsTab, title: 'Inspection Questions' }
 };
 
-const endTabs = [
-  { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
-  { id: 'review', title: 'Review & Submit', description: 'Verify and submit discovery' }
-];
-
 const faqData = {
-  "discovery-details": [
+  "discovery-information": [
     {
       id: "discovery-1",
       question: "What types of discovery requests can I make?",
@@ -84,8 +79,7 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
       id: `${type}-questions`,
       title: discoveryTypeComponents[type as keyof typeof discoveryTypeComponents]?.title || `${type} Questions`,
       description: 'Type-specific questions'
-    })),
-    ...endTabs
+    }))
   ];
 
   const updateFormData = (stepData: any) => {
@@ -145,7 +139,7 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
         </div>
 
         {/* Vertical Tabs Layout */}
-        <Tabs defaultValue="discovery-details" className="w-full" orientation="vertical">
+        <Tabs defaultValue="discovery-information" className="w-full" orientation="vertical">
           <div className="flex gap-6">
             {/* Vertical Tab List */}
             <Card className="shadow-fluent-8 w-80">
@@ -214,13 +208,11 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
                       </div>
                     </CardHeader>
                     <CardContent className="p-6">
-                      {tab.id === 'discovery-details' && <DiscoveryDetailsTab onDataChange={updateFormData} data={formData} />}
+                      {tab.id === 'discovery-information' && <DiscoveryDetailsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'interrogatories-questions' && <InterrogatoriesQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'document-production-questions' && <DocumentProductionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'deposition-questions' && <DepositionQuestionsTab onDataChange={updateFormData} data={formData} />}
                       {tab.id === 'inspection-questions' && <InspectionQuestionsTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'documents' && <DocumentUploadTab onDataChange={updateFormData} data={formData} />}
-                      {tab.id === 'review' && <ReviewSubmitTab data={formData} />}
                     </CardContent>
                   </Card>
                 </TabsContent>
