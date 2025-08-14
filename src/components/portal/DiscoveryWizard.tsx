@@ -114,6 +114,10 @@ export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
     return completedTabs.includes(tabId);
   };
 
+  // Debug: Log current state
+  console.log('Current selectedDiscoveryTypes:', selectedDiscoveryTypes);
+  console.log('Current discoveryTabs:', discoveryTabs);
+
   return (
     <div className="min-h-screen bg-background relative">
       {/* Header - Full Width */}
