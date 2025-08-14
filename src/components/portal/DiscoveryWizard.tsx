@@ -68,6 +68,7 @@ interface DiscoveryWizardProps {
 }
 
 export function DiscoveryWizard({ onBack }: DiscoveryWizardProps) {
+  console.log('DiscoveryWizard component mounted!'); // Debug log
   const [formData, setFormData] = useState({});
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
   const [selectedDiscoveryTypes, setSelectedDiscoveryTypes] = useState<string[]>([]);
