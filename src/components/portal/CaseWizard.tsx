@@ -23,6 +23,7 @@ import { DocumentsWizard } from "./DocumentsWizard";
 import { PleadingsWizard } from "./PleadingsWizard";
 import { NoticesWizard } from "./NoticesWizard";
 import { RequestsWizard } from "./RequestsWizard";
+import { DiscoveryTab } from "./wizard/DiscoveryTab";
 
 const createNewCaseTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
@@ -51,6 +52,7 @@ const viewEditAcceptedTabs = [
   { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
   { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
   { id: 'requests', title: 'Requests', description: 'Associated requests' },
+  { id: 'discovery', title: 'Discovery', description: 'Discovery information and sub-processes' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
@@ -239,6 +241,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
   const [currentRequestType, setCurrentRequestType] = useState<string | null>(null);
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
   const [currentTab, setCurrentTab] = useState(initialTab);
+  const [discoverySubTabs, setDiscoverySubTabs] = useState<string[]>([]);
 
   const isReadOnly = mode === 'view-edit' && caseStatus === 'submitted';
   const isCreateMode = mode === 'create';

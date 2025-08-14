@@ -1,92 +1,86 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Search } from "lucide-react";
 
 interface InspectionQuestionsTabProps {
-  onDataChange: (data: any) => void;
   data: any;
+  onDataChange: (data: any) => void;
+  onValidationChange?: (isValid: boolean) => void;
+  isReadOnly?: boolean;
 }
 
-export function InspectionQuestionsTab({ onDataChange, data }: InspectionQuestionsTabProps) {
-  const [whatToInspect, setWhatToInspect] = useState(data?.whatToInspect || "");
-  const [inspectionPurpose, setInspectionPurpose] = useState(data?.inspectionPurpose || "");
-  const [whoPresent, setWhoPresent] = useState(data?.whoPresent || "");
-  const [whoControls, setWhoControls] = useState(data?.whoControls || "");
+export function InspectionQuestionsTab({ 
+  data, 
+  onDataChange, 
+  onValidationChange, 
+  isReadOnly = false 
+}: InspectionQuestionsTabProps) {
+  const [formData, setFormData] = useState({
+    whatToInspect: data.whatToInspect || '',
+    inspectionPurpose: data.inspectionPurpose || '',
+    whoPresent: data.whoPresent || '',
+    whoControls: data.whoControls || '',
+    ...data
+  });
 
-  const handleFieldChange = (field: string, value: string) => {
-    const updates = { [field]: value };
-    onDataChange(updates);
+  const updateFormData = (updates: any) => {
+    const newData = { ...formData, ...updates };
+    setFormData(newData);
+    onDataChange(newData);
   };
 
+  const validateForm = () => {
+    const isValid = formData.whatToInspect.trim().length > 0 &&
+                   formData.inspectionPurpose.trim().length > 0 &&
+                   formData.whoPresent.trim().length > 0 &&
+                   formData.whoControls.trim().length > 0;
+    
+    if (onValidationChange) onValidationChange(isValid);
+    return isValid;
+  };
+
+  useEffect(() => {
+    validateForm();
+  }, [formData]);
+
   return (
-    <div className="space-y-6">
-      <Card className="shadow-fluent-8">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2 font-fluent">
-            <Search className="h-5 w-5 text-primary" />
-            <span>Inspection Questions</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="whatToInspect" className="font-fluent">What is to be inspected?</Label>
-            <Textarea 
-              id="whatToInspect"
-              value={whatToInspect}
-              onChange={(e) => {
-                setWhatToInspect(e.target.value);
-                handleFieldChange('whatToInspect', e.target.value);
-              }}
-              placeholder="Describe what is to be inspected..."
-              className="shadow-fluent-8 border-input-border min-h-24"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="inspectionPurpose" className="font-fluent">What is the purpose of the inspection?</Label>
-            <Textarea 
-              id="inspectionPurpose"
-              value={inspectionPurpose}
-              onChange={(e) => {
-                setInspectionPurpose(e.target.value);
-                handleFieldChange('inspectionPurpose', e.target.value);
-              }}
-              placeholder="Explain the purpose of the inspection..."
-              className="shadow-fluent-8 border-input-border min-h-24"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="whoPresent" className="font-fluent">Who is to be present at the inspection?</Label>
-            <Textarea 
-              id="whoPresent"
-              value={whoPresent}
-              onChange={(e) => {
-                setWhoPresent(e.target.value);
-                handleFieldChange('whoPresent', e.target.value);
-              }}
-              placeholder="Describe who should be present during the inspection..."
-              className="shadow-fluent-8 border-input-border min-h-24"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="whoControls" className="font-fluent">Who controls the thing to be inspected?</Label>
-            <Textarea 
-              id="whoControls"
-              value={whoControls}
-              onChange={(e) => {
-                setWhoControls(e.target.value);
-                handleFieldChange('whoControls', e.target.value);
-              }}
-              placeholder="Identify who has control over the item/location to be inspected..."
-              className="shadow-fluent-8 border-input-border min-h-24"
-            />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="shadow-fluent-8">
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2 font-fluent">
+          <Search className="h-5 w-5 text-primary" />
+          <span>Inspection Questions</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="whatToInspect" className="font-fluent">
+            What is to be inspected? *
+          </Label>
+          <Textarea
+            id="whatToInspect"
+            placeholder="Describe what items, areas, or materials are to be inspected..."
+            className="min-h-[100px] shadow-fluent-8 border-input-border"
+            disabled={isReadOnly}
+            value={formData.whatToInspect}
+            onChange={(e) => updateFormData({ whatToInspect: e.target.value })}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="inspectionPurpose" className="font-fluent">
+            What is the purpose of the inspection? *
+          </Label>
+          <Textarea
+            id="inspectionPurpose"
+            placeholder="Explain the purpose and objectives of the inspection..."
+            className="min-h-[100px] shadow-fluent-8 border-input-border"
+            disabled={isReadOnly}
+            value={formData.inspectionPurpose}
+            onChange={(e) => updateFormData({ inspectionPurpose: e.target.value })}
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 }
