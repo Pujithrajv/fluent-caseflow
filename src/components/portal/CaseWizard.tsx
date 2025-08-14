@@ -23,7 +23,7 @@ import { DocumentsWizard } from "./DocumentsWizard";
 import { PleadingsWizard } from "./PleadingsWizard";
 import { NoticesWizard } from "./NoticesWizard";
 import { RequestsWizard } from "./RequestsWizard";
-import { DiscoveryTab } from "./wizard/DiscoveryTab";
+
 
 const createNewCaseTabs = [
   { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
@@ -52,7 +52,6 @@ const viewEditAcceptedTabs = [
   { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
   { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
   { id: 'requests', title: 'Requests', description: 'Associated requests' },
-  { id: 'discovery', title: 'Discovery', description: 'Discovery information and sub-processes' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
@@ -838,57 +837,6 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                 </Card>
                </TabsContent>
 
-               <TabsContent value="discovery" className="mt-0">
-                 <Card className="shadow-fluent-16">
-                   <CardHeader>
-                     <div className="flex items-center justify-between">
-                       <div>
-                         <CardTitle className="font-fluent font-semibold">Discovery</CardTitle>
-                         <p className="text-muted-foreground font-fluent">Discovery information and sub-processes</p>
-                       </div>
-                        <Sheet>
-                          <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
-                              <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
-                            </Button>
-                          </SheetTrigger>
-                         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
-                           <SheetHeader>
-                             <SheetTitle>Discovery Help</SheetTitle>
-                           </SheetHeader>
-                           <div className="mt-6">
-                             <p className="text-sm text-muted-foreground">
-                               Discovery allows parties to gather information from each other before the hearing. 
-                               Select the types of discovery you need and complete the required forms for each type.
-                             </p>
-                           </div>
-                         </SheetContent>
-                       </Sheet>
-                     </div>
-                   </CardHeader>
-                    <CardContent className="p-6">
-                      <DiscoveryTab 
-                        onDataChange={updateFormData} 
-                        data={formData}
-                        isReadOnly={isReadOnly}
-                        onNext={handleNext}
-                        onPrevious={handlePrevious}
-                      />
-                       <div className="flex justify-between mt-6 pt-4 border-t">
-                         <Button 
-                           variant="outline" 
-                           onClick={handlePrevious}
-                           disabled={isFirstTab}
-                         >
-                           Previous
-                         </Button>
-                         <Button onClick={handleNext} disabled={isLastTab}>
-                           Next
-                         </Button>
-                       </div>
-                    </CardContent>
-                 </Card>
-               </TabsContent>
 
                <TabsContent value="review" className="mt-0">
                 <Card className="shadow-fluent-16">
