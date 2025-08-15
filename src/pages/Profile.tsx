@@ -26,7 +26,8 @@ const Profile = () => {
     salutation: "",
     suffix: "",
     pronouns: "",
-    participationType: ""
+    participationType: "",
+    preferredLanguage: ""
   });
 
   // Address Information state
@@ -46,8 +47,7 @@ const Profile = () => {
     phoneMobile: "",
     phoneBusiness: "",
     phoneOther: "",
-    preferredPhone: "",
-    preferredLanguage: ""
+    preferredPhone: ""
   });
 
   const [accountProfile, setAccountProfile] = useState({
@@ -55,9 +55,12 @@ const Profile = () => {
     website: "",
     telephone: "",
     address: "",
+    address2: "",
     city: "",
     state: "",
-    zipCode: ""
+    zipCode: "",
+    country: "United States",
+    participationType: ""
   });
 
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -178,7 +181,7 @@ const Profile = () => {
               value="account" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
-              Account
+            Organization
             </TabsTrigger>
             <TabsTrigger 
               value="consent" 
@@ -305,6 +308,30 @@ const Profile = () => {
                             <SelectItem value="attorney">Attorney</SelectItem>
                             <SelectItem value="interpreter">Interpreter</SelectItem>
                             <SelectItem value="witness">Witness</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="preferredLanguage" className="text-sm font-medium">Preferred Language</Label>
+                        <Select value={personalInfo.preferredLanguage} onValueChange={(value) => handlePersonalInfoChange("preferredLanguage", value)}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select language" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="english">English</SelectItem>
+                            <SelectItem value="spanish">Spanish</SelectItem>
+                            <SelectItem value="cantonese">Cantonese</SelectItem>
+                            <SelectItem value="mandarin">Mandarin</SelectItem>
+                            <SelectItem value="polish">Polish</SelectItem>
+                            <SelectItem value="arabic">Arabic</SelectItem>
+                            <SelectItem value="gujarati">Gujarati</SelectItem>
+                            <SelectItem value="korean">Korean</SelectItem>
+                            <SelectItem value="russian">Russian</SelectItem>
+                            <SelectItem value="tagalog">Tagalog</SelectItem>
+                            <SelectItem value="urdu">Urdu</SelectItem>
+                            <SelectItem value="ukrainian">Ukrainian</SelectItem>
+                            <SelectItem value="vietnamese">Vietnamese</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -491,30 +518,6 @@ const Profile = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="preferredLanguage" className="text-sm font-medium">Preferred Language</Label>
-                      <Select value={contactInfo.preferredLanguage} onValueChange={(value) => handleContactInfoChange("preferredLanguage", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="english">English</SelectItem>
-                          <SelectItem value="spanish">Spanish</SelectItem>
-                          <SelectItem value="cantonese">Cantonese</SelectItem>
-                          <SelectItem value="mandarin">Mandarin</SelectItem>
-                          <SelectItem value="polish">Polish</SelectItem>
-                          <SelectItem value="arabic">Arabic</SelectItem>
-                          <SelectItem value="gujarati">Gujarati</SelectItem>
-                          <SelectItem value="korean">Korean</SelectItem>
-                          <SelectItem value="russian">Russian</SelectItem>
-                          <SelectItem value="tagalog">Tagalog</SelectItem>
-                          <SelectItem value="urdu">Urdu</SelectItem>
-                          <SelectItem value="ukrainian">Ukrainian</SelectItem>
-                          <SelectItem value="vietnamese">Vietnamese</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -537,102 +540,200 @@ const Profile = () => {
             </div>
           </TabsContent>
 
-          {/* Account Tab */}
+          {/* Organization Tab */}
           <TabsContent value="account" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Organization Information</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="account-organizationName">Organization Name *</Label>
+            <div className="max-w-screen-xl mx-auto space-y-6">
+              {/* Page content with help icon */}
+              <div className="flex items-center justify-between mb-6">
+                <div></div>
+                <Button variant="ghost" size="icon" className="text-muted-foreground">
+                  <HelpCircle className="h-5 w-5" />
+                </Button>
+              </div>
+
+              {/* Two-column layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Organization Information Card */}
+                <Card className="shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="organizationName" className="text-sm font-medium">
+                        Organization Name <span className="text-destructive">*</span>
+                      </Label>
                       <Input
-                        id="account-organizationName"
+                        id="organizationName"
                         value={accountProfile.organizationName}
                         onChange={(e) => handleAccountChange("organizationName", e.target.value)}
-                        className="bg-gray-50 border-gray-300"
+                        className="mt-1"
+                        required
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="account-website">Website</Label>
+                    <div>
+                      <Label htmlFor="website" className="text-sm font-medium">Web Site</Label>
                       <Input
-                        id="account-website"
+                        id="website"
                         type="url"
                         value={accountProfile.website}
                         onChange={(e) => handleAccountChange("website", e.target.value)}
-                        className={`bg-gray-50 border-gray-300 ${
+                        className={`mt-1 ${
                           accountProfile.website && !validateURL(accountProfile.website) 
-                            ? 'border-red-500' 
+                            ? 'border-destructive' 
                             : ''
                         }`}
-                        placeholder="https://example.com"
+                        placeholder="https://www.example.org"
                       />
                       {accountProfile.website && !validateURL(accountProfile.website) && (
-                        <p className="text-sm text-red-500">Please enter a valid URL</p>
+                        <p className="text-sm text-destructive mt-1">Please enter a valid URL starting with https://</p>
                       )}
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="account-telephone">Telephone</Label>
+                    <div>
+                      <Label htmlFor="businessPhone" className="text-sm font-medium">Business Phone</Label>
                       <Input
-                        id="account-telephone"
+                        id="businessPhone"
                         value={accountProfile.telephone}
                         onChange={(e) => handleAccountChange("telephone", formatPhone(e.target.value))}
-                        className="bg-gray-50 border-gray-300"
-                        placeholder="(555) 123-4567"
+                        className="mt-1"
+                        placeholder="(555) 555-1234"
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="account-address">Address</Label>
+                    <div>
+                      <Label htmlFor="orgParticipationType" className="text-sm font-medium">Participation Type</Label>
+                      <Select value={accountProfile.participationType || ""} onValueChange={(value) => handleAccountChange("participationType", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select participation type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="petitioner">Petitioner</SelectItem>
+                          <SelectItem value="respondent">Respondent</SelectItem>
+                          <SelectItem value="department-representative">Department Representative</SelectItem>
+                          <SelectItem value="attorney">Attorney</SelectItem>
+                          <SelectItem value="interpreter">Interpreter</SelectItem>
+                          <SelectItem value="witness">Witness</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Address Information Card */}
+                <Card className="shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="orgAddress1" className="text-sm font-medium">
+                        Address Line 1 <span className="text-destructive">*</span>
+                      </Label>
                       <Input
-                        id="account-address"
+                        id="orgAddress1"
                         value={accountProfile.address}
                         onChange={(e) => handleAccountChange("address", e.target.value)}
-                        className="bg-gray-50 border-gray-300"
+                        className="mt-1"
+                        required
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="account-city">City</Label>
+                    <div>
+                      <Label htmlFor="orgAddress2" className="text-sm font-medium">Address Line 2</Label>
                       <Input
-                        id="account-city"
+                        id="orgAddress2"
+                        value={accountProfile.address2 || ""}
+                        onChange={(e) => handleAccountChange("address2", e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="orgCity" className="text-sm font-medium">
+                        City <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="orgCity"
                         value={accountProfile.city}
                         onChange={(e) => handleAccountChange("city", e.target.value)}
-                        className="bg-gray-50 border-gray-300"
+                        className="mt-1"
+                        required
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="account-state">State</Label>
-                      <Input
-                        id="account-state"
-                        value={accountProfile.state}
-                        onChange={(e) => handleAccountChange("state", e.target.value)}
-                        className="bg-gray-50 border-gray-300"
-                      />
+                    <div>
+                      <Label htmlFor="orgState" className="text-sm font-medium">
+                        State / Province <span className="text-destructive">*</span>
+                      </Label>
+                      <Select value={accountProfile.state} onValueChange={(value) => handleAccountChange("state", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select state/province" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="il">Illinois</SelectItem>
+                          <SelectItem value="ca">California</SelectItem>
+                          <SelectItem value="ny">New York</SelectItem>
+                          <SelectItem value="tx">Texas</SelectItem>
+                          <SelectItem value="fl">Florida</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="account-zipCode">Zip Code</Label>
+                    <div>
+                      <Label htmlFor="orgPostalCode" className="text-sm font-medium">
+                        Postal Code <span className="text-destructive">*</span>
+                      </Label>
                       <Input
-                        id="account-zipCode"
+                        id="orgPostalCode"
                         value={accountProfile.zipCode}
                         onChange={(e) => handleAccountChange("zipCode", formatZip(e.target.value))}
-                        className="bg-gray-50 border-gray-300"
+                        className="mt-1"
                         placeholder="12345"
+                        required
                       />
                     </div>
-                  </div>
-                  
-                  <Button className="w-full mt-6">Update Organization Information</Button>
+                    
+                    <div>
+                      <Label htmlFor="orgCountry" className="text-sm font-medium">
+                        Country <span className="text-destructive">*</span>
+                      </Label>
+                      <Select value={accountProfile.country || "United States"} onValueChange={(value) => handleAccountChange("country", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="United States">United States</SelectItem>
+                          <SelectItem value="Canada">Canada</SelectItem>
+                          <SelectItem value="Mexico">Mexico</SelectItem>
+                          <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Sticky Action Bar */}
+              <div className="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
+                <div className="flex justify-end">
+                  <Button 
+                    onClick={() => {
+                      toast({
+                        title: "Success",
+                        description: "Organization information updated."
+                      });
+                    }}
+                    className="w-full sm:w-auto"
+                  >
+                    Update Organization Information
+                  </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
           {/* Consent and Settings Tab */}
