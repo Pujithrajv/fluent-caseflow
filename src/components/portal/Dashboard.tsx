@@ -15,17 +15,34 @@ interface CaseItem {
   name: string;
   description: string;
   caseNumber?: string;
+  confirmationNumber?: string;
+  deptRefNumber?: string;
+  caseType: string;
   department: string;
+  departmentParticipationType: string;
   section: string;
-  firstParty: string;
-  secondParty: string;
-  secondPartyType: string;
+  primaryPartyName: string;
+  primaryPartyType: string;
+  primaryPartyCategory: string;
   represented?: string;
+  attorneyName?: string;
   status: "draft" | "submitted" | "accepted" | "complete" | "closed" | "archived";
-  stage: string;
+  externalStatus: string;
+  stage: "Intake" | "Pre-Hearing" | "Hearing" | "Post-Hearing";
   icon: "shield" | "car" | "file";
   lastActionDate: string;
   lastWizardTab: "department" | "primary-party" | "case-details" | "case-questions" | "involved-parties" | "requests" | "review-submit";
+  assignedAttorney?: string;
+  nextEvent?: {
+    name: string;
+    date: string;
+    time: string;
+  };
+  deadlines?: Array<{
+    name: string;
+    date: string;
+    priority: number;
+  }>;
 }
 
 const mockCases: CaseItem[] = [
@@ -34,43 +51,70 @@ const mockCases: CaseItem[] = [
     name: "Grain Dealer and Warehouse Licensing - Kirby Neroni",
     description: "Grain Dealer and Warehouse Licensing",
     caseNumber: "DBE-2024-001-EC",
+    deptRefNumber: "AGR-2024-0892",
+    caseType: "Grain Dealer and Warehouse Licensing",
     department: "Department of Agriculture",
+    departmentParticipationType: "Complainant",
     section: "Division of Agricultural Industry Regulation",
-    firstParty: "Petitioner",
-    secondParty: "Kirby Neroni",
-    secondPartyType: "Individual",
+    primaryPartyName: "Kirby Neroni",
+    primaryPartyType: "Respondent",
+    primaryPartyCategory: "Individual",
     represented: "No",
     status: "accepted",
-    stage: "Case Processing",
+    externalStatus: "Under Review",
+    stage: "Pre-Hearing",
     icon: "shield",
     lastActionDate: "2025-08-11",
-    lastWizardTab: "review-submit"
+    lastWizardTab: "review-submit",
+    assignedAttorney: "Greg Miles",
+    nextEvent: {
+      name: "Pre-hearing Conference",
+      date: "2024-12-28",
+      time: "2:00 PM"
+    },
+    deadlines: [
+      { name: "Response to Motion due", date: "2024-12-22", priority: 1 },
+      { name: "Discovery cutoff", date: "2024-12-30", priority: 2 }
+    ]
   },
   {
     id: "CASE-2024-001",
     name: "Weights & Measures Inspections for Sniders Group",
     description: "Weights & Measures Inspections",
-    department: "Dept. of Agriculture",
+    confirmationNumber: "2024-0001",
+    deptRefNumber: "WM-2024-0456",
+    caseType: "Weights & Measures Inspections",
+    department: "Department of Agriculture",
+    departmentParticipationType: "Petitioner",
     section: "Weights & Measures Division",
-    firstParty: "Petitionaire",
-    secondParty: "Sniders Group",
-    secondPartyType: "Corporate Entity",
+    primaryPartyName: "Sniders Group",
+    primaryPartyType: "Respondent",
+    primaryPartyCategory: "Corporate Entity",
     status: "submitted",
-    stage: "Pending Case Acceptance",
+    externalStatus: "Pending Review",
+    stage: "Intake",
     icon: "shield",
     lastActionDate: "2024-06-04",
-    lastWizardTab: "review-submit"
+    lastWizardTab: "review-submit",
+    assignedAttorney: "Jaslyn Blom",
+    deadlines: [
+      { name: "Initial Response due", date: "2024-12-25", priority: 1 }
+    ]
   },
   {
     id: "CASE-2024-002",
     name: "Vending Inspection – Midtown",
     description: "Weights & Measures Inspections",
-    department: "Dept. of Agriculture",
+    confirmationNumber: "2024-0002",
+    caseType: "Weights & Measures Inspections",
+    department: "Department of Agriculture",
+    departmentParticipationType: "Petitioner",
     section: "Weights & Measures Division",
-    firstParty: "Petitionaire",
-    secondParty: "Midtown Vending LLC",
-    secondPartyType: "Corporate Entity",
+    primaryPartyName: "Midtown Vending LLC",
+    primaryPartyType: "Respondent",
+    primaryPartyCategory: "Corporate Entity",
     status: "draft",
+    externalStatus: "Draft",
     stage: "Intake",
     icon: "shield",
     lastActionDate: "2025-07-28",
@@ -80,12 +124,17 @@ const mockCases: CaseItem[] = [
     id: "CASE-2024-003",
     name: "Food Safety – North District",
     description: "Food Safety",
-    department: "Dept. of Public Health",
+    confirmationNumber: "2024-0003",
+    deptRefNumber: "FS-2024-0123",
+    caseType: "Food Safety",
+    department: "Department of Public Health",
+    departmentParticipationType: "Complainant",
     section: "Food Safety Division",
-    firstParty: "Petitionaire",
-    secondParty: "North District Foods",
-    secondPartyType: "Corporate Entity",
+    primaryPartyName: "North District Foods",
+    primaryPartyType: "Respondent",
+    primaryPartyCategory: "Corporate Entity",
     status: "draft",
+    externalStatus: "Draft",
     stage: "Intake",
     icon: "file",
     lastActionDate: "2025-07-28",
@@ -151,18 +200,6 @@ const faqData = [
   }
 ];
 
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "accepted": return "bg-success text-success-foreground";
-    case "submitted": return "bg-warning text-warning-foreground";
-    case "draft": return "bg-destructive text-destructive-foreground";
-    case "complete": return "bg-success text-success-foreground";
-    case "closed": return "bg-muted text-muted-foreground";
-    case "archived": return "bg-muted text-muted-foreground";
-    default: return "bg-muted text-muted-foreground";
-  }
-};
-
 const getCaseIcon = (iconType: string) => {
   switch (iconType) {
     case "shield": return Shield;
@@ -188,6 +225,14 @@ const getTabDisplayName = (tab: string) => {
     case "review-submit": return "Review & Submit";
     default: return tab;
   }
+};
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
 };
 
 export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
@@ -269,115 +314,144 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   <table className="w-full">
                     <thead className="bg-muted/30">
                       <tr>
-                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground w-16">
-                           
-                         </th>
-                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                           Case #
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground w-16">
+                          
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Case #
                         </th>
                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                           Department
                         </th>
                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                          Participant/Type
+                          Primary Party
                         </th>
                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                           Status
                         </th>
-                         <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                           Last Action
-                         </th>
-                       </tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Important Dates
+                        </th>
+                      </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
                       {mockCases.map((caseItem) => {
                         const IconComponent = getCaseIcon(caseItem.icon);
                         return (
                           <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
-                             <td className="px-4 py-4 align-top">
-                               <Button 
-                                 variant="outline" 
-                                 size="sm"
-                                 onClick={() => {
-                                   if (caseItem.status === 'draft') {
-                                     onEditCase?.(caseItem.id, caseItem.lastWizardTab);
-                                   } else {
-                                     onViewCase(caseItem.id);
-                                   }
-                                 }}
-                                 className="p-2"
-                               >
-                                 <Eye className="h-4 w-4" />
-                               </Button>
-                             </td>
-                             <td className="px-4 py-4 align-top">
-                                <div>
-                                  {caseItem.caseNumber ? (
-                                    <p className="text-sm font-medium text-foreground">
-                                      {caseItem.caseNumber}
-                                    </p>
-                                  ) : (
-                                    <p className="text-sm text-muted-foreground italic">—</p>
-                                  )}
-                                  <p className="text-sm text-muted-foreground">{caseItem.description}</p>
-                                </div>
-                              </td>
-                             <td className="px-4 py-4 align-top">
-                              <div>
-                                <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  Assigned Attorney: {
-                                    caseItem.status === "draft" 
-                                      ? "(not yet assigned)"
-                                      : caseItem.id === "CASE-2024-001" || caseItem.id === "CASE-2024-004"
-                                        ? "Jaslyn Blom"
-                                        : "Greg Miles"
+                            <td className="px-4 py-4 align-top">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => {
+                                  if (caseItem.status === 'draft') {
+                                    onEditCase?.(caseItem.id, caseItem.lastWizardTab);
+                                  } else {
+                                    onViewCase(caseItem.id);
                                   }
+                                }}
+                                className="p-2"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </td>
+                            
+                            {/* Case # Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium text-foreground">
+                                  {caseItem.status === 'accepted' || caseItem.status === 'complete' || caseItem.status === 'closed' ? (
+                                    caseItem.caseNumber ? `Case #: ${caseItem.caseNumber}` : '—'
+                                  ) : (
+                                    caseItem.confirmationNumber ? `Confirmation #: ${caseItem.confirmationNumber}` : '—'
+                                  )}
+                                </p>
+                                <p className="text-sm text-muted-foreground">{caseItem.caseType}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Dept. Ref #: {caseItem.deptRefNumber || '—'}
                                 </p>
                               </div>
                             </td>
-                             <td className="px-4 py-4 align-top">
-                              <div>
-                                <p className="text-sm font-medium text-foreground">{caseItem.secondParty}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  <span className="font-medium">Second Party:</span> {caseItem.secondPartyType}
+
+                            {/* Department Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
+                                <p className="text-sm text-muted-foreground">{caseItem.departmentParticipationType}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {caseItem.assignedAttorney || "(not yet assigned)"}
                                 </p>
-                                {caseItem.represented && (
-                                  <p className="text-xs text-muted-foreground mt-1">
-                                    <span className="font-medium">Represented:</span> {caseItem.represented}
-                                  </p>
+                              </div>
+                            </td>
+
+                            {/* Primary Party Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium text-foreground">{caseItem.primaryPartyName}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {caseItem.primaryPartyType} – {caseItem.primaryPartyCategory}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {caseItem.attorneyName ? `Attorney: ${caseItem.attorneyName}` : `Represented: ${caseItem.represented || 'No'}`}
+                                </p>
+                              </div>
+                            </td>
+
+                            {/* Status Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-2">
+                                <StatusBadge status={caseItem.status as "draft" | "submitted" | "accepted" | "rejected" | "in-progress" | "completed"}>
+                                  {caseItem.externalStatus}
+                                </StatusBadge>
+                                <p className="text-xs text-muted-foreground">
+                                  Stage: {caseItem.stage}
+                                </p>
+                              </div>
+                            </td>
+
+                            {/* Important Dates Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-2">
+                                {/* Next Event */}
+                                {caseItem.nextEvent ? (
+                                  <div className="text-xs">
+                                    <p className="font-medium text-foreground">{caseItem.nextEvent.name}</p>
+                                    <p className="text-muted-foreground">
+                                      {formatDate(caseItem.nextEvent.date)} at {caseItem.nextEvent.time}
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <p className="text-xs text-muted-foreground">No events scheduled</p>
+                                )}
+
+                                {/* Deadlines (top 2) */}
+                                {caseItem.deadlines?.slice(0, 2).map((deadline, index) => (
+                                  <div key={index} className="text-xs text-muted-foreground">
+                                    <p>{deadline.name} — {formatDate(deadline.date)}</p>
+                                  </div>
+                                ))}
+
+                                {/* Draft specific content */}
+                                {caseItem.status === "draft" && (
+                                  <div className="space-y-2">
+                                    <div className="text-xs text-muted-foreground">
+                                      Draft saved — {formatDate(caseItem.lastActionDate)}
+                                    </div>
+                                    {onEditCase && (
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => onEditCase(caseItem.id, caseItem.lastWizardTab)}
+                                        className="text-xs h-7 px-2"
+                                      >
+                                        Continue Editing
+                                      </Button>
+                                    )}
+                                  </div>
                                 )}
                               </div>
                             </td>
-                             <td className="px-4 py-4 align-top">
-                               <div className="flex justify-center">
-                                 <StatusBadge status={caseItem.status as "draft" | "submitted" | "accepted" | "rejected" | "in-progress" | "completed"}>
-                                   {caseItem.status.charAt(0).toUpperCase() + caseItem.status.slice(1)}
-                                 </StatusBadge>
-                               </div>
-                             </td>
-                             <td className="px-4 py-4 align-top">
-                                 <div className="space-y-2">
-                                  <div className="flex items-center space-x-2 text-sm text-foreground">
-                                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                                    <span>
-                                      {caseItem.status === "draft" && `Draft saved — ${caseItem.lastActionDate}`}
-                                      {caseItem.status === "submitted" && `Submitted — ${caseItem.lastActionDate}`}
-                                      {caseItem.status === "accepted" && `Accepted — ${caseItem.lastActionDate}`}
-                                    </span>
-                                  </div>
-                                  {onEditCase && caseItem.status === "draft" && (
-                                    <Button 
-                                      variant="outline" 
-                                      size="sm"
-                                      onClick={() => onEditCase(caseItem.id, caseItem.lastWizardTab)}
-                                    >
-                                      Continue Editing
-                                    </Button>
-                                  )}
-                                </div>
-                             </td>
-                           </tr>
+                          </tr>
                         );
                       })}
                     </tbody>
