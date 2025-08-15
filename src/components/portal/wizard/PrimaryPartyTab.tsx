@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { User, Search, Plus, Eye } from "lucide-react";
 import { useState } from "react";
+import { AddNewContactModal } from "../AddNewContactModal";
 
 interface PrimaryPartyTabProps {
   onDataChange: (data: any) => void;
@@ -121,6 +122,11 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
     setIsAddModalOpen(true);
   };
 
+  const handleSaveNewParty = (contact: any) => {
+    handlePartyNameChange(contact.firstName + " " + contact.lastName);
+    setIsAddModalOpen(false);
+  };
+
   const handleSaveNewContact = () => {
     if (!newContact.name.trim()) return;
     
@@ -160,26 +166,11 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
     setIsAttorneyAddModalOpen(true);
   };
 
-  const handleSaveNewAttorney = () => {
-    if (!newAttorney.name.trim()) return;
-    
-    // Add the new attorney to the attorney name field
-    handleAttorneyNameChange(newAttorney.name);
-    
-    // Reset form and close modal
-    setNewAttorney({
-      name: "",
-      title: "",
-      organization: "",
-      phone: "",
-      email: "",
-      address: "",
-      city: "",
-      state: "",
-      zipCode: ""
-    });
+  const handleSaveNewAttorney = (contact: any) => {
+    handleAttorneyNameChange(contact.firstName + " " + contact.lastName);
     setIsAttorneyAddModalOpen(false);
   };
+
 
   const handleNewAttorneyChange = (field: string, value: string) => {
     setNewAttorney(prev => ({ ...prev, [field]: value }));
@@ -343,127 +334,12 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Add New Contact</DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="newContactName">Name *</Label>
-                <Input 
-                  id="newContactName"
-                  placeholder="Enter full name"
-                  value={newContact.name}
-                  onChange={(e) => handleNewContactChange("name", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newContactTitle">Title</Label>
-                <Input 
-                  id="newContactTitle"
-                  placeholder="Job title"
-                  value={newContact.title}
-                  onChange={(e) => handleNewContactChange("title", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="newContactOrganization">Organization</Label>
-              <Input 
-                id="newContactOrganization"
-                placeholder="Company or organization name"
-                value={newContact.organization}
-                onChange={(e) => handleNewContactChange("organization", e.target.value)}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="newContactPhone">Phone</Label>
-                <Input 
-                  id="newContactPhone"
-                  placeholder="Phone number"
-                  value={newContact.phone}
-                  onChange={(e) => handleNewContactChange("phone", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newContactEmail">Email</Label>
-                <Input 
-                  id="newContactEmail"
-                  type="email"
-                  placeholder="Email address"
-                  value={newContact.email}
-                  onChange={(e) => handleNewContactChange("email", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="newContactAddress">Address</Label>
-              <Input 
-                id="newContactAddress"
-                placeholder="Street address"
-                value={newContact.address}
-                onChange={(e) => handleNewContactChange("address", e.target.value)}
-              />
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="newContactCity">City</Label>
-                <Input 
-                  id="newContactCity"
-                  placeholder="City"
-                  value={newContact.city}
-                  onChange={(e) => handleNewContactChange("city", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newContactState">State</Label>
-                <Input 
-                  id="newContactState"
-                  placeholder="State"
-                  value={newContact.state}
-                  onChange={(e) => handleNewContactChange("state", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newContactZip">Zip Code</Label>
-                <Input 
-                  id="newContactZip"
-                  placeholder="Zip code"
-                  value={newContact.zipCode}
-                  onChange={(e) => handleNewContactChange("zipCode", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end space-x-2 pt-4">
-              <Button 
-                variant="outline" 
-                onClick={() => setIsAddModalOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={handleSaveNewContact}
-                disabled={!newContact.name.trim()}
-              >
-                Save Contact
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <AddNewContactModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={handleSaveNewParty}
+        contactType="Party"
+      />
 
       <Dialog open={isAttorneySearchModalOpen} onOpenChange={setIsAttorneySearchModalOpen}>
         <DialogContent className="max-w-4xl max-h-[80vh]">
@@ -522,127 +398,12 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isAttorneyAddModalOpen} onOpenChange={setIsAttorneyAddModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Add New Attorney</DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="newAttorneyName">Name *</Label>
-                <Input 
-                  id="newAttorneyName"
-                  placeholder="Enter full name"
-                  value={newAttorney.name}
-                  onChange={(e) => handleNewAttorneyChange("name", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newAttorneyTitle">Title</Label>
-                <Input 
-                  id="newAttorneyTitle"
-                  placeholder="Job title"
-                  value={newAttorney.title}
-                  onChange={(e) => handleNewAttorneyChange("title", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="newAttorneyOrganization">Organization</Label>
-              <Input 
-                id="newAttorneyOrganization"
-                placeholder="Law firm or organization name"
-                value={newAttorney.organization}
-                onChange={(e) => handleNewAttorneyChange("organization", e.target.value)}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="newAttorneyPhone">Phone</Label>
-                <Input 
-                  id="newAttorneyPhone"
-                  placeholder="Phone number"
-                  value={newAttorney.phone}
-                  onChange={(e) => handleNewAttorneyChange("phone", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newAttorneyEmail">Email</Label>
-                <Input 
-                  id="newAttorneyEmail"
-                  type="email"
-                  placeholder="Email address"
-                  value={newAttorney.email}
-                  onChange={(e) => handleNewAttorneyChange("email", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="newAttorneyAddress">Address</Label>
-              <Input 
-                id="newAttorneyAddress"
-                placeholder="Street address"
-                value={newAttorney.address}
-                onChange={(e) => handleNewAttorneyChange("address", e.target.value)}
-              />
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="newAttorneyCity">City</Label>
-                <Input 
-                  id="newAttorneyCity"
-                  placeholder="City"
-                  value={newAttorney.city}
-                  onChange={(e) => handleNewAttorneyChange("city", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newAttorneyState">State</Label>
-                <Input 
-                  id="newAttorneyState"
-                  placeholder="State"
-                  value={newAttorney.state}
-                  onChange={(e) => handleNewAttorneyChange("state", e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="newAttorneyZip">Zip Code</Label>
-                <Input 
-                  id="newAttorneyZip"
-                  placeholder="Zip code"
-                  value={newAttorney.zipCode}
-                  onChange={(e) => handleNewAttorneyChange("zipCode", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end space-x-2 pt-4">
-              <Button 
-                variant="outline" 
-                onClick={() => setIsAttorneyAddModalOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={handleSaveNewAttorney}
-                disabled={!newAttorney.name.trim()}
-              >
-                Save Attorney
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <AddNewContactModal
+        isOpen={isAttorneyAddModalOpen}
+        onClose={() => setIsAttorneyAddModalOpen(false)}
+        onSave={handleSaveNewAttorney}
+        contactType="Attorney"
+      />
     </div>
   );
 }
