@@ -7,25 +7,47 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowLeft, Info, HelpCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Header } from "@/components/shared/Header";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [createProfile, setCreateProfile] = useState({
+  const { toast } = useToast();
+  
+  // Personal Information state
+  const [personalInfo, setPersonalInfo] = useState({
     firstName: "",
-    middleName: "",
+    middleInitial: "",
     lastName: "",
-    email: "",
-    phone: "",
-    organization: "",
-    address: "",
+    salutation: "",
+    suffix: "",
+    pronouns: "",
+    participationType: ""
+  });
+
+  // Address Information state
+  const [addressInfo, setAddressInfo] = useState({
+    address1: "",
+    address2: "",
     city: "",
     state: "",
-    zipCode: ""
+    postalCode: "",
+    country: "United States"
+  });
+
+  // Contact Information state
+  const [contactInfo, setContactInfo] = useState({
+    email: "user@example.com", // Read-only from OKTA
+    phoneHome: "",
+    phoneMobile: "",
+    phoneBusiness: "",
+    phoneOther: "",
+    preferredPhone: "",
+    preferredLanguage: ""
   });
 
   const [accountProfile, setAccountProfile] = useState({
@@ -42,13 +64,51 @@ const Profile = () => {
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [termsOpen, setTermsOpen] = useState(true);
   const [privacyOpen, setPrivacyOpen] = useState(true);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  const handleCreateChange = (field: string, value: string) => {
-    setCreateProfile(prev => ({ ...prev, [field]: value }));
+  const handlePersonalInfoChange = (field: string, value: string) => {
+    setPersonalInfo(prev => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
+  };
+
+  const handleAddressInfoChange = (field: string, value: string) => {
+    setAddressInfo(prev => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
+  };
+
+  const handleContactInfoChange = (field: string, value: string) => {
+    setContactInfo(prev => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
   };
 
   const handleAccountChange = (field: string, value: string) => {
     setAccountProfile(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveProfile = () => {
+    // Validate required fields
+    const requiredFieldsValid = personalInfo.firstName && personalInfo.lastName && 
+      addressInfo.address1 && addressInfo.city && addressInfo.state && addressInfo.postalCode;
+    
+    if (!requiredFieldsValid) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Save profile logic here
+    setHasUnsavedChanges(false);
+    toast({
+      title: "Success",
+      description: "Profile updated."
+    });
+  };
+
+  const handleCancel = () => {
+    navigate("/portal");
   };
 
   const validateURL = (url: string) => {
@@ -130,118 +190,351 @@ const Profile = () => {
 
           {/* My Profile Tab */}
           <TabsContent value="profile" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create New Profile</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="create-firstName">First Name *</Label>
-                    <Input
-                      id="create-firstName"
-                      value={createProfile.firstName}
-                      onChange={(e) => handleCreateChange("firstName", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
+            <div className="max-w-screen-xl mx-auto space-y-6">
+              {/* Page content with help icon */}
+              <div className="flex items-center justify-between mb-6">
+                <div></div>
+                <Button variant="ghost" size="icon" className="text-muted-foreground">
+                  <HelpCircle className="h-5 w-5" />
+                </Button>
+              </div>
+
+              {/* Two-column layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Personal Information Card */}
+                <Card className="shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold text-foreground">Personal Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 gap-4">
+                      <div>
+                        <Label htmlFor="firstName" className="text-sm font-medium">
+                          First Name <span className="text-destructive">*</span>
+                        </Label>
+                        <Input
+                          id="firstName"
+                          value={personalInfo.firstName}
+                          onChange={(e) => handlePersonalInfoChange("firstName", e.target.value)}
+                          className="mt-1"
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="middleInitial" className="text-sm font-medium">Middle Initial</Label>
+                        <Input
+                          id="middleInitial"
+                          value={personalInfo.middleInitial}
+                          onChange={(e) => handlePersonalInfoChange("middleInitial", e.target.value)}
+                          className="mt-1"
+                          maxLength={1}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="lastName" className="text-sm font-medium">
+                          Last Name <span className="text-destructive">*</span>
+                        </Label>
+                        <Input
+                          id="lastName"
+                          value={personalInfo.lastName}
+                          onChange={(e) => handlePersonalInfoChange("lastName", e.target.value)}
+                          className="mt-1"
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="salutation" className="text-sm font-medium">Salutation</Label>
+                        <Select value={personalInfo.salutation} onValueChange={(value) => handlePersonalInfoChange("salutation", value)}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select salutation" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="mr">Mr.</SelectItem>
+                            <SelectItem value="mrs">Mrs.</SelectItem>
+                            <SelectItem value="ms">Ms.</SelectItem>
+                            <SelectItem value="dr">Dr.</SelectItem>
+                            <SelectItem value="prof">Prof.</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="suffix" className="text-sm font-medium">Suffix</Label>
+                        <Select value={personalInfo.suffix} onValueChange={(value) => handlePersonalInfoChange("suffix", value)}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select suffix" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="jr">Jr.</SelectItem>
+                            <SelectItem value="sr">Sr.</SelectItem>
+                            <SelectItem value="ii">II</SelectItem>
+                            <SelectItem value="iii">III</SelectItem>
+                            <SelectItem value="iv">IV</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="pronouns" className="text-sm font-medium">Pronouns</Label>
+                        <Select value={personalInfo.pronouns} onValueChange={(value) => handlePersonalInfoChange("pronouns", value)}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select pronouns" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="he-him">He/Him</SelectItem>
+                            <SelectItem value="she-her">She/Her</SelectItem>
+                            <SelectItem value="they-them">They/Them</SelectItem>
+                            <SelectItem value="custom">Custom</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="participationType" className="text-sm font-medium">Participation Type</Label>
+                        <Select value={personalInfo.participationType} onValueChange={(value) => handlePersonalInfoChange("participationType", value)}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select participation type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="petitioner">Petitioner</SelectItem>
+                            <SelectItem value="respondent">Respondent</SelectItem>
+                            <SelectItem value="department-representative">Department Representative</SelectItem>
+                            <SelectItem value="attorney">Attorney</SelectItem>
+                            <SelectItem value="interpreter">Interpreter</SelectItem>
+                            <SelectItem value="witness">Witness</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Address Information Card */}
+                <Card className="shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="address1" className="text-sm font-medium">
+                        Address Line 1 <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="address1"
+                        value={addressInfo.address1}
+                        onChange={(e) => handleAddressInfoChange("address1", e.target.value)}
+                        className="mt-1"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="address2" className="text-sm font-medium">Address Line 2</Label>
+                      <Input
+                        id="address2"
+                        value={addressInfo.address2}
+                        onChange={(e) => handleAddressInfoChange("address2", e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="city" className="text-sm font-medium">
+                        City <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="city"
+                        value={addressInfo.city}
+                        onChange={(e) => handleAddressInfoChange("city", e.target.value)}
+                        className="mt-1"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="state" className="text-sm font-medium">
+                        State / Province <span className="text-destructive">*</span>
+                      </Label>
+                      <Select value={addressInfo.state} onValueChange={(value) => handleAddressInfoChange("state", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select state/province" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="il">Illinois</SelectItem>
+                          <SelectItem value="ca">California</SelectItem>
+                          <SelectItem value="ny">New York</SelectItem>
+                          <SelectItem value="tx">Texas</SelectItem>
+                          <SelectItem value="fl">Florida</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="postalCode" className="text-sm font-medium">
+                        Postal Code <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="postalCode"
+                        value={addressInfo.postalCode}
+                        onChange={(e) => handleAddressInfoChange("postalCode", e.target.value)}
+                        className="mt-1"
+                        placeholder="12345"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="country" className="text-sm font-medium">
+                        Country <span className="text-destructive">*</span>
+                      </Label>
+                      <Select value={addressInfo.country} onValueChange={(value) => handleAddressInfoChange("country", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="United States">United States</SelectItem>
+                          <SelectItem value="Canada">Canada</SelectItem>
+                          <SelectItem value="Mexico">Mexico</SelectItem>
+                          <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Contact Information Card - Full width */}
+              <Card className="shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-foreground">Contact Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="email" className="text-sm font-medium">
+                        Email <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={contactInfo.email}
+                        className="mt-1 bg-muted"
+                        disabled
+                        required
+                      />
+                      <div className="flex items-center mt-1 text-xs text-muted-foreground">
+                        <Info className="h-3 w-3 mr-1" />
+                        This email is managed by OKTA and cannot be edited here.
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="phoneHome" className="text-sm font-medium">Home Phone</Label>
+                      <Input
+                        id="phoneHome"
+                        value={contactInfo.phoneHome}
+                        onChange={(e) => handleContactInfoChange("phoneHome", formatPhone(e.target.value))}
+                        className="mt-1"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="phoneMobile" className="text-sm font-medium">Mobile Phone</Label>
+                      <Input
+                        id="phoneMobile"
+                        value={contactInfo.phoneMobile}
+                        onChange={(e) => handleContactInfoChange("phoneMobile", formatPhone(e.target.value))}
+                        className="mt-1"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="phoneBusiness" className="text-sm font-medium">Business Phone</Label>
+                      <Input
+                        id="phoneBusiness"
+                        value={contactInfo.phoneBusiness}
+                        onChange={(e) => handleContactInfoChange("phoneBusiness", formatPhone(e.target.value))}
+                        className="mt-1"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="phoneOther" className="text-sm font-medium">Other Phone</Label>
+                      <Input
+                        id="phoneOther"
+                        value={contactInfo.phoneOther}
+                        onChange={(e) => handleContactInfoChange("phoneOther", formatPhone(e.target.value))}
+                        className="mt-1"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="preferredPhone" className="text-sm font-medium">Preferred Phone</Label>
+                      <Select value={contactInfo.preferredPhone} onValueChange={(value) => handleContactInfoChange("preferredPhone", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select preferred phone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="home">Home</SelectItem>
+                          <SelectItem value="mobile">Mobile</SelectItem>
+                          <SelectItem value="business">Business</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="preferredLanguage" className="text-sm font-medium">Preferred Language</Label>
+                      <Select value={contactInfo.preferredLanguage} onValueChange={(value) => handleContactInfoChange("preferredLanguage", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="english">English</SelectItem>
+                          <SelectItem value="spanish">Spanish</SelectItem>
+                          <SelectItem value="cantonese">Cantonese</SelectItem>
+                          <SelectItem value="mandarin">Mandarin</SelectItem>
+                          <SelectItem value="polish">Polish</SelectItem>
+                          <SelectItem value="arabic">Arabic</SelectItem>
+                          <SelectItem value="gujarati">Gujarati</SelectItem>
+                          <SelectItem value="korean">Korean</SelectItem>
+                          <SelectItem value="russian">Russian</SelectItem>
+                          <SelectItem value="tagalog">Tagalog</SelectItem>
+                          <SelectItem value="urdu">Urdu</SelectItem>
+                          <SelectItem value="ukrainian">Ukrainian</SelectItem>
+                          <SelectItem value="vietnamese">Vietnamese</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-middleName">Middle Name</Label>
-                    <Input
-                      id="create-middleName"
-                      value={createProfile.middleName}
-                      onChange={(e) => handleCreateChange("middleName", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-lastName">Last Name *</Label>
-                    <Input
-                      id="create-lastName"
-                      value={createProfile.lastName}
-                      onChange={(e) => handleCreateChange("lastName", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-email">Email *</Label>
-                    <Input
-                      id="create-email"
-                      type="email"
-                      value={createProfile.email}
-                      onChange={(e) => handleCreateChange("email", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-phone">Phone</Label>
-                    <Input
-                      id="create-phone"
-                      value={createProfile.phone}
-                      onChange={(e) => handleCreateChange("phone", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-organization">Organization</Label>
-                    <Input
-                      id="create-organization"
-                      value={createProfile.organization}
-                      onChange={(e) => handleCreateChange("organization", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-address">Address</Label>
-                    <Input
-                      id="create-address"
-                      value={createProfile.address}
-                      onChange={(e) => handleCreateChange("address", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-city">City</Label>
-                    <Input
-                      id="create-city"
-                      value={createProfile.city}
-                      onChange={(e) => handleCreateChange("city", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-state">State</Label>
-                    <Input
-                      id="create-state"
-                      value={createProfile.state}
-                      onChange={(e) => handleCreateChange("state", e.target.value)}
-                      className="bg-gray-50 border-gray-300"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="create-zipCode">Zip Code</Label>
-                    <Input
-                      id="create-zipCode"
-                      value={createProfile.zipCode}
-                      onChange={(e) => handleCreateChange("zipCode", formatZip(e.target.value))}
-                      className="bg-gray-50 border-gray-300"
-                      placeholder="12345"
-                    />
-                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Sticky Action Bar */}
+              <div className="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
+                <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
+                  <Button variant="outline" onClick={handleCancel} className="sm:w-auto">
+                    Cancel
+                  </Button>
+                  <Button 
+                    onClick={handleSaveProfile}
+                    disabled={!hasUnsavedChanges}
+                    className="sm:w-auto"
+                  >
+                    Save Changes
+                  </Button>
                 </div>
-                
-                <Button className="w-full mt-6">Create Profile</Button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
           {/* Account Tab */}
