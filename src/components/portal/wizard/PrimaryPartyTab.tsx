@@ -5,9 +5,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { User, Search, Plus, Eye } from "lucide-react";
+import { User, Search } from "lucide-react";
 import { useState } from "react";
-import { AddNewContactModal } from "../AddNewContactModal";
+import { ContactLookupModal } from "../ContactLookupModal";
+import { CreateContactRecordModal } from "../CreateContactRecordModal";
 
 interface PrimaryPartyTabProps {
   onDataChange: (data: any) => void;
@@ -16,10 +17,34 @@ interface PrimaryPartyTabProps {
   isSeededCase?: boolean;
 }
 
+interface Contact {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  organization: string;
+}
+
+interface ContactRecord {
+  firstName: string;
+  lastName: string;
+  title?: string;
+  organization?: string;
+  participationType: string;
+  email?: string;
+  businessPhone?: string;
+  mobilePhone?: string;
+  street1?: string;
+  city?: string;
+  stateProvince?: string;
+  postalCode?: string;
+}
+
 interface PrimaryPartyData {
   partyName?: string;
   represented?: "yes" | "no";
   attorneyName?: string;
+  selectedContact?: Contact;
 }
 
 const mockContacts = [
@@ -58,46 +83,67 @@ const mockContacts = [
 ];
 
 export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeededCase = false }: PrimaryPartyTabProps) {
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isAttorneySearchModalOpen, setIsAttorneySearchModalOpen] = useState(false);
-  const [isAttorneyAddModalOpen, setIsAttorneyAddModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [attorneySearchQuery, setAttorneySearchQuery] = useState("");
-  const [newContact, setNewContact] = useState({
-    name: "",
-    title: "",
-    organization: "",
-    phone: "",
-    email: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: ""
-  });
-  const [newAttorney, setNewAttorney] = useState({
-    name: "",
-    title: "",
-    organization: "",
-    phone: "",
-    email: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: ""
-  });
-  
-  const filteredContacts = mockContacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    contact.organization.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+  const [pendingNewContact, setPendingNewContact] = useState<Contact | null>(null);
   const filteredAttorneys = mockContacts.filter(contact =>
     contact.name.toLowerCase().includes(attorneySearchQuery.toLowerCase()) ||
     contact.organization.toLowerCase().includes(attorneySearchQuery.toLowerCase())
   );
+
   const handlePartyNameChange = (value: string) => {
     onDataChange({ ...data, partyName: value });
+  };
+
+  const handleContactSelect = (contact: Contact) => {
+    onDataChange({ 
+      ...data, 
+      partyName: contact.name,
+      selectedContact: contact 
+    });
+    setIsLookupModalOpen(false);
+    setPendingNewContact(null);
+  };
+
+  const handleCreateContact = (contactRecord: ContactRecord) => {
+    // Create a Contact object from the ContactRecord
+    const newContact: Contact = {
+      id: Date.now(), // Simple ID generation
+      name: `${contactRecord.firstName} ${contactRecord.lastName}`,
+      email: contactRecord.email || "",
+      phone: contactRecord.businessPhone || contactRecord.mobilePhone || "",
+      organization: contactRecord.organization || ""
+    };
+    
+    // Store the new contact for pre-selection in lookup modal
+    setPendingNewContact(newContact);
+    setIsCreateModalOpen(false);
+    setIsLookupModalOpen(true);
+  };
+
+  const handleOpenLookup = () => {
+    setIsLookupModalOpen(true);
+  };
+
+  const handleCreateNew = () => {
+    setIsLookupModalOpen(false);
+    setIsCreateModalOpen(true);
+  };
+
+  const handleRemoveValue = () => {
+    onDataChange({ 
+      ...data, 
+      partyName: "",
+      selectedContact: undefined 
+    });
+    setIsLookupModalOpen(false);
+  };
+
+  const handleCreateModalCancel = () => {
+    setIsCreateModalOpen(false);
+    setIsLookupModalOpen(true);
   };
 
   const handleRepresentedChange = (value: "yes" | "no") => {
@@ -108,72 +154,14 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
     onDataChange({ ...data, attorneyName: value });
   };
 
-  const handleSearchParty = () => {
-    setIsSearchModalOpen(true);
-  };
-
-  const handleSelectContact = (contact: any) => {
-    handlePartyNameChange(contact.name);
-    setIsSearchModalOpen(false);
-    setSearchQuery("");
-  };
-
-  const handleAddParty = () => {
-    setIsAddModalOpen(true);
-  };
-
-  const handleSaveNewParty = (contact: any) => {
-    handlePartyNameChange(contact.firstName + " " + contact.lastName);
-    setIsAddModalOpen(false);
-  };
-
-  const handleSaveNewContact = () => {
-    if (!newContact.name.trim()) return;
-    
-    // Add the new contact to the party name field
-    handlePartyNameChange(newContact.name);
-    
-    // Reset form and close modal
-    setNewContact({
-      name: "",
-      title: "",
-      organization: "",
-      phone: "",
-      email: "",
-      address: "",
-      city: "",
-      state: "",
-      zipCode: ""
-    });
-    setIsAddModalOpen(false);
-  };
-
-  const handleNewContactChange = (field: string, value: string) => {
-    setNewContact(prev => ({ ...prev, [field]: value }));
-  };
-
   const handleSearchAttorney = () => {
     setIsAttorneySearchModalOpen(true);
   };
 
   const handleSelectAttorney = (contact: any) => {
-    handleAttorneyNameChange(contact.name);
+    onDataChange({ ...data, attorneyName: contact.name });
     setIsAttorneySearchModalOpen(false);
     setAttorneySearchQuery("");
-  };
-
-  const handleAddAttorney = () => {
-    setIsAttorneyAddModalOpen(true);
-  };
-
-  const handleSaveNewAttorney = (contact: any) => {
-    handleAttorneyNameChange(contact.firstName + " " + contact.lastName);
-    setIsAttorneyAddModalOpen(false);
-  };
-
-
-  const handleNewAttorneyChange = (field: string, value: string) => {
-    setNewAttorney(prev => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -188,36 +176,28 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="partyName" className="font-fluent">Party Name *</Label>
-            <div className="relative">
-              <Input 
-                id="partyName"
-                placeholder="Enter party name"
-                value={data?.partyName || ""}
-                onChange={(e) => handlePartyNameChange(e.target.value)}
-                className="shadow-fluent-8 border-input-border pr-20"
-                disabled={isReadOnly || isSeededCase}
-              />
-              {!isReadOnly && !isSeededCase && (
-                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={handleSearchParty}
-                    className="h-7 w-7 p-0"
-                  >
-                    <Search className="h-4 w-4 text-gray-500" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={handleAddParty}
-                    className="h-7 w-7 p-0"
-                  >
-                    <Plus className="h-4 w-4 text-gray-500" />
-                  </Button>
-                </div>
-              )}
-            </div>
+              <div className="relative">
+                <Input 
+                  id="partyName"
+                  placeholder="Enter party name"
+                  value={data?.partyName || ""}
+                  onChange={(e) => handlePartyNameChange(e.target.value)}
+                  className="shadow-fluent-8 border-input-border pr-10"
+                  disabled={isReadOnly || isSeededCase}
+                />
+                {!isReadOnly && !isSeededCase && (
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={handleOpenLookup}
+                      className="h-7 w-7 p-0"
+                    >
+                      <Search className="h-4 w-4 text-gray-500" />
+                    </Button>
+                  </div>
+                )}
+              </div>
           </div>
           
           <div className="space-y-4">
@@ -261,14 +241,6 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
                     >
                       <Search className="h-4 w-4 text-gray-500" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={handleAddAttorney}
-                      className="h-7 w-7 p-0"
-                    >
-                      <Plus className="h-4 w-4 text-gray-500" />
-                    </Button>
                   </div>
                 )}
               </div>
@@ -277,68 +249,21 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
         </CardContent>
       </Card>
 
-      <Dialog open={isSearchModalOpen} onOpenChange={setIsSearchModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh]">
-          <DialogHeader>
-            <DialogTitle>Search Contacts</DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search by name or organization" 
-                className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            
-            <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden max-h-96 overflow-y-auto">
-              <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
-                <div className="grid grid-cols-4 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
-                  <div>Name</div>
-                  <div>Title</div>
-                  <div>Organization</div>
-                  <div>Contact</div>
-                </div>
-              </div>
-              
-              <div className="divide-y divide-gray-200">
-                {filteredContacts.map((contact) => (
-                  <div 
-                    key={contact.id} 
-                    className="px-4 py-4 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
-                    onClick={() => handleSelectContact(contact)}
-                  >
-                    <div className="grid grid-cols-4 gap-4 items-center">
-                      <div className="font-medium text-gray-900">{contact.name}</div>
-                      <div className="text-sm text-gray-900">{contact.title}</div>
-                      <div className="text-sm text-gray-900">{contact.organization}</div>
-                      <div className="text-sm text-gray-500">
-                        {contact.phone && <div>P. {contact.phone}</div>}
-                        {contact.email && <div>E. {contact.email}</div>}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                {filteredContacts.length === 0 && (
-                  <div className="px-4 py-8 text-center text-gray-500">
-                    No contacts found matching your search.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ContactLookupModal
+        isOpen={isLookupModalOpen}
+        onClose={() => setIsLookupModalOpen(false)}
+        onSelect={handleContactSelect}
+        onCreateNew={handleCreateNew}
+        currentValue={data?.selectedContact}
+        onRemoveValue={handleRemoveValue}
+        pendingNewContact={pendingNewContact}
+      />
 
-      <AddNewContactModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSave={handleSaveNewParty}
-        contactType="Party"
+      <CreateContactRecordModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateContact}
+        onCancel={handleCreateModalCancel}
       />
 
       <Dialog open={isAttorneySearchModalOpen} onOpenChange={setIsAttorneySearchModalOpen}>
@@ -397,13 +322,6 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
           </div>
         </DialogContent>
       </Dialog>
-
-      <AddNewContactModal
-        isOpen={isAttorneyAddModalOpen}
-        onClose={() => setIsAttorneyAddModalOpen(false)}
-        onSave={handleSaveNewAttorney}
-        contactType="Attorney"
-      />
     </div>
   );
 }
