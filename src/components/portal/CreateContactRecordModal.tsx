@@ -15,8 +15,12 @@ interface CreateContactRecordModalProps {
 }
 
 interface ContactRecord {
-  firstName: string
-  lastName: string
+  prefix?: string
+  firstName?: string
+  middleInitial?: string
+  lastName?: string
+  suffix?: string
+  salutation?: string
   title?: string
   organization?: string
   participationType: string
@@ -39,6 +43,18 @@ const participationTypes = [
   "Third Party"
 ]
 
+const prefixOptions = [
+  "Mr.", "Mrs.", "Ms.", "Dr.", "Prof.", "Rev."
+]
+
+const suffixOptions = [
+  "Jr.", "Sr.", "II", "III", "IV", "V", "Esq.", "Ph.D.", "M.D."
+]
+
+const salutationOptions = [
+  "Dear", "Mr.", "Mrs.", "Ms.", "Dr.", "Prof.", "Rev."
+]
+
 const stateOptions = [
   "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
   "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
@@ -54,8 +70,12 @@ export function CreateContactRecordModal({
   onCancel
 }: CreateContactRecordModalProps) {
   const [formData, setFormData] = useState<ContactRecord>({
+    prefix: "",
     firstName: "",
+    middleInitial: "",
     lastName: "",
+    suffix: "",
+    salutation: "",
     title: "",
     organization: "",
     participationType: "",
@@ -94,15 +114,24 @@ export function CreateContactRecordModal({
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
-    // Required fields
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "First Name is required"
+    // Person vs Organization validation
+    const hasPersonName = formData.firstName?.trim() || formData.lastName?.trim()
+    const hasOrganization = formData.organization?.trim()
+
+    if (!hasPersonName && !hasOrganization) {
+      newErrors.firstName = "Provide either a person name (First or Last) or an Organization"
+      newErrors.lastName = "Provide either a person name (First or Last) or an Organization"
+      newErrors.organization = "Provide either a person name (First or Last) or an Organization"
     }
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last Name is required"
-    }
+
+    // Participation Type is always required
     if (!formData.participationType) {
       newErrors.participationType = "Participation Type is required"
+    }
+
+    // Middle Initial validation (1 character max)
+    if (formData.middleInitial && formData.middleInitial.length > 1) {
+      newErrors.middleInitial = "Middle Initial should be 1 character"
     }
 
     // Email or address required
@@ -154,8 +183,12 @@ export function CreateContactRecordModal({
       // Process the data
       const processedData = {
         ...formData,
-        firstName: formData.firstName.trim(),
-        lastName: formData.lastName.trim(),
+        prefix: formData.prefix?.trim() || undefined,
+        firstName: formData.firstName?.trim() || undefined,
+        middleInitial: formData.middleInitial?.trim() || undefined,
+        lastName: formData.lastName?.trim() || undefined,
+        suffix: formData.suffix?.trim() || undefined,
+        salutation: formData.salutation?.trim() || undefined,
         title: formData.title?.trim() || undefined,
         organization: formData.organization?.trim() || undefined,
         email: formData.email?.trim() || undefined,
@@ -164,6 +197,12 @@ export function CreateContactRecordModal({
         street1: formData.street1?.trim() || undefined,
         city: formData.city?.trim() || undefined,
         postalCode: formData.postalCode?.trim() || undefined
+      }
+
+      // Set email consent to No if no email provided
+      if (!processedData.email) {
+        // In a real implementation, you would set email consent to "No" here
+        console.log("Email consent set to No - will send notices by mail")
       }
 
       onSubmit(processedData)
@@ -175,8 +214,12 @@ export function CreateContactRecordModal({
 
       // Reset form
       setFormData({
+        prefix: "",
         firstName: "",
+        middleInitial: "",
         lastName: "",
+        suffix: "",
+        salutation: "",
         title: "",
         organization: "",
         participationType: "",
@@ -214,13 +257,33 @@ export function CreateContactRecordModal({
           {/* Contact Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium text-gray-900">Contact</h3>
+            <p className="text-sm text-gray-600">
+              Provide either a <strong>person name</strong> (First or Last) <strong>or</strong> an <strong>Organization</strong>.
+            </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name *</Label>
+                <Label htmlFor="prefix">Prefix</Label>
+                <Select 
+                  value={formData.prefix || ""} 
+                  onValueChange={(value) => handleInputChange("prefix", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select prefix" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {prefixOptions.map((prefix) => (
+                      <SelectItem key={prefix} value={prefix}>{prefix}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name</Label>
                 <Input
                   id="firstName"
-                  value={formData.firstName}
+                  value={formData.firstName || ""}
                   onChange={(e) => handleInputChange("firstName", e.target.value)}
                   className={errors.firstName ? "border-red-500" : ""}
                 />
@@ -230,10 +293,25 @@ export function CreateContactRecordModal({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name *</Label>
+                <Label htmlFor="middleInitial">Middle Initial</Label>
+                <Input
+                  id="middleInitial"
+                  value={formData.middleInitial || ""}
+                  onChange={(e) => handleInputChange("middleInitial", e.target.value)}
+                  className={errors.middleInitial ? "border-red-500" : ""}
+                  maxLength={1}
+                  placeholder="M"
+                />
+                {errors.middleInitial && (
+                  <p className="text-sm text-red-500">{errors.middleInitial}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
                 <Input
                   id="lastName"
-                  value={formData.lastName}
+                  value={formData.lastName || ""}
                   onChange={(e) => handleInputChange("lastName", e.target.value)}
                   className={errors.lastName ? "border-red-500" : ""}
                 />
@@ -243,10 +321,44 @@ export function CreateContactRecordModal({
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="suffix">Suffix</Label>
+                <Select 
+                  value={formData.suffix || ""} 
+                  onValueChange={(value) => handleInputChange("suffix", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select suffix" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {suffixOptions.map((suffix) => (
+                      <SelectItem key={suffix} value={suffix}>{suffix}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="salutation">Salutation</Label>
+                <Select 
+                  value={formData.salutation || ""} 
+                  onValueChange={(value) => handleInputChange("salutation", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select salutation" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {salutationOptions.map((salutation) => (
+                      <SelectItem key={salutation} value={salutation}>{salutation}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="title">Title</Label>
                 <Input
                   id="title"
-                  value={formData.title}
+                  value={formData.title || ""}
                   onChange={(e) => handleInputChange("title", e.target.value)}
                 />
               </div>
@@ -256,9 +368,9 @@ export function CreateContactRecordModal({
                 <div className="relative">
                   <Input
                     id="organization"
-                    value={formData.organization}
+                    value={formData.organization || ""}
                     onChange={(e) => handleInputChange("organization", e.target.value)}
-                    className="pr-10"
+                    className={`pr-10 ${errors.organization ? "border-red-500" : ""}`}
                   />
                   <Button 
                     type="button"
@@ -269,6 +381,9 @@ export function CreateContactRecordModal({
                     <Search className="h-4 w-4 text-gray-500" />
                   </Button>
                 </div>
+                {errors.organization && (
+                  <p className="text-sm text-red-500">{errors.organization}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -296,7 +411,7 @@ export function CreateContactRecordModal({
                 <Input
                   id="email"
                   type="email"
-                  value={formData.email}
+                  value={formData.email || ""}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   className={errors.email ? "border-red-500" : ""}
                 />
@@ -312,7 +427,7 @@ export function CreateContactRecordModal({
                 <Label htmlFor="businessPhone">Business Phone</Label>
                 <Input
                   id="businessPhone"
-                  value={formData.businessPhone}
+                  value={formData.businessPhone || ""}
                   onChange={(e) => handlePhoneChange("businessPhone", e.target.value)}
                   placeholder="(555) 123-4567"
                 />
@@ -322,7 +437,7 @@ export function CreateContactRecordModal({
                 <Label htmlFor="mobilePhone">Mobile Phone</Label>
                 <Input
                   id="mobilePhone"
-                  value={formData.mobilePhone}
+                  value={formData.mobilePhone || ""}
                   onChange={(e) => handlePhoneChange("mobilePhone", e.target.value)}
                   placeholder="(555) 123-4567"
                 />
@@ -339,7 +454,7 @@ export function CreateContactRecordModal({
                 <Label htmlFor="street1">Street 1</Label>
                 <Input
                   id="street1"
-                  value={formData.street1}
+                  value={formData.street1 || ""}
                   onChange={(e) => handleInputChange("street1", e.target.value)}
                   className={errors.street1 ? "border-red-500" : ""}
                 />
@@ -351,7 +466,7 @@ export function CreateContactRecordModal({
               <div className="space-y-2">
                 <Label htmlFor="stateProvince">State / Province</Label>
                 <Select 
-                  value={formData.stateProvince} 
+                  value={formData.stateProvince || ""} 
                   onValueChange={(value) => handleInputChange("stateProvince", value)}
                 >
                   <SelectTrigger className={errors.stateProvince ? "border-red-500" : ""}>
@@ -372,7 +487,7 @@ export function CreateContactRecordModal({
                 <Label htmlFor="city">City</Label>
                 <Input
                   id="city"
-                  value={formData.city}
+                  value={formData.city || ""}
                   onChange={(e) => handleInputChange("city", e.target.value)}
                   className={errors.city ? "border-red-500" : ""}
                 />
@@ -385,7 +500,7 @@ export function CreateContactRecordModal({
                 <Label htmlFor="postalCode">Zip / Postal Code</Label>
                 <Input
                   id="postalCode"
-                  value={formData.postalCode}
+                  value={formData.postalCode || ""}
                   onChange={(e) => handleInputChange("postalCode", e.target.value)}
                   className={errors.postalCode ? "border-red-500" : ""}
                 />

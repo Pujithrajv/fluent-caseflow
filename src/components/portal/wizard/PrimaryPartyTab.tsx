@@ -26,18 +26,22 @@ interface Contact {
 }
 
 interface ContactRecord {
-  firstName: string;
-  lastName: string;
-  title?: string;
-  organization?: string;
-  participationType: string;
-  email?: string;
-  businessPhone?: string;
-  mobilePhone?: string;
-  street1?: string;
-  city?: string;
-  stateProvince?: string;
-  postalCode?: string;
+  prefix?: string
+  firstName?: string
+  middleInitial?: string
+  lastName?: string
+  suffix?: string
+  salutation?: string
+  title?: string
+  organization?: string
+  participationType: string
+  email?: string
+  businessPhone?: string
+  mobilePhone?: string
+  street1?: string
+  city?: string
+  stateProvince?: string
+  postalCode?: string
 }
 
 interface PrimaryPartyData {
@@ -111,7 +115,7 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
     // Create a Contact object from the ContactRecord
     const newContact: Contact = {
       id: Date.now(), // Simple ID generation
-      name: `${contactRecord.firstName} ${contactRecord.lastName}`,
+      name: contactRecord.organization || `${contactRecord.firstName || ""} ${contactRecord.lastName || ""}`.trim(),
       email: contactRecord.email || "",
       phone: contactRecord.businessPhone || contactRecord.mobilePhone || "",
       organization: contactRecord.organization || ""
@@ -179,7 +183,7 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
               <div className="relative">
                 <Input 
                   id="partyName"
-                  placeholder="Enter party name"
+                  placeholder="Search or select party"
                   value={data?.partyName || ""}
                   onChange={(e) => handlePartyNameChange(e.target.value)}
                   className="shadow-fluent-8 border-input-border pr-10"
@@ -225,7 +229,7 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
               <div className="relative">
                 <Input 
                   id="attorneyName"
-                  placeholder="Enter attorney name"
+                  placeholder="Search or select attorney"
                   value={data?.attorneyName || ""}
                   onChange={(e) => handleAttorneyNameChange(e.target.value)}
                   className="shadow-fluent-8 border-input-border pr-20"
