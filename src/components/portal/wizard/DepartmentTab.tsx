@@ -5,10 +5,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users } from "lucide-react";
-import { ContactPicker } from "@/components/shared/ContactPicker";
-import { Search, Plus } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { ContactLookupModal } from "@/components/portal/ContactLookupModal";
+import { CreateContactRecordModal } from "@/components/portal/CreateContactRecordModal";
 
 interface DepartmentTabProps {
   onDataChange: (data: any) => void;
@@ -19,10 +20,53 @@ interface DepartmentTabProps {
 }
 
 export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartiallyEditable = false, isSeededCase = false }: DepartmentTabProps) {
-  const [caseCoordinator, setCaseCoordinator] = useState(null);
-  const [assignedAttorney, setAssignedAttorney] = useState(null);
-  const [finalDecisionMaker, setFinalDecisionMaker] = useState(null);
+  // Modal states
+  const [lookupModal, setLookupModal] = useState({ isOpen: false, role: "", title: "" });
+  const [createModal, setCreateModal] = useState({ isOpen: false, role: "", title: "" });
+  const [pendingNewContact, setPendingNewContact] = useState(null);
   
+  // Modal handlers
+  const openLookupModal = (role: string, title: string) => {
+    setLookupModal({ isOpen: true, role, title });
+  };
+
+  const closeLookupModal = () => {
+    setLookupModal({ isOpen: false, role: "", title: "" });
+    setPendingNewContact(null);
+  };
+
+  const openCreateModal = (role: string, title: string) => {
+    setCreateModal({ isOpen: true, role, title });
+    closeLookupModal();
+  };
+
+  const closeCreateModal = () => {
+    setCreateModal({ isOpen: false, role: "", title: "" });
+    openLookupModal(lookupModal.role, lookupModal.title);
+  };
+
+  const handleContactSelect = (contact: any) => {
+    const roleField = lookupModal.role;
+    onDataChange({ [roleField]: contact });
+    closeLookupModal();
+  };
+
+  const handleCreateContact = (newContact: any) => {
+    setPendingNewContact(newContact);
+    setCreateModal({ isOpen: false, role: "", title: "" });
+    openLookupModal(createModal.role, createModal.title);
+  };
+
+  const handleRemoveContact = (role: string) => {
+    onDataChange({ [role]: null });
+    closeLookupModal();
+  };
+
+  const getContactDisplayName = (contact: any) => {
+    if (!contact) return "";
+    return `${contact.firstName || ""} ${contact.lastName || ""}`.trim() || contact.name || "";
+  };
+
   const shouldLockField = (fieldName: string) => {
     if (isReadOnly) return true;
     if (isSeededCase) {
@@ -259,50 +303,111 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
           </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Case Coordinator */}
           <div className="space-y-2">
             <Label htmlFor="coordinator" className="font-fluent">Case Coordinator *</Label>
-            <ContactPicker
-              value={data.caseCoordinator || caseCoordinator}
-              onChange={(value) => {
-                setCaseCoordinator(value);
-                onDataChange({ caseCoordinator: value });
-              }}
-              placeholder="Select or search coordinator"
-              helperText="Search to link an existing contact or add a new one."
-              disabled={shouldLockField('caseCoordinator')}
-            />
+            <div className="relative">
+              <Input
+                id="coordinator"
+                placeholder="Search or add Case Coordinator"
+                value={getContactDisplayName(data.caseCoordinator)}
+                readOnly
+                className="shadow-fluent-8 border-input-border pr-10 cursor-pointer"
+                disabled={shouldLockField('caseCoordinator')}
+                onClick={() => !shouldLockField('caseCoordinator') && openLookupModal('caseCoordinator', 'Case Coordinator')}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-gray-100"
+                disabled={shouldLockField('caseCoordinator')}
+                onClick={() => openLookupModal('caseCoordinator', 'Case Coordinator')}
+              >
+                <Search className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground font-fluent">
+              Search to link an existing contact or add a new one.
+            </p>
           </div>
           
+          {/* Assigned Attorney */}
           <div className="space-y-2">
             <Label htmlFor="attorney" className="font-fluent">Assigned Attorney</Label>
-            <ContactPicker
-              value={data.assignedAttorney || assignedAttorney}
-              onChange={(value) => {
-                setAssignedAttorney(value);
-                onDataChange({ assignedAttorney: value });
-              }}
-              placeholder="Select or search attorney"
-              helperText="Search to link an existing contact or add a new one."
-              disabled={shouldLockField('assignedAttorney')}
-            />
+            <div className="relative">
+              <Input
+                id="attorney"
+                placeholder="Search or add Assigned Attorney"
+                value={getContactDisplayName(data.assignedAttorney)}
+                readOnly
+                className="shadow-fluent-8 border-input-border pr-10 cursor-pointer"
+                disabled={shouldLockField('assignedAttorney')}
+                onClick={() => !shouldLockField('assignedAttorney') && openLookupModal('assignedAttorney', 'Assigned Attorney')}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-gray-100"
+                disabled={shouldLockField('assignedAttorney')}
+                onClick={() => openLookupModal('assignedAttorney', 'Assigned Attorney')}
+              >
+                <Search className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground font-fluent">
+              Search to link an existing contact or add a new one.
+            </p>
           </div>
           
+          {/* Final Decision Maker */}
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="representative" className="font-fluent">Final Decision Maker</Label>
-            <ContactPicker
-              value={data.finalDecisionMaker || finalDecisionMaker}
-              onChange={(value) => {
-                setFinalDecisionMaker(value);
-                onDataChange({ finalDecisionMaker: value });
-              }}
-              placeholder="Select or search final decision maker"
-              helperText="Search to link an existing contact or add a new one."
-              disabled={shouldLockField('finalDecisionMaker')}
-            />
+            <Label htmlFor="decisionMaker" className="font-fluent">Final Decision Maker</Label>
+            <div className="relative">
+              <Input
+                id="decisionMaker"
+                placeholder="Search or add Final Decision Maker"
+                value={getContactDisplayName(data.finalDecisionMaker)}
+                readOnly
+                className="shadow-fluent-8 border-input-border pr-10 cursor-pointer"
+                disabled={shouldLockField('finalDecisionMaker')}
+                onClick={() => !shouldLockField('finalDecisionMaker') && openLookupModal('finalDecisionMaker', 'Final Decision Maker')}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-gray-100"
+                disabled={shouldLockField('finalDecisionMaker')}
+                onClick={() => openLookupModal('finalDecisionMaker', 'Final Decision Maker')}
+              >
+                <Search className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground font-fluent">
+              Search to link an existing contact or add a new one.
+            </p>
           </div>
         </CardContent>
       </Card>
       </div>
+
+      {/* Contact Lookup Modal */}
+      <ContactLookupModal
+        isOpen={lookupModal.isOpen}
+        onClose={closeLookupModal}
+        onSelect={handleContactSelect}
+        onCreateNew={() => openCreateModal(lookupModal.role, lookupModal.title)}
+        currentValue={lookupModal.role ? data[lookupModal.role] : null}
+        onRemoveValue={() => handleRemoveContact(lookupModal.role)}
+        pendingNewContact={pendingNewContact}
+      />
+
+      {/* Create Contact Record Modal */}
+      <CreateContactRecordModal
+        isOpen={createModal.isOpen}
+        onClose={closeCreateModal}
+        onSubmit={handleCreateContact}
+        onCancel={closeCreateModal}
+      />
     </TooltipProvider>
   );
 }
