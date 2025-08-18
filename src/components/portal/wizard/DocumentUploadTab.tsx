@@ -160,70 +160,57 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
 
   return (
     <div className="space-y-6">
-      {/* Required Documents Section */}
-      {requiredDocuments.length > 0 && (
-        <Card className="shadow-fluent-8 border-l-4 border-l-primary">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2 font-fluent">
-              <FileText className="h-5 w-5 text-primary" />
-              <span>Required Documents</span>
-            </CardTitle>
-            <p className="text-sm text-muted-foreground font-fluent">
-              You must upload all required documents before submitting this case.
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {requiredDocuments.map((doc, index) => {
-                const isUploaded = isDocumentUploaded(doc.name);
-                return (
-                  <div key={index} className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-muted/30 transition-colors">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 ${
-                        isUploaded 
-                          ? 'bg-green-500 border-green-500 text-white' 
-                          : 'bg-transparent border-gray-300'
-                      }`}>
-                        {isUploaded && <Check className="h-4 w-4" />}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          {doc.hasTemplate ? (
-                            <button 
-                              className="text-primary hover:text-primary/80 font-medium font-fluent underline flex items-center space-x-1"
-                              onClick={() => window.open(doc.templateUrl, '_blank')}
-                            >
-                              <span>{doc.name}</span>
-                              <ExternalLink className="h-3 w-3" />
-                            </button>
-                          ) : (
-                            <span className="font-medium font-fluent text-foreground">{doc.name}</span>
-                          )}
-                        </div>
-                        {doc.description && (
-                          <p className="text-sm text-muted-foreground font-fluent mt-1">{doc.description}</p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      {isUploaded ? (
-                        <div className="flex items-center space-x-1 text-green-600">
-                          <Check className="h-4 w-4" />
-                          <span className="text-sm font-medium">Uploaded</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center space-x-1 text-muted-foreground">
-                          <span className="text-sm">Required</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* Required Documents Table */}
+      <Card className="shadow-fluent-8">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2 font-fluent">
+            <FileText className="h-5 w-5 text-primary" />
+            <span>Required Documents</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-hidden rounded-lg border">
+            <table className="w-full">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                    Document Name
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border bg-card">
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-4">
+                    <span className="font-medium font-fluent text-foreground">Notice of Violation</span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="text-sm font-fluent text-foreground">Official notice documenting the violation</span>
+                  </td>
+                </tr>
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-4">
+                    <span className="font-medium font-fluent text-foreground">Well Inspection Report</span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="text-sm font-fluent text-foreground">Technical inspection documentation</span>
+                  </td>
+                </tr>
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-4">
+                    <span className="font-medium font-fluent text-foreground">Well Records of the Inspector</span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="text-sm font-fluent text-foreground">Historical records and documentation</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Missing Documents Warning */}
       {!allRequiredUploaded && missingDocuments.length > 0 && (
@@ -365,27 +352,6 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
         </CardContent>
       </Card>
 
-      {/* Progress Indicator */}
-      {requiredDocuments.length > 0 && (
-        <Card className="shadow-fluent-8">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <span className="font-medium font-fluent">
-                Required Documents Progress
-              </span>
-              <span className="text-sm font-fluent text-muted-foreground">
-                {requiredDocuments.length - missingDocuments.length} of {requiredDocuments.length} uploaded
-              </span>
-            </div>
-            <div className="w-full bg-muted rounded-full h-2 mt-2">
-              <div 
-                className="bg-primary h-2 rounded-full transition-all duration-300"
-                style={{ width: `${((requiredDocuments.length - missingDocuments.length) / requiredDocuments.length) * 100}%` }}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Navigation Buttons */}
       {(onNext || onPrevious) && (
