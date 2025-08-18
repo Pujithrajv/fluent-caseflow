@@ -121,7 +121,7 @@ export function ContactLookupModal({
 }: ContactLookupModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null)
-  const [viewType, setViewType] = useState<ViewType>("contacts")
+  const [viewType, setViewType] = useState<ViewType>(hideViewSwitcher ? "accounts" : "contacts")
   const [sortField, setSortField] = useState<string>("name")
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
 
@@ -310,8 +310,7 @@ export function ContactLookupModal({
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="contacts">Contacts Lookup View</SelectItem>
+                  <SelectContent className="bg-background border border-border shadow-lg z-50">
                     <SelectItem value="accounts">Account Lookup View</SelectItem>
                   </SelectContent>
                 </Select>

@@ -312,6 +312,7 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
         currentValue={data?.attorneyName}
         onRemoveValue={handleRemoveAttorneyValue}
         pendingNewContact={pendingNewAttorney}
+        hideViewSwitcher={true}
       />
 
       <CreateContactRecordModal
