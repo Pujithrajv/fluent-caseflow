@@ -390,6 +390,7 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
         currentValue={lookupModal.role ? data[lookupModal.role] : null}
         onRemoveValue={() => handleRemoveContact(lookupModal.role)}
         pendingNewContact={pendingNewContact}
+        hideViewSwitcher={true}
       />
 
       {/* Create Contact Record Modal */}

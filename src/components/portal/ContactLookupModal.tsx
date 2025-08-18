@@ -38,6 +38,7 @@ interface ContactLookupModalProps {
   currentValue?: RecordType
   onRemoveValue?: () => void
   pendingNewContact?: RecordType | null
+  hideViewSwitcher?: boolean
 }
 
 const mockContacts: Contact[] = [
@@ -115,7 +116,8 @@ export function ContactLookupModal({
   onCreateNew,
   currentValue,
   onRemoveValue,
-  pendingNewContact
+  pendingNewContact,
+  hideViewSwitcher = false
 }: ContactLookupModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedRecordId, setSelectedRecordId] = useState<number | null>(null)
@@ -302,17 +304,19 @@ export function ContactLookupModal({
         <div className="space-y-4">
           {/* View Switch and Search Bar */}
           <div className="flex gap-4">
-            <div className="w-48">
-              <Select value={viewType} onValueChange={(value: ViewType) => setViewType(value)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="contacts">Contacts Lookup View</SelectItem>
-                  <SelectItem value="accounts">Account Lookup View</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            {!hideViewSwitcher && (
+              <div className="w-48">
+                <Select value={viewType} onValueChange={(value: ViewType) => setViewType(value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="contacts">Contacts Lookup View</SelectItem>
+                    <SelectItem value="accounts">Account Lookup View</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
