@@ -69,6 +69,13 @@ const Profile = () => {
   const [privacyOpen, setPrivacyOpen] = useState(true);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
+  // Additional consent preferences
+  const [emailCommunicationsConsent, setEmailCommunicationsConsent] = useState("allow");
+  const [postalMailConsent, setPostalMailConsent] = useState("allow");
+  const [smsNotificationsConsent, setSmsNotificationsConsent] = useState("do-not-allow");
+  const [phoneCallsConsent, setPhoneCallsConsent] = useState("ask-each-time");
+  const [marketingCommunicationsConsent, setMarketingCommunicationsConsent] = useState("do-not-allow");
+
   const handlePersonalInfoChange = (field: string, value: string) => {
     setPersonalInfo(prev => ({ ...prev, [field]: value }));
     setHasUnsavedChanges(true);
@@ -860,6 +867,114 @@ const Profile = () => {
                     </Label>
                   </div>
                 </div>
+
+                {/* Communication Consent Preferences */}
+                <div className="space-y-6 border-t border-border pt-6">
+                  <h3 className="text-lg font-medium text-foreground">Communication Preferences</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Email Communications */}
+                    <div className="space-y-2">
+                      <Label htmlFor="email-communications" className="text-sm font-medium">
+                        Email Communications
+                      </Label>
+                      <Select value={emailCommunicationsConsent} onValueChange={setEmailCommunicationsConsent}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="allow">Allow</SelectItem>
+                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
+                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Receive case updates, notices, and administrative communications via email.
+                      </p>
+                    </div>
+
+                    {/* Postal Mail Services */}
+                    <div className="space-y-2">
+                      <Label htmlFor="postal-mail" className="text-sm font-medium">
+                        Postal Mail Services
+                      </Label>
+                      <Select value={postalMailConsent} onValueChange={setPostalMailConsent}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="allow">Allow</SelectItem>
+                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
+                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Receive official documents and notices via postal mail.
+                      </p>
+                    </div>
+
+                    {/* SMS/Text Notifications */}
+                    <div className="space-y-2">
+                      <Label htmlFor="sms-notifications" className="text-sm font-medium">
+                        SMS/Text Notifications
+                      </Label>
+                      <Select value={smsNotificationsConsent} onValueChange={setSmsNotificationsConsent}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="allow">Allow</SelectItem>
+                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
+                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Receive urgent notifications and reminders via text message.
+                      </p>
+                    </div>
+
+                    {/* Phone Calls */}
+                    <div className="space-y-2">
+                      <Label htmlFor="phone-calls" className="text-sm font-medium">
+                        Phone Calls
+                      </Label>
+                      <Select value={phoneCallsConsent} onValueChange={setPhoneCallsConsent}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="allow">Allow</SelectItem>
+                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
+                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Receive phone calls for urgent matters and scheduling.
+                      </p>
+                    </div>
+
+                    {/* Marketing Communications */}
+                    <div className="space-y-2">
+                      <Label htmlFor="marketing-communications" className="text-sm font-medium">
+                        Marketing Communications
+                      </Label>
+                      <Select value={marketingCommunicationsConsent} onValueChange={setMarketingCommunicationsConsent}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="allow">Allow</SelectItem>
+                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
+                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Receive information about new services and updates.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
 
                 {/* Action Buttons */}
                 <div className="flex flex-col space-y-3">
