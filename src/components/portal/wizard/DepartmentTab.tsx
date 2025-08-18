@@ -323,12 +323,9 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                 disabled={shouldLockField('caseCoordinator')}
                 onClick={() => openLookupModal('caseCoordinator', 'Case Coordinator')}
               >
-                <Search className="h-4 w-4" />
+                <Search className="h-5 w-5" />
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground font-fluent">
-              Search to link an existing contact or add a new one.
-            </p>
           </div>
           
           {/* Assigned Attorney */}
@@ -351,12 +348,9 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                 disabled={shouldLockField('assignedAttorney')}
                 onClick={() => openLookupModal('assignedAttorney', 'Assigned Attorney')}
               >
-                <Search className="h-4 w-4" />
+                <Search className="h-5 w-5" />
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground font-fluent">
-              Search to link an existing contact or add a new one.
-            </p>
           </div>
           
           {/* Final Decision Maker */}
@@ -379,12 +373,9 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                 disabled={shouldLockField('finalDecisionMaker')}
                 onClick={() => openLookupModal('finalDecisionMaker', 'Final Decision Maker')}
               >
-                <Search className="h-4 w-4" />
+                <Search className="h-5 w-5" />
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground font-fluent">
-              Search to link an existing contact or add a new one.
-            </p>
           </div>
         </CardContent>
       </Card>
