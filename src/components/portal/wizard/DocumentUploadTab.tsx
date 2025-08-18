@@ -212,23 +212,6 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
         </CardContent>
       </Card>
 
-      {/* Missing Documents Warning */}
-      {!allRequiredUploaded && missingDocuments.length > 0 && (
-        <Alert className="border-amber-200 bg-amber-50">
-          <AlertTriangle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            <div>
-              <p className="font-medium mb-2">Missing Required Documents</p>
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                {missingDocuments.map((doc, index) => (
-                  <li key={index}>{doc.name}</li>
-                ))}
-              </ul>
-              <p className="text-sm mt-2">You cannot proceed to submission until all required documents are uploaded.</p>
-            </div>
-          </AlertDescription>
-        </Alert>
-      )}
 
       {/* Document Upload Section */}
       <Card className="shadow-fluent-8">
