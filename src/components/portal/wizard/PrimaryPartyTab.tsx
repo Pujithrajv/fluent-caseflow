@@ -89,13 +89,10 @@ const mockContacts = [
 export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeededCase = false }: PrimaryPartyTabProps) {
   const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isAttorneySearchModalOpen, setIsAttorneySearchModalOpen] = useState(false);
-  const [attorneySearchQuery, setAttorneySearchQuery] = useState("");
+  const [isAttorneyLookupModalOpen, setIsAttorneyLookupModalOpen] = useState(false);
+  const [isAttorneyCreateModalOpen, setIsAttorneyCreateModalOpen] = useState(false);
   const [pendingNewContact, setPendingNewContact] = useState<Contact | null>(null);
-  const filteredAttorneys = mockContacts.filter(contact =>
-    contact.name.toLowerCase().includes(attorneySearchQuery.toLowerCase()) ||
-    contact.organization.toLowerCase().includes(attorneySearchQuery.toLowerCase())
-  );
+  const [pendingNewAttorney, setPendingNewAttorney] = useState<Contact | null>(null);
 
   const handlePartyNameChange = (value: string) => {
     onDataChange({ ...data, partyName: value });
@@ -158,14 +155,51 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
     onDataChange({ ...data, attorneyName: value });
   };
 
-  const handleSearchAttorney = () => {
-    setIsAttorneySearchModalOpen(true);
+  const handleOpenAttorneyLookup = () => {
+    setIsAttorneyLookupModalOpen(true);
   };
 
-  const handleSelectAttorney = (contact: any) => {
-    onDataChange({ ...data, attorneyName: contact.name });
-    setIsAttorneySearchModalOpen(false);
-    setAttorneySearchQuery("");
+  const handleAttorneySelect = (contact: Contact) => {
+    onDataChange({ 
+      ...data, 
+      attorneyName: contact.name
+    });
+    setIsAttorneyLookupModalOpen(false);
+    setPendingNewAttorney(null);
+  };
+
+  const handleCreateAttorney = (contactRecord: ContactRecord) => {
+    // Create a Contact object from the ContactRecord
+    const newAttorney: Contact = {
+      id: Date.now(), // Simple ID generation
+      name: contactRecord.organization || `${contactRecord.firstName || ""} ${contactRecord.lastName || ""}`.trim(),
+      email: contactRecord.email || "",
+      phone: contactRecord.businessPhone || contactRecord.mobilePhone || "",
+      organization: contactRecord.organization || ""
+    };
+    
+    // Store the new attorney for pre-selection in lookup modal
+    setPendingNewAttorney(newAttorney);
+    setIsAttorneyCreateModalOpen(false);
+    setIsAttorneyLookupModalOpen(true);
+  };
+
+  const handleCreateNewAttorney = () => {
+    setIsAttorneyLookupModalOpen(false);
+    setIsAttorneyCreateModalOpen(true);
+  };
+
+  const handleRemoveAttorneyValue = () => {
+    onDataChange({ 
+      ...data, 
+      attorneyName: ""
+    });
+    setIsAttorneyLookupModalOpen(false);
+  };
+
+  const handleAttorneyCreateModalCancel = () => {
+    setIsAttorneyCreateModalOpen(false);
+    setIsAttorneyLookupModalOpen(true);
   };
 
   return (
@@ -240,7 +274,7 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
                     <Button 
                       variant="ghost" 
                       size="sm"
-                      onClick={handleSearchAttorney}
+                      onClick={handleOpenAttorneyLookup}
                       className="h-7 w-7 p-0"
                     >
                       <Search className="h-4 w-4 text-gray-500" />
@@ -270,62 +304,22 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
         onCancel={handleCreateModalCancel}
       />
 
-      <Dialog open={isAttorneySearchModalOpen} onOpenChange={setIsAttorneySearchModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh]">
-          <DialogHeader>
-            <DialogTitle>Search Attorneys</DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search by name or organization" 
-                className="pl-10"
-                value={attorneySearchQuery}
-                onChange={(e) => setAttorneySearchQuery(e.target.value)}
-              />
-            </div>
-            
-            <div className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden max-h-96 overflow-y-auto">
-              <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
-                <div className="grid grid-cols-4 gap-4 text-xs font-medium text-gray-600 uppercase tracking-wider">
-                  <div>Name</div>
-                  <div>Title</div>
-                  <div>Organization</div>
-                  <div>Contact</div>
-                </div>
-              </div>
-              
-              <div className="divide-y divide-gray-200">
-                {filteredAttorneys.map((contact) => (
-                  <div 
-                    key={contact.id} 
-                    className="px-4 py-4 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
-                    onClick={() => handleSelectAttorney(contact)}
-                  >
-                    <div className="grid grid-cols-4 gap-4 items-center">
-                      <div className="font-medium text-gray-900">{contact.name}</div>
-                      <div className="text-sm text-gray-900">{contact.title}</div>
-                      <div className="text-sm text-gray-900">{contact.organization}</div>
-                      <div className="text-sm text-gray-500">
-                        {contact.phone && <div>P. {contact.phone}</div>}
-                        {contact.email && <div>E. {contact.email}</div>}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                {filteredAttorneys.length === 0 && (
-                  <div className="px-4 py-8 text-center text-gray-500">
-                    No attorneys found matching your search.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ContactLookupModal
+        isOpen={isAttorneyLookupModalOpen}
+        onClose={() => setIsAttorneyLookupModalOpen(false)}
+        onSelect={handleAttorneySelect}
+        onCreateNew={handleCreateNewAttorney}
+        currentValue={data?.attorneyName}
+        onRemoveValue={handleRemoveAttorneyValue}
+        pendingNewContact={pendingNewAttorney}
+      />
+
+      <CreateContactRecordModal
+        isOpen={isAttorneyCreateModalOpen}
+        onClose={() => setIsAttorneyCreateModalOpen(false)}
+        onSubmit={handleCreateAttorney}
+        onCancel={handleAttorneyCreateModalCancel}
+      />
     </div>
   );
 }
