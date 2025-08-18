@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Users, Trash2, Edit, Search, HelpCircle } from "lucide-react";
+import { Plus, Users, Trash2, Edit, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { ParticipantLookupModal } from "../ParticipantLookupModal";
 import { CreateParticipantModal } from "../CreateParticipantModal";
@@ -46,7 +45,6 @@ const mockContacts = [
 ];
 
 export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: ParticipantsTabProps) {
-  const [searchTerm, setSearchTerm] = useState("");
   const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [participants, setParticipants] = useState(mockParties);
@@ -85,17 +83,7 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
             <HelpCircle className="h-5 w-5 text-muted-foreground" />
           </div>
           
-          <div className="flex items-center gap-4 mt-6">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search participants" 
-                className="pl-10"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            
+          <div className="flex justify-end mt-6">
             {!isReadOnly && (
               <Button 
                 className="bg-blue-600 hover:bg-blue-700 text-white"
@@ -119,11 +107,7 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
             </div>
             
             <div className="divide-y divide-gray-200">
-              {participants.filter(party => 
-                searchTerm === "" || 
-                party.party.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                party.organization.toLowerCase().includes(searchTerm.toLowerCase())
-              ).map((party) => (
+              {participants.map((party) => (
                 <div key={party.id} className="px-4 py-4 bg-white hover:bg-gray-50 transition-colors">
                   <div className="grid grid-cols-3 gap-4 items-start">
                     <div>

@@ -330,36 +330,6 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
         </Card>
       </div>
 
-      {/* Submission Checklist */}
-      <Card className="shadow-fluent-16">
-        <CardHeader>
-          <CardTitle className="font-fluent">Submission Checklist</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="h-5 w-5 text-success" />
-              <span className="font-fluent text-foreground">Department information completed</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="h-5 w-5 text-success" />
-              <span className="font-fluent text-foreground">Primary party information provided</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="h-5 w-5 text-success" />
-              <span className="font-fluent text-foreground">Case details completed</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="h-5 w-5 text-success" />
-              <span className="font-fluent text-foreground">Required documents uploaded</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <AlertCircle className="h-5 w-5 text-warning" />
-              <span className="font-fluent text-foreground">Optional: Case type questions (incomplete)</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Submission Notice */}
       <Card className="shadow-fluent-8 border-primary/20 bg-primary/5">
