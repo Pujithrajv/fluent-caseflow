@@ -156,7 +156,7 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm font-fluent text-muted-foreground">Accessibility Options</p>
+              <p className="text-sm font-fluent text-muted-foreground">Participant Hearing Resources</p>
               <p className="font-medium font-fluent">{Array.isArray(data.accessibilityOptions) ? data.accessibilityOptions.join(', ') : getDisplayValue(data.accessibilityOptions)}</p>
             </div>
             <div>

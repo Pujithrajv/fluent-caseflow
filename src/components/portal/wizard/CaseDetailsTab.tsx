@@ -164,7 +164,7 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false, isSeede
           </div>
 
           <div className="space-y-2">
-            <Label className="font-fluent">Accessibility Options</Label>
+            <Label className="font-fluent">Participant Hearing Resources</Label>
             <div className="relative">
               <Popover open={isAccessibilityDropdownOpen} onOpenChange={setIsAccessibilityDropdownOpen}>
                 <PopoverTrigger asChild>
