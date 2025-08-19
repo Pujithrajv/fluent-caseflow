@@ -165,7 +165,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
             <FileText className="h-5 w-5 text-primary" />
-            <span>Required Documents</span>
+            <span>Document Table</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -177,35 +177,27 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                     Document Name
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                    Required
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
                     Description
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border bg-card">
-                <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-4">
-                    <span className="font-medium font-fluent text-foreground">Notice of Violation</span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className="text-sm font-fluent text-foreground">Official notice documenting the violation</span>
-                  </td>
-                </tr>
-                <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-4">
-                    <span className="font-medium font-fluent text-foreground">Well Inspection Report</span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className="text-sm font-fluent text-foreground">Technical inspection documentation</span>
-                  </td>
-                </tr>
-                <tr className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-4">
-                    <span className="font-medium font-fluent text-foreground">Well Records of the Inspector</span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className="text-sm font-fluent text-foreground">Historical records and documentation</span>
-                  </td>
-                </tr>
+                {requiredDocuments.map((doc, index) => (
+                  <tr key={index} className="hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-4">
+                      <span className="font-medium font-fluent text-foreground">{doc.name}</span>
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className="text-sm font-fluent text-foreground">Yes</span>
+                    </td>
+                    <td className="px-4 py-4">
+                      <span className="text-sm font-fluent text-foreground">{doc.description}</span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
