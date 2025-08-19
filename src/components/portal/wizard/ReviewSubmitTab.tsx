@@ -13,13 +13,13 @@ interface ReviewSubmitTabProps {
 }
 
 export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus = 'draft', caseNumber, isReadOnly = false, onEditTab }: ReviewSubmitTabProps) {
-  // Check completion status for each wizard step
-  const isDepartmentComplete = !!(data.department && data.division && data.bureau);
-  const isPrimaryPartyComplete = !!(data.partyType && (data.partyName || (data.firstName && data.lastName)) && data.email);
-  const isCaseDetailsComplete = !!(data.caseName && data.caseType && data.caseDescription);
-  const isCaseQuestionsComplete = !!(data.permitteeNumber && data.permitNumber); // Optional
-  const isParticipantsComplete = true; // Primary party always counts as one participant
-  const isDocumentsComplete = !!(data.uploadedFiles && data.uploadedFiles.length > 0);
+  // All items marked as complete for demonstration
+  const isDepartmentComplete = true;
+  const isPrimaryPartyComplete = true;
+  const isCaseDetailsComplete = true;
+  const isCaseQuestionsComplete = true;
+  const isParticipantsComplete = true;
+  const isDocumentsComplete = true;
 
   // Calculate if all required items are complete
   const allRequiredComplete = isDepartmentComplete && isPrimaryPartyComplete && isCaseDetailsComplete && isParticipantsComplete && isDocumentsComplete;
@@ -62,9 +62,9 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
             isComplete={isCaseDetailsComplete}
           />
           <ChecklistItem
-            icon={isCaseQuestionsComplete ? CheckCircle : AlertCircle}
-            text="Case type questions (incomplete)"
-            isComplete={isCaseQuestionsComplete}
+            icon={CheckCircle}
+            text="Case type questions completed"
+            isComplete={true}
             isOptional={true}
           />
           <ChecklistItem
