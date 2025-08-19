@@ -201,7 +201,7 @@ export function ParticipantLookupModal({
               variant="outline" 
               onClick={onCreateNew}
             >
-              New
+              Search
             </Button>
           </div>
           
