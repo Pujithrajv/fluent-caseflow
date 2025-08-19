@@ -2,7 +2,8 @@ import React, { useState, useMemo } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
+import { Search, Plus } from "lucide-react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 
@@ -76,6 +77,17 @@ export function ParticipantLookupModal({
 }: ParticipantLookupModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedParticipantId, setSelectedParticipantId] = useState<number | null>(null)
+  const [isNewParticipantModalOpen, setIsNewParticipantModalOpen] = useState(false)
+  const [newParticipantForm, setNewParticipantForm] = useState({
+    firstName: "",
+    lastName: "",
+    roleTitle: "",
+    organization: "",
+    email: "",
+    phone: "",
+    address: "",
+    notes: ""
+  })
 
   const currentParticipants = useMemo(() => {
     const baseParticipants = [...mockParticipants]
@@ -106,6 +118,58 @@ export function ParticipantLookupModal({
 
   const handleRowDoubleClick = (participant: Participant) => {
     onSelect(participant)
+  }
+
+  const handleNewParticipantSave = () => {
+    const newParticipant: Participant = {
+      id: Date.now(), // Simple ID generation
+      code: `PT-${String(Date.now()).slice(-3)}`,
+      name: `${newParticipantForm.firstName} ${newParticipantForm.lastName}`.trim(),
+      classification: newParticipantForm.roleTitle,
+      participationType: newParticipantForm.roleTitle,
+      parentAccount: newParticipantForm.organization,
+      caseDetails: newParticipantForm.notes || "New participant"
+    }
+
+    // Add to the participants list and select it
+    setSelectedParticipantId(newParticipant.id)
+    onSelect(newParticipant)
+    
+    // Reset form and close modal
+    setNewParticipantForm({
+      firstName: "",
+      lastName: "",
+      roleTitle: "",
+      organization: "",
+      email: "",
+      phone: "",
+      address: "",
+      notes: ""
+    })
+    setIsNewParticipantModalOpen(false)
+  }
+
+  const handleNewParticipantCancel = () => {
+    setNewParticipantForm({
+      firstName: "",
+      lastName: "",
+      roleTitle: "",
+      organization: "",
+      email: "",
+      phone: "",
+      address: "",
+      notes: ""
+    })
+    setIsNewParticipantModalOpen(false)
+  }
+
+  const formatPhoneNumber = (value: string) => {
+    const cleaned = value.replace(/\D/g, '')
+    const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/)
+    if (match) {
+      return [match[1], match[2], match[3]].filter(Boolean).join('-')
+    }
+    return value
   }
 
   return (
@@ -203,6 +267,13 @@ export function ParticipantLookupModal({
             >
               Search
             </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => setIsNewParticipantModalOpen(true)}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              New
+            </Button>
           </div>
           
           <div className="flex space-x-2">
@@ -229,6 +300,115 @@ export function ParticipantLookupModal({
           </div>
         </div>
       </DialogContent>
+
+      {/* New Participant Modal */}
+      <Dialog open={isNewParticipantModalOpen} onOpenChange={setIsNewParticipantModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>New Participant</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  value={newParticipantForm.firstName}
+                  onChange={(e) => setNewParticipantForm(prev => ({ ...prev, firstName: e.target.value }))}
+                  placeholder="Enter first name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  value={newParticipantForm.lastName}
+                  onChange={(e) => setNewParticipantForm(prev => ({ ...prev, lastName: e.target.value }))}
+                  placeholder="Enter last name"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="roleTitle">Role/Title</Label>
+              <Input
+                id="roleTitle"
+                value={newParticipantForm.roleTitle}
+                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, roleTitle: e.target.value }))}
+                placeholder="Enter role or title"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="organization">Organization</Label>
+              <Input
+                id="organization"
+                value={newParticipantForm.organization}
+                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, organization: e.target.value }))}
+                placeholder="Enter organization"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={newParticipantForm.email}
+                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, email: e.target.value }))}
+                placeholder="Enter email address"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone</Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={newParticipantForm.phone}
+                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, phone: e.target.value }))}
+                onBlur={(e) => setNewParticipantForm(prev => ({ ...prev, phone: formatPhoneNumber(e.target.value) }))}
+                placeholder="Enter phone number"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Textarea
+                id="address"
+                value={newParticipantForm.address}
+                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, address: e.target.value }))}
+                placeholder="Enter address"
+                rows={3}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="notes">Notes</Label>
+              <Textarea
+                id="notes"
+                value={newParticipantForm.notes}
+                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, notes: e.target.value }))}
+                placeholder="Enter notes"
+                rows={3}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-2 pt-4 border-t">
+            <Button variant="outline" onClick={handleNewParticipantCancel}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleNewParticipantSave}
+              disabled={!newParticipantForm.firstName || !newParticipantForm.lastName}
+            >
+              Save
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   )
 }
