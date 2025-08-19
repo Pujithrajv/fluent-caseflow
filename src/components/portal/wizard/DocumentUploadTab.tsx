@@ -165,7 +165,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 font-fluent">
             <FileText className="h-5 w-5 text-primary" />
-            <span>Document Table</span>
+            <span>Required Document Table</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -204,6 +204,58 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
         </CardContent>
       </Card>
 
+      {/* Recommended Documents Table */}
+      <Card className="shadow-fluent-8">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2 font-fluent">
+            <FileText className="h-5 w-5 text-primary" />
+            <span>Recommended Documents Table</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-hidden rounded-lg border">
+            <table className="w-full">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                    Document Name
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                    Recommended
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border bg-card">
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-4">
+                    <span className="font-medium font-fluent text-foreground">Geologist Report</span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="text-sm font-fluent text-foreground">Yes</span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="text-sm font-fluent text-foreground">Sample geologist's findings</span>
+                  </td>
+                </tr>
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-4">
+                    <span className="font-medium font-fluent text-foreground">Site Safety Report</span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="text-sm font-fluent text-foreground">Yes</span>
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="text-sm font-fluent text-foreground">Example site safety document</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Document Upload Section */}
       <Card className="shadow-fluent-8">
