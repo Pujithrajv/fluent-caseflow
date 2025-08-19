@@ -96,18 +96,6 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
         </CardContent>
       </Card>
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-between pt-4">
-        <Button variant="outline" className="font-fluent">
-          Previous
-        </Button>
-        <Button 
-          className="font-fluent" 
-          disabled={!allRequiredComplete}
-        >
-          Submit Case
-        </Button>
-      </div>
     </div>
   );
 }
