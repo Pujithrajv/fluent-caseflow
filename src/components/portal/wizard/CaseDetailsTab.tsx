@@ -33,22 +33,13 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false, isSeede
   const [isAccessibilityDropdownOpen, setIsAccessibilityDropdownOpen] = useState(false);
 
   const accessibilityOptions = [
-    { value: "language-interpreter", label: "Language Interpreter" },
-    { value: "sign-language-interpreter", label: "Sign Language Interpreter" },
-    { value: "large-print", label: "Large Print Documents" },
-    { value: "braille", label: "Braille Documents" },
-    { value: "document-assistance", label: "Document Assistance" },
-    { value: "sound-amplification", label: "Sound Amplification" },
-    { value: "cart-transcription", label: "CART Transcription, TTY and TRS." },
-    { value: "location-change", label: "Location Change" },
-    { value: "special-scheduling", label: "Special Scheduling" },
-    { value: "support-person", label: "Support Person" },
-    { value: "support-animal", label: "Support Animal" },
-    { value: "distraction-removal", label: "Distraction Removal" },
-    { value: "frequent-breaks", label: "Frequent Breaks" },
-    { value: "remote-proceeding", label: "Remote Proceeding" },
-    { value: "mobility-device", label: "Mobility Device" },
-    { value: "additional-time", label: "Additional Time" }
+    { value: "podium", label: "Podium" },
+    { value: "audio-amplification", label: "Audio Amplification (Mic & Speakers)" },
+    { value: "video-projection", label: "Video Projection for video and/or photos" },
+    { value: "audio-projection", label: "Audio Projection for recordings or audio clips" },
+    { value: "easel", label: "Easel" },
+    { value: "laptop-space", label: "Space for a laptop/physical documents for review" },
+    { value: "electrical-outlets", label: "Electrical outlets, chargers and cables" }
   ];
 
   const handleAccessibilityChange = (optionValue: string, checked: boolean) => {
@@ -178,7 +169,7 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false, isSeede
                   >
                      <div className="flex flex-wrap gap-1">
                        {(data.accessibilityOptions?.length || selectedAccessibilityOptions.length) === 0 ? (
-                         <span>Select accessibility options</span>
+                         <span>Select hearing resources</span>
                        ) : (
                          getSelectedLabels().map((label, index) => (
                            <div
