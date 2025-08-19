@@ -63,27 +63,41 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
             <HelpCircle className="h-5 w-5 text-muted-foreground" />
           </div>
           
-          <div className="flex items-center gap-4 mt-6">
-            <Select defaultValue="active">
-              <SelectTrigger className="w-[140px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="active">Active Requests</SelectItem>
-                <SelectItem value="all">All Requests</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search requests" 
-                className="pl-10"
-              />
+          {!isPartiallyEditable && (
+            <div className="flex items-center gap-4 mt-6">
+              <Select defaultValue="active">
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active Requests</SelectItem>
+                  <SelectItem value="all">All Requests</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Search requests" 
+                  className="pl-10"
+                />
+              </div>
+              
+              {!isReadOnly && (
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => onAddNewRequest?.("requests")}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Requests
+                </Button>
+              )}
             </div>
-            
-            {!isReadOnly && (
+          )}
+          
+          {isPartiallyEditable && !isReadOnly && (
+            <div className="flex justify-end mt-6">
               <Button 
                 className="bg-blue-600 hover:bg-blue-700 text-white"
                 onClick={() => onAddNewRequest?.("requests")}
@@ -91,8 +105,8 @@ export function RequestWizardTab({ onAddNewRequest, data, isReadOnly = false, is
                 <Plus className="mr-2 h-4 w-4" />
                 Requests
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </CardHeader>
         
         <CardContent className="pt-0">
