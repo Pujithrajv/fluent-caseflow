@@ -81,66 +81,6 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false, isSeede
         <CardHeader className="pb-4">
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label className="font-fluent">Accessibility Options</Label>
-            <div className="relative">
-              <Popover open={isAccessibilityDropdownOpen} onOpenChange={setIsAccessibilityDropdownOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-between text-left font-normal shadow-fluent-8 border-input-border h-auto min-h-[40px]",
-                      selectedAccessibilityOptions.length === 0 && "text-muted-foreground"
-                    )}
-                    disabled={isReadOnly || isSeededCase}
-                  >
-                     <div className="flex flex-wrap gap-1">
-                       {(data.accessibilityOptions?.length || selectedAccessibilityOptions.length) === 0 ? (
-                         <span>Select accessibility options</span>
-                       ) : (
-                         getSelectedLabels().map((label, index) => (
-                           <div
-                             key={index}
-                             className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-sm"
-                           >
-                             <span>{label}</span>
-                             <button
-                               onClick={(e) => {
-                                 e.stopPropagation();
-                                 const optionValue = accessibilityOptions.find(opt => opt.label === label)?.value;
-                                 if (optionValue) removeOption(optionValue);
-                               }}
-                               className="hover:bg-primary/20 rounded-full p-0.5"
-                             >
-                               <X className="h-3 w-3" />
-                             </button>
-                           </div>
-                         ))
-                       )}
-                     </div>
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0 z-50 bg-background border shadow-md" align="start">
-                  <div className="p-3 space-y-3">
-                    {accessibilityOptions.map((option) => (
-                      <div key={option.value} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={option.value}
-                          checked={selectedAccessibilityOptions.includes(option.value)}
-                          onCheckedChange={(checked) => handleAccessibilityChange(option.value, checked as boolean)}
-                        />
-                        <Label htmlFor={option.value} className="text-sm font-normal">
-                          {option.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-          
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="font-fluent">Initiating Action Date</Label>
@@ -221,6 +161,66 @@ export function CaseDetailsTab({ onDataChange, data, isReadOnly = false, isSeede
               className="shadow-fluent-8 border-input-border min-h-[100px]"
               disabled={isReadOnly || isSeededCase}
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="font-fluent">Accessibility Options</Label>
+            <div className="relative">
+              <Popover open={isAccessibilityDropdownOpen} onOpenChange={setIsAccessibilityDropdownOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-between text-left font-normal shadow-fluent-8 border-input-border h-auto min-h-[40px]",
+                      selectedAccessibilityOptions.length === 0 && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly || isSeededCase}
+                  >
+                     <div className="flex flex-wrap gap-1">
+                       {(data.accessibilityOptions?.length || selectedAccessibilityOptions.length) === 0 ? (
+                         <span>Select accessibility options</span>
+                       ) : (
+                         getSelectedLabels().map((label, index) => (
+                           <div
+                             key={index}
+                             className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-sm"
+                           >
+                             <span>{label}</span>
+                             <button
+                               onClick={(e) => {
+                                 e.stopPropagation();
+                                 const optionValue = accessibilityOptions.find(opt => opt.label === label)?.value;
+                                 if (optionValue) removeOption(optionValue);
+                               }}
+                               className="hover:bg-primary/20 rounded-full p-0.5"
+                             >
+                               <X className="h-3 w-3" />
+                             </button>
+                           </div>
+                         ))
+                       )}
+                     </div>
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0 z-50 bg-background border shadow-md" align="start">
+                  <div className="p-3 space-y-3">
+                    {accessibilityOptions.map((option) => (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={option.value}
+                          checked={selectedAccessibilityOptions.includes(option.value)}
+                          onCheckedChange={(checked) => handleAccessibilityChange(option.value, checked as boolean)}
+                        />
+                        <Label htmlFor={option.value} className="text-sm font-normal">
+                          {option.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
         </CardContent>
       </Card>
