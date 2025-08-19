@@ -6,6 +6,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Search, Plus } from "lucide-react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"
+import { useForm } from "react-hook-form"
+import { useToast } from "@/hooks/use-toast"
 
 interface Participant {
   id: number
@@ -78,15 +81,20 @@ export function ParticipantLookupModal({
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedParticipantId, setSelectedParticipantId] = useState<number | null>(null)
   const [isNewParticipantModalOpen, setIsNewParticipantModalOpen] = useState(false)
-  const [newParticipantForm, setNewParticipantForm] = useState({
-    firstName: "",
-    lastName: "",
-    roleTitle: "",
-    organization: "",
-    email: "",
-    phone: "",
-    address: "",
-    notes: ""
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
+  
+  const newParticipantForm = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      roleTitle: "",
+      organization: "",
+      email: "",
+      phone: "",
+      address: "",
+      notes: ""
+    }
   })
 
   const currentParticipants = useMemo(() => {
@@ -120,57 +128,98 @@ export function ParticipantLookupModal({
     onSelect(participant)
   }
 
-  const handleNewParticipantSave = () => {
-    const newParticipant: Participant = {
-      id: Date.now(), // Simple ID generation
-      code: `PT-${String(Date.now()).slice(-3)}`,
-      name: `${newParticipantForm.firstName} ${newParticipantForm.lastName}`.trim(),
-      classification: newParticipantForm.roleTitle,
-      participationType: newParticipantForm.roleTitle,
-      parentAccount: newParticipantForm.organization,
-      caseDetails: newParticipantForm.notes || "New participant"
+  const formatPhone = (value: string) => {
+    const numbers = value.replace(/\D/g, '')
+    if (numbers.length <= 3) return numbers
+    if (numbers.length <= 6) return `(${numbers.slice(0, 3)}) ${numbers.slice(3)}`
+    return `(${numbers.slice(0, 3)}) ${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`
+  }
+
+  const validateParticipantForm = (data: any) => {
+    const errors: string[] = []
+    
+    // Require at least First & Last Name OR Organization
+    const hasName = data.firstName?.trim() && data.lastName?.trim()
+    const hasOrg = data.organization?.trim()
+    
+    if (!hasName && !hasOrg) {
+      errors.push("Provide either a First Name & Last Name, or an Organization")
+    }
+    
+    // If no email, address becomes required
+    const hasEmail = data.email?.trim()
+    const hasAddress = data.address?.trim()
+    
+    if (!hasEmail && !hasAddress) {
+      errors.push("Provide an email or address so we can send notices")
+    }
+    
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errors.push("Please enter a valid email address")
+    }
+    
+    return errors
+  }
+
+  const handleNewParticipantSave = async (data: any) => {
+    const errors = validateParticipantForm(data)
+    if (errors.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: errors.join(". "),
+        variant: "destructive"
+      })
+      return
     }
 
-    // Add to the participants list and select it
-    setSelectedParticipantId(newParticipant.id)
-    onSelect(newParticipant)
+    setIsSubmitting(true)
     
-    // Reset form and close modal
-    setNewParticipantForm({
-      firstName: "",
-      lastName: "",
-      roleTitle: "",
-      organization: "",
-      email: "",
-      phone: "",
-      address: "",
-      notes: ""
-    })
-    setIsNewParticipantModalOpen(false)
+    try {
+      const newParticipant: Participant = {
+        id: Date.now(),
+        code: `PT-${String(Date.now()).slice(-3)}`,
+        name: data.firstName && data.lastName 
+          ? `${data.firstName.trim()} ${data.lastName.trim()}`.trim()
+          : data.organization?.trim() || "New participant",
+        classification: data.roleTitle?.trim() || "Participant",
+        participationType: data.roleTitle?.trim() || "Participant", 
+        parentAccount: data.organization?.trim() || "",
+        caseDetails: data.notes?.trim() || "New participant"
+      }
+
+      // Add to the participants list and select it
+      setSelectedParticipantId(newParticipant.id)
+      onSelect(newParticipant)
+      
+      toast({
+        title: "Success",
+        description: "Participant added and selected."
+      })
+      
+      // Reset form and close modal
+      newParticipantForm.reset()
+      setIsNewParticipantModalOpen(false)
+    } catch (error) {
+      toast({
+        title: "Error", 
+        description: "Failed to save participant. Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleNewParticipantCancel = () => {
-    setNewParticipantForm({
-      firstName: "",
-      lastName: "",
-      roleTitle: "",
-      organization: "",
-      email: "",
-      phone: "",
-      address: "",
-      notes: ""
-    })
+    newParticipantForm.reset()
     setIsNewParticipantModalOpen(false)
   }
 
-  const formatPhoneNumber = (value: string) => {
-    const cleaned = value.replace(/\D/g, '')
-    const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/)
-    if (match) {
-      return [match[1], match[2], match[3]].filter(Boolean).join('-')
-    }
-    return value
+  const handlePhoneChange = (value: string) => {
+    const formatted = formatPhone(value)
+    newParticipantForm.setValue("phone", formatted)
   }
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -303,110 +352,164 @@ export function ParticipantLookupModal({
 
       {/* New Participant Modal */}
       <Dialog open={isNewParticipantModalOpen} onOpenChange={setIsNewParticipantModalOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent 
+          className="max-w-4xl max-h-[90vh] overflow-y-auto"
+          aria-labelledby="new-participant-title"
+        >
           <DialogHeader>
-            <DialogTitle>New Participant</DialogTitle>
+            <DialogTitle id="new-participant-title">New Participant</DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  value={newParticipantForm.firstName}
-                  onChange={(e) => setNewParticipantForm(prev => ({ ...prev, firstName: e.target.value }))}
-                  placeholder="Enter first name"
-                />
+          <Form {...newParticipantForm}>
+            <form onSubmit={newParticipantForm.handleSubmit(handleNewParticipantSave)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left Column */}
+                <div className="space-y-4">
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Enter first name" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Enter last name" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="roleTitle"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Role/Title</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Enter role or title" />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="organization"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Organization</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Enter organization" />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-4">
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone</FormLabel>
+                        <FormControl>
+                          <Input 
+                            {...field}
+                            placeholder="(555) 123-4567"
+                            onChange={(e) => handlePhoneChange(e.target.value)}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="email" placeholder="Enter email address" />
+                        </FormControl>
+                        <FormDescription>
+                          If no email is entered, address is required.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            {...field} 
+                            placeholder="Enter address"
+                            rows={3}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={newParticipantForm.control}
+                    name="notes"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Notes</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            {...field} 
+                            placeholder="Enter notes"
+                            rows={3}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  value={newParticipantForm.lastName}
-                  onChange={(e) => setNewParticipantForm(prev => ({ ...prev, lastName: e.target.value }))}
-                  placeholder="Enter last name"
-                />
+
+              <div className="flex justify-end space-x-2 pt-4 border-t">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={handleNewParticipantCancel}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Saving..." : "Save"}
+                </Button>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="roleTitle">Role/Title</Label>
-              <Input
-                id="roleTitle"
-                value={newParticipantForm.roleTitle}
-                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, roleTitle: e.target.value }))}
-                placeholder="Enter role or title"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="organization">Organization</Label>
-              <Input
-                id="organization"
-                value={newParticipantForm.organization}
-                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, organization: e.target.value }))}
-                placeholder="Enter organization"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={newParticipantForm.email}
-                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, email: e.target.value }))}
-                placeholder="Enter email address"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={newParticipantForm.phone}
-                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, phone: e.target.value }))}
-                onBlur={(e) => setNewParticipantForm(prev => ({ ...prev, phone: formatPhoneNumber(e.target.value) }))}
-                placeholder="Enter phone number"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
-              <Textarea
-                id="address"
-                value={newParticipantForm.address}
-                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="Enter address"
-                rows={3}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="notes">Notes</Label>
-              <Textarea
-                id="notes"
-                value={newParticipantForm.notes}
-                onChange={(e) => setNewParticipantForm(prev => ({ ...prev, notes: e.target.value }))}
-                placeholder="Enter notes"
-                rows={3}
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end space-x-2 pt-4 border-t">
-            <Button variant="outline" onClick={handleNewParticipantCancel}>
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleNewParticipantSave}
-              disabled={!newParticipantForm.firstName || !newParticipantForm.lastName}
-            >
-              Save
-            </Button>
-          </div>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </Dialog>
