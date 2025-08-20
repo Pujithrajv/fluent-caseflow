@@ -14,6 +14,7 @@ import { ParticipantsTab } from "./wizard/ParticipantsTab";
 import { RequestWizardTab } from "./wizard/RequestWizardTab";
 import { DocumentUploadTab } from "./wizard/DocumentUploadTab";
 import { ReviewSubmitTab } from "./wizard/ReviewSubmitTab";
+import { ThankYouTab } from "./wizard/ThankYouTab";
 import { RequestWizard } from "./RequestWizard";
 import { MotionWizard } from "./MotionWizard";
 import { ExhibitWizard } from "./ExhibitWizard";
@@ -32,7 +33,8 @@ const createNewCaseTabs = [
   { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
   { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
   { id: 'document-upload', title: 'Initial Documents', description: 'Upload case documents' },
-  { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
+  { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' },
+  { id: 'thank-you', title: 'Thank You', description: 'Confirmation and next steps' }
 ];
 
 const viewEditSubmittedTabs = [
@@ -241,6 +243,8 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
   const [currentTab, setCurrentTab] = useState(initialTab);
   const [discoverySubTabs, setDiscoverySubTabs] = useState<string[]>([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionCaseNumber, setSubmissionCaseNumber] = useState<string | null>(null);
 
   const isReadOnly = mode === 'view-edit' && caseStatus === 'submitted';
   const isCreateMode = mode === 'create';
@@ -298,6 +302,18 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
 
   const isFirstTab = getCurrentTabIndex() === 0;
   const isLastTab = getCurrentTabIndex() === wizardTabs.length - 1;
+
+  const handleSubmitCase = () => {
+    // Generate confirmation number
+    const year = new Date().getFullYear();
+    const number = Math.floor(Math.random() * 9999) + 1;
+    const confirmationNumber = `${year}-${number.toString().padStart(4, '0')}`;
+    
+    setIsSubmitted(true);
+    setSubmissionCaseNumber(confirmationNumber);
+    setCurrentTab('thank-you');
+    markTabCompleted('review');
+  };
 
   const handleAddNewRequest = (type: string) => {
     setCurrentRequestType(type);
@@ -892,19 +908,38 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
                        >
                          Previous
                        </Button>
-                       {isCreateMode ? (
-                         <Button className="bg-primary hover:bg-primary/90">
-                           <Check className="mr-2 h-4 w-4" />
-                           Submit Case
-                         </Button>
-                       ) : null}
+                        {isCreateMode && !isSubmitted ? (
+                          <Button 
+                            className="bg-primary hover:bg-primary/90"
+                            onClick={handleSubmitCase}
+                          >
+                            <Check className="mr-2 h-4 w-4" />
+                            Submit Case
+                          </Button>
+                        ) : null}
                      </div>
                   </CardContent>
-                </Card>
-              </TabsContent>
-            </div>
-          </div>
-        </Tabs>
+                 </Card>
+               </TabsContent>
+
+               <TabsContent value="thank-you" className="mt-0">
+                 <Card className="shadow-fluent-16">
+                   <CardHeader>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Thank You</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Confirmation and next steps</p>
+                       </div>
+                     </div>
+                   </CardHeader>
+                   <CardContent className="p-6">
+                     <ThankYouTab caseNumber={submissionCaseNumber} />
+                   </CardContent>
+                 </Card>
+               </TabsContent>
+             </div>
+           </div>
+         </Tabs>
 
       </div>
     </div>
