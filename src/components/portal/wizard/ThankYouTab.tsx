@@ -1,12 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ThankYouTabProps {
   caseNumber?: string;
 }
 
 export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-6">
       {/* Thank You Message */}
@@ -48,7 +51,7 @@ export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
           {/* Action Button */}
           <div className="flex justify-center">
             <Button 
-              onClick={() => window.location.href = '/dashboard'}
+              onClick={() => navigate('/dashboard')}
               className="font-fluent"
             >
               Back to Dashboard
