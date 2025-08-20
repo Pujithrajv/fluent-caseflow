@@ -30,11 +30,6 @@ export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
               {caseNumber || "2024-0004"}
             </p>
           </div>
-          
-          <p className="text-sm font-fluent text-muted-foreground mt-6 max-w-md mx-auto">
-            You will receive an email confirmation shortly. You can track the progress of your case 
-            through the portal dashboard.
-          </p>
         </CardContent>
       </Card>
     </div>
