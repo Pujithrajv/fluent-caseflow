@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Download } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 interface ThankYouTabProps {
   caseNumber?: string;
@@ -45,24 +45,13 @@ export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
             </div>
           </div>
           
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {/* Action Button */}
+          <div className="flex justify-center">
             <Button 
               onClick={() => window.location.href = '/dashboard'}
               className="font-fluent"
             >
               Back to Dashboard
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                // TODO: Implement PDF download functionality
-                console.log('Download confirmation PDF');
-              }}
-              className="font-fluent"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Download Confirmation (PDF)
             </Button>
           </div>
         </CardContent>
