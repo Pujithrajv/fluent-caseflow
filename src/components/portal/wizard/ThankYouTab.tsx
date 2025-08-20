@@ -17,18 +17,33 @@ export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
           <h2 className="text-2xl font-bold font-fluent text-foreground mb-4">
             Thank You
           </h2>
-          <p className="text-lg font-fluent text-muted-foreground mb-6">
-            Your case has been successfully created.
-          </p>
           
-          {/* Confirmation Number */}
-          <div className="bg-background border border-border rounded-lg p-4 inline-block">
-            <p className="text-sm font-fluent text-muted-foreground mb-1">
-              Confirmation #:
+          <div className="space-y-4 mb-6">
+            <h3 className="text-xl font-bold font-fluent text-foreground">
+              Successful Case Submission
+            </h3>
+            <p className="text-lg font-fluent text-muted-foreground">
+              Your case has been submitted to the Bureau of Administrative Hearings.
             </p>
-            <p className="text-xl font-bold font-fluent text-primary">
-              {caseNumber || "2024-0004"}
-            </p>
+            
+            {/* Confirmation Number */}
+            <div className="bg-background border border-border rounded-lg p-4 inline-block">
+              <p className="text-sm font-fluent text-muted-foreground mb-1">
+                Confirmation No:
+              </p>
+              <p className="text-xl font-bold font-fluent text-primary">
+                {caseNumber || "2024-0004"}
+              </p>
+            </div>
+            
+            <div className="space-y-3 text-left max-w-2xl">
+              <p className="text-base font-fluent text-muted-foreground">
+                Once your case is reviewed and accepted by the Bureau of Administrative Hearings, it will be assigned a case number.
+              </p>
+              <p className="text-base font-fluent text-muted-foreground">
+                You can check the status of your submission anytime on your portal dashboard.
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
