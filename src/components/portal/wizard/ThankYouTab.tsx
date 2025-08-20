@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, Download } from "lucide-react";
 
 interface ThankYouTabProps {
   caseNumber?: string;
@@ -11,17 +12,15 @@ export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
       {/* Thank You Message */}
       <Card className="shadow-fluent-16 border-green-200 bg-green-50/50">
         <CardContent className="p-8 text-center">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-6">
             <CheckCircle className="h-16 w-16 text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold font-fluent text-foreground mb-4">
-            Thank You
+          
+          <h2 className="text-2xl font-bold font-fluent text-foreground mb-6">
+            Successful Case Submission
           </h2>
           
-          <div className="space-y-4 mb-6">
-            <h3 className="text-xl font-bold font-fluent text-foreground">
-              Successful Case Submission
-            </h3>
+          <div className="space-y-4 mb-8">
             <p className="text-lg font-fluent text-muted-foreground">
               Your case has been submitted to the Bureau of Administrative Hearings.
             </p>
@@ -32,11 +31,11 @@ export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
                 Confirmation No:
               </p>
               <p className="text-xl font-bold font-fluent text-primary">
-                {caseNumber || "2024-0004"}
+                {caseNumber || "2024-0003"}
               </p>
             </div>
             
-            <div className="space-y-3 text-left max-w-2xl">
+            <div className="space-y-3 text-center max-w-2xl mx-auto">
               <p className="text-base font-fluent text-muted-foreground">
                 Once your case is reviewed and accepted by the Bureau of Administrative Hearings, it will be assigned a case number.
               </p>
@@ -44,6 +43,27 @@ export function ThankYouTab({ caseNumber }: ThankYouTabProps) {
                 You can check the status of your submission anytime on your portal dashboard.
               </p>
             </div>
+          </div>
+          
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button 
+              onClick={() => window.location.href = '/dashboard'}
+              className="font-fluent"
+            >
+              Back to Dashboard
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                // TODO: Implement PDF download functionality
+                console.log('Download confirmation PDF');
+              }}
+              className="font-fluent"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download Confirmation (PDF)
+            </Button>
           </div>
         </CardContent>
       </Card>
