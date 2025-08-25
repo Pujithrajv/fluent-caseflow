@@ -88,7 +88,7 @@ export function ReviewSubmitTab({ data, isLastTab, mode = 'create', caseStatus =
             <div>
               <h4 className="font-semibold font-fluent text-foreground">Ready to Submit</h4>
               <p className="text-sm font-fluent text-muted-foreground mt-1">
-                Once submitted, your case will be routed for review. You will receive a confirmation with your case ID 
+                Once submitted, your case will be routed for review. You will receive a confirmation with your confirmation number 
                 and can track progress through the portal dashboard.
               </p>
             </div>
