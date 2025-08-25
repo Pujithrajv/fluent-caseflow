@@ -220,7 +220,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
               <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="font-fluent text-foreground mb-2">Drag and drop files here, or click to browse</p>
               <p className="text-sm font-fluent text-muted-foreground mb-4">
-                Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG (Max 10MB per file)
+                Supported formats: PDF, JPG, PNG (Max 10MB per file)
               </p>
               <Button variant="outline" size="sm" className="font-fluent">
                 <Upload className="mr-2 h-4 w-4" />
