@@ -24,6 +24,7 @@ import { DocumentsWizard } from "./DocumentsWizard";
 import { PleadingsWizard } from "./PleadingsWizard";
 import { NoticesWizard } from "./NoticesWizard";
 import { RequestsWizard } from "./RequestsWizard";
+import { CaseSummaryTab } from "./wizard/CaseSummaryTab";
 
 
 const createNewCaseTabs = [
@@ -48,16 +49,30 @@ const viewEditSubmittedTabs = [
 ];
 
 const viewEditAcceptedTabs = [
-  { id: 'department', title: 'Department', description: 'Agency structure and personnel' },
-  { id: 'primary-party', title: 'Primary Party', description: 'Party information' },
-  { id: 'case-details', title: 'Case Details', description: 'Case name and details' },
-  { id: 'case-questions', title: 'Abandon Well Questions', description: 'Case type specific questions' },
+  { id: 'case-summary', title: 'Case Summary', description: 'Combined case information' },
   { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
   { id: 'requests', title: 'Requests', description: 'Associated requests' },
   { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
 ];
 
 const faqData = {
+  "case-summary": [
+    {
+      id: "summary-1",
+      question: "What information is included in the Case Summary?",
+      answer: "The Case Summary combines information from Department, Primary Party, Case Details, and Abandon Well Questions sections into a single overview for easy review."
+    },
+    {
+      id: "summary-2",
+      question: "Can I edit information in the Case Summary?",
+      answer: "You can edit individual sections by clicking the edit icon on each card. This will allow you to modify specific information while maintaining the organized summary view."
+    },
+    {
+      id: "summary-3",
+      question: "Why is the information grouped this way?",
+      answer: "Grouping related information makes it easier to review your case details at a glance and ensures all essential information is captured before proceeding with requests and final submission."
+    }
+  ],
   department: [
     {
       id: "dept-1",
@@ -241,7 +256,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
   const [showRequestWizard, setShowRequestWizard] = useState(false);
   const [currentRequestType, setCurrentRequestType] = useState<string | null>(null);
   const [completedTabs, setCompletedTabs] = useState<string[]>([]);
-  const [currentTab, setCurrentTab] = useState(initialTab);
+  const [currentTab, setCurrentTab] = useState(caseStatus === 'accepted' ? 'case-summary' : initialTab);
   const [discoverySubTabs, setDiscoverySubTabs] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionCaseNumber, setSubmissionCaseNumber] = useState<string | null>(null);
@@ -443,6 +458,65 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
 
             {/* Tab Content */}
             <div className="flex-1">
+              <TabsContent value="case-summary" className="mt-0">
+                <Card className="shadow-fluent-16">
+                  <CardHeader>
+                     <div className="flex items-center justify-between">
+                       <div>
+                         <CardTitle className="font-fluent font-semibold">Case Summary</CardTitle>
+                         <p className="text-muted-foreground font-fluent">Combined case information</p>
+                       </div>
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
+                              <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                            </Button>
+                          </SheetTrigger>
+                        <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                          <SheetHeader>
+                            <SheetTitle>Case Summary Help</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-6">
+                            <Accordion type="single" collapsible className="w-full">
+                              {faqData["case-summary"].map((faq) => (
+                                <AccordionItem key={faq.id} value={faq.id}>
+                                  <AccordionTrigger className="text-left">
+                                    {faq.question}
+                                  </AccordionTrigger>
+                                  <AccordionContent>
+                                    {faq.answer}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              ))}
+                            </Accordion>
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+                    </div>
+                  </CardHeader>
+                   <CardContent className="p-6">
+                     <CaseSummaryTab 
+                       onDataChange={updateFormData} 
+                       data={formData} 
+                       isReadOnly={isReadOnly}
+                       isSeededCase={isSeededCase}
+                     />
+                      <div className="flex justify-between mt-6 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          onClick={handlePrevious}
+                          disabled={isFirstTab}
+                        >
+                          Previous
+                        </Button>
+                        <Button onClick={handleNext} disabled={isLastTab}>
+                          Next
+                        </Button>
+                      </div>
+                   </CardContent>
+                </Card>
+              </TabsContent>
+
               <TabsContent value="department" className="mt-0">
                 <Card className="shadow-fluent-16">
                   <CardHeader>
