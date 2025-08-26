@@ -312,12 +312,6 @@ export function ParticipantLookupModal({
           <div className="flex space-x-2">
             <Button 
               variant="outline" 
-              onClick={onCreateNew}
-            >
-              Search
-            </Button>
-            <Button 
-              variant="outline" 
               onClick={() => setIsNewParticipantModalOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
