@@ -12,6 +12,7 @@ import OktaSignIn from "./pages/OktaSignIn";
 import Profile from "./pages/Profile";
 import Consent from "./pages/Consent";
 import PortalDashboard from "./pages/PortalDashboard";
+import ParticipantsDashboard from "./pages/ParticipantsDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/consent" element={<Consent />} />
           <Route path="/dashboard" element={<PortalDashboard />} />
+          <Route path="/participants" element={<ParticipantsDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
