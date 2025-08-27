@@ -546,6 +546,22 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                       </Badge>
                     </div>
                   </div>
+
+                  <div className="border-l-4 border-warning pl-4 py-3 bg-warning/10 rounded-r-lg">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm text-foreground">Action Required: The Meeting recording needs to be uploaded</h4>
+                        <p className="text-xs text-muted-foreground mt-1">Meeting recording upload pending for administrative hearing</p>
+                        <div className="flex items-center space-x-1 mt-2 text-xs text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          <span>Due: Dec 21, 2024</span>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="text-xs bg-warning/20">
+                        High Priority
+                      </Badge>
+                    </div>
+                  </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-3 bg-primary/10 rounded-r-lg">
                     <div className="flex items-start justify-between">
