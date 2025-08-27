@@ -71,7 +71,7 @@ export function Header({ showUserActions = true }: HeaderProps) {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/participants")}>
                     <Users className="mr-2 h-4 w-4" />
-                    Participants
+                    Attorneys
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="text-red-600" onClick={() => navigate("/")}>
