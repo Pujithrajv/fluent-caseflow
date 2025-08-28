@@ -145,15 +145,48 @@ const mockCases: CaseItem[] = [
 
 const mockEvents = [
   {
-    id: 4,
-    title: "AGR vs. – Notices – Notice of Initial Status Conference",
-    description: "—",
+    id: 1,
+    title: "AGR vs. – Notices – Notice of Initial Case Management Conference",
+    description: "Web-based session",
     date: "2025-08-26",
     time: "1:00 PM",
     endDate: "2025-08-27",
     endTime: "1:00 PM",
-    meeting: "Teams",
+    meeting: "Teams (web-based)",
     type: "meeting"
+  },
+  {
+    id: 2,
+    title: "Case Management Continuance / Pre-hearing Conference",
+    description: "Web-based session",
+    date: "2025-09-15",
+    time: "10:00 AM",
+    endDate: "2025-09-15",
+    endTime: "11:00 AM",
+    meeting: "Teams (web-based)",
+    type: "meeting"
+  },
+  {
+    id: 3,
+    title: "Pre-hearing Conference",
+    description: "Web-based session",
+    date: "2025-09-15",
+    time: "10:00 AM",
+    endDate: "2025-09-15",
+    endTime: "11:00 AM",
+    meeting: "Teams (web-based)",
+    type: "meeting"
+  },
+  {
+    id: 4,
+    title: "Hearing Conference",
+    description: "Professional Hearing Session",
+    date: "2025-09-20",
+    time: "1:00 PM",
+    endDate: "2025-09-20",
+    endTime: "3:00 PM",
+    meeting: "Stratton Office Building\n502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL 62706-4000",
+    type: "hearing"
   }
 ];
 
