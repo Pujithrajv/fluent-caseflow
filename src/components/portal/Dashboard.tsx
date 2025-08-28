@@ -180,13 +180,13 @@ const mockEvents = [
   {
     id: 4,
     title: "AGR vs. – Notices – Notice of Initial Status Conference",
-    description: "Notice of Initial Status Conference",
+    description: "—",
     date: "2025-08-26",
     time: "1:00 PM",
     endDate: "2025-08-27",
     endTime: "1:00 PM",
     meeting: "Teams",
-    type: "conference"
+    type: "meeting"
   }
 ];
 
@@ -556,49 +556,57 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {sortedEvents.map((event) => (
                     <div 
                       key={event.id} 
-                      className="bg-white p-6 border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:bg-muted/30"
+                      className="group relative bg-white border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
                       tabIndex={0}
                       role="article"
                       aria-label={`Event: ${event.title}`}
+                      title={`Starts ${formatDate(event.date)} ${event.time} • Ends ${formatDate(event.endDate)} ${event.endTime}`}
                     >
-                      <div className="space-y-4">
-                        <h3 className="font-semibold text-lg text-foreground leading-tight">
-                          {event.title}
-                        </h3>
-                        
-                        <div className="space-y-3">
-                          <div className="flex items-start justify-between">
-                            <div className="space-y-2 flex-1">
-                              <div className="flex items-center space-x-2 text-sm">
-                                <span className="font-medium text-muted-foreground min-w-[80px]">Meeting:</span>
-                                <span className="text-foreground">{event.meeting}</span>
-                              </div>
-                              
-                              <div className="flex items-center space-x-2 text-sm">
-                                <span className="font-medium text-muted-foreground min-w-[80px]">Start Time:</span>
-                                <div className="flex items-center space-x-1 text-foreground">
-                                  <Calendar className="h-4 w-4" />
-                                  <span>{formatDate(event.date)}, {event.time}</span>
-                                </div>
-                              </div>
-                              
-                              <div className="flex items-center space-x-2 text-sm">
-                                <span className="font-medium text-muted-foreground min-w-[80px]">End Time:</span>
-                                <div className="flex items-center space-x-1 text-foreground">
-                                  <Calendar className="h-4 w-4" />
-                                  <span>{formatDate(event.endDate)}, {event.endTime}</span>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <Badge variant="outline" className="text-xs ml-4">
-                              {event.type}
-                            </Badge>
+                      {/* Vertical accent bar */}
+                      <div className="absolute left-0 top-0 w-1 h-full bg-primary"></div>
+                      
+                      <div className="p-6 pl-8">
+                        {/* Title and badge row */}
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1 pr-3">
+                            <h3 className="font-semibold text-base text-foreground leading-tight hover:text-primary transition-colors cursor-pointer">
+                              {event.title}
+                            </h3>
+                            {event.description && event.description !== "—" && (
+                              <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
+                                {event.description}
+                              </p>
+                            )}
                           </div>
+                          <Badge 
+                            variant="secondary" 
+                            className="text-xs px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full shrink-0"
+                            aria-label={`Event type: ${event.type}`}
+                          >
+                            {event.type}
+                          </Badge>
+                        </div>
+                        
+                        {/* Date and time row */}
+                        <div className="flex items-center space-x-4 mb-2">
+                          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                            <Calendar className="h-4 w-4" aria-hidden="true" />
+                            <span>{formatDate(event.date)}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                            <Clock className="h-4 w-4" aria-hidden="true" />
+                            <span>{event.time}</span>
+                          </div>
+                        </div>
+                        
+                        {/* Location row */}
+                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                          <MapPin className="h-4 w-4" aria-hidden="true" />
+                          <span>{event.meeting}</span>
                         </div>
                       </div>
                     </div>
