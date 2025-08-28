@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin } from "lucide-react";
+import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -236,10 +236,70 @@ const formatDate = (dateString: string) => {
   });
 };
 
+const mockTasks = [
+  {
+    id: "FOID-2024-001",
+    caseNumber: "FOID-2024-001",
+    title: "Document Review Pending",
+    description: "FOID Card Appeal - Abigayle Low",
+    priority: "High Priority",
+    dueDate: "2024-12-22",
+    priorityClass: "bg-warning/20 border-warning"
+  },
+  {
+    id: "AGR-BEP-EP--25-00001",
+    caseNumber: "AGR-BEP-EP--25-00001",
+    title: "Action Required: Conference report is required",
+    description: "Conference report submission required for case",
+    priority: "High Priority",
+    dueDate: "2024-12-20",
+    priorityClass: "bg-warning/20 border-warning"
+  },
+  {
+    id: "ADMIN-2024-003",
+    caseNumber: "ADMIN-2024-003",
+    title: "Action Required: Meeting recording needs to be uploaded",
+    description: "Meeting recording upload pending for administrative hearing",
+    priority: "High Priority",
+    dueDate: "2024-12-21",
+    priorityClass: "bg-warning/20 border-warning"
+  },
+  {
+    id: "LIC-2024-007",
+    caseNumber: "LIC-2024-007",
+    title: "Case Assignment Review",
+    description: "Professional License Suspension Appeal",
+    priority: "Medium Priority",
+    dueDate: "2024-12-25",
+    priorityClass: "border-primary"
+  },
+  {
+    id: "RPT-2024-Q4",
+    caseNumber: "RPT-2024-Q4",
+    title: "Quarterly Report Preparation",
+    description: "Administrative hearing statistics compilation",
+    priority: "Low Priority",
+    dueDate: "2024-12-31",
+    priorityClass: "bg-success/20 border-success"
+  }
+];
+
 export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("cases");
+  const [tasks, setTasks] = useState(mockTasks);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const navigate = useNavigate();
+
+  const handleSortByDate = () => {
+    const sortedTasks = [...tasks].sort((a, b) => {
+      const dateA = new Date(a.dueDate);
+      const dateB = new Date(b.dueDate);
+      return sortOrder === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+    });
+    setTasks(sortedTasks);
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -521,114 +581,42 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                       <TableRow>
                         <TableHead className="w-1/4">Case Number</TableHead>
                         <TableHead className="w-1/2">Description</TableHead>
-                        <TableHead className="w-1/4">Priority & Due Date</TableHead>
+                        <TableHead className="w-1/4">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={handleSortByDate}
+                            className="h-auto p-0 font-medium text-muted-foreground hover:text-foreground"
+                          >
+                            Priority & Due Date
+                            <ArrowUpDown className="ml-1 h-3 w-3" />
+                          </Button>
+                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium">FOID-2024-001</TableCell>
-                        <TableCell>
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground">Document Review Pending</h4>
-                            <p className="text-xs text-muted-foreground mt-1">FOID Card Appeal - Abigayle Low</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-2">
-                            <Badge variant="outline" className="text-xs bg-warning/20 border-warning">
-                              High Priority
-                            </Badge>
-                            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                              <Clock className="h-3 w-3" />
-                              <span>Due: Dec 22, 2024</span>
+                      {tasks.map((task) => (
+                        <TableRow key={task.id}>
+                          <TableCell className="font-medium">{task.caseNumber}</TableCell>
+                          <TableCell>
+                            <div>
+                              <h4 className="font-medium text-sm text-foreground">{task.title}</h4>
+                              <p className="text-xs text-muted-foreground mt-1">{task.description}</p>
                             </div>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-
-                      <TableRow>
-                        <TableCell className="font-medium">AGR-BEP-EP--25-00001</TableCell>
-                        <TableCell>
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground">Action Required: Conference report is required</h4>
-                            <p className="text-xs text-muted-foreground mt-1">Conference report submission required for case</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-2">
-                            <Badge variant="outline" className="text-xs bg-warning/20 border-warning">
-                              High Priority
-                            </Badge>
-                            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                              <Clock className="h-3 w-3" />
-                              <span>Due: Dec 20, 2024</span>
+                          </TableCell>
+                          <TableCell>
+                            <div className="space-y-2">
+                              <Badge variant="outline" className={`text-xs ${task.priorityClass}`}>
+                                {task.priority}
+                              </Badge>
+                              <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                                <Clock className="h-3 w-3" />
+                                <span>Due: {formatDate(task.dueDate)}</span>
+                              </div>
                             </div>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-
-                      <TableRow>
-                        <TableCell className="font-medium">ADMIN-2024-003</TableCell>
-                        <TableCell>
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground">Action Required: Meeting recording needs to be uploaded</h4>
-                            <p className="text-xs text-muted-foreground mt-1">Meeting recording upload pending for administrative hearing</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-2">
-                            <Badge variant="outline" className="text-xs bg-warning/20 border-warning">
-                              High Priority
-                            </Badge>
-                            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                              <Clock className="h-3 w-3" />
-                              <span>Due: Dec 21, 2024</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                      
-                      <TableRow>
-                        <TableCell className="font-medium">LIC-2024-007</TableCell>
-                        <TableCell>
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground">Case Assignment Review</h4>
-                            <p className="text-xs text-muted-foreground mt-1">Professional License Suspension Appeal</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-2">
-                            <Badge variant="outline" className="text-xs border-primary">
-                              Medium Priority
-                            </Badge>
-                            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                              <Clock className="h-3 w-3" />
-                              <span>Due: Dec 25, 2024</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-
-                      <TableRow>
-                        <TableCell className="font-medium">RPT-2024-Q4</TableCell>
-                        <TableCell>
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground">Quarterly Report Preparation</h4>
-                            <p className="text-xs text-muted-foreground mt-1">Administrative hearing statistics compilation</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="space-y-2">
-                            <Badge variant="outline" className="text-xs bg-success/20 border-success">
-                              Low Priority
-                            </Badge>
-                            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                              <Clock className="h-3 w-3" />
-                              <span>Due: Dec 31, 2024</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                      </TableRow>
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
                 </div>
