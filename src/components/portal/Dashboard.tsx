@@ -157,7 +157,7 @@ const mockEvents = [
   },
   {
     id: 2,
-    title: "Case Management Continuance / Pre-hearing Conference",
+    title: "Case Management Continuance",
     description: "Web-based session",
     date: "2025-09-15",
     time: "10:00 AM",
