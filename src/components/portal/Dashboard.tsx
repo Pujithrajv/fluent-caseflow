@@ -145,39 +145,6 @@ const mockCases: CaseItem[] = [
 
 const mockEvents = [
   {
-    id: 1,
-    title: "Case Review Meeting",
-    description: "Review of DBE Certification Appeal",
-    date: "2024-12-20",
-    time: "10:00 AM",
-    endDate: "2024-12-20",
-    endTime: "11:00 AM",
-    meeting: "Conference Room A",
-    type: "meeting"
-  },
-  {
-    id: 2,
-    title: "Document Submission Deadline",
-    description: "FOID Card Appeal Documents",
-    date: "2024-12-22",
-    time: "5:00 PM",
-    endDate: "2024-12-22",
-    endTime: "5:00 PM",
-    meeting: "Online Submission",
-    type: "deadline"
-  },
-  {
-    id: 3,
-    title: "Administrative Hearing",
-    description: "Professional License Suspension",
-    date: "2024-12-28",
-    time: "2:00 PM",
-    endDate: "2024-12-28",
-    endTime: "4:00 PM",
-    meeting: "Hearing Room 3",
-    type: "hearing"
-  },
-  {
     id: 4,
     title: "AGR vs. – Notices – Notice of Initial Status Conference",
     description: "—",
