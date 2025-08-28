@@ -238,33 +238,6 @@ const mockTasks = [
     priority: "High Priority",
     dueDate: "2024-12-20",
     priorityClass: "bg-warning/20 border-warning"
-  },
-  {
-    id: "ADMIN-2024-003",
-    caseNumber: "ADMIN-2024-003",
-    title: "Action Required: Meeting recording needs to be uploaded",
-    description: "Meeting recording upload pending for administrative hearing",
-    priority: "High Priority",
-    dueDate: "2024-12-21",
-    priorityClass: "bg-warning/20 border-warning"
-  },
-  {
-    id: "LIC-2024-007",
-    caseNumber: "LIC-2024-007",
-    title: "Case Assignment Review",
-    description: "Professional License Suspension Appeal",
-    priority: "Medium Priority",
-    dueDate: "2024-12-25",
-    priorityClass: "border-primary"
-  },
-  {
-    id: "RPT-2024-Q4",
-    caseNumber: "RPT-2024-Q4",
-    title: "Quarterly Report Preparation",
-    description: "Administrative hearing statistics compilation",
-    priority: "Low Priority",
-    dueDate: "2024-12-31",
-    priorityClass: "bg-success/20 border-success"
   }
 ];
 
