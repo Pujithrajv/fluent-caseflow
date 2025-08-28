@@ -261,7 +261,8 @@ const mockTasks = [
     description: "FOID Card Appeal - Abigayle Low",
     priority: "High Priority",
     dueDate: "2024-12-22",
-    priorityClass: "bg-warning/20 border-warning"
+    priorityClass: "bg-warning/20 border-warning",
+    type: "task"
   },
   {
     id: "AGR-BEP-EP--25-00001",
@@ -270,7 +271,31 @@ const mockTasks = [
     description: "Conference report submission required for case",
     priority: "High Priority",
     dueDate: "2024-12-20",
-    priorityClass: "bg-warning/20 border-warning"
+    priorityClass: "bg-warning/20 border-warning",
+    type: "task"
+  },
+  {
+    id: "EEC-GBA--25-00001",
+    caseNumber: "EEC-GBA--25-00001",
+    title: "Case Rejected – Conflict of Interest",
+    description: "This case has been rejected by the assigned ALJ due to a conflict of interest.",
+    priority: "Alert",
+    dueDate: "2025-07-17",
+    priorityClass: "bg-destructive/20 border-destructive",
+    type: "alert",
+    action: "View Case"
+  },
+  {
+    id: "EEC-GBA--25-00002",
+    caseNumber: "EEC-GBA--25-00002",
+    title: "Case Rejected – Initial Review",
+    description: "Test 6 Decision Date - Clerk rejected the case during initial review.",
+    priority: "Alert",
+    dueDate: "2025-07-17",
+    priorityClass: "bg-destructive/20 border-destructive",
+    type: "alert",
+    action: "View Case",
+    status: "Rejected"
   }
 ];
 
