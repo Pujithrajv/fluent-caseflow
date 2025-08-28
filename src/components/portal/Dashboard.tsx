@@ -150,7 +150,9 @@ const mockEvents = [
     description: "Review of DBE Certification Appeal",
     date: "2024-12-20",
     time: "10:00 AM",
-    location: "Conference Room A",
+    endDate: "2024-12-20",
+    endTime: "11:00 AM",
+    meeting: "Conference Room A",
     type: "meeting"
   },
   {
@@ -159,7 +161,9 @@ const mockEvents = [
     description: "FOID Card Appeal Documents",
     date: "2024-12-22",
     time: "5:00 PM",
-    location: "Online Submission",
+    endDate: "2024-12-22",
+    endTime: "5:00 PM",
+    meeting: "Online Submission",
     type: "deadline"
   },
   {
@@ -168,8 +172,21 @@ const mockEvents = [
     description: "Professional License Suspension",
     date: "2024-12-28",
     time: "2:00 PM",
-    location: "Hearing Room 3",
+    endDate: "2024-12-28",
+    endTime: "4:00 PM",
+    meeting: "Hearing Room 3",
     type: "hearing"
+  },
+  {
+    id: 4,
+    title: "AGR vs. – Notices – Notice of Initial Status Conference",
+    description: "Notice of Initial Status Conference",
+    date: "2025-08-26",
+    time: "1:00 PM",
+    endDate: "2025-08-27",
+    endTime: "1:00 PM",
+    meeting: "Teams",
+    type: "conference"
   }
 ];
 
@@ -290,6 +307,13 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [tasks, setTasks] = useState(mockTasks);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const navigate = useNavigate();
+
+  // Sort events by start time (ascending)
+  const sortedEvents = [...mockEvents].sort((a, b) => {
+    const dateTimeA = new Date(`${a.date} ${a.time}`);
+    const dateTimeB = new Date(`${b.date} ${b.time}`);
+    return dateTimeA.getTime() - dateTimeB.getTime();
+  });
 
   const handleSortByDate = () => {
     const sortedTasks = [...tasks].sort((a, b) => {
@@ -532,31 +556,50 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {mockEvents.map((event) => (
-                    <div key={event.id} className="border-l-4 border-primary pl-4 py-3 bg-muted/20 rounded-r-lg">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-sm text-foreground">{event.title}</h4>
-                          <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
-                          <div className="flex items-center space-x-4 mt-2 text-xs text-muted-foreground">
-                            <div className="flex items-center space-x-1">
-                              <Calendar className="h-3 w-3" />
-                              <span>{new Date(event.date).toLocaleDateString()}</span>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                  {sortedEvents.map((event) => (
+                    <div 
+                      key={event.id} 
+                      className="bg-white p-6 border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:bg-muted/30"
+                      tabIndex={0}
+                      role="article"
+                      aria-label={`Event: ${event.title}`}
+                    >
+                      <div className="space-y-4">
+                        <h3 className="font-semibold text-lg text-foreground leading-tight">
+                          {event.title}
+                        </h3>
+                        
+                        <div className="space-y-3">
+                          <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                              <div className="flex items-center space-x-2 text-sm">
+                                <span className="font-medium text-muted-foreground min-w-[80px]">Meeting:</span>
+                                <span className="text-foreground">{event.meeting}</span>
+                              </div>
+                              
+                              <div className="flex items-center space-x-2 text-sm">
+                                <span className="font-medium text-muted-foreground min-w-[80px]">Start Time:</span>
+                                <div className="flex items-center space-x-1 text-foreground">
+                                  <Calendar className="h-4 w-4" />
+                                  <span>{formatDate(event.date)}, {event.time}</span>
+                                </div>
+                              </div>
+                              
+                              <div className="flex items-center space-x-2 text-sm">
+                                <span className="font-medium text-muted-foreground min-w-[80px]">End Time:</span>
+                                <div className="flex items-center space-x-1 text-foreground">
+                                  <Calendar className="h-4 w-4" />
+                                  <span>{formatDate(event.endDate)}, {event.endTime}</span>
+                                </div>
+                              </div>
                             </div>
-                            <div className="flex items-center space-x-1">
-                              <Clock className="h-3 w-3" />
-                              <span>{event.time}</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-1 mt-1 text-xs text-muted-foreground">
-                            <MapPin className="h-3 w-3" />
-                            <span>{event.location}</span>
+                            
+                            <Badge variant="outline" className="text-xs ml-4">
+                              {event.type}
+                            </Badge>
                           </div>
                         </div>
-                        <Badge variant="outline" className="text-xs">
-                          {event.type}
-                        </Badge>
                       </div>
                     </div>
                   ))}
