@@ -286,8 +286,8 @@ const mockTasks = [
     action: "View Case"
   },
   {
-    id: "EEC-GBA--25-00002",
-    caseNumber: "EEC-GBA--25-00002",
+    id: "2025-0008",
+    caseNumber: "2025-0008",
     title: "Case Rejected – Initial Review",
     description: "Test 6 Decision Date - Clerk rejected the case during initial review.",
     priority: "Alert",
