@@ -4,11 +4,14 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { User, Search } from "lucide-react";
 import { useState } from "react";
 import { ContactLookupModal } from "../ContactLookupModal";
 import { CreateContactRecordModal } from "../CreateContactRecordModal";
+import { CreateOrganizationModal } from "../CreateOrganizationModal";
+import { CreatePersonModal } from "../CreatePersonModal";
 
 interface PrimaryPartyTabProps {
   onDataChange: (data: any) => void;
@@ -49,6 +52,50 @@ interface PrimaryPartyData {
   represented?: "yes" | "no";
   attorneyName?: string;
   selectedContact?: Contact;
+  isOrganization?: boolean;
+}
+
+interface OrganizationData {
+  name: string;
+  webSite?: string;
+  businessPhone?: string;
+  fax?: string;
+  businessForm?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  stateProvince?: string;
+  postalCode?: string;
+  country?: string;
+  email: string;
+  homePhone?: string;
+  mobilePhone?: string;
+  businessContactPhone?: string;
+  otherPhone?: string;
+  preferredPhone?: string;
+}
+
+interface PersonData {
+  firstName: string;
+  middleInitial?: string;
+  lastName: string;
+  salutation?: string;
+  suffix?: string;
+  pronouns?: string;
+  jobTitle?: string;
+  entityRole?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  stateProvince?: string;
+  postalCode?: string;
+  country?: string;
+  email: string;
+  homePhone?: string;
+  mobilePhone?: string;
+  businessPhone?: string;
+  otherPhone?: string;
+  preferredPhone?: string;
 }
 
 const mockContacts = [
@@ -89,6 +136,8 @@ const mockContacts = [
 export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeededCase = false }: PrimaryPartyTabProps) {
   const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isOrganizationModalOpen, setIsOrganizationModalOpen] = useState(false);
+  const [isPersonModalOpen, setIsPersonModalOpen] = useState(false);
   const [isAttorneyLookupModalOpen, setIsAttorneyLookupModalOpen] = useState(false);
   const [isAttorneyCreateModalOpen, setIsAttorneyCreateModalOpen] = useState(false);
   const [pendingNewContact, setPendingNewContact] = useState<Contact | null>(null);
@@ -125,7 +174,47 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
   };
 
   const handleOpenLookup = () => {
-    setIsLookupModalOpen(true);
+    // Check if it's an organization or person and open appropriate modal
+    if (data?.isOrganization) {
+      setIsOrganizationModalOpen(true);
+    } else {
+      setIsPersonModalOpen(true);
+    }
+  };
+
+  const handleOrganizationCheckboxChange = (checked: boolean) => {
+    onDataChange({ ...data, isOrganization: checked });
+  };
+
+  const handleOrganizationSave = (organizationData: OrganizationData) => {
+    onDataChange({ 
+      ...data, 
+      partyName: organizationData.name,
+      selectedContact: {
+        id: Date.now(),
+        name: organizationData.name,
+        email: organizationData.email,
+        phone: organizationData.businessPhone || organizationData.mobilePhone || "",
+        organization: organizationData.name
+      }
+    });
+    setIsOrganizationModalOpen(false);
+  };
+
+  const handlePersonSave = (personData: PersonData) => {
+    const fullName = `${personData.firstName} ${personData.middleInitial ? personData.middleInitial + ' ' : ''}${personData.lastName}`.trim();
+    onDataChange({ 
+      ...data, 
+      partyName: fullName,
+      selectedContact: {
+        id: Date.now(),
+        name: fullName,
+        email: personData.email,
+        phone: personData.businessPhone || personData.mobilePhone || personData.homePhone || "",
+        organization: ""
+      }
+    });
+    setIsPersonModalOpen(false);
   };
 
   const handleCreateNew = () => {
@@ -236,6 +325,28 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
                   </div>
                 )}
               </div>
+
+              {/* Organization Checkbox */}
+              {!isReadOnly && !isSeededCase && (
+                <div className="flex items-center space-x-2 mt-3">
+                  <Checkbox
+                    id="isOrganization"
+                    checked={data?.isOrganization || false}
+                    onCheckedChange={handleOrganizationCheckboxChange}
+                  />
+                  <div className="grid gap-1.5 leading-none">
+                    <Label
+                      htmlFor="isOrganization"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Party is a Company or Organization
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Check this if the primary party is an organization instead of a person.
+                    </p>
+                  </div>
+                </div>
+              )}
           </div>
           
           <div className="space-y-4">
@@ -320,6 +431,18 @@ export function PrimaryPartyTab({ onDataChange, data, isReadOnly = false, isSeed
         onClose={() => setIsAttorneyCreateModalOpen(false)}
         onSubmit={handleCreateAttorney}
         onCancel={handleAttorneyCreateModalCancel}
+      />
+
+      <CreateOrganizationModal
+        isOpen={isOrganizationModalOpen}
+        onClose={() => setIsOrganizationModalOpen(false)}
+        onSave={handleOrganizationSave}
+      />
+
+      <CreatePersonModal
+        isOpen={isPersonModalOpen}
+        onClose={() => setIsPersonModalOpen(false)}
+        onSave={handlePersonSave}
       />
     </div>
   );
