@@ -51,8 +51,7 @@ const viewEditSubmittedTabs = [
 const viewEditAcceptedTabs = [
   { id: 'case-summary', title: 'Case Summary', description: 'Combined case information' },
   { id: 'involved-parties', title: 'Participants', description: 'Additional parties' },
-  { id: 'requests', title: 'Requests', description: 'Associated requests' },
-  { id: 'review', title: 'Review & Submit', description: 'Verify and submit case' }
+  { id: 'requests', title: 'Requests', description: 'Associated requests' }
 ];
 
 const faqData = {
