@@ -1,8 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Download, Eye, FileText, Calendar } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Edit, Download, Eye, FileText, CalendarIcon, ChevronDown, X } from "lucide-react";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface CaseSummaryTabProps {
   data: any;
@@ -20,10 +28,54 @@ export function CaseSummaryTab({
   isSeededCase = false 
 }: CaseSummaryTabProps) {
   
+  const [initiatingActionDate, setInitiatingActionDate] = useState<Date>(
+    data.initiatingActionDate ? new Date(data.initiatingActionDate) : undefined
+  );
+  const [responsiveActionDate, setResponsiveActionDate] = useState<Date>(
+    data.responsiveActionDate ? new Date(data.responsiveActionDate) : undefined
+  );
+  const [selectedAccessibilityOptions, setSelectedAccessibilityOptions] = useState<string[]>(
+    data.accessibilityOptions || []
+  );
+  const [isAccessibilityDropdownOpen, setIsAccessibilityDropdownOpen] = useState(false);
+
+  const accessibilityOptions = [
+    { value: "podium", label: "Podium" },
+    { value: "audio-amplification", label: "Audio Amplification (Mic & Speakers)" },
+    { value: "video-projection", label: "Video Projection for video and/or photos" },
+    { value: "audio-projection", label: "Audio Projection for recordings or audio clips" },
+    { value: "easel", label: "Easel" },
+    { value: "laptop-space", label: "Space for a laptop/physical documents for review" },
+    { value: "electrical-outlets", label: "Electrical outlets, chargers and cables" }
+  ];
+  
   const handleEditClick = (tabId: string) => {
     if (onEditTab) {
       onEditTab(tabId);
     }
+  };
+
+  const handleAccessibilityChange = (optionValue: string, checked: boolean) => {
+    let newSelection: string[];
+    if (checked) {
+      newSelection = [...selectedAccessibilityOptions, optionValue];
+    } else {
+      newSelection = selectedAccessibilityOptions.filter(item => item !== optionValue);
+    }
+    setSelectedAccessibilityOptions(newSelection);
+    onDataChange({ ...data, accessibilityOptions: newSelection });
+  };
+
+  const removeOption = (optionValue: string) => {
+    const newSelection = selectedAccessibilityOptions.filter(item => item !== optionValue);
+    setSelectedAccessibilityOptions(newSelection);
+    onDataChange({ ...data, accessibilityOptions: newSelection });
+  };
+
+  const getSelectedLabels = () => {
+    return selectedAccessibilityOptions.map(value => 
+      accessibilityOptions.find(option => option.value === value)?.label
+    ).filter(Boolean);
   };
 
   // Mock data for demonstration - replace with actual data from props
@@ -113,39 +165,178 @@ export function CaseSummaryTab({
       )}
 
       {/* Case Details */}
-      {(data?.caseName || data?.caseDescription) && (
-        <Card className="shadow-fluent-8">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="font-fluent font-semibold">Case Details</CardTitle>
-                <p className="text-muted-foreground font-fluent text-sm">Case information and timeline</p>
-              </div>
-              {onEditTab && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => handleEditClick('case-details')}
-                  className="hover:bg-muted/80 focus:bg-muted/80 transition-colors"
-                >
-                  <Edit className="h-4 w-4 text-muted-foreground hover:text-foreground" />
-                </Button>
-              )}
+      <Card className="shadow-fluent-8">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="font-fluent font-semibold">Case Details</CardTitle>
+              <p className="text-muted-foreground font-fluent text-sm">Case information and timeline</p>
             </div>
-          </CardHeader>
-          <CardContent className="space-y-0">
+            {onEditTab && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => handleEditClick('case-details')}
+                className="hover:bg-muted/80 focus:bg-muted/80 transition-colors"
+              >
+                <Edit className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+              </Button>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-0">
             <InfoRow label="Case Name" value={data?.caseName} />
             <InfoRow label="Description" value={data?.caseDescription} />
-            <InfoRow label="Special Instructions" value={data?.specialInstructions} />
-            <InfoRow label="Caption Notation" value={data?.captionNotation} />
-            <InfoRow label="Initiating Action Date" value={data?.initiatingActionDate ? format(new Date(data.initiatingActionDate), 'MMM dd, yyyy') : undefined} />
-            <InfoRow label="Responsive Action Date" value={data?.responsiveActionDate ? format(new Date(data.responsiveActionDate), 'MMM dd, yyyy') : undefined} />
-            {data?.selectedAccessibilityOptions && data.selectedAccessibilityOptions.length > 0 && (
-              <InfoRow label="Hearing Resources" value={data.selectedAccessibilityOptions.join(', ')} />
-            )}
-          </CardContent>
-        </Card>
-      )}
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="font-fluent">Initiating Action Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                      !initiatingActionDate && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly || isSeededCase}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {data.initiatingActionDate || initiatingActionDate ? 
+                      format(data.initiatingActionDate ? new Date(data.initiatingActionDate) : initiatingActionDate, "PPP") : 
+                      <span>Select date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={initiatingActionDate}
+                    onSelect={setInitiatingActionDate}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="font-fluent">Responsive Action Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                      !responsiveActionDate && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly || isSeededCase}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {data.responsiveActionDate || responsiveActionDate ? 
+                      format(data.responsiveActionDate ? new Date(data.responsiveActionDate) : responsiveActionDate, "PPP") : 
+                      <span>Select date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={responsiveActionDate}
+                    onSelect={setResponsiveActionDate}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="specialInstructions" className="font-fluent">Special Instructions</Label>
+            <Textarea 
+              id="specialInstructions"
+              placeholder="Enter any special instructions or notes"
+              className="shadow-fluent-8 border-input-border min-h-[100px]"
+              disabled={isReadOnly || isSeededCase}
+              value={data?.specialInstructions || ''}
+              onChange={(e) => onDataChange({ ...data, specialInstructions: e.target.value })}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="captionNotation" className="font-fluent">Caption Notation</Label>
+            <Textarea 
+              id="captionNotation"
+              placeholder="Enter caption notation"
+              className="shadow-fluent-8 border-input-border min-h-[100px]"
+              disabled={isReadOnly || isSeededCase}
+              value={data?.captionNotation || ''}
+              onChange={(e) => onDataChange({ ...data, captionNotation: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="font-fluent">Participant Hearing Resources</Label>
+            <div className="relative">
+              <Popover open={isAccessibilityDropdownOpen} onOpenChange={setIsAccessibilityDropdownOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-between text-left font-normal shadow-fluent-8 border-input-border h-auto min-h-[40px]",
+                      selectedAccessibilityOptions.length === 0 && "text-muted-foreground"
+                    )}
+                    disabled={isReadOnly || isSeededCase}
+                  >
+                     <div className="flex flex-wrap gap-1">
+                       {(data.accessibilityOptions?.length || selectedAccessibilityOptions.length) === 0 ? (
+                         <span>Select hearing resources</span>
+                       ) : (
+                         getSelectedLabels().map((label, index) => (
+                           <div
+                             key={index}
+                             className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-sm"
+                           >
+                             <span>{label}</span>
+                             <button
+                               onClick={(e) => {
+                                 e.stopPropagation();
+                                 const optionValue = accessibilityOptions.find(opt => opt.label === label)?.value;
+                                 if (optionValue) removeOption(optionValue);
+                               }}
+                               className="hover:bg-primary/20 rounded-full p-0.5"
+                             >
+                               <X className="h-3 w-3" />
+                             </button>
+                           </div>
+                         ))
+                       )}
+                     </div>
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0 z-50 bg-background border shadow-md" align="start">
+                  <div className="p-3 space-y-3">
+                    {accessibilityOptions.map((option) => (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={option.value}
+                          checked={selectedAccessibilityOptions.includes(option.value)}
+                          onCheckedChange={(checked) => handleAccessibilityChange(option.value, checked as boolean)}
+                        />
+                        <Label htmlFor={option.value} className="text-sm font-normal">
+                          {option.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Abandon Well Questions - Only show if relevant data exists */}
       {(data?.permitteeNumber || data?.permitNumber || data?.numberOfWells) && (
