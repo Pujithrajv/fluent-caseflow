@@ -194,7 +194,8 @@ const mockEvents = [
     location: "502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL\n62706-4000",
     type: "hearing",
     isTeamsEvent: false,
-    hasCase: false
+    hasCase: false,
+    aljAssigned: "Daniel Schuering"
   }
 ];
 
@@ -595,6 +596,13 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
                         <div className="line-clamp-2 whitespace-pre-line">{event.location}</div>
                       </div>
+
+                      {/* ALJ Assignment */}
+                      {event.aljAssigned && (
+                        <div className="flex items-start space-x-2 text-xs text-muted-foreground">
+                          <div className="text-xs font-medium">ALJ Assigned: {event.aljAssigned}</div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Action Buttons */}
