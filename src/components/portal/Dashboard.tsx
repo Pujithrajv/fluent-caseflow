@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown } from "lucide-react";
+import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown, Video, ExternalLink, FolderOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -146,47 +146,55 @@ const mockCases: CaseItem[] = [
 const mockEvents = [
   {
     id: 1,
-    title: "AGR vs. – Notices – Notice of Initial Case Management Conference",
-    description: "Web-based session",
-    date: "2025-08-26",
+    title: "AGR vs. – Notices (DBE-2024-001-EC)",
+    subtitle: "Notice of Initial Case Management Conference",
+    date: "2025-08-25",
     time: "1:00 PM",
-    endDate: "2025-08-27",
-    endTime: "1:00 PM",
-    meeting: "Teams (web-based)",
-    type: "meeting"
+    endDate: "2025-08-25",
+    endTime: "2:00 PM",
+    location: "Teams (web-based)",
+    type: "meeting",
+    isTeamsEvent: true,
+    hasCase: false
   },
   {
     id: 2,
     title: "Case Management Continuance",
-    description: "Web-based session",
-    date: "2025-09-15",
+    subtitle: "Web-based session",
+    date: "2025-09-14",
     time: "10:00 AM",
-    endDate: "2025-09-15",
+    endDate: "2025-09-14",
     endTime: "11:00 AM",
-    meeting: "Teams (web-based)",
-    type: "meeting"
+    location: "Teams (web-based)",
+    type: "meeting",
+    isTeamsEvent: true,
+    hasCase: false
   },
   {
     id: 3,
     title: "Pre-hearing Conference",
-    description: "Web-based session",
-    date: "2025-09-15",
+    subtitle: "Web-based session",
+    date: "2025-09-14",
     time: "10:00 AM",
-    endDate: "2025-09-15",
+    endDate: "2025-09-14",
     endTime: "11:00 AM",
-    meeting: "Teams (web-based)",
-    type: "meeting"
+    location: "Teams (web-based)",
+    type: "meeting",
+    isTeamsEvent: true,
+    hasCase: true
   },
   {
     id: 4,
     title: "Hearing Conference",
-    description: "Professional Hearing Session",
-    date: "2025-09-20",
+    subtitle: "Professional Hearing Session",
+    date: "2025-09-19",
     time: "1:00 PM",
-    endDate: "2025-09-20",
+    endDate: "2025-09-19",
     endTime: "3:00 PM",
-    meeting: "502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL\n62706-4000",
-    type: "hearing"
+    location: "502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL\n62706-4000",
+    type: "hearing",
+    isTeamsEvent: false,
+    hasCase: false
   }
 ];
 
@@ -546,72 +554,74 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Upcoming Events Tab Content */}
           <TabsContent value="events" className="mt-6">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 font-fluent">
-                  <Clock className="h-5 w-5 text-primary" />
-                  <span>Upcoming Events</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {sortedEvents.map((event) => (
-                    <div 
-                      key={event.id} 
-                      className="group relative bg-white border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
-                      tabIndex={0}
-                      role="article"
-                      aria-label={`Event: ${event.title}`}
-                      title={`Starts ${formatDate(event.date)} ${event.time} • Ends ${formatDate(event.endDate)} ${event.endTime}`}
-                    >
-                      {/* Vertical accent bar */}
-                      <div className="absolute left-0 top-0 w-1 h-full bg-primary"></div>
-                      
-                      <div className="p-6 pl-8">
-                        {/* Title and badge row */}
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex-1 pr-3">
-                            <h3 className="font-semibold text-base text-foreground leading-tight hover:text-primary transition-colors cursor-pointer">
-                              {event.title}
-                            </h3>
-                            {event.description && event.description !== "—" && (
-                              <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
-                                {event.description}
-                              </p>
-                            )}
-                          </div>
-                          <Badge 
-                            variant="secondary" 
-                            className="text-xs px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full shrink-0"
-                            aria-label={`Event type: ${event.type}`}
-                          >
-                            {event.type}
-                          </Badge>
+            <div className="space-y-4">
+              {sortedEvents.map((event) => (
+                <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200">
+                  <CardContent className="p-6">
+                    {/* Header Section */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-foreground mb-1">
+                          {event.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {event.subtitle}
+                        </p>
+                      </div>
+                      <Badge 
+                        variant="secondary" 
+                        className="text-xs px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full"
+                      >
+                        {event.type}
+                      </Badge>
+                    </div>
+
+                    {/* Details Section */}
+                    <div className="space-y-3 mb-6">
+                      {/* Date and Time */}
+                      <div className="flex items-center space-x-6">
+                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                          <Calendar className="h-4 w-4" />
+                          <span>{formatDate(event.date)}</span>
                         </div>
-                        
-                        {/* Date and time row */}
-                        <div className="flex items-center space-x-4 mb-2">
-                          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" aria-hidden="true" />
-                            <span>{formatDate(event.date)}</span>
-                          </div>
-                          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                            <Clock className="h-4 w-4" aria-hidden="true" />
-                            <span>{event.time}</span>
-                          </div>
-                        </div>
-                        
-                        {/* Location row */}
-                        <div className="flex items-start space-x-2 text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4 mt-0.5" aria-hidden="true" />
-                          <div className="whitespace-pre-line">{event.meeting}</div>
+                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                          <Clock className="h-4 w-4" />
+                          <span>{event.time}</span>
                         </div>
                       </div>
+
+                      {/* Location */}
+                      <div className="flex items-start space-x-2 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                        <div className="whitespace-pre-line">{event.location}</div>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap gap-3">
+                      {event.isTeamsEvent && (
+                        <Button className="flex items-center space-x-2">
+                          <Video className="h-4 w-4" />
+                          <span>Join Teams Meeting</span>
+                        </Button>
+                      )}
+                      
+                      {event.hasCase && (
+                        <Button variant="outline" className="flex items-center space-x-2">
+                          <FolderOpen className="h-4 w-4" />
+                          <span>Open Case</span>
+                        </Button>
+                      )}
+                      
+                      <Button variant="outline" className="flex items-center space-x-2">
+                        <ExternalLink className="h-4 w-4" />
+                        <span>Open Appointment</span>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </TabsContent>
 
           {/* Tasks and Alerts Tab Content */}
