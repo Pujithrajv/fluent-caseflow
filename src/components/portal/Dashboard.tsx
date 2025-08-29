@@ -185,7 +185,7 @@ const mockEvents = [
     time: "1:00 PM",
     endDate: "2025-09-20",
     endTime: "3:00 PM",
-    meeting: "Stratton Office Building 502 William G. Stratton Building 401 South Spring Street Springfield, IL 62706-4000",
+    meeting: "502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL\n62706-4000",
     type: "hearing"
   }
 ];
@@ -602,9 +602,9 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                         </div>
                         
                         {/* Location row */}
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4" aria-hidden="true" />
-                          <span>{event.meeting}</span>
+                        <div className="flex items-start space-x-2 text-sm text-muted-foreground">
+                          <MapPin className="h-4 w-4 mt-0.5" aria-hidden="true" />
+                          <div className="whitespace-pre-line">{event.meeting}</div>
                         </div>
                       </div>
                     </div>
