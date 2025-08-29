@@ -185,7 +185,7 @@ const mockEvents = [
     time: "1:00 PM",
     endDate: "2025-09-20",
     endTime: "3:00 PM",
-    meeting: "Stratton Office Building\n502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL 62706-4000",
+    meeting: "Stratton Office Building 502 William G. Stratton Building 401 South Spring Street Springfield, IL 62706-4000",
     type: "hearing"
   }
 ];
