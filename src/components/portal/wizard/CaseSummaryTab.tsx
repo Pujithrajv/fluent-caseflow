@@ -184,157 +184,18 @@ export function CaseSummaryTab({
             )}
           </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-0">
-            <InfoRow label="Case Name" value={data?.caseName} />
-            <InfoRow label="Description" value={data?.caseDescription} />
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="font-fluent">Initiating Action Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                      !initiatingActionDate && "text-muted-foreground"
-                    )}
-                    disabled={isReadOnly || isSeededCase}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {data.initiatingActionDate || initiatingActionDate ? 
-                      format(data.initiatingActionDate ? new Date(data.initiatingActionDate) : initiatingActionDate, "PPP") : 
-                      <span>Select date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={initiatingActionDate}
-                    onSelect={setInitiatingActionDate}
-                    initialFocus
-                    className="p-3 pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <div className="space-y-2">
-              <Label className="font-fluent">Responsive Action Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                      !responsiveActionDate && "text-muted-foreground"
-                    )}
-                    disabled={isReadOnly || isSeededCase}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {data.responsiveActionDate || responsiveActionDate ? 
-                      format(data.responsiveActionDate ? new Date(data.responsiveActionDate) : responsiveActionDate, "PPP") : 
-                      <span>Select date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={responsiveActionDate}
-                    onSelect={setResponsiveActionDate}
-                    initialFocus
-                    className="p-3 pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="specialInstructions" className="font-fluent">Special Instructions</Label>
-            <Textarea 
-              id="specialInstructions"
-              placeholder="Enter any special instructions or notes"
-              className="shadow-fluent-8 border-input-border min-h-[100px]"
-              disabled={isReadOnly || isSeededCase}
-              value={data?.specialInstructions || ''}
-              onChange={(e) => onDataChange({ ...data, specialInstructions: e.target.value })}
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="captionNotation" className="font-fluent">Caption Notation</Label>
-            <Textarea 
-              id="captionNotation"
-              placeholder="Enter caption notation"
-              className="shadow-fluent-8 border-input-border min-h-[100px]"
-              disabled={isReadOnly || isSeededCase}
-              value={data?.captionNotation || ''}
-              onChange={(e) => onDataChange({ ...data, captionNotation: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="font-fluent">Participant Hearing Resources</Label>
-            <div className="relative">
-              <Popover open={isAccessibilityDropdownOpen} onOpenChange={setIsAccessibilityDropdownOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-between text-left font-normal shadow-fluent-8 border-input-border h-auto min-h-[40px]",
-                      selectedAccessibilityOptions.length === 0 && "text-muted-foreground"
-                    )}
-                    disabled={isReadOnly || isSeededCase}
-                  >
-                     <div className="flex flex-wrap gap-1">
-                       {(data.accessibilityOptions?.length || selectedAccessibilityOptions.length) === 0 ? (
-                         <span>Select hearing resources</span>
-                       ) : (
-                         getSelectedLabels().map((label, index) => (
-                           <div
-                             key={index}
-                             className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded text-sm"
-                           >
-                             <span>{label}</span>
-                             <button
-                               onClick={(e) => {
-                                 e.stopPropagation();
-                                 const optionValue = accessibilityOptions.find(opt => opt.label === label)?.value;
-                                 if (optionValue) removeOption(optionValue);
-                               }}
-                               className="hover:bg-primary/20 rounded-full p-0.5"
-                             >
-                               <X className="h-3 w-3" />
-                             </button>
-                           </div>
-                         ))
-                       )}
-                     </div>
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0 z-50 bg-background border shadow-md" align="start">
-                  <div className="p-3 space-y-3">
-                    {accessibilityOptions.map((option) => (
-                      <div key={option.value} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={option.value}
-                          checked={selectedAccessibilityOptions.includes(option.value)}
-                          onCheckedChange={(checked) => handleAccessibilityChange(option.value, checked as boolean)}
-                        />
-                        <Label htmlFor={option.value} className="text-sm font-normal">
-                          {option.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
+        <CardContent className="space-y-0">
+          <InfoRow label="Case Name" value={data?.caseName} />
+          <InfoRow label="Description" value={data?.caseDescription} />
+          <InfoRow label="Special Instructions" value={data?.specialInstructions} />
+          <InfoRow label="Caption Notation" value={data?.captionNotation} />
+          <InfoRow label="Initiating Action Date" value={data?.initiatingActionDate ? format(new Date(data.initiatingActionDate), 'MMM dd, yyyy') : undefined} />
+          <InfoRow label="Responsive Action Date" value={data?.responsiveActionDate ? format(new Date(data.responsiveActionDate), 'MMM dd, yyyy') : undefined} />
+          {data?.accessibilityOptions && data.accessibilityOptions.length > 0 && (
+            <InfoRow label="Hearing Resources" value={data.accessibilityOptions.map(val => 
+              accessibilityOptions.find(opt => opt.value === val)?.label
+            ).filter(Boolean).join(', ')} />
+          )}
         </CardContent>
       </Card>
 
