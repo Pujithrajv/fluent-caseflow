@@ -554,68 +554,68 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Upcoming Events Tab Content */}
           <TabsContent value="events" className="mt-6">
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {sortedEvents.map((event) => (
-                <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200">
-                  <CardContent className="p-6">
+                <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200 aspect-square">
+                  <CardContent className="p-4 h-full flex flex-col">
                     {/* Header Section */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-foreground mb-1">
-                          {event.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {event.subtitle}
-                        </p>
-                      </div>
+                    <div className="flex items-start justify-between mb-3">
                       <Badge 
                         variant="secondary" 
-                        className="text-xs px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full"
+                        className="text-xs px-2 py-1 bg-primary/10 text-primary border-primary/20 rounded-full"
                       >
                         {event.type}
                       </Badge>
                     </div>
 
+                    {/* Title */}
+                    <div className="mb-3 flex-1">
+                      <h3 className="text-sm font-semibold text-foreground mb-1 line-clamp-2">
+                        {event.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground line-clamp-1">
+                        {event.subtitle}
+                      </p>
+                    </div>
+
                     {/* Details Section */}
-                    <div className="space-y-3 mb-6">
+                    <div className="space-y-2 mb-4">
                       {/* Date and Time */}
-                      <div className="flex items-center space-x-6">
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                          <Calendar className="h-4 w-4" />
-                          <span>{formatDate(event.date)}</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                          <Clock className="h-4 w-4" />
-                          <span>{event.time}</span>
-                        </div>
+                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        <span>{formatDate(event.date)}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        <span>{event.time}</span>
                       </div>
 
                       {/* Location */}
-                      <div className="flex items-start space-x-2 text-sm text-muted-foreground">
-                        <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                        <div className="whitespace-pre-line">{event.location}</div>
+                      <div className="flex items-start space-x-2 text-xs text-muted-foreground">
+                        <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
+                        <div className="line-clamp-2 whitespace-pre-line">{event.location}</div>
                       </div>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-col gap-1 mt-auto">
                       {event.isTeamsEvent && (
-                        <Button className="flex items-center space-x-2">
-                          <Video className="h-4 w-4" />
-                          <span>Join Teams Meeting</span>
+                        <Button size="sm" className="text-xs h-7">
+                          <Video className="h-3 w-3 mr-1" />
+                          Join Teams
                         </Button>
                       )}
                       
                       {event.hasCase && (
-                        <Button variant="outline" className="flex items-center space-x-2">
-                          <FolderOpen className="h-4 w-4" />
-                          <span>Open Case</span>
+                        <Button variant="outline" size="sm" className="text-xs h-7">
+                          <FolderOpen className="h-3 w-3 mr-1" />
+                          Open Case
                         </Button>
                       )}
                       
-                      <Button variant="outline" className="flex items-center space-x-2">
-                        <ExternalLink className="h-4 w-4" />
-                        <span>Open Appointment</span>
+                      <Button variant="outline" size="sm" className="text-xs h-7">
+                        <ExternalLink className="h-3 w-3 mr-1" />
+                        Open Appointment
                       </Button>
                     </div>
                   </CardContent>
