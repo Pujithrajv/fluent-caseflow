@@ -268,6 +268,7 @@ const mockTasks = [
     caseNumber: "FOID-2024-001",
     title: "Document Review Pending",
     description: "FOID Card Appeal - Abigayle Low",
+    primaryParty: "Abigayle Low",
     priority: "High Priority",
     dueDate: "2024-12-22",
     priorityClass: "bg-warning/20 border-warning",
@@ -278,6 +279,7 @@ const mockTasks = [
     caseNumber: "AGR-BEP-EP--25-00001",
     title: "Action Required: Conference report is required",
     description: "Conference report submission required for case",
+    primaryParty: "Kirby Neroni",
     priority: "High Priority",
     dueDate: "2024-12-20",
     priorityClass: "bg-warning/20 border-warning",
@@ -288,6 +290,7 @@ const mockTasks = [
     caseNumber: "EEC-GBA--25-00001",
     title: "Case Rejected – Conflict of Interest",
     description: "This case has been rejected by the assigned ALJ due to a conflict of interest.",
+    primaryParty: "Green Bay Associates",
     priority: "Alert",
     dueDate: "2025-07-17",
     priorityClass: "bg-destructive/20 border-destructive",
@@ -299,6 +302,7 @@ const mockTasks = [
     caseNumber: "2025-0008",
     title: "Case Rejected – Initial Review",
     description: "Test 6 Decision Date - Clerk rejected the case during initial review.",
+    primaryParty: "Test Party 6",
     priority: "Alert",
     dueDate: "2025-07-17",
     priorityClass: "bg-destructive/20 border-destructive",
@@ -646,9 +650,10 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="w-1/4">Case Number</TableHead>
-                        <TableHead className="w-1/2">Description</TableHead>
-                        <TableHead className="w-1/4">
+                        <TableHead className="w-1/5">Case Number</TableHead>
+                        <TableHead className="w-1/5">Primary Party</TableHead>
+                        <TableHead className="w-2/5">Description</TableHead>
+                        <TableHead className="w-1/5">
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -665,6 +670,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                       {tasks.map((task) => (
                         <TableRow key={task.id}>
                           <TableCell className="font-medium">{task.caseNumber}</TableCell>
+                          <TableCell className="font-medium">{task.primaryParty}</TableCell>
                           <TableCell>
                             <div>
                               <h4 className="font-medium text-sm text-foreground">{task.title}</h4>
