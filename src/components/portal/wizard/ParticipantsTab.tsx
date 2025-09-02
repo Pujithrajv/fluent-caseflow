@@ -83,6 +83,17 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
             <HelpCircle className="h-5 w-5 text-muted-foreground" />
           </div>
           
+          <div className="flex justify-end mt-6">
+            {!isReadOnly && (
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => setIsLookupModalOpen(true)}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Participant
+              </Button>
+            )}
+          </div>
         </CardHeader>
         
         <CardContent className="pt-0">
