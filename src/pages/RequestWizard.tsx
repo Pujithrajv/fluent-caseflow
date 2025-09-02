@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, ChevronRight, ChevronLeft, Check } from "lucide-react";
@@ -8,20 +8,14 @@ import { RequestSelectionTab } from "@/components/portal/wizard/RequestSelection
 import { SelectedSubprocessDetailsTab } from "@/components/portal/wizard/SelectedSubprocessDetailsTab";
 import { DocumentUploadTab } from "@/components/portal/wizard/DocumentUploadTab";
 import { RequestReviewSubmitTab } from "@/components/portal/wizard/RequestReviewSubmitTab";
-import { InterrogatoriesQuestionsTab } from "@/components/portal/wizard/InterrogatoriesQuestionsTab";
-import { DocumentProductionQuestionsTab } from "@/components/portal/wizard/DocumentProductionQuestionsTab";
-import { DepositionQuestionsTab } from "@/components/portal/wizard/DepositionQuestionsTab";
-import { InspectionQuestionsTab } from "@/components/portal/wizard/InspectionQuestionsTab";
 
-type WizardStep = "request" | "details" | "interrogatories" | "document-production" | "deposition" | "inspection" | "documents" | "review";
+type WizardStep = "request" | "details" | "documents" | "review";
 
 interface RequestData {
   requestGroup?: string;
   requestType?: string;
   details?: any;
   documents?: any[];
-  discoveryTypes?: string[];
-  discoverySubTabData?: {[key: string]: any};
 }
 
 const RequestWizard = () => {
@@ -31,45 +25,19 @@ const RequestWizard = () => {
   
   const [currentStep, setCurrentStep] = useState<WizardStep>("request");
   const [requestData, setRequestData] = useState<RequestData>({});
-  const [isComplete, setIsComplete] = useState<{[key: string]: boolean}>({
+  const [isComplete, setIsComplete] = useState({
     request: false,
     details: false,
     documents: false,
     review: false
   });
 
-  // Create dynamic steps based on selected discovery types
-  const steps = useMemo(() => {
-    const baseSteps = [
-      { id: "request", title: "Request", description: "Select request type" },
-      { id: "details", title: "Selected Subprocess Details", description: "Provide details" }
-    ];
-
-    // Add discovery sub-tabs if discovery is selected
-    if (requestData.requestGroup === "discovery" && requestData.discoveryTypes) {
-      const discoverySteps = requestData.discoveryTypes.map((type: string) => {
-        const titles: {[key: string]: string} = {
-          "interrogatories": "Interrogatories Questions",
-          "document-production": "Document Production Questions", 
-          "deposition": "Deposition Questions",
-          "inspection": "Inspection Questions"
-        };
-        return {
-          id: type,
-          title: titles[type] || `${type.charAt(0).toUpperCase() + type.slice(1)} Questions`,
-          description: "Type-specific questions"
-        };
-      });
-      baseSteps.push(...discoverySteps);
-    }
-
-    baseSteps.push(
-      { id: "documents", title: "Documents", description: "Upload required documents" },
-      { id: "review", title: "Review & Submit", description: "Review and submit" }
-    );
-
-    return baseSteps;
-  }, [requestData.requestGroup, requestData.discoveryTypes]);
+  const steps = [
+    { id: "request", title: "Request", description: "Select request type" },
+    { id: "details", title: "Selected Subprocess Details", description: "Provide details" },
+    { id: "documents", title: "Documents", description: "Upload required documents" },
+    { id: "review", title: "Review & Submit", description: "Review and submit" }
+  ];
 
   const currentStepIndex = steps.findIndex(step => step.id === currentStep);
 
@@ -109,11 +77,6 @@ const RequestWizard = () => {
         return requestData.requestGroup && requestData.requestType;
       case "details":
         return true; // Always allow continuation from details
-      case "interrogatories":
-      case "document-production":
-      case "deposition":
-      case "inspection":
-        return true; // Discovery sub-tabs validation handled internally
       case "documents":
         return true; // Assuming required documents are validated elsewhere
       case "review":
@@ -140,64 +103,6 @@ const RequestWizard = () => {
             data={requestData}
             onDataChange={handleDataChange}
             onComplete={() => handleStepComplete("details", true)}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-          />
-        );
-      case "interrogatories":
-        return (
-          <InterrogatoriesQuestionsTab
-            data={requestData.discoverySubTabData?.interrogatories || {}}
-            onDataChange={(data) => handleDataChange({
-              discoverySubTabData: {
-                ...requestData.discoverySubTabData,
-                interrogatories: data
-              }
-            })}
-            onValidationChange={(isValid) => handleStepComplete("interrogatories", isValid)}
-            isReadOnly={false}
-          />
-        );
-      case "document-production":
-        return (
-          <DocumentProductionQuestionsTab
-            data={requestData.discoverySubTabData?.["document-production"] || {}}
-            onDataChange={(data) => handleDataChange({
-              discoverySubTabData: {
-                ...requestData.discoverySubTabData,
-                "document-production": data
-              }
-            })}
-            onValidationChange={(isValid) => handleStepComplete("document-production", isValid)}
-            isReadOnly={false}
-          />
-        );
-      case "deposition":
-        return (
-          <DepositionQuestionsTab
-            data={requestData.discoverySubTabData?.deposition || {}}
-            onDataChange={(data) => handleDataChange({
-              discoverySubTabData: {
-                ...requestData.discoverySubTabData,
-                deposition: data
-              }
-            })}
-            onValidationChange={(isValid) => handleStepComplete("deposition", isValid)}
-            isReadOnly={false}
-          />
-        );
-      case "inspection":
-        return (
-          <InspectionQuestionsTab
-            data={requestData.discoverySubTabData?.inspection || {}}
-            onDataChange={(data) => handleDataChange({
-              discoverySubTabData: {
-                ...requestData.discoverySubTabData,
-                inspection: data
-              }
-            })}
-            onValidationChange={(isValid) => handleStepComplete("inspection", isValid)}
-            isReadOnly={false}
           />
         );
       case "documents":
