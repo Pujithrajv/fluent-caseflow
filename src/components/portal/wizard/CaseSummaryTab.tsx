@@ -100,60 +100,60 @@ export function CaseSummaryTab({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="space-y-6">
       {/* Department Information */}
       {(data?.department || data?.division || data?.bureau) && (
-        <Card className="shadow-fluent-8 aspect-square flex flex-col">
-          <CardHeader className="flex-shrink-0">
+        <Card className="shadow-fluent-8">
+          <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="font-fluent font-semibold text-sm">Department Information</CardTitle>
-                <p className="text-muted-foreground font-fluent text-xs">Agency structure and personnel</p>
+                <CardTitle className="font-fluent font-semibold">Department Information</CardTitle>
+                <p className="text-muted-foreground font-fluent text-sm">Agency structure and personnel</p>
               </div>
               {onEditTab && (
                 <Button 
                   variant="ghost" 
-                  size="sm" 
+                  size="icon" 
                   onClick={() => handleEditClick('department')}
-                  className="hover:bg-muted/80 focus:bg-muted/80 transition-colors h-6 w-6 p-0"
+                  className="hover:bg-muted/80 focus:bg-muted/80 transition-colors"
                 >
-                  <Edit className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                  <Edit className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                 </Button>
               )}
             </div>
           </CardHeader>
-          <CardContent className="flex-1 overflow-y-auto space-y-0 text-xs">
+          <CardContent className="space-y-0">
             <InfoRow label="Department" value={data?.department} />
             <InfoRow label="Division" value={data?.division} />
             <InfoRow label="Bureau" value={data?.bureau} />
             <InfoRow label="Case Type" value={data?.caseType} />
-            <InfoRow label="Case Reference" value={data?.referenceNumber} />
+            <InfoRow label="Case Reference Number" value={data?.referenceNumber} />
           </CardContent>
         </Card>
       )}
 
       {/* Primary Party Information */}
       {(data?.partyName || data?.partyType) && (
-        <Card className="shadow-fluent-8 aspect-square flex flex-col">
-          <CardHeader className="flex-shrink-0">
+        <Card className="shadow-fluent-8">
+          <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="font-fluent font-semibold text-sm">Primary Party Information</CardTitle>
-                <p className="text-muted-foreground font-fluent text-xs">Party details and representation</p>
+                <CardTitle className="font-fluent font-semibold">Primary Party Information</CardTitle>
+                <p className="text-muted-foreground font-fluent text-sm">Party details and representation</p>
               </div>
               {onEditTab && (
                 <Button 
                   variant="ghost" 
-                  size="sm" 
+                  size="icon" 
                   onClick={() => handleEditClick('primary-party')}
-                  className="hover:bg-muted/80 focus:bg-muted/80 transition-colors h-6 w-6 p-0"
+                  className="hover:bg-muted/80 focus:bg-muted/80 transition-colors"
                 >
-                  <Edit className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                  <Edit className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                 </Button>
               )}
             </div>
           </CardHeader>
-          <CardContent className="flex-1 overflow-y-auto space-y-0 text-xs">
+          <CardContent className="space-y-0">
             <InfoRow label="Party Type" value={data?.partyType} />
             <InfoRow label="Party Name" value={data?.partyName} />
             <InfoRow label="Email" value={data?.contactEmail} />
@@ -165,26 +165,26 @@ export function CaseSummaryTab({
       )}
 
       {/* Case Details */}
-      <Card className="shadow-fluent-8 aspect-square flex flex-col">
-        <CardHeader className="flex-shrink-0">
+      <Card className="shadow-fluent-8">
+        <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="font-fluent font-semibold text-sm">Case Details</CardTitle>
-              <p className="text-muted-foreground font-fluent text-xs">Case information and timeline</p>
+              <CardTitle className="font-fluent font-semibold">Case Details</CardTitle>
+              <p className="text-muted-foreground font-fluent text-sm">Case information and timeline</p>
             </div>
             {onEditTab && (
               <Button 
                 variant="ghost" 
-                size="sm" 
+                size="icon" 
                 onClick={() => handleEditClick('case-details')}
-                className="hover:bg-muted/80 focus:bg-muted/80 transition-colors h-6 w-6 p-0"
+                className="hover:bg-muted/80 focus:bg-muted/80 transition-colors"
               >
-                <Edit className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                <Edit className="h-4 w-4 text-muted-foreground hover:text-foreground" />
               </Button>
             )}
           </div>
         </CardHeader>
-        <CardContent className="flex-1 overflow-y-auto space-y-0 text-xs">
+        <CardContent className="space-y-0">
           <InfoRow label="Case Name" value={data?.caseName} />
           <InfoRow label="Description" value={data?.caseDescription} />
           <InfoRow label="Special Instructions" value={data?.specialInstructions} />
@@ -201,26 +201,26 @@ export function CaseSummaryTab({
 
       {/* Abandon Well Questions - Only show if relevant data exists */}
       {(data?.permitteeNumber || data?.permitNumber || data?.numberOfWells) && (
-        <Card className="shadow-fluent-8 aspect-square flex flex-col">
-          <CardHeader className="flex-shrink-0">
+        <Card className="shadow-fluent-8">
+          <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="font-fluent font-semibold text-sm">Abandon Well Questions</CardTitle>
-                <p className="text-muted-foreground font-fluent text-xs">Case type specific information</p>
+                <CardTitle className="font-fluent font-semibold">Abandon Well Questions</CardTitle>
+                <p className="text-muted-foreground font-fluent text-sm">Case type specific information</p>
               </div>
               {onEditTab && (
                 <Button 
                   variant="ghost" 
-                  size="sm" 
+                  size="icon" 
                   onClick={() => handleEditClick('case-questions')}
-                  className="hover:bg-muted/80 focus:bg-muted/80 transition-colors h-6 w-6 p-0"
+                  className="hover:bg-muted/80 focus:bg-muted/80 transition-colors"
                 >
-                  <Edit className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                  <Edit className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                 </Button>
               )}
             </div>
           </CardHeader>
-          <CardContent className="flex-1 overflow-y-auto space-y-0 text-xs">
+          <CardContent className="space-y-0">
             <InfoRow label="Permittee Number" value={data?.permitteeNumber} />
             <InfoRow label="Permit Number" value={data?.permitNumber} />
             <InfoRow label="Number of Wells" value={data?.numberOfWells?.toString()} />
