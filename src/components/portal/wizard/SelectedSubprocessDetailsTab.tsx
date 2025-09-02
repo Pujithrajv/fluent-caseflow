@@ -48,7 +48,6 @@ const discoveryTypes = [
 
 export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, onNext, onPrevious }: SelectedSubprocessDetailsTabProps) {
   // Discovery-specific states for sub-tabs
-  const [currentDiscoverySubTab, setCurrentDiscoverySubTab] = useState<string | null>(null);
   const [discoverySubTabData, setDiscoverySubTabData] = useState<any>({});
   const [discoverySubTabValidation, setDiscoverySubTabValidation] = useState<{[key: string]: boolean}>({});
   
@@ -185,8 +184,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
       discoveryConferenceDate,
       discoverySummary,
       description,
-      discoverySubTabData,
-      currentDiscoverySubTab
+      discoverySubTabData
     };
     onDataChange(updatedData);
   }, [
@@ -196,7 +194,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
     hasLithiumBattery, deliverableByCarrier, specialHandling, specialHandlingDescription,
     evidenceJustification, itemPhoto, selectedDiscoveryTypes, discoverySchedule, discoveryStartDate,
     discoveryCutoffDate, discoveryConferenceDate, discoverySummary, description, onDataChange,
-    discoverySubTabData, currentDiscoverySubTab
+    discoverySubTabData
   ]);
 
   // Validation logic
@@ -624,300 +622,253 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
   const renderDiscoveryWithSubTabs = () => {
     const subTabs = getDiscoverySubTabs();
     
-    // If in a sub-tab view, render the sub-tab
-    if (currentDiscoverySubTab) {
-      const renderSubTab = () => {
-        switch (currentDiscoverySubTab) {
-          case 'interrogatories':
-            return (
+    // Use tabs for discovery with sub-processes
+    return (
+      <Tabs defaultValue="discovery-details" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
+          <TabsTrigger value="discovery-details" className="text-sm">
+            Discovery Details
+          </TabsTrigger>
+          {subTabs.map((subTab) => (
+            <TabsTrigger key={subTab.id} value={subTab.id} className="text-sm relative">
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "w-2 h-2 rounded-full",
+                  discoverySubTabValidation[subTab.id] ? "bg-green-500" : "bg-gray-300"
+                )}>
+                </div>
+                {subTab.title}
+              </div>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        <TabsContent value="discovery-details" className="space-y-6">
+          <Card className="shadow-fluent-8">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 font-fluent">
+                <FileText className="h-5 w-5 text-primary" />
+                <span>Discovery Information</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="discoverySchedule" className="font-fluent">Set Discovery Schedule *</Label>
+                  <Select value={discoverySchedule} onValueChange={setDiscoverySchedule}>
+                    <SelectTrigger className="shadow-fluent-8 border-input-border">
+                      <SelectValue placeholder="Select discovery schedule" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="by-alj-order">By ALJ Order</SelectItem>
+                      <SelectItem value="by-agreed-order">By Agreed Order</SelectItem>
+                      <SelectItem value="at-pre-hearing-conference">At Pre-Hearing Conference</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="font-fluent">Type of Discovery Allowed *</Label>
+                  <div className="space-y-3">
+                    {discoveryTypes.map((type) => (
+                      <div key={type.id} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={type.id}
+                          checked={selectedDiscoveryTypes.includes(type.id)}
+                          onCheckedChange={(checked) => handleDiscoveryTypeChange(type.id, checked as boolean)}
+                        />
+                        <Label htmlFor={type.id} className="font-fluent cursor-pointer">
+                          {type.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {selectedDiscoveryTypes.length > 0 && (
+                    <div className="mt-3">
+                      <Label className="font-fluent text-sm text-muted-foreground">Selected Discovery Types:</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {selectedDiscoveryTypes.map((typeId) => {
+                          const type = discoveryTypes.find(t => t.id === typeId);
+                          return (
+                            <Badge key={typeId} variant="secondary" className="flex items-center gap-1">
+                              {type?.label}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-4 w-4 p-0 hover:bg-transparent"
+                                onClick={() => removeDiscoveryType(typeId)}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </Badge>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="font-fluent">Discovery Start Date *</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                          !discoveryStartDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {discoveryStartDate ? format(discoveryStartDate, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={discoveryStartDate}
+                        onSelect={setDiscoveryStartDate}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="font-fluent">Discovery Cutoff Date *</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                          !discoveryCutoffDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {discoveryCutoffDate ? format(discoveryCutoffDate, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={discoveryCutoffDate}
+                        onSelect={setDiscoveryCutoffDate}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="font-fluent">Date for Discovery Conference to monitor progress of discovery</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
+                          !discoveryConferenceDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {discoveryConferenceDate ? format(discoveryConferenceDate, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={discoveryConferenceDate}
+                        onSelect={setDiscoveryConferenceDate}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="caseId" className="font-fluent">Case ID</Label>
+                  <Input 
+                    id="caseId"
+                    value="AUTO-GENERATED"
+                    disabled
+                    className="shadow-fluent-8 border-input-border bg-muted"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="processStage" className="font-fluent">Process Stage</Label>
+                  <Input 
+                    id="processStage"
+                    value="Initial Review"
+                    disabled
+                    className="shadow-fluent-8 border-input-border bg-muted"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="discoverySummary" className="font-fluent">Discovery Summary *</Label>
+                <Textarea 
+                  id="discoverySummary"
+                  value={discoverySummary}
+                  onChange={(e) => setDiscoverySummary(e.target.value)}
+                  placeholder="Provide a detailed summary of your discovery request..."
+                  className="shadow-fluent-8 border-input-border min-h-32"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {subTabs.map((subTab) => (
+          <TabsContent key={subTab.id} value={subTab.id} className="space-y-6">
+            {subTab.id === 'interrogatories' && (
               <InterrogatoriesQuestionsTab
                 data={discoverySubTabData.interrogatories || {}}
                 onDataChange={(data) => updateDiscoverySubTabData('interrogatories', data)}
                 onValidationChange={(isValid) => updateDiscoverySubTabValidation('interrogatories', isValid)}
                 isReadOnly={false}
               />
-            );
-          case 'document-production':
-            return (
+            )}
+            {subTab.id === 'document-production' && (
               <DocumentProductionQuestionsTab
                 data={discoverySubTabData['document-production'] || {}}
                 onDataChange={(data) => updateDiscoverySubTabData('document-production', data)}
                 onValidationChange={(isValid) => updateDiscoverySubTabValidation('document-production', isValid)}
                 isReadOnly={false}
               />
-            );
-          case 'deposition':
-            return (
+            )}
+            {subTab.id === 'deposition' && (
               <DepositionQuestionsTab
                 data={discoverySubTabData.deposition || {}}
                 onDataChange={(data) => updateDiscoverySubTabData('deposition', data)}
                 onValidationChange={(isValid) => updateDiscoverySubTabValidation('deposition', isValid)}
                 isReadOnly={false}
               />
-            );
-          case 'inspection':
-            return (
+            )}
+            {subTab.id === 'inspection' && (
               <InspectionQuestionsTab
                 data={discoverySubTabData.inspection || {}}
                 onDataChange={(data) => updateDiscoverySubTabData('inspection', data)}
                 onValidationChange={(isValid) => updateDiscoverySubTabValidation('inspection', isValid)}
                 isReadOnly={false}
               />
-            );
-          default:
-            return null;
-        }
-      };
-
-      return (
-        <div className="space-y-6">
-          {/* Sub-tab header */}
-          <div className="flex items-center justify-between">
-            <Button 
-              variant="outline" 
-              onClick={() => setCurrentDiscoverySubTab(null)}
-              className="flex items-center gap-2"
-            >
-              ← Back to Discovery Information
-            </Button>
-          </div>
-          
-          {/* Sub-tab content */}
-          {renderSubTab()}
-        </div>
-      );
-    }
-
-    // Main Discovery form
-    return (
-      <div className="space-y-6">
-        <Card className="shadow-fluent-8">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2 font-fluent">
-              <FileText className="h-5 w-5 text-primary" />
-              <span>Discovery Information</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="discoverySchedule" className="font-fluent">Set Discovery Schedule *</Label>
-                <Select value={discoverySchedule} onValueChange={setDiscoverySchedule}>
-                  <SelectTrigger className="shadow-fluent-8 border-input-border">
-                    <SelectValue placeholder="Select discovery schedule" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="by-alj-order">By ALJ Order</SelectItem>
-                    <SelectItem value="by-agreed-order">By Agreed Order</SelectItem>
-                    <SelectItem value="at-pre-hearing-conference">At Pre-Hearing Conference</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="font-fluent">Type of Discovery Allowed *</Label>
-                <div className="space-y-3">
-                  {discoveryTypes.map((type) => (
-                    <div key={type.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={type.id}
-                        checked={selectedDiscoveryTypes.includes(type.id)}
-                        onCheckedChange={(checked) => handleDiscoveryTypeChange(type.id, checked as boolean)}
-                      />
-                      <Label htmlFor={type.id} className="font-fluent cursor-pointer">
-                        {type.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-                
-                {selectedDiscoveryTypes.length > 0 && (
-                  <div className="mt-3">
-                    <Label className="font-fluent text-sm text-muted-foreground">Selected Discovery Types:</Label>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {selectedDiscoveryTypes.map((typeId) => {
-                        const type = discoveryTypes.find(t => t.id === typeId);
-                        return (
-                          <Badge key={typeId} variant="secondary" className="flex items-center gap-1">
-                            {type?.label}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-4 w-4 p-0 hover:bg-transparent"
-                              onClick={() => removeDiscoveryType(typeId)}
-                            >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </Badge>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label className="font-fluent">Discovery Start Date *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                        !discoveryStartDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {discoveryStartDate ? format(discoveryStartDate, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={discoveryStartDate}
-                      onSelect={setDiscoveryStartDate}
-                      initialFocus
-                      className={cn("p-3 pointer-events-auto")}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="font-fluent">Discovery Cutoff Date *</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                        !discoveryCutoffDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {discoveryCutoffDate ? format(discoveryCutoffDate, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={discoveryCutoffDate}
-                      onSelect={setDiscoveryCutoffDate}
-                      initialFocus
-                      className={cn("p-3 pointer-events-auto")}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label className="font-fluent">Date for Discovery Conference to monitor progress of discovery</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal shadow-fluent-8 border-input-border",
-                        !discoveryConferenceDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {discoveryConferenceDate ? format(discoveryConferenceDate, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={discoveryConferenceDate}
-                      onSelect={setDiscoveryConferenceDate}
-                      initialFocus
-                      className={cn("p-3 pointer-events-auto")}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="caseId" className="font-fluent">Case ID</Label>
-                <Input 
-                  id="caseId"
-                  value="AUTO-GENERATED"
-                  disabled
-                  className="shadow-fluent-8 border-input-border bg-muted"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="processStage" className="font-fluent">Process Stage</Label>
-                <Input 
-                  id="processStage"
-                  value="Initial Review"
-                  disabled
-                  className="shadow-fluent-8 border-input-border bg-muted"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="discoverySummary" className="font-fluent">Discovery Summary *</Label>
-              <Textarea 
-                id="discoverySummary"
-                value={discoverySummary}
-                onChange={(e) => setDiscoverySummary(e.target.value)}
-                placeholder="Provide a detailed summary of your discovery request..."
-                className="shadow-fluent-8 border-input-border min-h-32"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Sub-tabs cards */}
-        {subTabs.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold font-fluent">Discovery Sub-Processes</h3>
-            <div className="grid gap-4">
-              {subTabs.map((subTab) => (
-                <Card key={subTab.id} className="shadow-fluent-8">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className={cn(
-                          "w-5 h-5 rounded-full flex items-center justify-center",
-                          discoverySubTabValidation[subTab.id] ? "bg-green-500" : "bg-gray-300"
-                        )}>
-                          {discoverySubTabValidation[subTab.id] && (
-                            <Check className="w-3 h-3 text-white" />
-                          )}
-                        </div>
-                        <div>
-                          <h4 className="font-medium font-fluent">{subTab.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {discoverySubTabValidation[subTab.id] ? "Completed" : "Requires attention"}
-                          </p>
-                        </div>
-                      </div>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => setCurrentDiscoverySubTab(subTab.id)}
-                      >
-                        Configure
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+            )}
+          </TabsContent>
+        ))}
+      </Tabs>
     );
   };
 
@@ -968,21 +919,19 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
     <div className="space-y-6">
       {renderContent()}
       
-      {/* Navigation - only show if not in a discovery sub-tab */}
-      {!(requestGroup === "discovery" && currentDiscoverySubTab) && (
-        <div className="flex justify-between pt-4">
-          <Button variant="outline" onClick={onPrevious}>
-            Previous
-          </Button>
-          <Button 
-            disabled={!canContinue()}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-            onClick={onNext}
-          >
-            Next
-          </Button>
-        </div>
-      )}
+      {/* Navigation */}
+      <div className="flex justify-between pt-4">
+        <Button variant="outline" onClick={onPrevious}>
+          Previous
+        </Button>
+        <Button 
+          disabled={!canContinue()}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={onNext}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }
