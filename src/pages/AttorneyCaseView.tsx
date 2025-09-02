@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ArrowLeft, Plus, Eye, Edit } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { NewParticipantModal } from "@/components/portal/NewParticipantModal";
 
 interface Request {
   id: string;
@@ -13,6 +14,18 @@ interface Request {
   requestType: string;
   status: "draft" | "submitted" | "approved" | "denied";
   submissionDate: string;
+}
+
+interface Participant {
+  id: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  organization: string;
+  phone: string;
+  email: string;
+  address: string;
+  notes: string;
 }
 
 const mockRequests: Request[] = [
@@ -36,6 +49,31 @@ const AttorneyCaseView = () => {
   const navigate = useNavigate();
   const { caseId } = useParams();
   const [requests] = useState<Request[]>(mockRequests);
+  const [showNewParticipantModal, setShowNewParticipantModal] = useState(false);
+  const [participants, setParticipants] = useState<Participant[]>([
+    {
+      id: "1",
+      firstName: "Kirby",
+      lastName: "Neroni",
+      role: "Respondent",
+      organization: "",
+      phone: "",
+      email: "kirby.neroni@example.com",
+      address: "",
+      notes: ""
+    },
+    {
+      id: "2",
+      firstName: "",
+      lastName: "",
+      role: "Complainant",
+      organization: "Department of Agriculture",
+      phone: "(217) 555-0123",
+      email: "legal@agriculture.illinois.gov",
+      address: "",
+      notes: ""
+    }
+  ]);
 
   const mockCaseData = {
     id: caseId,
@@ -68,6 +106,10 @@ const AttorneyCaseView = () => {
 
   const handleAddRequest = () => {
     navigate(`/attorney/case/${caseId}/add-request`);
+  };
+
+  const handleAddParticipant = (newParticipant: Participant) => {
+    setParticipants(prev => [...prev, newParticipant]);
   };
 
   const getStatusBadgeVariant = (status: string) => {
@@ -261,8 +303,12 @@ const AttorneyCaseView = () => {
           {/* Participants Tab */}
           <TabsContent value="participants" className="mt-6">
             <Card className="shadow-fluent-8">
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="font-fluent">Case Participants</CardTitle>
+                <Button onClick={() => setShowNewParticipantModal(true)}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Participant
+                </Button>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -270,18 +316,24 @@ const AttorneyCaseView = () => {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Role</TableHead>
-                      <TableHead>Type</TableHead>
+                      <TableHead>Organization</TableHead>
                       <TableHead>Email</TableHead>
+                      <TableHead>Phone</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockParticipants.map((participant) => (
+                    {participants.map((participant) => (
                       <TableRow key={participant.id}>
-                        <TableCell className="font-medium">{participant.name}</TableCell>
-                        <TableCell>{participant.role}</TableCell>
-                        <TableCell>{participant.type}</TableCell>
-                        <TableCell>{participant.email}</TableCell>
+                        <TableCell className="font-medium">
+                          {participant.firstName && participant.lastName
+                            ? `${participant.firstName} ${participant.lastName}`
+                            : participant.organization || 'N/A'}
+                        </TableCell>
+                        <TableCell>{participant.role || 'N/A'}</TableCell>
+                        <TableCell>{participant.organization || 'N/A'}</TableCell>
+                        <TableCell>{participant.email || 'N/A'}</TableCell>
+                        <TableCell>{participant.phone || 'N/A'}</TableCell>
                         <TableCell className="text-right">
                           <Button variant="outline" size="sm">
                             <Edit className="mr-2 h-4 w-4" />
@@ -353,6 +405,13 @@ const AttorneyCaseView = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* New Participant Modal */}
+      <NewParticipantModal
+        open={showNewParticipantModal}
+        onClose={() => setShowNewParticipantModal(false)}
+        onSave={handleAddParticipant}
+      />
     </div>
   );
 };
