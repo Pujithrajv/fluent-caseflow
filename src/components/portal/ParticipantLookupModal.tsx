@@ -429,6 +429,9 @@ export function ParticipantLookupModal({
                             onChange={(e) => handlePhoneChange(e.target.value)}
                           />
                         </FormControl>
+                        <FormDescription>
+                          Enter either phone or address
+                        </FormDescription>
                       </FormItem>
                     )}
                   />
