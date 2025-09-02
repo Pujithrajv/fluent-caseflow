@@ -14,6 +14,7 @@ import Consent from "./pages/Consent";
 import PortalDashboard from "./pages/PortalDashboard";
 import ParticipantsDashboard from "./pages/ParticipantsDashboard";
 import NotFound from "./pages/NotFound";
+import { AppointmentDetails } from "./components/portal/AppointmentDetails";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/consent" element={<Consent />} />
           <Route path="/dashboard" element={<PortalDashboard />} />
           <Route path="/participants" element={<ParticipantsDashboard />} />
+          <Route path="/appointment/:appointmentId" element={<AppointmentDetails />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

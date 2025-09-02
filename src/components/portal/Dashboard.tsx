@@ -696,7 +696,11 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                           <FolderOpen className="h-4 w-4 mr-2" />
                           Open Case
                         </Button>
-                        <Button variant="outline" className="flex-1 h-9 font-medium">
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 h-9 font-medium"
+                          onClick={() => navigate(`/appointment/${event.id}`)}
+                        >
                           <ExternalLink className="h-4 w-4 mr-2" />
                           Open Appointment
                         </Button>
