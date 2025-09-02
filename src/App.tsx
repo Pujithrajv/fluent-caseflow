@@ -13,6 +13,9 @@ import Profile from "./pages/Profile";
 import Consent from "./pages/Consent";
 import PortalDashboard from "./pages/PortalDashboard";
 import ParticipantsDashboard from "./pages/ParticipantsDashboard";
+import AttorneyDashboard from "./pages/AttorneyDashboard";
+import AttorneyCaseView from "./pages/AttorneyCaseView";
+import RequestWizard from "./pages/RequestWizard";
 import NotFound from "./pages/NotFound";
 import { AppointmentDetails } from "./components/portal/AppointmentDetails";
 
@@ -36,6 +39,9 @@ const App = () => (
           <Route path="/consent" element={<Consent />} />
           <Route path="/dashboard" element={<PortalDashboard />} />
           <Route path="/participants" element={<ParticipantsDashboard />} />
+          <Route path="/attorney/dashboard" element={<AttorneyDashboard />} />
+          <Route path="/attorney/case/:caseId" element={<AttorneyCaseView />} />
+          <Route path="/attorney/case/:caseId/add-request" element={<RequestWizard />} />
           <Route path="/appointment/:appointmentId" element={<AppointmentDetails />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -196,6 +196,12 @@ const Profile = () => {
             >
               Consent and Settings
             </TabsTrigger>
+            <TabsTrigger 
+              value="attorneys" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Attorneys
+            </TabsTrigger>
           </TabsList>
 
           {/* My Profile Tab */}
@@ -987,6 +993,25 @@ const Profile = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Attorneys Tab */}
+          <TabsContent value="attorneys" className="mt-6">
+            <div className="max-w-screen-xl mx-auto space-y-6">
+              <Card className="shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-foreground">Attorney Dashboard</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-muted-foreground">
+                    Access the attorney dashboard to view and manage accepted cases.
+                  </p>
+                  <Button onClick={() => navigate("/attorney/dashboard")}>
+                    Go to Attorney Dashboard
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
