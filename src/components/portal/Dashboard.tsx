@@ -146,16 +146,25 @@ const mockCases: CaseItem[] = [
 const mockEvents = [
   {
     id: 1,
-    title: "AGR vs. – Notices (DBE-2024-001-EC)",
+    title: "Initial Case Management Conference",
     subtitle: "Notice of Initial Case Management Conference",
     date: "2025-08-25",
     time: "1:00 PM",
     endDate: "2025-08-25",
     endTime: "2:00 PM",
-    location: "Teams (web-based)",
-    type: "meeting",
+    location: "Microsoft Teams Meeting",
+    meetingId: "392 671 125 846",
+    type: "Conference",
+    eventType: "meeting",
     isTeamsEvent: true,
-    hasCase: false
+    hasCase: true,
+    caseNumber: "DBE-2024-001-EC",
+    caseType: "Grain Dealer and Warehouse Licensing",
+    department: "Department of Agriculture",
+    departmentRole: "Complainant",
+    primaryParty: "Kirby Neroni",
+    primaryPartyRole: "Respondent",
+    timezone: "CST"
   },
   {
     id: 2,
@@ -165,36 +174,62 @@ const mockEvents = [
     time: "10:00 AM",
     endDate: "2025-09-14",
     endTime: "11:00 AM",
-    location: "Teams (web-based)",
-    type: "meeting",
+    location: "Microsoft Teams Meeting",
+    meetingId: "855 123 456 789",
+    type: "Meeting",
+    eventType: "meeting",
     isTeamsEvent: true,
-    hasCase: false
+    hasCase: true,
+    caseNumber: "CASE-2024-001",
+    caseType: "Weights & Measures Inspections",
+    department: "Department of Agriculture",
+    departmentRole: "Petitioner",
+    primaryParty: "Sniders Group",
+    primaryPartyRole: "Respondent",
+    timezone: "CST"
   },
   {
     id: 3,
     title: "Pre-hearing Conference",
     subtitle: "Web-based session",
     date: "2025-09-14",
-    time: "10:00 AM",
+    time: "2:00 PM",
     endDate: "2025-09-14",
-    endTime: "11:00 AM",
-    location: "Teams (web-based)",
-    type: "meeting",
+    endTime: "3:00 PM",
+    location: "Microsoft Teams Meeting",
+    meetingId: "123 987 654 321",
+    type: "Conference",
+    eventType: "meeting",
     isTeamsEvent: true,
-    hasCase: true
+    hasCase: true,
+    caseNumber: "CASE-2024-002",
+    caseType: "Weights & Measures Inspections",
+    department: "Department of Agriculture",
+    departmentRole: "Petitioner",
+    primaryParty: "Midtown Vending LLC",
+    primaryPartyRole: "Respondent",
+    timezone: "CST"
   },
   {
     id: 4,
-    title: "Hearing Conference",
+    title: "Administrative Hearing",
     subtitle: "Professional Hearing Session",
     date: "2025-09-19",
     time: "1:00 PM",
     endDate: "2025-09-19",
     endTime: "3:00 PM",
-    location: "502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL\n62706-4000",
-    type: "hearing",
+    location: "502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL 62706-4000",
+    type: "Hearing",
+    eventType: "hearing",
     isTeamsEvent: false,
-    hasCase: false,
+    hasCase: true,
+    caseNumber: "CASE-2024-003",
+    caseType: "Food Safety",
+    department: "Department of Public Health",
+    departmentRole: "Complainant",
+    primaryParty: "North District Foods",
+    primaryPartyRole: "Respondent",
+    timezone: "CST",
     aljAssigned: "Daniel Schuering"
   }
 ];
@@ -559,76 +594,113 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Upcoming Events Tab Content */}
           <TabsContent value="events" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {sortedEvents.map((event) => (
-                <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200 aspect-square">
-                  <CardContent className="p-4 h-full flex flex-col">
-                    {/* Header Section */}
-                    <div className="flex items-start justify-between mb-3">
+                <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200 bg-white rounded-lg border border-border">
+                  <CardContent className="p-6">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-foreground leading-tight">
+                        {event.title}
+                      </h3>
                       <Badge 
                         variant="secondary" 
-                        className="text-xs px-2 py-1 bg-primary/10 text-primary border-primary/20 rounded-full"
+                        className="text-xs px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full font-medium ml-2"
                       >
                         {event.type}
                       </Badge>
                     </div>
 
-                    {/* Title */}
-                    <div className="mb-3 flex-1">
-                      <h3 className="text-sm font-semibold text-foreground mb-1 line-clamp-2">
-                        {event.title}
-                      </h3>
-                      <p className="text-xs text-muted-foreground line-clamp-1">
-                        {event.subtitle}
-                      </p>
+                    {/* Case & Party Metadata */}
+                    <div className="space-y-2 mb-4 pb-4 border-b border-border">
+                      <div className="flex items-start space-x-2">
+                        <FileText className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <span className="text-sm font-medium text-foreground">
+                            {event.caseNumber}: {event.caseType}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-2">
+                        <Shield className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <div>
+                          <span className="text-sm text-muted-foreground">
+                            {event.department} ({event.departmentRole})
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-2">
+                        <div className="h-4 w-4 flex items-center justify-center mt-0.5">
+                          <div className="h-2 w-2 rounded-full bg-muted-foreground"></div>
+                        </div>
+                        <div>
+                          <span className="text-sm text-muted-foreground">
+                            {event.primaryParty} ({event.primaryPartyRole})
+                          </span>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Details Section */}
-                    <div className="space-y-2 mb-4">
-                      {/* Date and Time */}
-                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        <span>{formatDate(event.date)}</span>
+                    {/* Event Details */}
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center space-x-3">
+                        <Calendar className="h-4 w-4 text-primary" />
+                        <span className="text-sm text-foreground font-medium">
+                          {formatDate(event.date)}
+                        </span>
                       </div>
-                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span>{event.time}</span>
+                      <div className="flex items-center space-x-3">
+                        <Clock className="h-4 w-4 text-primary" />
+                        <span className="text-sm text-foreground">
+                          {event.time} - {event.endTime} {event.timezone}
+                        </span>
                       </div>
-
-                      {/* Location */}
-                      <div className="flex items-start space-x-2 text-xs text-muted-foreground">
-                        <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                        <div className="line-clamp-2 whitespace-pre-line">{event.location}</div>
+                      <div className="flex items-start space-x-3">
+                        <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <div className="text-sm text-foreground">
+                          {event.isTeamsEvent ? (
+                            <div>
+                              <div className="font-medium">{event.location}</div>
+                              <div className="text-muted-foreground mt-1">
+                                Meeting ID: {event.meetingId}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="whitespace-pre-line">{event.location}</div>
+                          )}
+                        </div>
                       </div>
-
-                      {/* ALJ Assignment */}
                       {event.aljAssigned && (
-                        <div className="flex items-start space-x-2 text-xs text-muted-foreground">
-                          <div className="text-xs font-medium">ALJ Assigned: {event.aljAssigned}</div>
+                        <div className="flex items-start space-x-3">
+                          <div className="h-4 w-4 flex items-center justify-center mt-0.5">
+                            <div className="h-2 w-2 rounded-full bg-primary"></div>
+                          </div>
+                          <span className="text-sm text-foreground">
+                            ALJ Assigned: <span className="font-medium">{event.aljAssigned}</span>
+                          </span>
                         </div>
                       )}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-col gap-1 mt-auto">
+                    {/* Footer Buttons */}
+                    <div className="space-y-2">
                       {event.isTeamsEvent && (
-                        <Button size="sm" className="text-xs h-7">
-                          <Video className="h-3 w-3 mr-1" />
+                        <Button className="w-full h-9 font-medium">
+                          <Video className="h-4 w-4 mr-2" />
                           Join Teams
                         </Button>
                       )}
                       
-                      {event.hasCase && (
-                        <Button variant="outline" size="sm" className="text-xs h-7">
-                          <FolderOpen className="h-3 w-3 mr-1" />
+                      <div className="flex space-x-2">
+                        <Button variant="outline" className="flex-1 h-9 font-medium">
+                          <FolderOpen className="h-4 w-4 mr-2" />
                           Open Case
                         </Button>
-                      )}
-                      
-                      <Button variant="outline" size="sm" className="text-xs h-7">
-                        <ExternalLink className="h-3 w-3 mr-1" />
-                        Open Appointment
-                      </Button>
+                        <Button variant="outline" className="flex-1 h-9 font-medium">
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Open Appointment
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
