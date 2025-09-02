@@ -140,9 +140,64 @@ const AttorneyCaseView = () => {
           {/* Case Summary Tab */}
           <TabsContent value="case-summary" className="mt-6">
             <div className="space-y-6">
+              {/* Department Information */}
               <Card className="shadow-fluent-8">
                 <CardHeader>
-                  <CardTitle className="font-fluent">Case Information</CardTitle>
+                  <CardTitle className="font-fluent">Department Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Department</label>
+                      <p className="font-medium">{mockCaseData.department}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Department Reference Number</label>
+                      <p className="font-medium">AGR-2024-0892</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Section</label>
+                      <p className="font-medium">Division of Agricultural Industry Regulation</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Department Participation Type</label>
+                      <p className="font-medium">Complainant</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Primary Party */}
+              <Card className="shadow-fluent-8">
+                <CardHeader>
+                  <CardTitle className="font-fluent">Primary Party</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Name</label>
+                      <p className="font-medium">{mockCaseData.primaryPartyName}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Party Type</label>
+                      <p className="font-medium">{mockCaseData.primaryPartyType}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Category</label>
+                      <p className="font-medium">Individual</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Represented</label>
+                      <p className="font-medium">No</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Case Details */}
+              <Card className="shadow-fluent-8">
+                <CardHeader>
+                  <CardTitle className="font-fluent">Case Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -155,20 +210,47 @@ const AttorneyCaseView = () => {
                       <p className="font-medium">{mockCaseData.caseType}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Department</label>
-                      <p className="font-medium">{mockCaseData.department}</p>
-                    </div>
-                    <div>
                       <label className="text-sm font-medium text-muted-foreground">Stage</label>
                       <Badge variant="outline">{mockCaseData.stage}</Badge>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Primary Party</label>
-                      <p className="font-medium">{mockCaseData.primaryPartyName} ({mockCaseData.primaryPartyType})</p>
+                      <label className="text-sm font-medium text-muted-foreground">Status</label>
+                      <Badge variant="default">Accepted</Badge>
                     </div>
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">Assigned Attorney</label>
                       <p className="font-medium">{mockCaseData.assignedAttorney}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Last Action Date</label>
+                      <p className="font-medium">August 11, 2025</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Abandon Well Questions */}
+              <Card className="shadow-fluent-8">
+                <CardHeader>
+                  <CardTitle className="font-fluent">Abandon Well Questions</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Is this related to an abandoned well?</label>
+                      <p className="font-medium">No</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Well Location (if applicable)</label>
+                      <p className="font-medium text-muted-foreground">Not applicable</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Environmental Impact Assessment</label>
+                      <p className="font-medium text-muted-foreground">Not applicable for this case type</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Remediation Required</label>
+                      <p className="font-medium text-muted-foreground">Not applicable</p>
                     </div>
                   </div>
                 </CardContent>
