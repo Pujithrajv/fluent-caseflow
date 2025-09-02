@@ -100,11 +100,11 @@ export function CaseSummaryTab({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Department Information */}
       {(data?.department || data?.division || data?.bureau) && (
-        <Card className="shadow-fluent-8">
-          <CardHeader>
+        <Card className="shadow-fluent-8 aspect-square flex flex-col">
+          <CardHeader className="flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="font-fluent font-semibold">Department Information</CardTitle>
@@ -122,7 +122,7 @@ export function CaseSummaryTab({
               )}
             </div>
           </CardHeader>
-          <CardContent className="space-y-0">
+          <CardContent className="flex-1 space-y-0 overflow-auto">
             <InfoRow label="Department" value={data?.department} />
             <InfoRow label="Division" value={data?.division} />
             <InfoRow label="Bureau" value={data?.bureau} />
@@ -134,8 +134,8 @@ export function CaseSummaryTab({
 
       {/* Primary Party Information */}
       {(data?.partyName || data?.partyType) && (
-        <Card className="shadow-fluent-8">
-          <CardHeader>
+        <Card className="shadow-fluent-8 aspect-square flex flex-col">
+          <CardHeader className="flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="font-fluent font-semibold">Primary Party Information</CardTitle>
@@ -153,7 +153,7 @@ export function CaseSummaryTab({
               )}
             </div>
           </CardHeader>
-          <CardContent className="space-y-0">
+          <CardContent className="flex-1 space-y-0 overflow-auto">
             <InfoRow label="Party Type" value={data?.partyType} />
             <InfoRow label="Party Name" value={data?.partyName} />
             <InfoRow label="Email" value={data?.contactEmail} />
@@ -165,8 +165,8 @@ export function CaseSummaryTab({
       )}
 
       {/* Case Details */}
-      <Card className="shadow-fluent-8">
-        <CardHeader>
+      <Card className="shadow-fluent-8 aspect-square flex flex-col">
+        <CardHeader className="flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="font-fluent font-semibold">Case Details</CardTitle>
@@ -184,7 +184,7 @@ export function CaseSummaryTab({
             )}
           </div>
         </CardHeader>
-        <CardContent className="space-y-0">
+        <CardContent className="flex-1 space-y-0 overflow-auto">
           <InfoRow label="Case Name" value={data?.caseName} />
           <InfoRow label="Description" value={data?.caseDescription} />
           <InfoRow label="Special Instructions" value={data?.specialInstructions} />
@@ -201,8 +201,8 @@ export function CaseSummaryTab({
 
       {/* Abandon Well Questions - Only show if relevant data exists */}
       {(data?.permitteeNumber || data?.permitNumber || data?.numberOfWells) && (
-        <Card className="shadow-fluent-8">
-          <CardHeader>
+        <Card className="shadow-fluent-8 aspect-square flex flex-col">
+          <CardHeader className="flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="font-fluent font-semibold">Abandon Well Questions</CardTitle>
@@ -220,7 +220,7 @@ export function CaseSummaryTab({
               )}
             </div>
           </CardHeader>
-          <CardContent className="space-y-0">
+          <CardContent className="flex-1 space-y-0 overflow-auto">
             <InfoRow label="Permittee Number" value={data?.permitteeNumber} />
             <InfoRow label="Permit Number" value={data?.permitNumber} />
             <InfoRow label="Number of Wells" value={data?.numberOfWells?.toString()} />
