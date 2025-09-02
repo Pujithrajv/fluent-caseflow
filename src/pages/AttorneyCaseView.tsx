@@ -307,7 +307,7 @@ const AttorneyCaseView = () => {
                 <CardTitle className="font-fluent">Case Participants</CardTitle>
                 <Button onClick={() => setShowNewParticipantModal(true)}>
                   <Plus className="mr-2 h-4 w-4" />
-                  New Participant
+                  Add Participant
                 </Button>
               </CardHeader>
               <CardContent>
