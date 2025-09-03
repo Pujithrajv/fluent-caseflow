@@ -156,31 +156,32 @@ const AttorneyCaseView = () => {
           </p>
         </div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="case-summary" className="w-full">
-          <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0">
-            <TabsTrigger 
-              value="case-summary"
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Case Summary
-            </TabsTrigger>
-            <TabsTrigger 
-              value="participants"
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Participants
-            </TabsTrigger>
-            <TabsTrigger 
-              value="requests"
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Requests
-            </TabsTrigger>
-          </TabsList>
+        {/* Full-width Tab Bar */}
+        <div className="mt-6 mb-4">
+          <Tabs defaultValue="case-summary" className="w-full">
+            <TabsList className="w-full bg-transparent border-b border-border h-auto rounded-none p-0 grid grid-cols-3 gap-0">
+              <TabsTrigger 
+                value="case-summary"
+                className="font-fluent text-base font-medium rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:border-b-4 data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:font-bold data-[state=active]:shadow-none hover:bg-muted/50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring px-4 sm:px-6 py-4 min-h-[44px] min-w-[160px] transition-all duration-200 text-center flex items-center justify-center"
+              >
+                <span className="leading-tight">Case Summary</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="participants"
+                className="font-fluent text-base font-medium rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:border-b-4 data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:font-bold data-[state=active]:shadow-none hover:bg-muted/50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring px-4 sm:px-6 py-4 min-h-[44px] min-w-[160px] transition-all duration-200 text-center flex items-center justify-center"
+              >
+                <span className="leading-tight">Participants</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="requests"
+                className="font-fluent text-base font-medium rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:border-b-4 data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:font-bold data-[state=active]:shadow-none hover:bg-muted/50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring px-4 sm:px-6 py-4 min-h-[44px] min-w-[160px] transition-all duration-200 text-center flex items-center justify-center"
+              >
+                <span className="leading-tight">Requests</span>
+              </TabsTrigger>
+            </TabsList>
 
-          {/* Case Summary Tab */}
-          <TabsContent value="case-summary" className="mt-6">
+            {/* Case Summary Tab */}
+            <TabsContent value="case-summary" className="mt-4">
             <div className="space-y-6">
               {/* Department Information */}
               <Card className="shadow-fluent-8">
@@ -300,8 +301,8 @@ const AttorneyCaseView = () => {
             </div>
           </TabsContent>
 
-          {/* Participants Tab */}
-          <TabsContent value="participants" className="mt-6">
+            {/* Participants Tab */}
+            <TabsContent value="participants" className="mt-4">
             <Card className="shadow-fluent-8">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="font-fluent">Case Participants</CardTitle>
@@ -351,8 +352,8 @@ const AttorneyCaseView = () => {
             </Card>
           </TabsContent>
 
-          {/* Requests Tab */}
-          <TabsContent value="requests" className="mt-6">
+            {/* Requests Tab */}
+            <TabsContent value="requests" className="mt-4">
             <Card className="shadow-fluent-8">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="font-fluent">Case Requests</CardTitle>
@@ -406,7 +407,8 @@ const AttorneyCaseView = () => {
               </CardContent>
             </Card>
           </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </div>
 
       {/* New Participant Modal */}
