@@ -424,28 +424,28 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
           )}
         </div>
 
-        {/* Horizontal Tabs Layout */}
-        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-          <div className="space-y-6">
-            {/* Horizontal Tab List */}
-            <Card className="shadow-fluent-8">
+        {/* Vertical Tabs Layout */}
+        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full" orientation="vertical">
+          <div className="flex gap-6">
+            {/* Vertical Tab List */}
+            <Card className="shadow-fluent-8 w-80">
               <CardContent className="p-4">
-                <TabsList className="flex flex-row h-auto w-full bg-transparent space-x-2 overflow-x-auto">
+                <TabsList className="flex flex-col h-auto w-full bg-transparent space-y-2">
                   {wizardTabs.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="flex-shrink-0 justify-between px-4 py-3 min-h-[56px] rounded-lg transition-all duration-200 bg-background text-foreground border border-border hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-b-4 data-[state=active]:border-b-primary data-[state=active]:font-medium"
+                      className="w-full justify-between px-4 py-3 min-h-[56px] rounded-lg transition-all duration-200 bg-background text-foreground border border-border hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-l-4 data-[state=active]:border-l-primary data-[state=active]:font-medium"
                       onClick={() => markTabCompleted(tab.id)}
                       aria-current={tab.id === currentTab ? "step" : undefined}
                       aria-checked={isTabCompleted(tab.id) ? "true" : "false"}
                     >
-                      <div className="text-center">
+                      <div className="text-left">
                         <div className="font-fluent font-medium">{tab.title}</div>
                         <div className="text-xs opacity-75">{tab.description}</div>
                       </div>
                       {isTabCompleted(tab.id) && (
-                        <div className="bg-[#107C10] rounded-full w-5 h-5 flex items-center justify-center ml-2">
+                        <div className="bg-[#107C10] rounded-full w-5 h-5 flex items-center justify-center">
                           <Check className="h-3 w-3 text-white" />
                         </div>
                       )}
@@ -456,7 +456,7 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
             </Card>
 
             {/* Tab Content */}
-            <div className="w-full">
+            <div className="flex-1">
               <TabsContent value="case-summary" className="mt-0">
                 <Card className="shadow-fluent-16">
                   <CardHeader>
