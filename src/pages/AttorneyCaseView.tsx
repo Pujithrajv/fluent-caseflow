@@ -182,9 +182,9 @@ const AttorneyCaseView = () => {
 
             {/* Case Summary Tab */}
             <TabsContent value="case-summary" className="mt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 auto-rows-fr">
               {/* Department Information */}
-              <Card className="shadow-fluent-8 aspect-square min-h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Department Information</CardTitle>
                 </CardHeader>
@@ -211,7 +211,7 @@ const AttorneyCaseView = () => {
               </Card>
 
               {/* Primary Party Information */}
-              <Card className="shadow-fluent-8 aspect-square min-h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Primary Party Information</CardTitle>
                 </CardHeader>
@@ -230,7 +230,7 @@ const AttorneyCaseView = () => {
               </Card>
 
               {/* Case Details */}
-              <Card className="shadow-fluent-8 aspect-square min-h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Case Details</CardTitle>
                 </CardHeader>
@@ -249,7 +249,7 @@ const AttorneyCaseView = () => {
               </Card>
 
               {/* Abandon Well Questions */}
-              <Card className="shadow-fluent-8 aspect-square min-h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Abandon Well Questions</CardTitle>
                 </CardHeader>
