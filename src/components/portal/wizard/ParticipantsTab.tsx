@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Users, Trash2, Edit, HelpCircle } from "lucide-react";
+import { Plus, Users, Trash2, Edit, HelpCircle, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { ParticipantLookupModal } from "../ParticipantLookupModal";
 import { CreateParticipantModal } from "../CreateParticipantModal";
@@ -93,6 +93,13 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
           <div className="flex justify-end mt-6 space-x-2">
             {!isReadOnly && (
               <>
+                <Button 
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => setIsNewParticipantModalOpen(true)}
+                >
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  New Participant
+                </Button>
                 <Button 
                   className="bg-blue-600 hover:bg-blue-700 text-white"
                   onClick={() => setIsLookupModalOpen(true)}
