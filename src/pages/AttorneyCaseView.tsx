@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowLeft, Plus, Eye, Edit } from "lucide-react";
+import { ArrowLeft, Plus, Eye, Edit, UserPlus } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { NewParticipantModal } from "@/components/portal/NewParticipantModal";
@@ -50,6 +50,7 @@ const AttorneyCaseView = () => {
   const { caseId } = useParams();
   const [requests] = useState<Request[]>(mockRequests);
   const [showNewParticipantModal, setShowNewParticipantModal] = useState(false);
+  const [showAddParticipantModal, setShowAddParticipantModal] = useState(false);
   const [participants, setParticipants] = useState<Participant[]>([
     {
       id: "1",
@@ -305,10 +306,19 @@ const AttorneyCaseView = () => {
             <Card className="shadow-fluent-8">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="font-fluent">Case Participants</CardTitle>
-                <Button onClick={() => setShowNewParticipantModal(true)}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Participant
-                </Button>
+                <div className="flex space-x-2">
+                  <Button 
+                    onClick={() => setShowNewParticipantModal(true)}
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    New Participant
+                  </Button>
+                  <Button onClick={() => setShowAddParticipantModal(true)}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Participant
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
                 <Table>
