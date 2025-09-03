@@ -3,11 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown, Video, ExternalLink, FolderOpen } from "lucide-react";
+import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown, Video, ExternalLink, FolderOpen, X, Users, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/shared/Header";
 
@@ -352,14 +352,75 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [activeTab, setActiveTab] = useState("cases");
   const [tasks, setTasks] = useState(mockTasks);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [eventsSearchQuery, setEventsSearchQuery] = useState("");
+  const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
+  const [selectedDateFilter, setSelectedDateFilter] = useState<string>("");
   const navigate = useNavigate();
 
-  // Sort events by start time (ascending)
-  const sortedEvents = [...mockEvents].sort((a, b) => {
-    const dateTimeA = new Date(`${a.date} ${a.time}`);
-    const dateTimeB = new Date(`${b.date} ${b.time}`);
-    return dateTimeA.getTime() - dateTimeB.getTime();
-  });
+  // Filter and sort events
+  const filteredAndSortedEvents = useMemo(() => {
+    let filtered = [...mockEvents];
+
+    // Apply text search filter
+    if (eventsSearchQuery.trim()) {
+      const query = eventsSearchQuery.toLowerCase();
+      filtered = filtered.filter(event => 
+        event.title.toLowerCase().includes(query) ||
+        event.caseNumber.toLowerCase().includes(query) ||
+        event.caseType.toLowerCase().includes(query) ||
+        event.department.toLowerCase().includes(query) ||
+        event.primaryParty.toLowerCase().includes(query) ||
+        event.type.toLowerCase().includes(query) ||
+        event.location.toLowerCase().includes(query) ||
+        event.date.includes(query) ||
+        event.time.toLowerCase().includes(query) ||
+        (event.meetingId && event.meetingId.includes(query))
+      );
+    }
+
+    // Apply type filters
+    if (selectedTypeFilters.length > 0) {
+      filtered = filtered.filter(event => 
+        selectedTypeFilters.includes(event.type)
+      );
+    }
+
+    // Apply date filters
+    if (selectedDateFilter) {
+      const now = new Date();
+      
+      filtered = filtered.filter(event => {
+        const eventDate = new Date(event.date);
+        
+        switch (selectedDateFilter) {
+          case "this-week":
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - now.getDay());
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            return eventDate >= startOfWeek && eventDate <= endOfWeek;
+          
+          case "next-30-days":
+            const thirtyDaysFromNow = new Date(now);
+            thirtyDaysFromNow.setDate(now.getDate() + 30);
+            return eventDate >= now && eventDate <= thirtyDaysFromNow;
+          
+          case "past-events":
+            return eventDate < now;
+          
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Sort by date and time
+    return filtered.sort((a, b) => {
+      const dateTimeA = new Date(`${a.date} ${a.time}`);
+      const dateTimeB = new Date(`${b.date} ${b.time}`);
+      return dateTimeA.getTime() - dateTimeB.getTime();
+    });
+  }, [eventsSearchQuery, selectedTypeFilters, selectedDateFilter]);
 
   const handleSortByDate = () => {
     const sortedTasks = [...tasks].sort((a, b) => {
@@ -370,6 +431,39 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
     setTasks(sortedTasks);
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
+
+  const handleClearEventsSearch = () => {
+    setEventsSearchQuery("");
+    setSelectedTypeFilters([]);
+    setSelectedDateFilter("");
+  };
+
+  const toggleTypeFilter = (type: string) => {
+    setSelectedTypeFilters(prev => 
+      prev.includes(type) 
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
+    );
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+      e.preventDefault();
+      const searchInput = document.getElementById('events-search');
+      searchInput?.focus();
+    }
+    if (e.key === 'Escape') {
+      setEventsSearchQuery("");
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown as any);
+    return () => document.removeEventListener('keydown', handleKeyDown as any);
+  }, []);
+
+  const uniqueEventTypes = [...new Set(mockEvents.map(event => event.type))];
+  const hasActiveFilters = eventsSearchQuery || selectedTypeFilters.length > 0 || selectedDateFilter;
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -594,8 +688,117 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Upcoming Events Tab Content */}
           <TabsContent value="events" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {sortedEvents.map((event) => (
+            {/* Search and Filter Section */}
+            <div className="mb-6 space-y-4">
+              {/* Search Input */}
+              <div className="relative max-w-2xl">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="events-search"
+                  placeholder="Search by title, case #, party, type, location..."
+                  className="pl-10 pr-10 h-11 font-fluent border-gray-400 bg-gray-50 focus:ring-primary"
+                  value={eventsSearchQuery}
+                  onChange={(e) => setEventsSearchQuery(e.target.value)}
+                  aria-label="Search events"
+                />
+                {eventsSearchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 rounded-full p-0 hover:bg-gray-200"
+                    onClick={() => setEventsSearchQuery("")}
+                    aria-label="Clear search"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+
+              {/* Quick Filter Chips */}
+              <div className="flex flex-wrap gap-2">
+                {/* Type Filters */}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">Type:</span>
+                  {uniqueEventTypes.map(type => (
+                    <Button
+                      key={type}
+                      variant={selectedTypeFilters.includes(type) ? "default" : "outline"}
+                      size="sm"
+                      className="h-7 px-3 text-xs"
+                      onClick={() => toggleTypeFilter(type)}
+                    >
+                      {type}
+                      {selectedTypeFilters.includes(type) && (
+                        <X className="ml-1 h-3 w-3" />
+                      )}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Date Filters */}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">Date:</span>
+                  {[
+                    { value: "this-week", label: "This Week" },
+                    { value: "next-30-days", label: "Next 30 Days" },
+                    { value: "past-events", label: "Past Events" }
+                  ].map(filter => (
+                    <Button
+                      key={filter.value}
+                      variant={selectedDateFilter === filter.value ? "default" : "outline"}
+                      size="sm"
+                      className="h-7 px-3 text-xs"
+                      onClick={() => setSelectedDateFilter(
+                        selectedDateFilter === filter.value ? "" : filter.value
+                      )}
+                    >
+                      {filter.label}
+                      {selectedDateFilter === filter.value && (
+                        <X className="ml-1 h-3 w-3" />
+                      )}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Clear All Filters */}
+                {hasActiveFilters && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 px-3 text-xs text-muted-foreground hover:text-foreground"
+                    onClick={handleClearEventsSearch}
+                  >
+                    Clear all filters
+                  </Button>
+                )}
+              </div>
+
+              {/* Results Count */}
+              <div className="text-sm text-muted-foreground">
+                <span className="sr-only">{filteredAndSortedEvents.length} events shown</span>
+                Showing {filteredAndSortedEvents.length} of {mockEvents.length} events
+              </div>
+            </div>
+
+            {/* Events Grid or Empty State */}
+            {filteredAndSortedEvents.length === 0 ? (
+              <div className="text-center py-12">
+                <AlertCircle className="mx-auto h-12 w-12 text-muted-foreground" />
+                <h3 className="mt-4 text-lg font-semibold">No events match your search</h3>
+                <p className="text-muted-foreground mt-2">
+                  Try adjusting your search terms or filters
+                </p>
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={handleClearEventsSearch}
+                >
+                  Clear search
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
+                {filteredAndSortedEvents.map((event) => (
                 <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200 bg-white rounded-lg border border-border">
                   <CardContent className="p-6">
                     {/* Header */}
@@ -710,6 +913,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 </Card>
               ))}
             </div>
+            )}
           </TabsContent>
 
           {/* Tasks and Alerts Tab Content */}
