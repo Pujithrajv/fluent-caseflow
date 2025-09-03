@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowLeft, Plus, Eye, Edit, UserPlus } from "lucide-react";
+import { ArrowLeft, Plus, Eye, Edit } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { NewParticipantModal } from "@/components/portal/NewParticipantModal";
+
 
 interface Request {
   id: string;
@@ -49,7 +49,7 @@ const AttorneyCaseView = () => {
   const navigate = useNavigate();
   const { caseId } = useParams();
   const [requests] = useState<Request[]>(mockRequests);
-  const [showNewParticipantModal, setShowNewParticipantModal] = useState(false);
+  
   const [participants, setParticipants] = useState<Participant[]>([
     {
       id: "1",
@@ -108,9 +108,6 @@ const AttorneyCaseView = () => {
     navigate(`/attorney/case/${caseId}/add-request`);
   };
 
-  const handleAddParticipant = (newParticipant: Participant) => {
-    setParticipants(prev => [...prev, newParticipant]);
-  };
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -276,15 +273,8 @@ const AttorneyCaseView = () => {
             {/* Participants Tab */}
             <TabsContent value="participants" className="mt-4">
             <Card className="shadow-fluent-8">
-              <CardHeader className="flex flex-row items-center justify-between">
+              <CardHeader>
                 <CardTitle className="font-fluent">Case Participants</CardTitle>
-                <Button 
-                  onClick={() => setShowNewParticipantModal(true)}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  New Participant
-                </Button>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -383,12 +373,6 @@ const AttorneyCaseView = () => {
         </div>
       </div>
 
-      {/* New Participant Modal */}
-      <NewParticipantModal
-        isOpen={showNewParticipantModal}
-        onClose={() => setShowNewParticipantModal(false)}
-        onParticipantCreated={handleAddParticipant}
-      />
     </div>
   );
 };
