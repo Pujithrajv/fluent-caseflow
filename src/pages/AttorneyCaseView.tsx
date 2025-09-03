@@ -408,9 +408,9 @@ const AttorneyCaseView = () => {
 
       {/* New Participant Modal */}
       <NewParticipantModal
-        open={showNewParticipantModal}
+        isOpen={showNewParticipantModal}
         onClose={() => setShowNewParticipantModal(false)}
-        onSave={handleAddParticipant}
+        onParticipantCreated={handleAddParticipant}
       />
     </div>
   );

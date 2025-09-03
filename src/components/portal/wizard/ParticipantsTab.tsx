@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Users, Trash2, Edit, HelpCircle } from "lucide-react";
+import { Plus, Users, Trash2, Edit, HelpCircle, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { ParticipantLookupModal } from "../ParticipantLookupModal";
 import { CreateParticipantModal } from "../CreateParticipantModal";
+import { NewParticipantModal } from "../NewParticipantModal";
 
 interface ParticipantsTabProps {
   onDataChange: (data: any) => void;
@@ -47,6 +48,7 @@ const mockContacts = [
 export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: ParticipantsTabProps) {
   const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isNewParticipantModalOpen, setIsNewParticipantModalOpen] = useState(false);
   const [participants, setParticipants] = useState(mockParties);
   const [pendingNewParticipant, setPendingNewParticipant] = useState(null);
 
@@ -75,6 +77,11 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
     setParticipants(prev => prev.filter(p => p.id !== participantId));
   };
 
+  const handleNewParticipantCreated = (participant: any) => {
+    // Add new participant to the beginning of the list
+    setParticipants(prev => [participant, ...prev]);
+  };
+
   return (
     <div className="space-y-6">
       <Card className="shadow-fluent-8">
@@ -83,15 +90,24 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
             <HelpCircle className="h-5 w-5 text-muted-foreground" />
           </div>
           
-          <div className="flex justify-end mt-6">
+          <div className="flex justify-end mt-6 space-x-2">
             {!isReadOnly && (
-              <Button 
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-                onClick={() => setIsLookupModalOpen(true)}
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Add Participant
-              </Button>
+              <>
+                <Button 
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => setIsNewParticipantModalOpen(true)}
+                >
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  New Participant
+                </Button>
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => setIsLookupModalOpen(true)}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Participant
+                </Button>
+              </>
             )}
           </div>
         </CardHeader>
@@ -179,6 +195,12 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onSubmit={handleCreateParticipant}
+      />
+
+      <NewParticipantModal
+        isOpen={isNewParticipantModalOpen}
+        onClose={() => setIsNewParticipantModalOpen(false)}
+        onParticipantCreated={handleNewParticipantCreated}
       />
     </div>
   );

@@ -1,23 +1,22 @@
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { useState, useEffect } from "react";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { X } from "lucide-react";
 
 interface NewParticipantModalProps {
-  open: boolean;
+  isOpen: boolean;
   onClose: () => void;
-  onSave: (participant: Participant) => void;
+  onParticipantCreated: (participant: any) => void;
 }
 
-interface Participant {
-  id: string;
+interface FormData {
   firstName: string;
   lastName: string;
-  role: string;
+  roleTitle: string;
   organization: string;
   phone: string;
   email: string;
@@ -25,87 +24,92 @@ interface Participant {
   notes: string;
 }
 
-export function NewParticipantModal({ open, onClose, onSave }: NewParticipantModalProps) {
+interface FormErrors {
+  firstName?: string;
+  organization?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  general?: string;
+}
+
+export function NewParticipantModal({ isOpen, onClose, onParticipantCreated }: NewParticipantModalProps) {
   const { toast } = useToast();
-  const [formData, setFormData] = useState<Participant>({
-    id: '',
-    firstName: '',
-    lastName: '',
-    role: '',
-    organization: '',
-    phone: '',
-    email: '',
-    address: '',
-    notes: ''
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    roleTitle: "",
+    organization: "",
+    phone: "",
+    email: "",
+    address: "",
+    notes: ""
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isDirty, setIsDirty] = useState(false);
-  const [showDiscardDialog, setShowDiscardDialog] = useState(false);
 
-  // Reset form when modal opens
-  useEffect(() => {
-    if (open) {
-      setFormData({
-        id: '',
-        firstName: '',
-        lastName: '',
-        role: '',
-        organization: '',
-        phone: '',
-        email: '',
-        address: '',
-        notes: ''
-      });
-      setErrors({});
-      setIsDirty(false);
-    }
-  }, [open]);
-
-  const handleInputChange = (field: keyof Participant, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setIsDirty(true);
-    // Clear error for this field when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
-
-  const formatPhone = (value: string) => {
+  const formatPhoneNumber = (value: string) => {
     // Remove all non-digits
-    const digits = value.replace(/\D/g, '');
+    const cleaned = value.replace(/\D/g, '');
     
-    // Apply (555) 123-4567 format
-    if (digits.length <= 3) {
-      return digits;
-    } else if (digits.length <= 6) {
-      return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    // Format as (XXX) XXX-XXXX
+    if (cleaned.length >= 10) {
+      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
+    } else if (cleaned.length >= 6) {
+      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+    } else if (cleaned.length >= 3) {
+      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
     } else {
-      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+      return cleaned;
     }
   };
 
-  const handlePhoneChange = (value: string) => {
-    const formatted = formatPhone(value);
-    handleInputChange('phone', formatted);
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setIsDirty(true);
+    
+    if (field === 'phone') {
+      value = formatPhoneNumber(value);
+    }
+    
+    setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Clear field-specific errors when user starts typing
+    if (errors[field as keyof FormErrors]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
 
-    // At least First Name or Organization must be provided
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    // At least First Name OR Organization must be provided
     if (!formData.firstName.trim() && !formData.organization.trim()) {
-      newErrors.firstName = 'Either First Name or Organization is required';
-      newErrors.organization = 'Either First Name or Organization is required';
+      newErrors.general = "Either First Name or Organization must be provided";
     }
 
-    // Email format validation
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+    // Email validation if provided
+    if (formData.email && !validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
     }
 
-    // If no email, address is required
-    if (!formData.email.trim() && !formData.address.trim()) {
-      newErrors.address = 'Address is required when email is not provided';
+    // Either Phone OR Address is required
+    const hasPhone = formData.phone.trim();
+    const hasAddress = formData.address.trim();
+    
+    if (!hasPhone && !hasAddress) {
+      newErrors.phone = "Either phone or address is required";
+      newErrors.address = "Either phone or address is required";
+    }
+
+    // If no email, address becomes required
+    if (!formData.email.trim() && !hasAddress) {
+      newErrors.address = "Address is required when no email is provided";
     }
 
     setErrors(newErrors);
@@ -117,187 +121,211 @@ export function NewParticipantModal({ open, onClose, onSave }: NewParticipantMod
       return;
     }
 
+    // Create participant object that matches both interfaces
     const newParticipant = {
-      ...formData,
-      id: `participant-${Date.now()}` // Generate simple ID
+      id: Date.now().toString(), // Convert to string for AttorneyCaseView compatibility
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      role: formData.roleTitle,
+      organization: formData.organization,
+      phone: formData.phone,
+      email: formData.email,
+      address: formData.address,
+      notes: formData.notes,
+      // For ParticipantsTab compatibility
+      party: `${formData.firstName} ${formData.lastName}`.trim() || formData.organization,
+      roleTitle: formData.roleTitle,
+      contact: [
+        formData.phone && `P. ${formData.phone}`,
+        formData.email && `E. ${formData.email}`
+      ].filter(Boolean).join('\n')
     };
 
-    onSave(newParticipant);
+    onParticipantCreated(newParticipant);
     toast({
-      title: "Participant added",
-      description: "The new participant has been successfully added to the case.",
+      title: "Success",
+      description: "Participant added successfully.",
     });
-    onClose();
+    handleClose();
   };
 
   const handleClose = () => {
     if (isDirty) {
-      setShowDiscardDialog(true);
+      if (window.confirm("You have unsaved changes. Are you sure you want to close?")) {
+        resetForm();
+        onClose();
+      }
     } else {
+      resetForm();
       onClose();
     }
   };
 
-  const handleDiscardChanges = () => {
-    setShowDiscardDialog(false);
-    onClose();
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      roleTitle: "",
+      organization: "",
+      phone: "",
+      email: "",
+      address: "",
+      notes: ""
+    });
+    setErrors({});
+    setIsDirty(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleClose();
+    }
   };
 
   return (
-    <>
-      <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="font-fluent text-xl">New Participant</DialogTitle>
-          </DialogHeader>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
-            {/* Left Column */}
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="firstName" className="text-sm font-medium">
-                  First Name
-                </Label>
-                <Input
-                  id="firstName"
-                  value={formData.firstName}
-                  onChange={(e) => handleInputChange('firstName', e.target.value)}
-                  className={errors.firstName ? 'border-destructive' : ''}
-                />
-                {errors.firstName && (
-                  <p className="text-sm text-destructive mt-1">{errors.firstName}</p>
-                )}
-              </div>
+    <Dialog open={isOpen} onOpenChange={() => handleClose()}>
+      <DialogContent 
+        className="max-w-4xl max-h-[90vh] overflow-y-auto"
+        onKeyDown={handleKeyDown}
+      >
+        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <DialogTitle className="text-xl font-semibold">New Participant</DialogTitle>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleClose}
+            className="h-6 w-6"
+            aria-label="Close dialog"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </DialogHeader>
 
-              <div>
-                <Label htmlFor="lastName" className="text-sm font-medium">
-                  Last Name
-                </Label>
-                <Input
-                  id="lastName"
-                  value={formData.lastName}
-                  onChange={(e) => handleInputChange('lastName', e.target.value)}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="role" className="text-sm font-medium">
-                  Role/Title
-                </Label>
-                <Input
-                  id="role"
-                  value={formData.role}
-                  onChange={(e) => handleInputChange('role', e.target.value)}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="organization" className="text-sm font-medium">
-                  Organization
-                </Label>
-                <Input
-                  id="organization"
-                  value={formData.organization}
-                  onChange={(e) => handleInputChange('organization', e.target.value)}
-                  className={errors.organization ? 'border-destructive' : ''}
-                />
-                {errors.organization && (
-                  <p className="text-sm text-destructive mt-1">{errors.organization}</p>
-                )}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Left Column */}
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="firstName">First Name</Label>
+              <Input
+                id="firstName"
+                value={formData.firstName}
+                onChange={(e) => handleInputChange('firstName', e.target.value)}
+                className={errors.firstName ? "border-red-500" : ""}
+              />
+              {errors.firstName && (
+                <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>
+              )}
             </div>
 
-            {/* Right Column */}
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="phone" className="text-sm font-medium">
-                  Phone
-                </Label>
-                <Input
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => handlePhoneChange(e.target.value)}
-                  placeholder="(555) 123-4567"
-                />
-              </div>
+            <div>
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                id="lastName"
+                value={formData.lastName}
+                onChange={(e) => handleInputChange('lastName', e.target.value)}
+              />
+            </div>
 
-              <div>
-                <Label htmlFor="email" className="text-sm font-medium">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={errors.email ? 'border-destructive' : ''}
-                />
-                {errors.email && (
-                  <p className="text-sm text-destructive mt-1">{errors.email}</p>
-                )}
-                <p className="text-xs text-muted-foreground mt-1">
-                  If no email is entered, address is required.
-                </p>
-              </div>
+            <div>
+              <Label htmlFor="roleTitle">Role/Title</Label>
+              <Input
+                id="roleTitle"
+                value={formData.roleTitle}
+                onChange={(e) => handleInputChange('roleTitle', e.target.value)}
+              />
+            </div>
 
-              <div>
-                <Label htmlFor="address" className="text-sm font-medium">
-                  Address
-                </Label>
-                <Textarea
-                  id="address"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange('address', e.target.value)}
-                  className={`min-h-[80px] ${errors.address ? 'border-destructive' : ''}`}
-                  placeholder="Enter full address..."
-                />
-                {errors.address && (
-                  <p className="text-sm text-destructive mt-1">{errors.address}</p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="notes" className="text-sm font-medium">
-                  Notes
-                </Label>
-                <Textarea
-                  id="notes"
-                  value={formData.notes}
-                  onChange={(e) => handleInputChange('notes', e.target.value)}
-                  className="min-h-[80px]"
-                  placeholder="Additional notes..."
-                />
-              </div>
+            <div>
+              <Label htmlFor="organization">Organization</Label>
+              <Input
+                id="organization"
+                value={formData.organization}
+                onChange={(e) => handleInputChange('organization', e.target.value)}
+                className={errors.organization ? "border-red-500" : ""}
+              />
+              {errors.organization && (
+                <p className="text-sm text-red-500 mt-1">{errors.organization}</p>
+              )}
             </div>
           </div>
 
-          <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button variant="outline" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button onClick={handleSave}>
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          {/* Right Column */}
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="phone">Phone</Label>
+              <Input
+                id="phone"
+                value={formData.phone}
+                onChange={(e) => handleInputChange('phone', e.target.value)}
+                placeholder="(555) 123-4567"
+                className={errors.phone ? "border-red-500" : ""}
+              />
+              <p className="text-sm text-muted-foreground mt-1">
+                Enter either phone or address
+              </p>
+              {errors.phone && (
+                <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
+              )}
+            </div>
 
-      <AlertDialog open={showDiscardDialog} onOpenChange={setShowDiscardDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Discard changes?</AlertDialogTitle>
-            <AlertDialogDescription>
-              You have unsaved changes. Are you sure you want to discard them?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Keep editing</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDiscardChanges}>
-              Discard changes
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                className={errors.email ? "border-red-500" : ""}
+              />
+              <p className="text-sm text-muted-foreground mt-1">
+                If no email is entered, address is required
+              </p>
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="address">Address</Label>
+              <Textarea
+                id="address"
+                value={formData.address}
+                onChange={(e) => handleInputChange('address', e.target.value)}
+                rows={3}
+                className={errors.address ? "border-red-500" : ""}
+              />
+              {errors.address && (
+                <p className="text-sm text-red-500 mt-1">{errors.address}</p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="notes">Notes</Label>
+              <Textarea
+                id="notes"
+                value={formData.notes}
+                onChange={(e) => handleInputChange('notes', e.target.value)}
+                rows={3}
+              />
+            </div>
+          </div>
+        </div>
+
+        {errors.general && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-600">{errors.general}</p>
+          </div>
+        )}
+
+        <div className="flex justify-end space-x-2 mt-6 pt-4 border-t">
+          <Button variant="outline" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave}>
+            Save
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
