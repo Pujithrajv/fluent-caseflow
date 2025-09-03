@@ -50,7 +50,6 @@ const AttorneyCaseView = () => {
   const { caseId } = useParams();
   const [requests] = useState<Request[]>(mockRequests);
   const [showNewParticipantModal, setShowNewParticipantModal] = useState(false);
-  const [showAddParticipantModal, setShowAddParticipantModal] = useState(false);
   const [participants, setParticipants] = useState<Participant[]>([
     {
       id: "1",
@@ -306,19 +305,13 @@ const AttorneyCaseView = () => {
             <Card className="shadow-fluent-8">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="font-fluent">Case Participants</CardTitle>
-                <div className="flex space-x-2">
-                  <Button 
-                    onClick={() => setShowNewParticipantModal(true)}
-                    className="bg-green-600 hover:bg-green-700 text-white"
-                  >
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    New Participant
-                  </Button>
-                  <Button onClick={() => setShowAddParticipantModal(true)}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Participant
-                  </Button>
-                </div>
+                <Button 
+                  onClick={() => setShowNewParticipantModal(true)}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  New Participant
+                </Button>
               </CardHeader>
               <CardContent>
                 <Table>
