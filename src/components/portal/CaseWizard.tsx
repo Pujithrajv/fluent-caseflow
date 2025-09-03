@@ -424,30 +424,40 @@ export function CaseWizard({ onBack, initialTab = "department", mode = 'create',
           )}
         </div>
 
-        {/* Vertical Tabs Layout */}
-        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full" orientation="vertical">
-          <div className="flex gap-6">
+        {/* Tabs Layout */}
+        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full" orientation={isPartiallyEditable ? "horizontal" : "vertical"}>
+          <div className={isPartiallyEditable ? "flex flex-col gap-6" : "flex gap-6"}>
             {/* Vertical Tab List */}
-            <Card className="shadow-fluent-8 w-80">
+            <Card className={isPartiallyEditable ? "shadow-fluent-8 w-full" : "shadow-fluent-8 w-80"}>
               <CardContent className="p-4">
-                <TabsList className="flex flex-col h-auto w-full bg-transparent space-y-2">
+                <TabsList className={isPartiallyEditable ? "justify-start bg-transparent border-b border-border h-14 rounded-none p-0" : "flex flex-col h-auto w-full bg-transparent space-y-2"}>
                   {wizardTabs.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="w-full justify-between px-4 py-3 min-h-[56px] rounded-lg transition-all duration-200 bg-background text-foreground border border-border hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-l-4 data-[state=active]:border-l-primary data-[state=active]:font-medium"
+                      className={
+                        isPartiallyEditable
+                          ? "font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted/50 px-6 py-4 transition-colors"
+                          : "w-full justify-between px-4 py-3 min-h-[56px] rounded-lg transition-all duration-200 bg-background text-foreground border border-border hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-l-4 data-[state=active]:border-l-primary data-[state=active]:font-medium"
+                      }
                       onClick={() => markTabCompleted(tab.id)}
                       aria-current={tab.id === currentTab ? "step" : undefined}
                       aria-checked={isTabCompleted(tab.id) ? "true" : "false"}
                     >
-                      <div className="text-left">
-                        <div className="font-fluent font-medium">{tab.title}</div>
-                        <div className="text-xs opacity-75">{tab.description}</div>
-                      </div>
-                      {isTabCompleted(tab.id) && (
-                        <div className="bg-[#107C10] rounded-full w-5 h-5 flex items-center justify-center">
-                          <Check className="h-3 w-3 text-white" />
-                        </div>
+                      {isPartiallyEditable ? (
+                        <span className="font-fluent">{tab.title}</span>
+                      ) : (
+                        <>
+                          <div className="text-left">
+                            <div className="font-fluent font-medium">{tab.title}</div>
+                            <div className="text-xs opacity-75">{tab.description}</div>
+                          </div>
+                          {isTabCompleted(tab.id) && (
+                            <div className="bg-[#107C10] rounded-full w-5 h-5 flex items-center justify-center">
+                              <Check className="h-3 w-3 text-white" />
+                            </div>
+                          )}
+                        </>
                       )}
                     </TabsTrigger>
                   ))}
