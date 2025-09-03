@@ -156,6 +156,11 @@ const AttorneyCaseView = () => {
           </p>
         </div>
 
+        {/* Debug: Case Data */}
+        <div className="mb-4 p-4 bg-yellow-100 border border-yellow-300 rounded">
+          <p className="text-sm font-mono">Debug: Case ID = {caseId}, Case Number = {mockCaseData.caseNumber}</p>
+        </div>
+
         {/* Tabs */}
         <Tabs defaultValue="case-summary" className="w-full">
           <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0">
