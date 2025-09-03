@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { FileText, Scale, Search, Award, FileX, Bell } from "lucide-react";
 
 interface RequestSelectionTabProps {
@@ -66,16 +67,23 @@ const exhibitTypes = [
 export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: RequestSelectionTabProps) {
   const [requestGroup, setRequestGroup] = useState(data.requestGroup || "");
   const [requestType, setRequestType] = useState(data.requestType || "");
+  const [summary, setSummary] = useState(data.summary || "");
 
   const handleRequestGroupChange = (value: string) => {
     setRequestGroup(value);
     setRequestType(""); // Reset type when group changes
-    onDataChange({ requestGroup: value, requestType: "" });
+    onDataChange({ requestGroup: value, requestType: "", summary });
   };
 
   const handleRequestTypeChange = (value: string) => {
     setRequestType(value);
-    onDataChange({ requestGroup, requestType: value });
+    onDataChange({ requestGroup, requestType: value, summary });
+  };
+
+  const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newSummary = e.target.value;
+    setSummary(newSummary);
+    onDataChange({ requestGroup, requestType, summary: newSummary });
   };
 
   // Get available request types based on selected group
@@ -145,6 +153,20 @@ export function RequestSelectionTab({ onDataChange, data, onComplete, onNext }: 
               ))}
             </SelectContent>
           </Select>
+        </div>
+      )}
+
+      {/* Summary */}
+      {requestType && (
+        <div className="space-y-2">
+          <Label htmlFor="summary" className="font-fluent font-semibold text-sm">Summary</Label>
+          <Textarea
+            id="summary"
+            placeholder="Enter a brief summary of your request..."
+            value={summary}
+            onChange={handleSummaryChange}
+            className="min-h-[100px] shadow-fluent-8 border-input-border resize-none"
+          />
         </div>
       )}
 
