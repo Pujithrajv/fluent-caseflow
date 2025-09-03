@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Edit, Eye, AlertCircle, FileText, Calendar, User } from "lucide-react";
+import { CheckCircle, Edit, Eye, FileText, Calendar, User } from "lucide-react";
 import { format } from "date-fns";
 
 interface RequestReviewSubmitTabProps {
@@ -207,40 +207,6 @@ export function RequestReviewSubmitTab({ data, onPrevious, onSubmit }: RequestRe
               <p className="text-muted-foreground font-fluent">No documents uploaded</p>
             </div>
           )}
-        </CardContent>
-      </Card>
-
-      {/* Submission Summary */}
-      <Card className="shadow-fluent-8 border-primary/20">
-        <CardHeader>
-          <CardTitle className="font-fluent text-primary">Submission Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mx-auto mb-2">
-                <CheckCircle className="h-6 w-6 text-green-600" />
-              </div>
-              <p className="font-medium font-fluent">Request Details</p>
-              <p className="text-sm text-muted-foreground font-fluent">Complete</p>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mx-auto mb-2">
-                <CheckCircle className="h-6 w-6 text-green-600" />
-              </div>
-              <p className="font-medium font-fluent">Documents</p>
-              <p className="text-sm text-muted-foreground font-fluent">
-                {uploadedDocuments.length} file{uploadedDocuments.length !== 1 ? 's' : ''} uploaded
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mx-auto mb-2">
-                <AlertCircle className="h-6 w-6 text-blue-600" />
-              </div>
-              <p className="font-medium font-fluent">Ready to Submit</p>
-              <p className="text-sm text-muted-foreground font-fluent">All requirements met</p>
-            </div>
-          </div>
         </CardContent>
       </Card>
 
