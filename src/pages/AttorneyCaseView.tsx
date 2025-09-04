@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ArrowLeft, Plus, Eye, Edit } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { ParticipantsTab } from "@/components/portal/wizard/ParticipantsTab";
 
 
 interface Request {
@@ -272,47 +273,12 @@ const AttorneyCaseView = () => {
 
             {/* Participants Tab */}
             <TabsContent value="participants" className="mt-4">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="font-fluent">Case Participants</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Organization</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Phone</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {participants.map((participant) => (
-                      <TableRow key={participant.id}>
-                        <TableCell className="font-medium">
-                          {participant.firstName && participant.lastName
-                            ? `${participant.firstName} ${participant.lastName}`
-                            : participant.organization || 'N/A'}
-                        </TableCell>
-                        <TableCell>{participant.role || 'N/A'}</TableCell>
-                        <TableCell>{participant.organization || 'N/A'}</TableCell>
-                        <TableCell>{participant.email || 'N/A'}</TableCell>
-                        <TableCell>{participant.phone || 'N/A'}</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="outline" size="sm">
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              <ParticipantsTab 
+                onDataChange={() => {}}
+                data={participants}
+                caseStatus={mockCaseData.status}
+              />
+            </TabsContent>
 
             {/* Requests Tab */}
             <TabsContent value="requests" className="mt-4">

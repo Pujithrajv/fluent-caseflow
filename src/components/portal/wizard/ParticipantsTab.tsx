@@ -10,6 +10,7 @@ interface ParticipantsTabProps {
   onDataChange: (data: any) => void;
   data: any;
   isReadOnly?: boolean;
+  caseStatus?: string;
 }
 
 const mockParties = [
@@ -45,7 +46,7 @@ const mockContacts = [
   { id: 3, name: "Mike Davis", role: "Consultant", organization: "Davis Consulting", email: "mike@davis.com" },
 ];
 
-export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: ParticipantsTabProps) {
+export function ParticipantsTab({ onDataChange, data, isReadOnly = false, caseStatus }: ParticipantsTabProps) {
   const [isLookupModalOpen, setIsLookupModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isNewParticipantModalOpen, setIsNewParticipantModalOpen] = useState(false);
@@ -91,7 +92,7 @@ export function ParticipantsTab({ onDataChange, data, isReadOnly = false }: Part
           </div>
           
           <div className="flex justify-end mt-6 space-x-2">
-            {!isReadOnly && (
+            {!isReadOnly && caseStatus?.toLowerCase() !== "accepted" && (
               <>
                 <Button 
                   className="bg-green-600 hover:bg-green-700 text-white"
