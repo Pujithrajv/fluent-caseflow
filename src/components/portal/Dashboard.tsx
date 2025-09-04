@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown, Video, ExternalLink, FolderOpen, X, Users, AlertCircle } from "lucide-react";
+import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown, Video, ExternalLink, FolderOpen, X, Users, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/shared/Header";
@@ -231,6 +232,106 @@ const mockEvents = [
     primaryPartyRole: "Respondent",
     timezone: "CST",
     aljAssigned: "Daniel Schuering"
+  },
+  // New hybrid/non-hybrid example events
+  {
+    id: 5,
+    title: "Initial Case Management Conference",
+    subtitle: "Hybrid Event - Option A",
+    date: "2025-09-24",
+    time: "1:00 PM",
+    endDate: "2025-09-24",
+    endTime: "2:00 PM",
+    location: "Microsoft Teams Meeting",
+    meetingId: "222 647 995 075",
+    type: "Conference",
+    eventType: "meeting",
+    isTeamsEvent: true,
+    isHybrid: true,
+    hybridPattern: "option-a",
+    physicalLocation: "Stratton Office Building\n502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL 62706-4000",
+    hasCase: true,
+    caseNumber: "DBE-2024-001-EC",
+    caseType: "Grain Dealer and Warehouse Licensing",
+    department: "Department of Agriculture",
+    departmentRole: "Complainant",
+    primaryParty: "Kirby Neroni",
+    primaryPartyRole: "Respondent",
+    timezone: "CST"
+  },
+  {
+    id: 6,
+    title: "Initial Case Management Conference",
+    subtitle: "Hybrid Event - Option B",
+    date: "2025-09-24",
+    time: "1:00 PM",
+    endDate: "2025-09-24",
+    endTime: "2:00 PM",
+    location: "Microsoft Teams Meeting",
+    meetingId: "222 647 995 075",
+    type: "Conference",
+    eventType: "meeting",
+    isTeamsEvent: true,
+    isHybrid: true,
+    hybridPattern: "option-b",
+    physicalLocation: "Stratton Office Building\n502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL 62706-4000",
+    hasCase: true,
+    caseNumber: "DBE-2024-001-EC",
+    caseType: "Grain Dealer and Warehouse Licensing",
+    department: "Department of Agriculture",
+    departmentRole: "Complainant",
+    primaryParty: "Kirby Neroni",
+    primaryPartyRole: "Respondent",
+    timezone: "CST"
+  },
+  {
+    id: 7,
+    title: "Initial Case Management Conference",
+    subtitle: "Hybrid Event - Option C",
+    date: "2025-09-24",
+    time: "1:00 PM",
+    endDate: "2025-09-24",
+    endTime: "2:00 PM",
+    location: "Microsoft Teams Meeting",
+    meetingId: "222 647 995 075",
+    type: "Conference",
+    eventType: "meeting",
+    isTeamsEvent: true,
+    isHybrid: true,
+    hybridPattern: "option-c",
+    physicalLocation: "Stratton Office Building\n502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL 62706-4000",
+    hasCase: true,
+    caseNumber: "DBE-2024-001-EC",
+    caseType: "Grain Dealer and Warehouse Licensing",
+    department: "Department of Agriculture",
+    departmentRole: "Complainant",
+    primaryParty: "Kirby Neroni",
+    primaryPartyRole: "Respondent",
+    timezone: "CST"
+  },
+  {
+    id: 8,
+    title: "Pre-Hearing Conference",
+    subtitle: "Teams Only - Option D",
+    date: "2025-09-26",
+    time: "10:00 AM",
+    endDate: "2025-09-26",
+    endTime: "11:00 AM",
+    location: "Microsoft Teams Meeting",
+    meetingId: "333 888 444 222",
+    type: "Conference",
+    eventType: "meeting",
+    isTeamsEvent: true,
+    isHybrid: false,
+    hybridPattern: "option-d",
+    hasCase: true,
+    caseNumber: "AGR-2025-014-EX",
+    caseType: "Abandoned Well",
+    department: "Department of Natural Resources",
+    departmentRole: "Complainant",
+    primaryParty: "Rajaram Sheppard",
+    primaryPartyRole: "Defendant",
+    timezone: "CST"
   }
 ];
 
@@ -355,6 +456,9 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [eventsSearchQuery, setEventsSearchQuery] = useState("");
   const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
   const [selectedDateFilter, setSelectedDateFilter] = useState<string>("");
+  const [showPhysicalLocation, setShowPhysicalLocation] = useState<Record<number, boolean>>({});
+  const [activeLocationTab, setActiveLocationTab] = useState<Record<number, 'online' | 'location'>>({});
+  const [accordionOpen, setAccordionOpen] = useState<Record<number, boolean>>({ 7: true }); // Option C open by default
   const navigate = useNavigate();
 
   // Filter and sort events
@@ -798,66 +902,127 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
-                {filteredAndSortedEvents.map((event) => (
-                <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200 bg-white rounded-lg border border-border">
-                  <CardContent className="p-6">
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-foreground leading-tight">
-                        {event.title}
-                      </h3>
-                      <Badge 
-                        variant="secondary" 
-                        className="text-xs px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full font-medium ml-2"
-                      >
-                        {event.type}
-                      </Badge>
-                    </div>
+                {filteredAndSortedEvents.map((event) => {
+                  const renderLocationInfo = () => {
+                    // Option A: Primary + Secondary Link
+                    if (event.hybridPattern === "option-a") {
+                      return (
+                        <div className="flex items-start space-x-3">
+                          <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                          <div className="text-sm text-foreground">
+                            <div className="font-medium">{event.location}</div>
+                            <div className="text-muted-foreground mt-1">
+                              Meeting ID: {event.meetingId}
+                            </div>
+                            <Button
+                              variant="link"
+                              className="h-auto p-0 text-xs text-primary underline mt-2"
+                              onClick={() => setShowPhysicalLocation(prev => ({
+                                ...prev,
+                                [event.id]: !prev[event.id]
+                              }))}
+                            >
+                              Also available at Stratton Building
+                            </Button>
+                            {showPhysicalLocation[event.id] && (
+                              <div className="mt-2 p-3 bg-muted/50 rounded-md text-xs text-muted-foreground whitespace-pre-line">
+                                {event.physicalLocation}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    }
 
-                    {/* Case & Party Metadata */}
-                    <div className="space-y-2 mb-4 pb-4 border-b border-border">
-                      <div className="flex items-start space-x-2">
-                        <FileText className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <div>
-                          <span className="text-sm font-medium text-foreground">
-                            {event.caseNumber}: {event.caseType}
-                          </span>
+                    // Option B: Dual Tabs
+                    if (event.hybridPattern === "option-b") {
+                      const activeTab = activeLocationTab[event.id] || 'online';
+                      return (
+                        <div className="space-y-3">
+                          <div className="flex items-start space-x-3">
+                            <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                            <div className="flex-1">
+                              <div className="flex space-x-1 mb-3">
+                                <Button
+                                  variant={activeTab === 'online' ? "default" : "outline"}
+                                  size="sm"
+                                  className="h-7 px-3 text-xs"
+                                  onClick={() => setActiveLocationTab(prev => ({
+                                    ...prev,
+                                    [event.id]: 'online'
+                                  }))}
+                                >
+                                  Online Meeting
+                                </Button>
+                                <Button
+                                  variant={activeTab === 'location' ? "default" : "outline"}
+                                  size="sm"
+                                  className="h-7 px-3 text-xs"
+                                  onClick={() => setActiveLocationTab(prev => ({
+                                    ...prev,
+                                    [event.id]: 'location'
+                                  }))}
+                                >
+                                  Location
+                                </Button>
+                              </div>
+                              {activeTab === 'online' ? (
+                                <div className="text-sm text-foreground">
+                                  <div className="font-medium">{event.location}</div>
+                                  <div className="text-muted-foreground mt-1">
+                                    Meeting ID: {event.meetingId}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="text-sm text-foreground whitespace-pre-line">
+                                  {event.physicalLocation}
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <Shield className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <div>
-                          <span className="text-sm text-muted-foreground">
-                            {event.department} ({event.departmentRole})
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-2">
-                        <div className="h-4 w-4 flex items-center justify-center mt-0.5">
-                          <div className="h-2 w-2 rounded-full bg-muted-foreground"></div>
-                        </div>
-                        <div>
-                          <span className="text-sm text-muted-foreground">
-                            {event.primaryParty} ({event.primaryPartyRole})
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    }
 
-                    {/* Event Details */}
-                    <div className="space-y-3 mb-6">
-                      <div className="flex items-center space-x-3">
-                        <Calendar className="h-4 w-4 text-primary" />
-                        <span className="text-sm text-foreground font-medium">
-                          {formatDate(event.date)}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Clock className="h-4 w-4 text-primary" />
-                        <span className="text-sm text-foreground">
-                          {event.time} - {event.endTime} {event.timezone}
-                        </span>
-                      </div>
+                    // Option C: Expanded Accordion
+                    if (event.hybridPattern === "option-c") {
+                      const isOpen = accordionOpen[event.id] ?? true;
+                      return (
+                        <div className="space-y-3">
+                          <div className="flex items-start space-x-3">
+                            <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                            <div className="text-sm text-foreground flex-1">
+                              <div className="font-medium">{event.location}</div>
+                              <div className="text-muted-foreground mt-1">
+                                Meeting ID: {event.meetingId}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <Collapsible
+                            open={isOpen}
+                            onOpenChange={(open) => setAccordionOpen(prev => ({
+                              ...prev,
+                              [event.id]: open
+                            }))}
+                          >
+                            <CollapsibleTrigger className="flex items-center space-x-2 text-sm text-primary hover:text-primary/80 transition-colors">
+                              {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                              <span>Other details</span>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="mt-2">
+                              <div className="p-3 bg-muted/50 rounded-md text-sm text-muted-foreground whitespace-pre-line">
+                                <div className="font-medium mb-2 text-foreground">Physical Location:</div>
+                                {event.physicalLocation}
+                              </div>
+                            </CollapsibleContent>
+                          </Collapsible>
+                        </div>
+                      );
+                    }
+
+                    // Option D: Non-Hybrid (Teams Only) & Default
+                    return (
                       <div className="flex items-start space-x-3">
                         <MapPin className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                         <div className="text-sm text-foreground">
@@ -873,46 +1038,111 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                           )}
                         </div>
                       </div>
-                      {event.aljAssigned && (
-                        <div className="flex items-start space-x-3">
-                          <div className="h-4 w-4 flex items-center justify-center mt-0.5">
-                            <div className="h-2 w-2 rounded-full bg-primary"></div>
-                          </div>
-                          <span className="text-sm text-foreground">
-                            ALJ Assigned: <span className="font-medium">{event.aljAssigned}</span>
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    );
+                  };
 
-                    {/* Footer Buttons */}
-                    <div className="space-y-2">
-                      {event.isTeamsEvent && (
-                        <Button className="w-full h-9 font-medium">
-                          <Video className="h-4 w-4 mr-2" />
-                          Join Teams
-                        </Button>
-                      )}
-                      
-                      <div className="flex space-x-2">
-                        <Button variant="outline" className="flex-1 h-9 font-medium">
-                          <FolderOpen className="h-4 w-4 mr-2" />
-                          Open Case
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          className="flex-1 h-9 font-medium"
-                          onClick={() => navigate(`/appointment/${event.id}`)}
-                        >
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Open Appointment
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                  return (
+                    <Card key={event.id} className="shadow-fluent-8 hover:shadow-fluent-16 transition-shadow duration-200 bg-white rounded-lg border border-border">
+                      <CardContent className="p-6">
+                        {/* Header */}
+                        <div className="flex items-start justify-between mb-4">
+                          <h3 className="text-lg font-semibold text-foreground leading-tight">
+                            {event.title}
+                          </h3>
+                          <Badge 
+                            variant="secondary" 
+                            className="text-xs px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full font-medium ml-2"
+                          >
+                            {event.type}
+                          </Badge>
+                        </div>
+
+                        {/* Case & Party Metadata */}
+                        <div className="space-y-2 mb-4 pb-4 border-b border-border">
+                          <div className="flex items-start space-x-2">
+                            <FileText className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                            <div>
+                              <span className="text-sm font-medium text-foreground">
+                                {event.caseNumber}: {event.caseType}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-2">
+                            <Shield className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                            <div>
+                              <span className="text-sm text-muted-foreground">
+                                {event.department} ({event.departmentRole})
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-2">
+                            <div className="h-4 w-4 flex items-center justify-center mt-0.5">
+                              <div className="h-2 w-2 rounded-full bg-muted-foreground"></div>
+                            </div>
+                            <div>
+                              <span className="text-sm text-muted-foreground">
+                                {event.primaryParty} ({event.primaryPartyRole})
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Event Details */}
+                        <div className="space-y-3 mb-6">
+                          <div className="flex items-center space-x-3">
+                            <Calendar className="h-4 w-4 text-primary" />
+                            <span className="text-sm text-foreground font-medium">
+                              {formatDate(event.date)}
+                            </span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <Clock className="h-4 w-4 text-primary" />
+                            <span className="text-sm text-foreground">
+                              {event.time} - {event.endTime} {event.timezone}
+                            </span>
+                          </div>
+                          {renderLocationInfo()}
+                          {event.aljAssigned && (
+                            <div className="flex items-start space-x-3">
+                              <div className="h-4 w-4 flex items-center justify-center mt-0.5">
+                                <div className="h-2 w-2 rounded-full bg-primary"></div>
+                              </div>
+                              <span className="text-sm text-foreground">
+                                ALJ Assigned: <span className="font-medium">{event.aljAssigned}</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Footer Buttons */}
+                        <div className="space-y-2">
+                          {event.isTeamsEvent && (
+                            <Button className="w-full h-9 font-medium">
+                              <Video className="h-4 w-4 mr-2" />
+                              Join Teams
+                            </Button>
+                          )}
+                          
+                          <div className="flex space-x-2">
+                            <Button variant="outline" className="flex-1 h-9 font-medium">
+                              <FolderOpen className="h-4 w-4 mr-2" />
+                              Open Case
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              className="flex-1 h-9 font-medium"
+                              onClick={() => navigate(`/appointment/${event.id}`)}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Open Appointment
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
             )}
           </TabsContent>
 
