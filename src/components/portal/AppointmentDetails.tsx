@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Video, FolderOpen, Calendar, Clock, MapPin, Users, Building } from "lucide-react";
+import { ArrowLeft, Video, FolderOpen, Calendar, Clock, MapPin, Users, Building, File, Eye, Download } from "lucide-react";
 
 interface AppointmentDetailsProps {
   // This will be populated based on the appointment ID from URL params
@@ -46,6 +46,16 @@ export function AppointmentDetails() {
   const handleJoinTeams = () => {
     // In a real app, this would open Teams or the meeting link
     console.log("Joining Teams meeting:", appointmentData.meetingId);
+  };
+
+  const handleViewDocument = () => {
+    // In a real app, this would open a document preview modal
+    console.log("Opening document preview modal");
+  };
+
+  const handleDownloadDocument = () => {
+    // In a real app, this would download the document
+    console.log("Downloading document");
   };
 
   const getTypeVariant = (type: string) => {
@@ -197,6 +207,47 @@ export function AppointmentDetails() {
                 </div>
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Case Documents Card */}
+        <Card className="mb-6 shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <File className="h-5 w-5 text-primary" />
+              <span>Case Documents</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="text-2xl">📄</div>
+                <div>
+                  <p className="text-foreground font-medium">Notice of Initial Case Management Conference</p>
+                  <p className="text-sm text-muted-foreground">Includes Certificate of Service</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleViewDocument}
+                  className="flex items-center space-x-1"
+                >
+                  <Eye className="h-4 w-4" />
+                  <span>View</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleDownloadDocument}
+                  className="flex items-center space-x-1"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Download</span>
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
