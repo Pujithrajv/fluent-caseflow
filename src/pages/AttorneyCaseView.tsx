@@ -180,14 +180,14 @@ const AttorneyCaseView = () => {
 
             {/* Case Summary Tab */}
             <TabsContent value="case-summary" className="mt-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 auto-rows-fr">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Department Information */}
-              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 aspect-square flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Department Information</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-y-auto">
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">Department</label>
                       <p className="font-medium">{mockCaseData.department}</p>
@@ -209,12 +209,12 @@ const AttorneyCaseView = () => {
               </Card>
 
               {/* Primary Party Information */}
-              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 aspect-square flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Primary Party Information</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-y-auto">
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">Party Name</label>
                       <p className="font-medium">{mockCaseData.primaryPartyName}</p>
@@ -228,12 +228,12 @@ const AttorneyCaseView = () => {
               </Card>
 
               {/* Case Details */}
-              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 aspect-square flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Case Details</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-y-auto">
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">Initiating Action Date</label>
                       <p className="font-medium">July 15, 2024</p>
@@ -247,12 +247,12 @@ const AttorneyCaseView = () => {
               </Card>
 
               {/* Abandon Well Questions */}
-              <Card className="shadow-fluent-8 w-full h-[360px] flex flex-col">
+              <Card className="shadow-fluent-8 aspect-square flex flex-col">
                 <CardHeader className="flex-shrink-0">
                   <CardTitle className="font-fluent">Abandon Well Questions</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1 overflow-y-auto">
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">Permittee Number</label>
                       <p className="font-medium text-muted-foreground">Not applicable</p>
