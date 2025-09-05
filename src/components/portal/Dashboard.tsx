@@ -422,18 +422,6 @@ const mockTasks = [
     type: "task"
   },
   {
-    id: "CASE-2024-002",
-    caseNumber: "CASE-2024-002",
-    title: "Case Rejected – Conflict of Interest",
-    description: "This case has been rejected by the assigned ALJ due to a conflict of interest.",
-    primaryParty: "Midtown Vending LLC",
-    priority: "Alert",
-    dueDate: "2025-07-17",
-    priorityClass: "bg-destructive/20 border-destructive",
-    type: "alert",
-    action: "View Case"
-  },
-  {
     id: "CASE-2024-003",
     caseNumber: "CASE-2024-003",
     title: "Case Rejected – Initial Review",
