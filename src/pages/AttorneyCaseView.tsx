@@ -180,7 +180,7 @@ const AttorneyCaseView = () => {
 
             {/* Case Summary Tab */}
             <TabsContent value="case-summary" className="mt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Department Information */}
               <Card className="shadow-fluent-8 aspect-square flex flex-col">
                 <CardHeader className="flex-shrink-0">
