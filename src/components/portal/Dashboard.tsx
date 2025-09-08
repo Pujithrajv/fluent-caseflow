@@ -680,113 +680,14 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Upcoming Events Tab Content */}
           <TabsContent value="events" className="mt-6">
-            {/* Search and Filter Section */}
-            <div className="mb-6 space-y-4">
-              {/* Search Input */}
-              <div className="relative max-w-2xl">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  id="events-search"
-                  placeholder="Search by title, case #, party, type, location..."
-                  className="pl-10 pr-10 h-11 font-fluent border-gray-400 bg-gray-50 focus:ring-primary"
-                  value={eventsSearchQuery}
-                  onChange={(e) => setEventsSearchQuery(e.target.value)}
-                  aria-label="Search events"
-                />
-                {eventsSearchQuery && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 rounded-full p-0 hover:bg-gray-200"
-                    onClick={() => setEventsSearchQuery("")}
-                    aria-label="Clear search"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-
-              {/* Quick Filter Chips */}
-              <div className="flex flex-wrap gap-2">
-                {/* Type Filters */}
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-muted-foreground">Type:</span>
-                  {uniqueEventTypes.map(type => (
-                    <Button
-                      key={type}
-                      variant={selectedTypeFilters.includes(type) ? "default" : "outline"}
-                      size="sm"
-                      className="h-7 px-3 text-xs"
-                      onClick={() => toggleTypeFilter(type)}
-                    >
-                      {type}
-                      {selectedTypeFilters.includes(type) && (
-                        <X className="ml-1 h-3 w-3" />
-                      )}
-                    </Button>
-                  ))}
-                </div>
-
-                {/* Date Filters */}
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-muted-foreground">Date:</span>
-                  {[
-                    { value: "this-week", label: "This Week" },
-                    { value: "next-30-days", label: "Next 30 Days" },
-                    { value: "past-events", label: "Past Events" }
-                  ].map(filter => (
-                    <Button
-                      key={filter.value}
-                      variant={selectedDateFilter === filter.value ? "default" : "outline"}
-                      size="sm"
-                      className="h-7 px-3 text-xs"
-                      onClick={() => setSelectedDateFilter(
-                        selectedDateFilter === filter.value ? "" : filter.value
-                      )}
-                    >
-                      {filter.label}
-                      {selectedDateFilter === filter.value && (
-                        <X className="ml-1 h-3 w-3" />
-                      )}
-                    </Button>
-                  ))}
-                </div>
-
-                {/* Clear All Filters */}
-                {hasActiveFilters && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 px-3 text-xs text-muted-foreground hover:text-foreground"
-                    onClick={handleClearEventsSearch}
-                  >
-                    Clear all filters
-                  </Button>
-                )}
-              </div>
-
-              {/* Results Count */}
-              <div className="text-sm text-muted-foreground">
-                <span className="sr-only">{filteredAndSortedEvents.length} events shown</span>
-                Showing {filteredAndSortedEvents.length} of {mockEvents.length} events
-              </div>
-            </div>
-
             {/* Events Grid or Empty State */}
             {filteredAndSortedEvents.length === 0 ? (
               <div className="text-center py-12">
                 <AlertCircle className="mx-auto h-12 w-12 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-semibold">No events match your search</h3>
+                <h3 className="mt-4 text-lg font-semibold">No events found</h3>
                 <p className="text-muted-foreground mt-2">
-                  Try adjusting your search terms or filters
+                  No upcoming events scheduled.
                 </p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={handleClearEventsSearch}
-                >
-                  Clear search
-                </Button>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
