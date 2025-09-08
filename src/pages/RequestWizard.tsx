@@ -1,15 +1,69 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, ChevronRight, ChevronLeft, Check } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Check, HelpCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { RequestSelectionTab } from "@/components/portal/wizard/RequestSelectionTab";
 import { SelectedSubprocessDetailsTab } from "@/components/portal/wizard/SelectedSubprocessDetailsTab";
 import { DocumentUploadTab } from "@/components/portal/wizard/DocumentUploadTab";
 import { RequestReviewSubmitTab } from "@/components/portal/wizard/RequestReviewSubmitTab";
 
-type WizardStep = "request" | "details" | "documents" | "review";
+const requestTabs = [
+  { id: 'request', title: 'Request', description: 'Request group and type' },
+  { id: 'details', title: 'Selected Subprocess Details', description: 'Request specific details' },
+  { id: 'documents', title: 'Documents', description: 'Upload supporting documents' },
+  { id: 'review', title: 'Review & Submit', description: 'Verify and submit request' }
+];
+
+const faqData = {
+  "request": [
+    {
+      id: "req-1",
+      question: "How do I select the correct request type?",
+      answer: "Choose the request type that best matches your specific need. For example, select 'Discovery' for discovery requests, 'Motion' for motions."
+    },
+    {
+      id: "req-2",
+      question: "What should I include in the request summary?",
+      answer: "Provide a clear, concise summary of what you're requesting and why. Include relevant dates, reference numbers, and the specific outcome you're seeking."
+    }
+  ],
+  "details": [
+    {
+      id: "details-1",
+      question: "Why do I need to provide specific details?",
+      answer: "Different request types require specific information for proper processing. These details ensure we gather all necessary information for your particular request type."
+    }
+  ],
+  "documents": [
+    {
+      id: "docs-1",
+      question: "What types of documents can I upload?",
+      answer: "You can upload PDFs, Word documents, images (JPEG, PNG), and other standard file formats. Each file should be under 10MB."
+    },
+    {
+      id: "docs-2",
+      question: "Are documents required for all requests?",
+      answer: "Document requirements vary by request type. Some requests may not require any documents, while others may require specific supporting materials."
+    }
+  ],
+  "review": [
+    {
+      id: "review-1",
+      question: "What happens after I submit my request?",
+      answer: "Your request will be reviewed and processed according to the type and priority. You'll receive confirmation and status updates through the system."
+    },
+    {
+      id: "review-2",
+      question: "Can I edit my request after submission?",
+      answer: "Limited changes may be possible depending on the processing status. Contact the office if you need to make important corrections."
+    }
+  ]
+};
 
 interface RequestData {
   requestGroup?: string;
@@ -23,44 +77,19 @@ const RequestWizard = () => {
   const { caseId } = useParams();
   const { toast } = useToast();
   
-  const [currentStep, setCurrentStep] = useState<WizardStep>("request");
-  const [requestData, setRequestData] = useState<RequestData>({});
-  const [isComplete, setIsComplete] = useState({
-    request: false,
-    details: false,
-    documents: false,
-    review: false
-  });
+  const [formData, setFormData] = useState<RequestData>({});
+  const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
-  const steps = [
-    { id: "request", title: "Request", description: "Select request type" },
-    { id: "details", title: "Selected Subprocess Details", description: "Provide details" },
-    { id: "documents", title: "Documents", description: "Upload required documents" },
-    { id: "review", title: "Review & Submit", description: "Review and submit" }
-  ];
-
-  const currentStepIndex = steps.findIndex(step => step.id === currentStep);
-
-  const handleDataChange = (stepData: any) => {
-    setRequestData(prev => ({ ...prev, ...stepData }));
+  const updateFormData = (stepData: any) => {
+    setFormData(prev => ({ ...prev, ...stepData }));
   };
 
-  const handleStepComplete = (stepId: string, completed: boolean) => {
-    setIsComplete(prev => ({ ...prev, [stepId]: completed }));
+  const markTabCompleted = (tabId: string) => {
+    setCompletedTabs(prev => prev.includes(tabId) ? prev : [...prev, tabId]);
   };
 
-  const handleNext = () => {
-    const nextIndex = currentStepIndex + 1;
-    if (nextIndex < steps.length) {
-      setCurrentStep(steps[nextIndex].id as WizardStep);
-    }
-  };
-
-  const handlePrevious = () => {
-    const prevIndex = currentStepIndex - 1;
-    if (prevIndex >= 0) {
-      setCurrentStep(steps[prevIndex].id as WizardStep);
-    }
+  const isTabCompleted = (tabId: string) => {
+    return completedTabs.includes(tabId);
   };
 
   const handleSubmit = () => {
@@ -71,162 +100,149 @@ const RequestWizard = () => {
     navigate(`/attorney/case/${caseId}`);
   };
 
-  const canContinue = () => {
-    switch (currentStep) {
-      case "request":
-        return requestData.requestGroup && requestData.requestType;
-      case "details":
-        return true; // Always allow continuation from details
-      case "documents":
-        return true; // Assuming required documents are validated elsewhere
-      case "review":
-        return true;
-      default:
-        return false;
-    }
-  };
-
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case "request":
-        return (
-          <RequestSelectionTab
-            data={requestData}
-            onDataChange={handleDataChange}
-            onComplete={() => handleStepComplete("request", true)}
-            onNext={handleNext}
-          />
-        );
-      case "details":
-        return (
-          <SelectedSubprocessDetailsTab
-            data={requestData}
-            onDataChange={handleDataChange}
-            onComplete={() => handleStepComplete("details", true)}
-          />
-        );
-      case "documents":
-        return (
-          <DocumentUploadTab
-            data={requestData}
-            onDataChange={handleDataChange}
-          />
-        );
-      case "review":
-        return (
-          <RequestReviewSubmitTab
-            data={requestData}
-            onPrevious={handlePrevious}
-            onSubmit={handleSubmit}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-background font-fluent">
-      {/* Header */}
-      <div className="w-full bg-white border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <img 
-                src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
-                alt="Illinois Bureau of Administrative Hearings" 
-                className="h-16 w-auto object-contain"
-              />
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" onClick={() => navigate(`/attorney/case/${caseId}`)}>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Case
-              </Button>
+    <div className="min-h-screen bg-background p-6">
+      <div className="mx-auto max-w-6xl space-y-6">
+        {/* Header with Logo */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
+              alt="Illinois Bureau of Administrative Hearings" 
+              className="h-16 w-auto object-contain"
+            />
+            <div>
+              <h1 className="text-3xl font-semibold font-fluent text-foreground">New Request</h1>
+              <p className="text-muted-foreground font-fluent">
+                Complete all sections to create your request
+              </p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="flex min-h-[calc(100vh-80px)]">
-        {/* Sidebar with Steps */}
-        <div className="w-80 bg-white border-r border-border p-6">
-          <div className="space-y-1">
-            <h2 className="text-lg font-semibold font-fluent">Add Request</h2>
-            <p className="text-sm text-muted-foreground">Complete the following steps</p>
-          </div>
-          
-          <div className="mt-8 space-y-4">
-            {steps.map((step, index) => {
-              const isActive = step.id === currentStep;
-              const isCompleted = isComplete[step.id as keyof typeof isComplete];
-              const isPast = index < currentStepIndex;
-              
-              return (
-                <div key={step.id} className="flex items-start space-x-3">
-                  <div className={`
-                    flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
-                    ${isActive 
-                      ? 'bg-primary text-primary-foreground' 
-                      : isPast || isCompleted
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
-                    }
-                  `}>
-                    {isPast || isCompleted ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      index + 1
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className={`text-sm font-medium ${isActive ? 'text-primary' : 'text-foreground'}`}>
-                      {step.title}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {step.description}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <Button variant="ghost" size="sm" onClick={() => navigate(`/attorney/case/${caseId}`)}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Case
+          </Button>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 p-6">
-          <div className="max-w-4xl mx-auto">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="font-fluent">
-                  {steps[currentStepIndex]?.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {renderStepContent()}
-                
-                {/* Navigation Buttons */}
-                {currentStep !== "review" && (
-                  <div className="flex justify-between pt-6 border-t">
-                    <Button
-                      variant="outline"
-                      onClick={handlePrevious}
-                      disabled={currentStepIndex === 0}
+        {/* Vertical Tabs Layout */}
+        <Tabs defaultValue="request" className="w-full" orientation="vertical">
+          <div className="flex gap-6">
+            {/* Vertical Tab List */}
+            <Card className="shadow-fluent-8 w-80 bg-white">
+              <CardContent className="p-4">
+                <TabsList className="flex flex-col h-auto w-full bg-transparent space-y-2">
+                  {requestTabs.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className="w-full justify-between px-4 py-3 min-h-[56px] rounded-lg transition-all duration-200 bg-background text-foreground border border-border hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border-l-4 data-[state=active]:border-l-primary data-[state=active]:font-medium"
+                      onClick={() => markTabCompleted(tab.id)}
+                      aria-checked={isTabCompleted(tab.id) ? "true" : "false"}
                     >
-                      <ChevronLeft className="mr-2 h-4 w-4" />
-                      Previous
-                    </Button>
-                    <Button
-                      onClick={handleNext}
-                      disabled={!canContinue()}
-                    >
-                      Next
-                      <ChevronRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
+                      <div className="text-left">
+                        <div className="font-fluent font-medium">{tab.title}</div>
+                        <div className="text-xs opacity-75">{tab.description}</div>
+                      </div>
+                      {isTabCompleted(tab.id) && (
+                        <div className="bg-[#107C10] rounded-full w-5 h-5 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-white" />
+                        </div>
+                      )}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
               </CardContent>
             </Card>
+
+            {/* Tab Content */}
+            <div className="flex-1">
+              {requestTabs.map((tab) => (
+                <TabsContent key={tab.id} value={tab.id} className="mt-0">
+                  <Card className="shadow-fluent-16 bg-white">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="font-fluent font-semibold">{tab.title}</CardTitle>
+                          <p className="text-muted-foreground font-fluent">{tab.description}</p>
+                        </div>
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <HelpCircle className="h-5 w-5" />
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+                            <SheetHeader>
+                              <SheetTitle>{tab.title} Help</SheetTitle>
+                            </SheetHeader>
+                            <div className="mt-6">
+                              <Accordion type="single" collapsible className="w-full">
+                                {faqData[tab.id as keyof typeof faqData]?.map((faq) => (
+                                  <AccordionItem key={faq.id} value={faq.id}>
+                                    <AccordionTrigger className="text-left">
+                                      {faq.question}
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                      {faq.answer}
+                                    </AccordionContent>
+                                  </AccordionItem>
+                                ))}
+                              </Accordion>
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-6 bg-white">
+                      {tab.id === 'request' && (
+                        <RequestSelectionTab
+                          data={formData}
+                          onDataChange={updateFormData}
+                          onComplete={() => markTabCompleted('request')}
+                        />
+                      )}
+                      {tab.id === 'details' && (
+                        <SelectedSubprocessDetailsTab
+                          data={formData}
+                          onDataChange={updateFormData}
+                          onComplete={() => markTabCompleted('details')}
+                        />
+                      )}
+                      {tab.id === 'documents' && (
+                        <DocumentUploadTab
+                          data={formData}
+                          onDataChange={updateFormData}
+                        />
+                      )}
+                      {tab.id === 'review' && (
+                        <RequestReviewSubmitTab
+                          data={formData}
+                          onSubmit={handleSubmit}
+                        />
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              ))}
+            </div>
+          </div>
+        </Tabs>
+
+        {/* Action Buttons */}
+        <div className="flex justify-between pt-6 pb-4">
+          <Button variant="outline" onClick={() => navigate(`/attorney/case/${caseId}`)} className="font-fluent">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Case
+          </Button>
+          
+          <div className="flex space-x-3">
+            <Button variant="outline" className="font-fluent">
+              Save Draft
+            </Button>
+            <Button className="font-fluent" onClick={handleSubmit}>
+              <Check className="mr-2 h-4 w-4" />
+              Submit Request
+            </Button>
           </div>
         </div>
       </div>
