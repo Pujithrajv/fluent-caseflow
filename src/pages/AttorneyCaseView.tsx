@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowLeft, Plus, Eye, Edit } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowLeft, Plus, Eye, Filter } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { ParticipantsTab } from "@/components/portal/wizard/ParticipantsTab";
@@ -13,8 +14,10 @@ interface Request {
   id: string;
   requestGroup: string;
   requestType: string;
-  status: "draft" | "submitted" | "approved" | "denied";
-  submissionDate: string;
+  requestStatus: "draft" | "in-progress" | "completed";
+  decisionStatus: "approved" | "denied" | "pending";
+  decisionBy: string;
+  decisionDate: string;
 }
 
 interface Participant {
@@ -33,16 +36,29 @@ const mockRequests: Request[] = [
   {
     id: "REQ-001",
     requestGroup: "Motion",
-    requestType: "Motion to Compel",
-    status: "submitted",
-    submissionDate: "2024-11-15"
+    requestType: "Motion to Expedite",
+    requestStatus: "completed",
+    decisionStatus: "approved",
+    decisionBy: "ALJ Smith",
+    decisionDate: "2024-11-20"
   },
   {
     id: "REQ-002", 
     requestGroup: "Discovery",
     requestType: "Document Request",
-    status: "approved",
-    submissionDate: "2024-11-10"
+    requestStatus: "in-progress",
+    decisionStatus: "pending",
+    decisionBy: "",
+    decisionDate: ""
+  },
+  {
+    id: "REQ-003",
+    requestGroup: "Motion",
+    requestType: "Motion to Dismiss",
+    requestStatus: "draft",
+    decisionStatus: "denied",
+    decisionBy: "Clerk Jones",
+    decisionDate: "2024-11-18"
   }
 ];
 
@@ -50,6 +66,8 @@ const AttorneyCaseView = () => {
   const navigate = useNavigate();
   const { caseId } = useParams();
   const [requests] = useState<Request[]>(mockRequests);
+  const [requestStatusFilter, setRequestStatusFilter] = useState<string>("all");
+  const [decisionStatusFilter, setDecisionStatusFilter] = useState<string>("all");
   
   const [participants, setParticipants] = useState<Participant[]>([
     {
@@ -110,15 +128,29 @@ const AttorneyCaseView = () => {
   };
 
 
-  const getStatusBadgeVariant = (status: string) => {
+  const getRequestStatusBadgeVariant = (status: string) => {
     switch (status) {
-      case "approved": return "default";
-      case "submitted": return "secondary";
+      case "completed": return "default";
+      case "in-progress": return "secondary";
       case "draft": return "outline";
-      case "denied": return "destructive";
       default: return "outline";
     }
   };
+
+  const getDecisionStatusStyle = (status: string) => {
+    switch (status) {
+      case "approved": return { backgroundColor: "#16a34a", color: "#ffffff" }; // green
+      case "denied": return { backgroundColor: "#dc2626", color: "#ffffff" }; // red
+      case "pending": return { backgroundColor: "#6b7280", color: "#ffffff" }; // gray
+      default: return { backgroundColor: "#6b7280", color: "#ffffff" };
+    }
+  };
+
+  const filteredRequests = requests.filter(request => {
+    const matchesRequestStatus = requestStatusFilter === "all" || request.requestStatus === requestStatusFilter;
+    const matchesDecisionStatus = decisionStatusFilter === "all" || request.decisionStatus === decisionStatusFilter;
+    return matchesRequestStatus && matchesDecisionStatus;
+  });
 
   return (
     <div className="min-h-screen bg-background font-fluent">
@@ -284,43 +316,84 @@ const AttorneyCaseView = () => {
             <TabsContent value="requests" className="mt-4">
             <Card className="shadow-fluent-8">
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="font-fluent">Case Requests</CardTitle>
+                <CardTitle className="font-fluent">Requests</CardTitle>
                 <Button onClick={handleAddRequest}>
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Request
+                  Request
                 </Button>
               </CardHeader>
               <CardContent>
-                {requests.length === 0 ? (
+                {/* Filters */}
+                <div className="flex items-center space-x-4 mb-6">
+                  <div className="flex items-center space-x-2">
+                    <Filter className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Filters:</span>
+                  </div>
+                  <Select value={requestStatusFilter} onValueChange={setRequestStatusFilter}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Request Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Request Status</SelectItem>
+                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem value="in-progress">In Progress</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select value={decisionStatusFilter} onValueChange={setDecisionStatusFilter}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Decision Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Decision Status</SelectItem>
+                      <SelectItem value="approved">Approved</SelectItem>
+                      <SelectItem value="denied">Denied</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {filteredRequests.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-muted-foreground">No requests have been made for this case.</p>
+                    <p className="text-muted-foreground">No requests yet. Create your first request to get started.</p>
                     <Button onClick={handleAddRequest} className="mt-4">
                       <Plus className="mr-2 h-4 w-4" />
-                      Add Request
+                      Request
                     </Button>
                   </div>
                 ) : (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Request Group</TableHead>
-                        <TableHead>Request Type</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Submission Date</TableHead>
+                        <TableHead>Group / Type</TableHead>
+                        <TableHead>Request Status</TableHead>
+                        <TableHead>Decision Status</TableHead>
+                        <TableHead>Decision By</TableHead>
+                        <TableHead>Decision Date</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {requests.map((request) => (
-                        <TableRow key={request.id}>
-                          <TableCell className="font-medium">{request.requestGroup}</TableCell>
-                          <TableCell>{request.requestType}</TableCell>
+                      {filteredRequests.map((request) => (
+                        <TableRow key={request.id} className="cursor-pointer hover:bg-muted/50">
+                          <TableCell className="font-medium">
+                            {request.requestGroup} — {request.requestType}
+                          </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(request.status)}>
-                              {request.status}
+                            <Badge variant={getRequestStatusBadgeVariant(request.requestStatus)}>
+                              {request.requestStatus.charAt(0).toUpperCase() + request.requestStatus.slice(1).replace('-', ' ')}
                             </Badge>
                           </TableCell>
-                          <TableCell>{request.submissionDate}</TableCell>
+                          <TableCell>
+                            <div 
+                              className="inline-flex items-center justify-center rounded-full px-3 py-1.5 text-xs font-medium tracking-wide whitespace-nowrap"
+                              style={getDecisionStatusStyle(request.decisionStatus)}
+                            >
+                              {request.decisionStatus.charAt(0).toUpperCase() + request.decisionStatus.slice(1)}
+                            </div>
+                          </TableCell>
+                          <TableCell>{request.decisionBy || "—"}</TableCell>
+                          <TableCell>{request.decisionDate || "—"}</TableCell>
                           <TableCell className="text-right">
                             <Button variant="outline" size="sm">
                               <Eye className="mr-2 h-4 w-4" />
