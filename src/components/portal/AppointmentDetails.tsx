@@ -252,18 +252,6 @@ export function AppointmentDetails() {
               </div>
             </div>
 
-
-{appointmentData.aljAssigned && (
-              <div className="flex items-center space-x-3">
-                <div className="h-4 w-4 flex items-center justify-center">
-                  <div className="h-2 w-2 rounded-full bg-primary"></div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">ALJ Assigned</label>
-                  <p className="text-foreground font-medium">{appointmentData.aljAssigned}</p>
-                </div>
-              </div>
-            )}
           </CardContent>
         </Card>
 
