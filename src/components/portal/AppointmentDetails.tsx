@@ -14,25 +14,98 @@ export function AppointmentDetails() {
   const { appointmentId } = useParams<{ appointmentId: string }>();
 
   // Mock appointment data - in a real app, this would be fetched based on appointmentId
-  const appointmentData = {
-    id: appointmentId || "1",
-    title: "Initial Case Management Conference",
-    type: "Conference",
-    caseReference: "DBE-2024-001-EC",
-    caseTitle: "Grain Dealer and Warehouse Licensing",
-    caseType: "Licensing Violation",
-    complainant: "Department of Natural Resources",
-    defendant: "Rajaram Sheppard",
-    date: "January 15, 2025",
-    startTime: "10:00 AM",
-    endTime: "11:00 AM",
-    timezone: "CST",
-    duration: "1 hour",
-    isTeamsEvent: true,
-    location: "Microsoft Teams Meeting",
-    meetingId: "859 234 567 89",
-    aljAssigned: "Judge Sarah Mitchell"
-  };
+  const mockEvents = [
+    {
+      id: "1",
+      title: "Initial Case Management Conference",
+      subtitle: "Notice of Initial Case Management Conference",
+      date: "2025-08-25",
+      time: "1:00 PM",
+      endDate: "2025-08-25",
+      endTime: "2:00 PM",
+      location: "Microsoft Teams Meeting",
+      meetingId: "392 671 125 846",
+      type: "Conference",
+      eventType: "meeting",
+      isTeamsEvent: true,
+      hasCase: true,
+      caseNumber: "DBE-2024-001-EC",
+      caseType: "Grain Dealer and Warehouse Licensing",
+      department: "Department of Agriculture",
+      departmentRole: "Complainant",
+      primaryParty: "Kirby Neroni",
+      primaryPartyRole: "Respondent",
+      timezone: "CST"
+    },
+    {
+      id: "2",
+      title: "Case Management Continuance",
+      subtitle: "Web-based session",
+      date: "2025-09-14",
+      time: "10:00 AM",
+      endDate: "2025-09-14",
+      endTime: "11:00 AM",
+      location: "Microsoft Teams Meeting",
+      meetingId: "855 123 456 789",
+      type: "Meeting",
+      eventType: "meeting",
+      isTeamsEvent: true,
+      hasCase: true,
+      caseNumber: "CASE-2024-001",
+      caseType: "Weights & Measures Inspections",
+      department: "Department of Agriculture",
+      departmentRole: "Petitioner",
+      primaryParty: "Sniders Group",
+      primaryPartyRole: "Respondent",
+      timezone: "CST"
+    },
+    {
+      id: "3",
+      title: "Pre-hearing Conference",
+      subtitle: "Web-based session",
+      date: "2025-09-14",
+      time: "2:00 PM",
+      endDate: "2025-09-14",
+      endTime: "3:00 PM",
+      location: "Microsoft Teams Meeting",
+      meetingId: "123 987 654 321",
+      type: "Conference",
+      eventType: "meeting",
+      isTeamsEvent: true,
+      hasCase: true,
+      caseNumber: "CASE-2024-002",
+      caseType: "Weights & Measures Inspections",
+      department: "Department of Agriculture",
+      departmentRole: "Petitioner",
+      primaryParty: "Midtown Vending LLC",
+      primaryPartyRole: "Respondent",
+      timezone: "CST"
+    },
+    {
+      id: "4",
+      title: "Administrative Hearing",
+      subtitle: "Professional Hearing Session",
+      date: "2025-09-19",
+      time: "1:00 PM",
+      endDate: "2025-09-19",
+      endTime: "3:00 PM",
+      location: "502 William G. Stratton Building\n401 South Spring Street\nSpringfield, IL 62706-4000",
+      type: "Hearing",
+      eventType: "hearing",
+      isTeamsEvent: false,
+      hasCase: true,
+      caseNumber: "CASE-2024-003",
+      caseType: "Food Safety",
+      department: "Department of Public Health",
+      departmentRole: "Complainant",
+      primaryParty: "North District Foods",
+      primaryPartyRole: "Respondent",
+      timezone: "CST",
+      aljAssigned: "Daniel Schuering"
+    }
+  ];
+
+  const appointmentData = mockEvents.find(event => event.id === appointmentId) || mockEvents[0];
 
   const handleBack = () => {
     navigate("/dashboard");
@@ -40,7 +113,7 @@ export function AppointmentDetails() {
 
   const handleOpenCase = () => {
     // Navigate to case wizard or case details
-    navigate(`/dashboard?case=${appointmentData.caseReference}`);
+    navigate(`/dashboard?case=${appointmentData.caseNumber}`);
   };
 
   const handleJoinTeams = () => {
@@ -104,11 +177,11 @@ export function AppointmentDetails() {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Case Reference</label>
-                <p className="text-foreground font-medium">{appointmentData.caseReference}: {appointmentData.caseTitle}</p>
+                <p className="text-foreground font-medium">{appointmentData.caseNumber}: {appointmentData.caseType}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Case Type</label>
-                <p className="text-foreground">{appointmentData.caseType}</p>
+                <label className="text-sm font-medium text-muted-foreground">Department</label>
+                <p className="text-foreground">{appointmentData.department}</p>
               </div>
             </div>
             
@@ -120,12 +193,12 @@ export function AppointmentDetails() {
                 </label>
                 <div className="space-y-2 ml-6">
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground">{appointmentData.complainant}</span>
-                    <Badge variant="outline" className="text-xs">Complainant</Badge>
+                    <span className="text-foreground">{appointmentData.department}</span>
+                    <Badge variant="outline" className="text-xs">{appointmentData.departmentRole}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground">{appointmentData.defendant}</span>
-                    <Badge variant="outline" className="text-xs">Defendant</Badge>
+                    <span className="text-foreground">{appointmentData.primaryParty}</span>
+                    <Badge variant="outline" className="text-xs">{appointmentData.primaryPartyRole}</Badge>
                   </div>
                 </div>
               </div>
@@ -156,7 +229,7 @@ export function AppointmentDetails() {
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Time</label>
                   <p className="text-foreground font-medium">
-                    {appointmentData.startTime} - {appointmentData.endTime} {appointmentData.timezone}
+                    {appointmentData.time} - {appointmentData.endTime} {appointmentData.timezone}
                   </p>
                 </div>
               </div>
@@ -179,15 +252,8 @@ export function AppointmentDetails() {
               </div>
             </div>
 
-            <div className="flex items-center space-x-3">
-              <Clock className="h-4 w-4 text-primary" />
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Duration</label>
-                <p className="text-foreground">{appointmentData.duration}</p>
-              </div>
-            </div>
 
-            {appointmentData.aljAssigned && (
+{appointmentData.aljAssigned && (
               <div className="flex items-center space-x-3">
                 <div className="h-4 w-4 flex items-center justify-center">
                   <div className="h-2 w-2 rounded-full bg-primary"></div>
