@@ -774,16 +774,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                             </span>
                           </div>
                           {renderLocationInfo()}
-                          {event.aljAssigned && (
-                            <div className="flex items-start space-x-3">
-                              <div className="h-4 w-4 flex items-center justify-center mt-0.5">
-                                <div className="h-2 w-2 rounded-full bg-primary"></div>
-                              </div>
-                              <span className="text-sm text-foreground">
-                                ALJ Assigned: <span className="font-medium">{event.aljAssigned}</span>
-                              </span>
-                            </div>
-                          )}
                         </div>
 
                         {/* Footer Buttons */}
