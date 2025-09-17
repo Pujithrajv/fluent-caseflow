@@ -344,13 +344,13 @@ const mockTasks = [
     type: "alert"
   },
   {
-    id: "CASE-2024-005",
-    caseNumber: "CASE-2024-005",
+    id: "ABD-2024-001-EC",
+    caseNumber: "ABD-2024-001-EC",
     title: "Case Rejected - Hard Reject (ALJ)",
     description: "Case Rejected – Hard reject by ALJ after checklist review.",
     primaryParty: "Valley Grain Solutions",
     priority: "Critical Alert",
-    dueDate: null,
+    dueDate: "2025-09-17",
     priorityClass: "bg-red-100 text-red-800 border-red-300",
     type: "alert"
   }
