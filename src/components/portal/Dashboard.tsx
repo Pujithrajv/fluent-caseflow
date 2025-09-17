@@ -306,7 +306,7 @@ const mockTasks = [
     description: "New case successfully created and saved to records.",
     primaryParty: "Kirby Neroni",
     priority: "Informational",
-    dueDate: null,
+    dueDate: "2025-09-17",
     priorityClass: "bg-muted text-muted-foreground border-muted",
     type: "alert"
   },
@@ -322,13 +322,13 @@ const mockTasks = [
     type: "alert"
   },
   {
-    id: "CASE-2024-003",
-    caseNumber: "CASE-2024-003",
+    id: "DBE-2024-001-EC",
+    caseNumber: "DBE-2024-001-EC",
     title: "Case Accepted",
     description: "Case Accepted – Case Number generated and confirmed.",
     primaryParty: "North District Foods",
     priority: "Normal",
-    dueDate: null,
+    dueDate: "2025-09-27",
     priorityClass: "bg-blue-100 text-blue-800 border-blue-300",
     type: "alert"
   },
