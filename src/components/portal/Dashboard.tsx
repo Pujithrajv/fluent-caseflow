@@ -300,39 +300,59 @@ const formatDate = (dateString: string) => {
 
 const mockTasks = [
   {
-    id: "DBE-2024-001-EC",
-    caseNumber: "DBE-2024-001-EC",
-    title: "Document Review Pending",
-    description: "Grain Dealer and Warehouse Licensing case review",
-    primaryParty: "Kirby Neroni",
-    priority: "High Priority",
-    dueDate: "2024-12-22",
-    priorityClass: "bg-warning/20 border-warning",
-    type: "task"
-  },
-  {
     id: "CASE-2024-001",
     caseNumber: "CASE-2024-001",
-    title: "Action Required: Conference report is required",
-    description: "Conference report submission required for case",
+    title: "New Case Created",
+    description: "New case successfully created and saved to records.",
+    primaryParty: "Kirby Neroni",
+    priority: "Informational",
+    dueDate: null,
+    priorityClass: "bg-muted text-muted-foreground border-muted",
+    type: "alert"
+  },
+  {
+    id: "CASE-2024-002",
+    caseNumber: "CASE-2024-002",
+    title: "Case Returned for Correction",
+    description: "Case returned for correction – missing/incorrect information or documents.",
     primaryParty: "Sniders Group",
     priority: "High Priority",
-    dueDate: "2024-12-20",
-    priorityClass: "bg-warning/20 border-warning",
-    type: "task"
+    dueDate: "2024-12-28",
+    priorityClass: "bg-yellow-100 text-yellow-800 border-yellow-300",
+    type: "alert"
   },
   {
     id: "CASE-2024-003",
     caseNumber: "CASE-2024-003",
-    title: "Case Rejected – Initial Review",
-    description: "Food Safety case rejected during initial review.",
+    title: "Case Accepted",
+    description: "Case Accepted – Case Number generated and confirmed.",
     primaryParty: "North District Foods",
+    priority: "Normal",
+    dueDate: null,
+    priorityClass: "bg-blue-100 text-blue-800 border-blue-300",
+    type: "alert"
+  },
+  {
+    id: "CASE-2024-004",
+    caseNumber: "CASE-2024-004",
+    title: "Case Rejected - Soft Reject (Clerk)",
+    description: "Case Rejected – Soft reject due to incomplete information or wrong document upload.",
+    primaryParty: "Metro Agricultural Corp",
     priority: "Alert",
-    dueDate: "2025-07-17",
-    priorityClass: "bg-destructive/20 border-destructive",
-    type: "alert",
-    action: "View Case",
-    status: "Rejected"
+    dueDate: "2024-12-30",
+    priorityClass: "bg-orange-100 text-orange-800 border-orange-300",
+    type: "alert"
+  },
+  {
+    id: "CASE-2024-005",
+    caseNumber: "CASE-2024-005",
+    title: "Case Rejected - Hard Reject (ALJ)",
+    description: "Case Rejected – Hard reject by ALJ after checklist review.",
+    primaryParty: "Valley Grain Solutions",
+    priority: "Critical Alert",
+    dueDate: null,
+    priorityClass: "bg-red-100 text-red-800 border-red-300",
+    type: "alert"
   }
 ];
 
@@ -845,19 +865,20 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                           <TableCell className="font-medium">{task.primaryParty}</TableCell>
                           <TableCell>
                             <div>
-                              <h4 className="font-medium text-sm text-foreground">{task.title}</h4>
-                              <p className="text-xs text-muted-foreground mt-1">{task.description}</p>
+                              <p className="text-sm text-foreground">{task.description}</p>
                             </div>
                           </TableCell>
                           <TableCell>
                             <div className="space-y-2">
-                              <Badge variant="outline" className={`text-xs ${task.priorityClass}`}>
+                              <Badge variant="outline" className={`text-xs font-medium px-2.5 py-1 rounded-full ${task.priorityClass}`}>
                                 {task.priority}
                               </Badge>
-                              <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                                <Clock className="h-3 w-3" />
-                                <span>Due: {formatDate(task.dueDate)}</span>
-                              </div>
+                              {task.dueDate && (
+                                <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                                  <Calendar className="h-3 w-3" />
+                                  <span>Due: {formatDate(task.dueDate)}</span>
+                                </div>
+                              )}
                             </div>
                           </TableCell>
                         </TableRow>
