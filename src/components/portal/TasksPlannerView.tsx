@@ -177,28 +177,26 @@ export function TasksPlannerView({ tasks, onViewTask }: TasksPlannerViewProps) {
               </p>
 
               {/* Parties Information */}
-              <div className="space-y-2">
-                <div className="flex items-start space-x-2 text-sm">
-                  <User className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="font-medium text-foreground">Complainant:</span>{' '}
-                    <span className="text-foreground">{caseItem.complainant.name}</span>{' '}
-                    <span className="text-muted-foreground">(Atty: {caseItem.complainant.attorney})</span>
+              <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                <div className="flex justify-between items-center text-sm">
+                  <div className="flex items-center space-x-2">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium text-foreground">First Party: {caseItem.complainant.name}</span>
                   </div>
+                  <span className="text-muted-foreground text-xs">Atty: {caseItem.complainant.attorney}</span>
                 </div>
                 
-                <div className="flex items-start space-x-2 text-sm">
-                  <Users className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="font-medium text-foreground">Defendant:</span>{' '}
-                    <span className="text-foreground">{caseItem.defendant.name}</span>{' '}
-                    <span className="text-muted-foreground">(Atty: {caseItem.defendant.attorney})</span>
+                <div className="flex justify-between items-center text-sm">
+                  <div className="flex items-center space-x-2">
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium text-foreground">Second Party: {caseItem.defendant.name}</span>
                   </div>
+                  <span className="text-muted-foreground text-xs">Atty: {caseItem.defendant.attorney}</span>
                 </div>
               </div>
 
               {/* Dates */}
-              <div className="space-y-1">
+              <div className="bg-gray-50 rounded-lg p-3 space-y-1">
                 <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                   <Calendar className="h-3 w-3" />
                   <span>Submitted: {caseItem.submittedDate}</span>
