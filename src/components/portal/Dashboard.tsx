@@ -336,7 +336,7 @@ const mockTasks = [
     id: "CASE-2024-004",
     caseNumber: "CASE-2024-004",
     title: "Case Rejected - Soft Reject (Clerk)",
-    description: "Case Rejected – Soft reject due to incomplete information or wrong document upload.",
+    description: "Case Rejected – due to incomplete information or wrong document upload.",
     primaryParty: "Metro Agricultural Corp",
     priority: "Alert",
     dueDate: "2024-12-30",
