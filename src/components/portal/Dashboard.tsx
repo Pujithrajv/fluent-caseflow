@@ -325,7 +325,7 @@ const mockTasks = [
     id: "DBE-2024-001-EC",
     caseNumber: "DBE-2024-001-EC",
     title: "Case Accepted",
-    description: "Case Accepted – Case Number generated and confirmed.",
+    description: "Case Accepted – Case Number generated.",
     primaryParty: "North District Foods",
     priority: "Normal",
     dueDate: "2025-09-27",
