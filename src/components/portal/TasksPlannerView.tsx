@@ -232,19 +232,14 @@ export function TasksPlannerView({ tasks, onViewTask }: TasksPlannerViewProps) {
                   {caseItem.status}
                 </Badge>
                 
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {caseItem.assignee}
-                  </span>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="bg-gray-800 text-white hover:bg-gray-700 border-gray-800"
-                    onClick={() => onViewTask?.(caseItem.id)}
-                  >
-                    View Details
-                  </Button>
-                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-gray-800 text-white hover:bg-gray-700 border-gray-800"
+                  onClick={() => onViewTask?.(caseItem.id)}
+                >
+                  View Details
+                </Button>
               </div>
             </CardContent>
           </Card>
