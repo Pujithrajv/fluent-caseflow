@@ -235,7 +235,7 @@ export function TasksPlannerView({ tasks, onViewTask }: TasksPlannerViewProps) {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="bg-gray-800 text-white hover:bg-gray-700 border-gray-800"
+                  className="bg-gray-800 text-white hover:bg-gray-700 border-gray-800 flex-shrink-0"
                   onClick={() => onViewTask?.(caseItem.id)}
                 >
                   View Details
