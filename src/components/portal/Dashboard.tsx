@@ -11,6 +11,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/shared/Header";
+import { TasksPlannerView } from "./TasksPlannerView";
+import { TasksJiraView } from "./TasksJiraView";
+import { TasksKanbanView } from "./TasksKanbanView";
+import { TasksTimelineView } from "./TasksTimelineView";
 
 interface CaseItem {
   id: string;
@@ -505,6 +509,30 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Tasks & Alerts
             </TabsTrigger>
+            <TabsTrigger 
+              value="planner" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Planner View
+            </TabsTrigger>
+            <TabsTrigger 
+              value="jira" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Enhanced List
+            </TabsTrigger>
+            <TabsTrigger 
+              value="kanban" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Kanban Board
+            </TabsTrigger>
+            <TabsTrigger 
+              value="timeline" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Timeline View
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -888,6 +916,39 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Planner View Tab Content */}
+          <TabsContent value="planner" className="mt-6">
+            <TasksPlannerView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
+          </TabsContent>
+
+          {/* Jira View Tab Content */}
+          <TabsContent value="jira" className="mt-6">
+            <TasksJiraView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+              onSortByDate={handleSortByDate}
+            />
+          </TabsContent>
+
+          {/* Kanban View Tab Content */}
+          <TabsContent value="kanban" className="mt-6">
+            <TasksKanbanView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
+          </TabsContent>
+
+          {/* Timeline View Tab Content */}
+          <TabsContent value="timeline" className="mt-6">
+            <TasksTimelineView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
           </TabsContent>
         </Tabs>
 
