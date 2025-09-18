@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, User, Users, Check, Clock, Gavel } from "lucide-react";
+import { Calendar, User, Users } from "lucide-react";
 
 interface Task {
   id: string;
@@ -80,7 +80,6 @@ const mockCases = [
   {
     id: '1',
     caseNumber: 'CASE-2024-001',
-    caseType: 'INFORMATIONAL',
     primaryParty: 'Kirby Neroni',
     description: 'New case successfully created and saved to records.',
     complainant: { name: 'Kirby Neroni', attorney: 'John Smith' },
@@ -95,7 +94,6 @@ const mockCases = [
   {
     id: '2',
     caseNumber: 'CASE-2024-002',
-    caseType: 'REGULATORY',
     primaryParty: 'Sniders Group',
     description: 'Case returned for correction – missing/incorrect information or documents.',
     complainant: { name: 'Sniders Group', attorney: 'Mike Johnson' },
@@ -110,7 +108,6 @@ const mockCases = [
   {
     id: '3',
     caseNumber: 'DBE-2024-001-EC',
-    caseType: 'CERTIFICATION',
     primaryParty: 'North District Foods',
     description: 'Case Accepted – Case Number generated.',
     complainant: { name: 'North District Foods', attorney: 'Robert Lee' },
@@ -125,7 +122,6 @@ const mockCases = [
   {
     id: '4',
     caseNumber: 'ABD-2024-001-EC',
-    caseType: 'ENFORCEMENT',
     primaryParty: 'Valley Grain Solutions',
     description: 'Case Rejected – ALJ after checklist review.',
     complainant: { name: 'Valley Grain Solutions', attorney: 'David Kim' },
@@ -153,98 +149,104 @@ export function TasksPlannerView({ tasks, onViewTask }: TasksPlannerViewProps) {
         {casesToDisplay.map((caseItem) => (
           <Card 
             key={caseItem.id} 
-            className="hover:shadow-lg transition-shadow duration-200 bg-white border border-gray-200 rounded-lg"
+            className={`hover:shadow-lg transition-shadow duration-200 border-l-4 ${getBorderColor(caseItem.priority)} bg-white`}
           >
             <CardHeader className="pb-4">
-              {/* Top row: Case number (blue, bold) and Case type badge */}
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-lg font-bold text-blue-600">
-                  {caseItem.caseNumber}
-                </h3>
+              <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {caseItem.caseNumber}
+                  </h3>
+                  <p className="text-sm text-muted-foreground font-medium">
+                    {caseItem.primaryParty}
+                  </p>
+                </div>
                 <Badge 
                   variant="outline" 
-                  className="text-xs font-medium px-2.5 py-1 rounded bg-gray-100 text-gray-700 border-gray-300"
+                  className={`text-xs font-medium px-2.5 py-1 rounded ${getPriorityBadgeStyle(caseItem.priority)}`}
                 >
-                  {caseItem.caseType}
+                  {caseItem.priority}
                 </Badge>
-              </div>
-              
-              {/* Primary party name */}
-              <p className="text-base font-medium text-gray-900 mb-2">
-                {caseItem.primaryParty}
-              </p>
-              
-              {/* Message/Description */}
-              <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                {caseItem.description}
-              </p>
-              
-              {/* Party block in light gray box */}
-              <div className="bg-gray-50 rounded-md p-3 space-y-2 mb-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-900">
-                    <span className="font-medium">First Party:</span> {caseItem.complainant.name}
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    {caseItem.complainant.attorney}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-900">
-                    <span className="font-medium">Second Party:</span> {caseItem.defendant.name}
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    {caseItem.defendant.attorney}
-                  </span>
-                </div>
-              </div>
-              
-              {/* Dates in horizontal row with colored icons */}
-              <div className="flex items-center space-x-4 mb-4">
-                {caseItem.decisionDate && (
-                  <div className="flex items-center space-x-1">
-                    <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
-                      <Gavel className="h-3 w-3 text-purple-600" />
-                    </div>
-                    <span className="text-xs text-gray-600">{caseItem.decisionDate}</span>
-                  </div>
-                )}
-                
-                {caseItem.acceptedDate && (
-                  <div className="flex items-center space-x-1">
-                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                      <Check className="h-3 w-3 text-green-600" />
-                    </div>
-                    <span className="text-xs text-gray-600">{caseItem.acceptedDate}</span>
-                  </div>
-                )}
-                
-                <div className="flex items-center space-x-1">
-                  <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
-                    <Clock className="h-3 w-3 text-red-600" />
-                  </div>
-                  <span className="text-xs text-gray-600">{caseItem.submittedDate}</span>
-                </div>
               </div>
             </CardHeader>
             
-            <CardContent className="pt-0">
-              {/* Bottom Section - Status and View Details */}
-              <div className="flex items-center justify-between">
+            <CardContent className="space-y-4">
+              {/* Description */}
+              <p className="text-sm text-foreground leading-relaxed">
+                {caseItem.description}
+              </p>
+
+              {/* Parties Information */}
+              <div className="space-y-2">
+                <div className="flex items-start space-x-2 text-sm">
+                  <User className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="font-medium text-foreground">Complainant:</span>{' '}
+                    <span className="text-foreground">{caseItem.complainant.name}</span>{' '}
+                    <span className="text-muted-foreground">(Atty: {caseItem.complainant.attorney})</span>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-2 text-sm">
+                  <Users className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="font-medium text-foreground">Defendant:</span>{' '}
+                    <span className="text-foreground">{caseItem.defendant.name}</span>{' '}
+                    <span className="text-muted-foreground">(Atty: {caseItem.defendant.attorney})</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Dates */}
+              <div className="space-y-1">
+                <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                  <Calendar className="h-3 w-3" />
+                  <span>Submitted: {caseItem.submittedDate}</span>
+                </div>
+                
+                {caseItem.acceptedDate && (
+                  <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                    <Calendar className="h-3 w-3" />
+                    <span>Accepted: {caseItem.acceptedDate}</span>
+                  </div>
+                )}
+                
+                {caseItem.decisionDate && (
+                  <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                    <Calendar className="h-3 w-3" />
+                    <span>Decision: {caseItem.decisionDate}</span>
+                  </div>
+                )}
+                
+                {caseItem.appealDue && (
+                  <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                    <Calendar className="h-3 w-3" />
+                    <span>Appeal Due: {caseItem.appealDue}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Section - Status and Actions */}
+              <div className="flex items-center justify-between pt-2">
                 <Badge 
                   className={`text-xs font-medium px-3 py-1.5 rounded ${getStatusBadgeStyle(caseItem.status)}`}
                 >
                   {caseItem.status}
                 </Badge>
                 
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-gray-800 text-white hover:bg-gray-700 border-gray-800 rounded-md"
-                  onClick={() => onViewTask?.(caseItem.id)}
-                >
-                  View Details
-                </Button>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {caseItem.assignee}
+                  </span>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="bg-gray-800 text-white hover:bg-gray-700 border-gray-800"
+                    onClick={() => onViewTask?.(caseItem.id)}
+                  >
+                    View Details
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
