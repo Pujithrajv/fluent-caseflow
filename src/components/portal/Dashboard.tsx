@@ -488,6 +488,41 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-6 py-6 space-y-6">
 
+        {/* Filter and Search Section - Shared across all tabs */}
+        <div className="flex items-center justify-between">
+          <Select defaultValue="active">
+            <SelectTrigger className="w-[200px] h-11 border-gray-400 bg-gray-50 focus:ring-primary">
+              <SelectValue placeholder="Filter items" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="active">Active Cases</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="submitted">Submitted</SelectItem>
+              <SelectItem value="accepted">Accepted</SelectItem>
+              <SelectItem value="inactive">Inactive Cases</SelectItem>
+              <SelectItem value="complete">Complete</SelectItem>
+              <SelectItem value="closed">Closed</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <div className="flex items-center space-x-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input 
+                placeholder="Search..." 
+                className="pl-10 w-64 h-11 font-fluent border-gray-400 bg-gray-50 focus:ring-primary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <Button size="lg" className="font-fluent" onClick={onCreateCase}>
+              <Plus className="mr-2 h-5 w-5" />
+              Create New Case
+            </Button>
+          </div>
+        </div>
+
         {/* Tabs Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0">
@@ -537,41 +572,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Cases Tab Content */}
           <TabsContent value="cases" className="mt-6">
-            {/* Filter and Create Button Row */}
-            <div className="flex items-center justify-between mb-6">
-              <Select defaultValue="active">
-                <SelectTrigger className="w-[200px] h-11 border-gray-400 bg-gray-50 focus:ring-primary">
-                  <SelectValue placeholder="Filter cases" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="active">Active Cases</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="submitted">Submitted</SelectItem>
-                  <SelectItem value="accepted">Accepted</SelectItem>
-                  <SelectItem value="inactive">Inactive Cases</SelectItem>
-                  <SelectItem value="complete">Complete</SelectItem>
-                  <SelectItem value="closed">Closed</SelectItem>
-                  <SelectItem value="archived">Archived</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <div className="flex items-center space-x-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input 
-                    placeholder="Search cases..." 
-                    className="pl-10 w-64 h-11 font-fluent border-gray-400 bg-gray-50 focus:ring-primary"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <Button size="lg" className="font-fluent" onClick={onCreateCase}>
-                  <Plus className="mr-2 h-5 w-5" />
-                  Create New Case
-                </Button>
-              </div>
-            </div>
-
             {/* Cases Table */}
             <div className="w-full">
               <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
