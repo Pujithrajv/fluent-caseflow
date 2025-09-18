@@ -374,6 +374,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [accordionOpen, setAccordionOpen] = useState<Record<number, boolean>>({ 7: true }); // Option C open by default
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"planner" | "detail">("planner");
+
   const handleViewTask = (taskId: string) => {
     setSelectedTaskId(taskId);
     setViewMode("detail");
