@@ -180,13 +180,11 @@ export function TaskDetailView({ taskId, onBack }: TaskDetailProps) {
 
   if (!caseDetail) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <Button onClick={onBack} variant="ghost" className="text-primary hover:bg-primary/10">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Planner View
-          </Button>
-        </div>
+      <div className="p-6">
+        <Button onClick={onBack} variant="ghost" className="mb-4">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Planner View
+        </Button>
         <p>Case not found.</p>
       </div>
     );
@@ -194,43 +192,25 @@ export function TaskDetailView({ taskId, onBack }: TaskDetailProps) {
 
   return (
     <div className="space-y-6">
-      {/* Header with Back Button and Case Info */}
-      <div className="space-y-4">
+      {/* Header with Back Button */}
+      <div className="flex items-center justify-between">
         <Button onClick={onBack} variant="ghost" className="text-primary hover:bg-primary/10">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Planner View
         </Button>
-        
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle className="text-2xl font-bold text-foreground">
-                  {caseDetail.caseNumber}
-                </CardTitle>
-                <p className="text-lg text-muted-foreground mt-1">
-                  {caseDetail.primaryParty}
-                </p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  {caseDetail.description}
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Badge 
-                  variant="outline" 
-                  className={`text-sm font-medium px-3 py-1.5 rounded ${getPriorityBadgeStyle(caseDetail.priority)}`}
-                >
-                  {caseDetail.priority} Priority
-                </Badge>
-                <Badge 
-                  className={`text-sm font-medium px-3 py-1.5 rounded ${getStatusBadgeStyle(caseDetail.status)}`}
-                >
-                  {caseDetail.status}
-                </Badge>
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
+        <div className="flex items-center space-x-3">
+          <Badge 
+            variant="outline" 
+            className={`text-sm font-medium px-3 py-1.5 rounded ${getPriorityBadgeStyle(caseDetail.priority)}`}
+          >
+            {caseDetail.priority} Priority
+          </Badge>
+          <Badge 
+            className={`text-sm font-medium px-3 py-1.5 rounded ${getStatusBadgeStyle(caseDetail.status)}`}
+          >
+            {caseDetail.status}
+          </Badge>
+        </div>
       </div>
 
       {/* Tabbed Content */}
@@ -244,36 +224,28 @@ export function TaskDetailView({ taskId, onBack }: TaskDetailProps) {
         
         <TabsContent value="overview" className="mt-6">
           <div className="space-y-6">
-            {/* Case Details Summary */}
+            {/* Case Header Information */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <FileText className="h-5 w-5" />
-                  <span>Case Details</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-medium text-muted-foreground">Case Type</p>
-                    <p className="font-semibold">{caseDetail.caseType}</p>
+                    <CardTitle className="text-2xl font-bold text-foreground">
+                      {caseDetail.caseNumber}
+                    </CardTitle>
+                    <p className="text-lg text-muted-foreground mt-1">
+                      {caseDetail.primaryParty}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      {caseDetail.description}
+                    </p>
                   </div>
-                  <div>
-                    <p className="font-medium text-muted-foreground">Jurisdiction</p>
-                    <p className="font-semibold">{caseDetail.jurisdiction}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-muted-foreground">Filing Fee</p>
-                    <p className="font-semibold">{caseDetail.filingFee}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-muted-foreground">Status</p>
-                    <Badge className={`text-sm font-medium px-3 py-1.5 rounded ${getStatusBadgeStyle(caseDetail.status)}`}>
-                      {caseDetail.status}
-                    </Badge>
+                  <div className="text-right text-sm text-muted-foreground">
+                    <p><strong>Case Type:</strong> {caseDetail.caseType}</p>
+                    <p><strong>Jurisdiction:</strong> {caseDetail.jurisdiction}</p>
+                    <p><strong>Filing Fee:</strong> {caseDetail.filingFee}</p>
                   </div>
                 </div>
-              </CardContent>
+              </CardHeader>
             </Card>
 
             {/* Case Information */}
