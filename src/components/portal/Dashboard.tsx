@@ -12,6 +12,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/shared/Header";
 import { TasksPlannerView } from "./TasksPlannerView";
+import { TasksJiraView } from "./TasksJiraView";
 import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksTimelineView } from "./TasksTimelineView";
 
@@ -515,6 +516,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               Planner View
             </TabsTrigger>
             <TabsTrigger 
+              value="jira" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Enhanced List
+            </TabsTrigger>
+            <TabsTrigger 
               value="kanban" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
@@ -916,6 +923,15 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             <TasksPlannerView 
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
+          </TabsContent>
+
+          {/* Jira View Tab Content */}
+          <TabsContent value="jira" className="mt-6">
+            <TasksJiraView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+              onSortByDate={handleSortByDate}
             />
           </TabsContent>
 
