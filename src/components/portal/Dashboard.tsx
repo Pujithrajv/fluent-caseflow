@@ -14,7 +14,6 @@ import { Header } from "@/components/shared/Header";
 import { TasksPlannerView } from "./TasksPlannerView";
 import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksTimelineView } from "./TasksTimelineView";
-import { TaskDetailView } from "./TaskDetailView";
 
 interface CaseItem {
   id: string;
@@ -361,7 +360,6 @@ const mockTasks = [
 ];
 
 export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("cases");
   const [tasks, setTasks] = useState(mockTasks);
@@ -372,18 +370,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [showPhysicalLocation, setShowPhysicalLocation] = useState<Record<number, boolean>>({});
   const [activeLocationTab, setActiveLocationTab] = useState<Record<number, 'online' | 'location'>>({});
   const [accordionOpen, setAccordionOpen] = useState<Record<number, boolean>>({ 7: true }); // Option C open by default
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"planner" | "detail">("planner");
-
-  const handleViewTask = (taskId: string) => {
-    setSelectedTaskId(taskId);
-    setViewMode("detail");
-  };
-
-  const handleBackToPlanner = () => {
-    setViewMode("planner");
-    setSelectedTaskId(null);
-  };
+  const navigate = useNavigate();
 
   // Filter and sort events
   const filteredAndSortedEvents = useMemo(() => {
@@ -926,17 +913,10 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Planner View Tab Content */}
           <TabsContent value="planner" className="mt-6">
-            {viewMode === "planner" ? (
-              <TasksPlannerView 
-                tasks={tasks} 
-                onViewTask={handleViewTask}
-              />
-            ) : (
-              <TaskDetailView 
-                taskId={selectedTaskId!}
-                onBack={handleBackToPlanner}
-              />
-            )}
+            <TasksPlannerView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
           </TabsContent>
 
           {/* Kanban View Tab Content */}
