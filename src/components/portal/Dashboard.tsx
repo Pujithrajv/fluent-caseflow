@@ -15,7 +15,6 @@ import { TasksPlannerView } from "./TasksPlannerView";
 import { TasksJiraView } from "./TasksJiraView";
 import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksTimelineView } from "./TasksTimelineView";
-import { TaskDetailView } from "./TaskDetailView";
 
 interface CaseItem {
   id: string;
@@ -371,8 +370,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [selectedDateFilter, setSelectedDateFilter] = useState<string>("");
   const [showPhysicalLocation, setShowPhysicalLocation] = useState<Record<number, boolean>>({});
   const [activeLocationTab, setActiveLocationTab] = useState<Record<number, 'online' | 'location'>>({});
-  const [viewMode, setViewMode] = useState<'dashboard' | 'task-detail'>('dashboard');
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [accordionOpen, setAccordionOpen] = useState<Record<number, boolean>>({ 7: true }); // Option C open by default
   const navigate = useNavigate();
 
@@ -923,20 +920,10 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Planner View Tab Content */}
           <TabsContent value="planner" className="mt-6">
-            {viewMode === 'dashboard' ? (
-              <TasksPlannerView 
-                tasks={tasks} 
-                onViewTask={(taskId) => {
-                  setSelectedTaskId(taskId);
-                  setViewMode('task-detail');
-                }}
-              />
-            ) : (
-              <TaskDetailView 
-                taskId={selectedTaskId!}
-                onBack={() => setViewMode('dashboard')}
-              />
-            )}
+            <TasksPlannerView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
           </TabsContent>
 
           {/* Jira View Tab Content */}
