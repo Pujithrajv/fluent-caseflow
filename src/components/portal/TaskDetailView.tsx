@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Calendar, User, Users, FileText, AlertTriangle, Clock, CheckCircle } from "lucide-react";
 
 interface TaskDetailProps {
@@ -213,211 +212,198 @@ export function TaskDetailView({ taskId, onBack }: TaskDetailProps) {
         </div>
       </div>
 
-      {/* Tabbed Content */}
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="parties">Parties</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="overview" className="mt-6">
-          <div className="space-y-6">
-            {/* Case Header Information */}
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-2xl font-bold text-foreground">
-                      {caseDetail.caseNumber}
-                    </CardTitle>
-                    <p className="text-lg text-muted-foreground mt-1">
-                      {caseDetail.primaryParty}
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {caseDetail.description}
-                    </p>
-                  </div>
-                  <div className="text-right text-sm text-muted-foreground">
-                    <p><strong>Case Type:</strong> {caseDetail.caseType}</p>
-                    <p><strong>Jurisdiction:</strong> {caseDetail.jurisdiction}</p>
-                    <p><strong>Filing Fee:</strong> {caseDetail.filingFee}</p>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
-
-            {/* Case Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <FileText className="h-5 w-5" />
-                  <span>Case Information</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="font-medium text-muted-foreground">Assigned Judge</p>
-                    <p className="font-semibold">{caseDetail.assignedJudge}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-muted-foreground">Court Room</p>
-                    <p className="font-semibold">{caseDetail.courtRoom}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-muted-foreground">Estimated Duration</p>
-                    <p className="font-semibold">{caseDetail.estimatedDuration}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-muted-foreground">Filing Fee</p>
-                    <p className="font-semibold">{caseDetail.filingFee}</p>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div className="space-y-2">
-                  <p className="font-medium text-muted-foreground">Important Dates</p>
-                  <div className="space-y-1 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="h-3 w-3 text-muted-foreground" />
-                      <span>Submitted: {caseDetail.submittedDate}</span>
-                    </div>
-                    {'acceptedDate' in caseDetail && caseDetail.acceptedDate && (
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="h-3 w-3 text-muted-foreground" />
-                        <span>Accepted: {caseDetail.acceptedDate}</span>
-                      </div>
-                    )}
-                    {'decisionDate' in caseDetail && caseDetail.decisionDate && (
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="h-3 w-3 text-muted-foreground" />
-                        <span>Decision: {caseDetail.decisionDate}</span>
-                      </div>
-                    )}
-                    {'appealDue' in caseDetail && caseDetail.appealDue && (
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="h-3 w-3 text-muted-foreground" />
-                        <span>Appeal Due: {caseDetail.appealDue}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Case Header */}
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle className="text-2xl font-bold text-foreground">
+                {caseDetail.caseNumber}
+              </CardTitle>
+              <p className="text-lg text-muted-foreground mt-1">
+                {caseDetail.primaryParty}
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                {caseDetail.description}
+              </p>
+            </div>
+            <div className="text-right text-sm text-muted-foreground">
+              <p><strong>Case Type:</strong> {caseDetail.caseType}</p>
+              <p><strong>Jurisdiction:</strong> {caseDetail.jurisdiction}</p>
+              <p><strong>Filing Fee:</strong> {caseDetail.filingFee}</p>
+            </div>
           </div>
-        </TabsContent>
+        </CardHeader>
+      </Card>
 
-        <TabsContent value="parties" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Users className="h-5 w-5" />
-                <span>Parties Information</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-blue-50 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-2">
-                  <User className="h-4 w-4 text-blue-600" />
-                  <span className="font-semibold text-blue-800">Complainant</span>
-                </div>
-                <p className="font-medium">{caseDetail.complainant.name}</p>
-                <div className="text-sm text-muted-foreground mt-2">
-                  <p><strong>Attorney:</strong> {caseDetail.complainant.attorney}</p>
-                  <p><strong>Email:</strong> {caseDetail.complainant.email}</p>
-                  <p><strong>Phone:</strong> {caseDetail.complainant.phone}</p>
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Parties Information */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Users className="h-5 w-5" />
+              <span>Parties</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-blue-50 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <User className="h-4 w-4 text-blue-600" />
+                <span className="font-semibold text-blue-800">Complainant</span>
               </div>
-
-              <div className="bg-orange-50 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-2">
-                  <User className="h-4 w-4 text-orange-600" />
-                  <span className="font-semibold text-orange-800">Defendant</span>
-                </div>
-                <p className="font-medium">{caseDetail.defendant.name}</p>
-                <div className="text-sm text-muted-foreground mt-2">
-                  <p><strong>Attorney:</strong> {caseDetail.defendant.attorney}</p>
-                  <p><strong>Email:</strong> {caseDetail.defendant.email}</p>
-                  <p><strong>Phone:</strong> {caseDetail.defendant.phone}</p>
-                </div>
+              <p className="font-medium">{caseDetail.complainant.name}</p>
+              <div className="text-sm text-muted-foreground mt-2">
+                <p><strong>Attorney:</strong> {caseDetail.complainant.attorney}</p>
+                <p><strong>Email:</strong> {caseDetail.complainant.email}</p>
+                <p><strong>Phone:</strong> {caseDetail.complainant.phone}</p>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
 
-        <TabsContent value="documents" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <FileText className="h-5 w-5" />
-                <span>Documents</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {caseDetail.documents.map((doc, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-sm">{doc.name}</p>
-                      <p className="text-xs text-muted-foreground">Uploaded: {doc.dateUploaded}</p>
-                    </div>
-                    <Badge 
-                      variant="outline" 
-                      className={`text-xs ${
-                        doc.status === 'Approved' ? 'text-green-700 bg-green-50 border-green-200' :
-                        doc.status === 'Pending Review' ? 'text-yellow-700 bg-yellow-50 border-yellow-200' :
-                        doc.status === 'Needs Correction' ? 'text-orange-700 bg-orange-50 border-orange-200' :
-                        doc.status === 'Rejected' ? 'text-red-700 bg-red-50 border-red-200' :
-                        'text-blue-700 bg-blue-50 border-blue-200'
-                      }`}
-                    >
-                      {doc.status}
-                    </Badge>
+            <div className="bg-orange-50 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <User className="h-4 w-4 text-orange-600" />
+                <span className="font-semibold text-orange-800">Defendant</span>
+              </div>
+              <p className="font-medium">{caseDetail.defendant.name}</p>
+              <div className="text-sm text-muted-foreground mt-2">
+                <p><strong>Attorney:</strong> {caseDetail.defendant.attorney}</p>
+                <p><strong>Email:</strong> {caseDetail.defendant.email}</p>
+                <p><strong>Phone:</strong> {caseDetail.defendant.phone}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Case Details */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <FileText className="h-5 w-5" />
+              <span>Case Information</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="font-medium text-muted-foreground">Assigned Judge</p>
+                <p className="font-semibold">{caseDetail.assignedJudge}</p>
+              </div>
+              <div>
+                <p className="font-medium text-muted-foreground">Court Room</p>
+                <p className="font-semibold">{caseDetail.courtRoom}</p>
+              </div>
+              <div>
+                <p className="font-medium text-muted-foreground">Estimated Duration</p>
+                <p className="font-semibold">{caseDetail.estimatedDuration}</p>
+              </div>
+              <div>
+                <p className="font-medium text-muted-foreground">Filing Fee</p>
+                <p className="font-semibold">{caseDetail.filingFee}</p>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="space-y-2">
+              <p className="font-medium text-muted-foreground">Important Dates</p>
+              <div className="space-y-1 text-sm">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="h-3 w-3 text-muted-foreground" />
+                  <span>Submitted: {caseDetail.submittedDate}</span>
+                </div>
+                {'acceptedDate' in caseDetail && caseDetail.acceptedDate && (
+                  <div className="flex items-center space-x-2">
+                    <Calendar className="h-3 w-3 text-muted-foreground" />
+                    <span>Accepted: {caseDetail.acceptedDate}</span>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="timeline" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Clock className="h-5 w-5" />
-                <span>Case Timeline</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {caseDetail.timeline.map((item, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    {getTimelineIcon(item.status)}
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{item.event}</p>
-                      <p className="text-xs text-muted-foreground">{item.date}</p>
-                    </div>
-                    <Badge 
-                      variant="outline" 
-                      className={`text-xs ${
-                        item.status === 'completed' ? 'text-green-700 bg-green-50 border-green-200' :
-                        item.status === 'upcoming' ? 'text-blue-700 bg-blue-50 border-blue-200' :
-                        item.status === 'overdue' ? 'text-red-700 bg-red-50 border-red-200' :
-                        'text-gray-700 bg-gray-50 border-gray-200'
-                      }`}
-                    >
-                      {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                    </Badge>
+                )}
+                {'decisionDate' in caseDetail && caseDetail.decisionDate && (
+                  <div className="flex items-center space-x-2">
+                    <Calendar className="h-3 w-3 text-muted-foreground" />
+                    <span>Decision: {caseDetail.decisionDate}</span>
                   </div>
-                ))}
+                )}
+                {'appealDue' in caseDetail && caseDetail.appealDue && (
+                  <div className="flex items-center space-x-2">
+                    <Calendar className="h-3 w-3 text-muted-foreground" />
+                    <span>Appeal Due: {caseDetail.appealDue}</span>
+                  </div>
+                )}
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Documents */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <FileText className="h-5 w-5" />
+              <span>Documents</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {caseDetail.documents.map((doc, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-sm">{doc.name}</p>
+                    <p className="text-xs text-muted-foreground">Uploaded: {doc.dateUploaded}</p>
+                  </div>
+                  <Badge 
+                    variant="outline" 
+                    className={`text-xs ${
+                      doc.status === 'Approved' ? 'text-green-700 bg-green-50 border-green-200' :
+                      doc.status === 'Pending Review' ? 'text-yellow-700 bg-yellow-50 border-yellow-200' :
+                      doc.status === 'Needs Correction' ? 'text-orange-700 bg-orange-50 border-orange-200' :
+                      doc.status === 'Rejected' ? 'text-red-700 bg-red-50 border-red-200' :
+                      'text-blue-700 bg-blue-50 border-blue-200'
+                    }`}
+                  >
+                    {doc.status}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Timeline */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Clock className="h-5 w-5" />
+              <span>Case Timeline</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {caseDetail.timeline.map((item, index) => (
+                <div key={index} className="flex items-start space-x-3">
+                  {getTimelineIcon(item.status)}
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{item.event}</p>
+                    <p className="text-xs text-muted-foreground">{item.date}</p>
+                  </div>
+                  <Badge 
+                    variant="outline" 
+                    className={`text-xs ${
+                      item.status === 'completed' ? 'text-green-700 bg-green-50 border-green-200' :
+                      item.status === 'upcoming' ? 'text-blue-700 bg-blue-50 border-blue-200' :
+                      item.status === 'overdue' ? 'text-red-700 bg-red-50 border-red-200' :
+                      'text-gray-700 bg-gray-50 border-gray-200'
+                    }`}
+                  >
+                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
