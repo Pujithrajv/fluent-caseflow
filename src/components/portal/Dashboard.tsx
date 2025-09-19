@@ -15,6 +15,7 @@ import { TasksPlannerView } from "./TasksPlannerView";
 import { TasksJiraView } from "./TasksJiraView";
 import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksTimelineView } from "./TasksTimelineView";
+import { TasksNewApproachView } from "./TasksNewApproachView";
 
 interface CaseItem {
   id: string;
@@ -516,6 +517,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               Planner View
             </TabsTrigger>
             <TabsTrigger 
+              value="new-approach" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              New Approach
+            </TabsTrigger>
+            <TabsTrigger 
               value="jira" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
@@ -921,6 +928,14 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           {/* Planner View Tab Content */}
           <TabsContent value="planner" className="mt-6">
             <TasksPlannerView 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
+          </TabsContent>
+
+          {/* New Approach Tab Content */}
+          <TabsContent value="new-approach" className="mt-6">
+            <TasksNewApproachView 
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
             />
