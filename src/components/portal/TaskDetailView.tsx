@@ -213,30 +213,6 @@ export function TaskDetailView({ taskId, onBack }: TaskDetailProps) {
         </div>
       </div>
 
-      {/* Case Header */}
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-start">
-            <div>
-              <CardTitle className="text-2xl font-bold text-foreground">
-                {caseDetail.caseNumber}
-              </CardTitle>
-              <p className="text-lg text-muted-foreground mt-1">
-                {caseDetail.primaryParty}
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                {caseDetail.description}
-              </p>
-            </div>
-            <div className="text-right text-sm text-muted-foreground">
-              <p><strong>Case Type:</strong> {caseDetail.caseType}</p>
-              <p><strong>Jurisdiction:</strong> {caseDetail.jurisdiction}</p>
-              <p><strong>Filing Fee:</strong> {caseDetail.filingFee}</p>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
-
       {/* Tabbed Content */}
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
@@ -247,64 +223,91 @@ export function TaskDetailView({ taskId, onBack }: TaskDetailProps) {
         </TabsList>
         
         <TabsContent value="overview" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <FileText className="h-5 w-5" />
-                <span>Case Information</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="font-medium text-muted-foreground">Assigned Judge</p>
-                  <p className="font-semibold">{caseDetail.assignedJudge}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-muted-foreground">Court Room</p>
-                  <p className="font-semibold">{caseDetail.courtRoom}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-muted-foreground">Estimated Duration</p>
-                  <p className="font-semibold">{caseDetail.estimatedDuration}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-muted-foreground">Filing Fee</p>
-                  <p className="font-semibold">{caseDetail.filingFee}</p>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-2">
-                <p className="font-medium text-muted-foreground">Important Dates</p>
-                <div className="space-y-1 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="h-3 w-3 text-muted-foreground" />
-                    <span>Submitted: {caseDetail.submittedDate}</span>
+          <div className="space-y-6">
+            {/* Case Header Information */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-2xl font-bold text-foreground">
+                      {caseDetail.caseNumber}
+                    </CardTitle>
+                    <p className="text-lg text-muted-foreground mt-1">
+                      {caseDetail.primaryParty}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      {caseDetail.description}
+                    </p>
                   </div>
-                  {'acceptedDate' in caseDetail && caseDetail.acceptedDate && (
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="h-3 w-3 text-muted-foreground" />
-                      <span>Accepted: {caseDetail.acceptedDate}</span>
-                    </div>
-                  )}
-                  {'decisionDate' in caseDetail && caseDetail.decisionDate && (
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="h-3 w-3 text-muted-foreground" />
-                      <span>Decision: {caseDetail.decisionDate}</span>
-                    </div>
-                  )}
-                  {'appealDue' in caseDetail && caseDetail.appealDue && (
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="h-3 w-3 text-muted-foreground" />
-                      <span>Appeal Due: {caseDetail.appealDue}</span>
-                    </div>
-                  )}
+                  <div className="text-right text-sm text-muted-foreground">
+                    <p><strong>Case Type:</strong> {caseDetail.caseType}</p>
+                    <p><strong>Jurisdiction:</strong> {caseDetail.jurisdiction}</p>
+                    <p><strong>Filing Fee:</strong> {caseDetail.filingFee}</p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardHeader>
+            </Card>
+
+            {/* Case Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <FileText className="h-5 w-5" />
+                  <span>Case Information</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="font-medium text-muted-foreground">Assigned Judge</p>
+                    <p className="font-semibold">{caseDetail.assignedJudge}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-muted-foreground">Court Room</p>
+                    <p className="font-semibold">{caseDetail.courtRoom}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-muted-foreground">Estimated Duration</p>
+                    <p className="font-semibold">{caseDetail.estimatedDuration}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-muted-foreground">Filing Fee</p>
+                    <p className="font-semibold">{caseDetail.filingFee}</p>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-2">
+                  <p className="font-medium text-muted-foreground">Important Dates</p>
+                  <div className="space-y-1 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <Calendar className="h-3 w-3 text-muted-foreground" />
+                      <span>Submitted: {caseDetail.submittedDate}</span>
+                    </div>
+                    {'acceptedDate' in caseDetail && caseDetail.acceptedDate && (
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="h-3 w-3 text-muted-foreground" />
+                        <span>Accepted: {caseDetail.acceptedDate}</span>
+                      </div>
+                    )}
+                    {'decisionDate' in caseDetail && caseDetail.decisionDate && (
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="h-3 w-3 text-muted-foreground" />
+                        <span>Decision: {caseDetail.decisionDate}</span>
+                      </div>
+                    )}
+                    {'appealDue' in caseDetail && caseDetail.appealDue && (
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="h-3 w-3 text-muted-foreground" />
+                        <span>Appeal Due: {caseDetail.appealDue}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="parties" className="mt-6">
