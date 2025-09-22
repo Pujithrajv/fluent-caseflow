@@ -78,7 +78,7 @@ const getBorderColor = (priority: string) => {
 const getStatusFromTitle = (title: string): string => {
   if (title.includes('Created') || title.includes('New')) return 'submitted';
   if (title.includes('Accepted')) return 'accepted';
-  if (title.includes('Correction') || title.includes('Returned')) return 'correction';
+  if (title.includes('Correction') || title.includes('Returned') || title.includes('returned')) return 'correction';
   if (title.includes('Rejected')) return 'rejected';
   return 'submitted';
 };
