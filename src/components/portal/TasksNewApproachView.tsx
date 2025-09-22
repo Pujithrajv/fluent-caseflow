@@ -308,7 +308,7 @@ export function TasksNewApproachView({ tasks, onViewTask }: TasksNewApproachView
                           variant="outline" 
                           className={`text-xs font-medium px-2.5 py-1 rounded ${getPriorityBadgeStyle(caseItem.priority)}`}
                         >
-                          Info
+                          {caseItem.priority}
                         </Badge>
                       </div>
                     </CardHeader>
