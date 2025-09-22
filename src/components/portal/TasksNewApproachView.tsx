@@ -86,14 +86,14 @@ const getStatusFromTitle = (title: string): string => {
 };
 
 const getCaseType = (caseNumber: string): string => {
-  if (caseNumber.startsWith('DBE-')) return 'Disadvantaged Business Enterprise';
-  if (caseNumber.startsWith('ABD-')) return 'Agriculture Business Development';
-  if (caseNumber.startsWith('ENV-')) return 'Environmental Compliance';
-  if (caseNumber.startsWith('TAX-')) return 'Tax Dispute';
-  if (caseNumber.startsWith('REG-')) return 'Regulatory Review';
-  if (caseNumber.startsWith('INS-')) return 'Insurance Regulation';
-  if (caseNumber.startsWith('FIN-')) return 'Financial Services';
-  return 'General Administrative';
+  if (caseNumber.startsWith('DBE-')) return 'grain dealer and warehouse license';
+  if (caseNumber.startsWith('ABD-')) return 'Animal Welfare';
+  if (caseNumber.startsWith('ENV-')) return 'bond forfeiture';
+  if (caseNumber.startsWith('TAX-')) return 'card denial';
+  if (caseNumber.startsWith('REG-')) return 'card revocation';
+  if (caseNumber.startsWith('INS-')) return 'coal notice of violation';
+  if (caseNumber.startsWith('FIN-')) return 'denial of certification appeals';
+  return 'grain dealer and warehouse license';
 };
 
 const columns = [
