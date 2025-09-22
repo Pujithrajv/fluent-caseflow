@@ -297,11 +297,6 @@ export function TasksNewApproach2View({ tasks, onViewTask }: TasksNewApproach2Vi
                                 Reason: {caseItem.reason}
                               </p>
                             )}
-                            {caseItem.appealDue && (
-                              <p className="text-sm font-medium text-red-700">
-                                Appeal Due: {caseItem.appealDue}
-                              </p>
-                            )}
                           </div>
                         )}
                       </div>
