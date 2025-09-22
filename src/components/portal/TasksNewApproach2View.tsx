@@ -73,7 +73,7 @@ const mockCasesByStatus = {
       id: '3',
       caseNumber: 'DBE-2024-001-EC',
       caseType: 'Grain Dealer and Warehouse License',
-      title: 'Case Accepted – Case Number generated.',
+      title: 'Case accepted and case number generated.',
       primaryParty: 'North District Foods',
       firstParty: { name: 'North District Foods', attorney: 'Robert Lee' },
       secondParty: { name: 'Health Department', attorney: 'Lisa Chen' },
