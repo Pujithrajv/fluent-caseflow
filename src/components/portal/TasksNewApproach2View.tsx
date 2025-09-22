@@ -94,21 +94,7 @@ const mockCasesByStatus = {
       priority: 'Accepted'
     }
   ],
-  correction: [
-    {
-      id: '2',
-      caseNumber: 'CASE-2024-002',
-      caseType: 'Environmental Protection',
-      title: 'Correction required – Missing/incorrect info.',
-      primaryParty: 'Sniders Group',
-      firstParty: { name: 'Sniders Group', attorney: 'Mike Johnson' },
-      secondParty: { name: 'Regulatory Board', attorney: 'Sarah Wilson' },
-      submittedDate: '10/4/2024',
-      correctionDue: '11/14/2024',
-      reason: 'Missing Document',
-      priority: 'High'
-    }
-  ],
+  correction: [],
   rejected: [
     {
       id: '4',
