@@ -121,7 +121,7 @@ const mockCasesByStatus = {
       submittedDate: '8/24/2025',
       rejectedDate: '9/15/2025',
       type: 'Hard Reject (ALJ Review)',
-      reason: 'Insufficient documentation provided',
+      reason: 'Jurisdictional issues identified',
       appealDue: '11/14/2025',
       priority: 'Critical'
     },
@@ -136,7 +136,7 @@ const mockCasesByStatus = {
       submittedDate: '7/30/2025',
       rejectedDate: '8/15/2025',
       type: 'Soft Reject (Clerk)',
-      reason: 'Incomplete application form',
+      reason: 'Procedural requirements not met',
       appealDue: '8/25/2025',
       priority: 'Alert'
     },
