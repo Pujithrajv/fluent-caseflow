@@ -138,8 +138,6 @@ const mockCases = [
     complainant: { name: 'Kirby Neroni', attorney: 'John Smith' },
     defendant: { name: 'State Agency', attorney: 'Jane Doe' },
     submittedDate: '9/7/2025',
-    acceptedDate: '9/9/2025',
-    decisionDate: '9/15/2025',
     priority: 'Info',
     status: 'Active'
   },
