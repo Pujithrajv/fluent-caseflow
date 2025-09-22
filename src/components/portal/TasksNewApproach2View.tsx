@@ -105,7 +105,7 @@ const mockCasesByStatus = {
       secondParty: { name: 'Regulatory Board', attorney: 'Sarah Wilson' },
       submittedDate: '10/4/2024',
       correctionDue: '11/14/2024',
-      reason: 'Missing Exhibit Document',
+      reason: 'Missing Document',
       priority: 'High'
     }
   ],
