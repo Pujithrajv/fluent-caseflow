@@ -524,12 +524,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               New Approach
             </TabsTrigger>
             <TabsTrigger 
-              value="jira" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Enhanced List
-            </TabsTrigger>
-            <TabsTrigger 
               value="timeline" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
@@ -937,14 +931,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             />
           </TabsContent>
 
-          {/* Jira View Tab Content */}
-          <TabsContent value="jira" className="mt-6">
-            <TasksJiraView 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-              onSortByDate={handleSortByDate}
-            />
-          </TabsContent>
 
 
           {/* Timeline View Tab Content */}
