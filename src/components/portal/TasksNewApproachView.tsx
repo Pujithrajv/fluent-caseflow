@@ -86,6 +86,7 @@ const getStatusFromTitle = (title: string): string => {
 };
 
 const getCaseType = (caseNumber: string): string => {
+  if (caseNumber === 'CASE-2024-002') return 'environmental protection';
   if (caseNumber.startsWith('DBE-')) return 'grain dealer and warehouse license';
   if (caseNumber.startsWith('ABD-')) return 'Animal Welfare';
   if (caseNumber.startsWith('ENV-')) return 'bond forfeiture';
@@ -150,8 +151,6 @@ const mockCases = [
     complainant: { name: 'Sniders Group', attorney: 'Mike Johnson' },
     defendant: { name: 'Regulatory Board', attorney: 'Sarah Wilson' },
     submittedDate: '10/4/2024',
-    decisionDate: '12/26/2024',
-    appealDue: '11/14/2024',
     priority: 'High',
     status: 'Correction Required'
   },
