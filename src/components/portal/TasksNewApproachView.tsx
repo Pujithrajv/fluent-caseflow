@@ -290,7 +290,7 @@ export function TasksNewApproachView({ tasks, onViewTask }: TasksNewApproachView
                 {columnCases.map((caseItem) => (
                   <Card 
                     key={caseItem.id} 
-                    className={`hover:shadow-lg transition-shadow duration-200 border-l-4 ${getBorderColor(caseItem.priority)} bg-white`}
+                    className={`hover:shadow-lg transition-shadow duration-200 border-l-4 ${getBorderColor(caseItem.priority)} ${column.color}`}
                   >
                     <CardHeader className="pb-4">
                       <div className="flex items-start justify-between">
