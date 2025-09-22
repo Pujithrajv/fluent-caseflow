@@ -196,7 +196,7 @@ export function TasksNewApproach2View({ tasks, onViewTask }: TasksNewApproach2Vi
         </p>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {columns.map((column) => {
           const IconComponent = column.icon;
           const columnCases = mockCasesByStatus[column.id as keyof typeof mockCasesByStatus] || [];
