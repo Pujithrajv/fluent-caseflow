@@ -16,6 +16,7 @@ import { TasksJiraView } from "./TasksJiraView";
 import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksTimelineView } from "./TasksTimelineView";
 import { TasksNewApproachView } from "./TasksNewApproachView";
+import { TasksNewApproach2View } from "./TasksNewApproach2View";
 
 interface CaseItem {
   id: string;
@@ -941,7 +942,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* New Approach 2 Tab Content */}
           <TabsContent value="new-approach-2" className="mt-6">
-            <TasksNewApproachView 
+            <TasksNewApproach2View 
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
             />
