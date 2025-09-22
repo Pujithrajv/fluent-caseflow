@@ -26,7 +26,7 @@ const mockCasesByStatus = {
     {
       id: '1',
       caseNumber: 'CASE-2024-001',
-      title: 'New case successfully created and saved.',
+      title: 'New case successfully created',
       primaryParty: 'Kirby Neroni',
       firstParty: { name: 'Kirby Neroni', attorney: 'John Smith' },
       secondParty: { name: 'State Agency', attorney: 'Jane Doe' },
@@ -36,7 +36,7 @@ const mockCasesByStatus = {
     {
       id: '5',
       caseNumber: 'CASE-2024-003',
-      title: 'New employment discrimination case submitted.',
+      title: 'New case successfully created',
       primaryParty: 'Martinez Construction',
       firstParty: { name: 'Martinez Construction', attorney: 'Elena Rodriguez' },
       secondParty: { name: 'Labor Department', attorney: 'James Wilson' },
@@ -46,7 +46,7 @@ const mockCasesByStatus = {
     {
       id: '6',
       caseNumber: 'ENV-2024-005',
-      title: 'Environmental compliance case created.',
+      title: 'New case successfully created',
       primaryParty: 'Green Valley Corp',
       firstParty: { name: 'Green Valley Corp', attorney: 'Michael Thompson' },
       secondParty: { name: 'Environmental Agency', attorney: 'Rachel Green' },
@@ -56,7 +56,7 @@ const mockCasesByStatus = {
     {
       id: '7',
       caseNumber: 'TAX-2024-012',
-      title: 'New tax dispute case filed.',
+      title: 'New case successfully created',
       primaryParty: 'Metro Retail Group',
       firstParty: { name: 'Metro Retail Group', attorney: 'Jennifer Adams' },
       secondParty: { name: 'Tax Authority', attorney: 'Mark Stevens' },
