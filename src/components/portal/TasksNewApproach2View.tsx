@@ -162,14 +162,6 @@ const columns = [
     borderColor: 'border-green-200'
   },
   {
-    id: 'correction',
-    title: 'Correction Required',
-    icon: AlertTriangle,
-    headerColor: 'bg-orange-600',
-    bgColor: 'bg-orange-50',
-    borderColor: 'border-orange-200'
-  },
-  {
     id: 'rejected',
     title: 'Rejected',
     icon: X,
