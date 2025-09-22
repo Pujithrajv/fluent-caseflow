@@ -79,7 +79,6 @@ const mockCasesByStatus = {
       secondParty: { name: 'Health Department', attorney: 'Lisa Chen' },
       submittedDate: '9/17/2025',
       acceptedDate: '9/19/2025',
-      decisionDate: '9/25/2025',
       priority: 'Accepted'
     },
     {
@@ -92,7 +91,6 @@ const mockCasesByStatus = {
       secondParty: { name: 'Regulatory Commission', attorney: 'Thomas Clark' },
       submittedDate: '8/15/2025',
       acceptedDate: '8/20/2025',
-      decisionDate: '10/5/2025',
       priority: 'Accepted'
     }
   ],
@@ -106,7 +104,6 @@ const mockCasesByStatus = {
       firstParty: { name: 'Sniders Group', attorney: 'Mike Johnson' },
       secondParty: { name: 'Regulatory Board', attorney: 'Sarah Wilson' },
       submittedDate: '10/4/2024',
-      decisionDate: '12/6/2024',
       correctionDue: '11/14/2024',
       reason: 'Missing Exhibit Document',
       priority: 'High'
@@ -287,12 +284,6 @@ export function TasksNewApproach2View({ tasks, onViewTask }: TasksNewApproach2Vi
                           {caseItem.acceptedDate && (
                             <>
                               <span className="text-muted-foreground">│ ✅ Accepted: {caseItem.acceptedDate}</span>
-                            </>
-                          )}
-                          
-                          {caseItem.decisionDate && (
-                            <>
-                              <span className="text-muted-foreground">│ ⚖️ Decision: {caseItem.decisionDate}</span>
                             </>
                           )}
                           
