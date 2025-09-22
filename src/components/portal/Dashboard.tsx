@@ -512,12 +512,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               Tasks & Alerts
             </TabsTrigger>
             <TabsTrigger 
-              value="planner" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Planner View
-            </TabsTrigger>
-            <TabsTrigger 
               value="new-approach-2" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
@@ -534,12 +528,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               Enhanced List
-            </TabsTrigger>
-            <TabsTrigger 
-              value="kanban" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Kanban Board
             </TabsTrigger>
             <TabsTrigger 
               value="timeline" 
@@ -932,13 +920,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             </Card>
           </TabsContent>
 
-          {/* Planner View Tab Content */}
-          <TabsContent value="planner" className="mt-6">
-            <TasksPlannerView 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-            />
-          </TabsContent>
 
           {/* New Approach 2 Tab Content */}
           <TabsContent value="new-approach-2" className="mt-6">
@@ -965,13 +946,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             />
           </TabsContent>
 
-          {/* Kanban View Tab Content */}
-          <TabsContent value="kanban" className="mt-6">
-            <TasksKanbanView 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-            />
-          </TabsContent>
 
           {/* Timeline View Tab Content */}
           <TabsContent value="timeline" className="mt-6">
