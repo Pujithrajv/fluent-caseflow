@@ -163,7 +163,7 @@ const columns = [
   },
   {
     id: 'rejected',
-    title: 'Rejected',
+    title: 'Alerts',
     icon: X,
     headerColor: 'bg-red-600',
     bgColor: 'bg-red-50',
