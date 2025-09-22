@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { Shield } from "lucide-react";
 import { AljWarningModal } from "@/components/portal/AljWarningModal";
-import { CaseManagementTable } from "@/components/portal/CaseManagementTable";
 
 const PortalDashboard = () => {
   const navigate = useNavigate();
@@ -14,29 +13,34 @@ const PortalDashboard = () => {
   return (
     <>
       <AljWarningModal onAcknowledge={() => {}} />
-      <div className="min-h-screen bg-gray-50 font-['Segoe_UI',system-ui,sans-serif]">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Case Management Dashboard
+      <div 
+        className="min-h-screen flex items-center justify-center font-['Segoe_UI',system-ui,sans-serif]" 
+        style={{ backgroundColor: "#F7F7F7" }}
+      >
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            {/* Logo */}
+            <div className="mb-6 flex justify-center">
+              <Shield className="h-12 w-12 text-gray-600" />
+            </div>
+
+            {/* Welcome Message */}
+            <h1 className="text-2xl font-semibold text-gray-900 mb-4" tabIndex={0}>
+              Welcome to the Portal Dashboard
             </h1>
+            
+            <p className="text-gray-600 mb-8">
+              You have successfully signed in and accepted the terms and conditions.
+            </p>
+
+            {/* Logout Button */}
             <Button
               onClick={handleLogout}
-              variant="outline"
-              size="sm"
-              className="flex items-center space-x-2"
+              className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+              style={{ backgroundColor: "#1F6FEB" }}
             >
-              <LogOut className="h-4 w-4" />
-              <span>Log out</span>
+              Log out
             </Button>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="p-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <CaseManagementTable />
           </div>
         </div>
       </div>

@@ -16,7 +16,6 @@ import { TasksJiraView } from "./TasksJiraView";
 import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksTimelineView } from "./TasksTimelineView";
 import { TasksNewApproachView } from "./TasksNewApproachView";
-import { CaseManagementTable } from "./CaseManagementTable";
 
 interface CaseItem {
   id: string;
@@ -545,7 +544,193 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Cases Tab Content */}
           <TabsContent value="cases" className="mt-6">
-            <CaseManagementTable />
+            {/* Filter and Create Button Row */}
+            <div className="flex items-center justify-between mb-6">
+              <Select defaultValue="active">
+                <SelectTrigger className="w-[200px] h-11 border-gray-400 bg-gray-50 focus:ring-primary">
+                  <SelectValue placeholder="Filter cases" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active Cases</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="submitted">Submitted</SelectItem>
+                  <SelectItem value="accepted">Accepted</SelectItem>
+                  <SelectItem value="inactive">Inactive Cases</SelectItem>
+                  <SelectItem value="complete">Complete</SelectItem>
+                  <SelectItem value="closed">Closed</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <div className="flex items-center space-x-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="Search cases..." 
+                    className="pl-10 w-64 h-11 font-fluent border-gray-400 bg-gray-50 focus:ring-primary"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Button size="lg" className="font-fluent" onClick={onCreateCase}>
+                  <Plus className="mr-2 h-5 w-5" />
+                  Create New Case
+                </Button>
+              </div>
+            </div>
+
+            {/* Cases Table */}
+            <div className="w-full">
+              <div className="bg-white border border-border rounded-lg overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-muted/30">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground w-16">
+                          
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Case #
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Department
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Primary Party
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Status
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                          Important Dates
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {mockCases.map((caseItem) => {
+                        const IconComponent = getCaseIcon(caseItem.icon);
+                        return (
+                          <tr key={caseItem.id} className="hover:bg-muted/50 transition-colors">
+                            <td className="px-4 py-4 align-top">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => {
+                                  if (caseItem.status === 'draft') {
+                                    onEditCase?.(caseItem.id, caseItem.lastWizardTab);
+                                  } else {
+                                    onViewCase(caseItem.id);
+                                  }
+                                }}
+                                className="p-2"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </td>
+                            
+                            {/* Case # Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium text-foreground">
+                                  {caseItem.status === 'accepted' || caseItem.status === 'complete' || caseItem.status === 'closed' ? (
+                                    caseItem.caseNumber ? `Case #: ${caseItem.caseNumber}` : '—'
+                                  ) : (
+                                    caseItem.confirmationNumber ? `Confirmation #: ${caseItem.confirmationNumber}` : '—'
+                                  )}
+                                </p>
+                                <p className="text-sm text-muted-foreground">{caseItem.caseType}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  Dept. Ref #: {caseItem.deptRefNumber || '—'}
+                                </p>
+                              </div>
+                            </td>
+
+                            {/* Department Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium text-foreground">{caseItem.department}</p>
+                                <p className="text-sm text-muted-foreground">{caseItem.departmentParticipationType}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {caseItem.assignedAttorney || "(not yet assigned)"}
+                                </p>
+                              </div>
+                            </td>
+
+                            {/* Primary Party Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-1">
+                                <p className="text-sm font-medium text-foreground">{caseItem.primaryPartyName}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {caseItem.primaryPartyType} – {caseItem.primaryPartyCategory}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {caseItem.attorneyName ? `Attorney: ${caseItem.attorneyName}` : `Represented: ${caseItem.represented || 'No'}`}
+                                </p>
+                              </div>
+                            </td>
+
+                            {/* Status Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-2">
+                                <StatusBadge status={caseItem.status as "draft" | "submitted" | "accepted" | "rejected" | "in-progress" | "completed"}>
+                                  {caseItem.externalStatus}
+                                </StatusBadge>
+                                <p className="text-xs text-muted-foreground">
+                                  Stage: {caseItem.stage}
+                                </p>
+                              </div>
+                            </td>
+
+                            {/* Important Dates Column */}
+                            <td className="px-4 py-4 align-top">
+                              <div className="space-y-2">
+                                {/* Next Event */}
+                                {caseItem.nextEvent ? (
+                                  <div className="text-xs">
+                                    <p className="font-medium text-foreground">{caseItem.nextEvent.name}</p>
+                                    <p className="text-muted-foreground">
+                                      {formatDate(caseItem.nextEvent.date)} at {caseItem.nextEvent.time}
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <p className="text-xs text-muted-foreground">No events scheduled</p>
+                                )}
+
+                                {/* Deadlines (top 2) */}
+                                {caseItem.deadlines?.slice(0, 2).map((deadline, index) => (
+                                  <div key={index} className="text-xs text-muted-foreground">
+                                    <p>{deadline.name} — {formatDate(deadline.date)}</p>
+                                  </div>
+                                ))}
+
+                                {/* Draft specific content */}
+                                {caseItem.status === "draft" && (
+                                  <div className="space-y-2">
+                                    <div className="text-xs text-muted-foreground">
+                                      Draft saved — {formatDate(caseItem.lastActionDate)}
+                                    </div>
+                                    {onEditCase && (
+                                      <Button 
+                                        variant="outline" 
+                                        size="sm"
+                                        onClick={() => onEditCase(caseItem.id, caseItem.lastWizardTab)}
+                                        className="text-xs h-7 px-2"
+                                      >
+                                        Continue Editing
+                                      </Button>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </TabsContent>
 
           {/* Upcoming Events Tab Content */}
