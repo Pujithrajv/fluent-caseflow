@@ -26,6 +26,7 @@ const mockCasesByStatus = {
     {
       id: '1',
       caseNumber: 'CASE-2024-001',
+      caseType: 'Environmental Protection',
       title: 'New case successfully created',
       primaryParty: 'Kirby Neroni',
       firstParty: { name: 'Kirby Neroni', attorney: 'John Smith' },
@@ -36,6 +37,7 @@ const mockCasesByStatus = {
     {
       id: '5',
       caseNumber: 'CASE-2024-003',
+      caseType: 'Fire Protection',
       title: 'New case successfully created',
       primaryParty: 'Martinez Construction',
       firstParty: { name: 'Martinez Construction', attorney: 'Elena Rodriguez' },
@@ -46,6 +48,7 @@ const mockCasesByStatus = {
     {
       id: '6',
       caseNumber: 'ENV-2024-005',
+      caseType: 'Environmental Protection',
       title: 'New case successfully created',
       primaryParty: 'Green Valley Corp',
       firstParty: { name: 'Green Valley Corp', attorney: 'Michael Thompson' },
@@ -56,6 +59,7 @@ const mockCasesByStatus = {
     {
       id: '7',
       caseNumber: 'TAX-2024-012',
+      caseType: 'FOID Appeals',
       title: 'New case successfully created',
       primaryParty: 'Metro Retail Group',
       firstParty: { name: 'Metro Retail Group', attorney: 'Jennifer Adams' },
@@ -68,6 +72,7 @@ const mockCasesByStatus = {
     {
       id: '3',
       caseNumber: 'DBE-2024-001-EC',
+      caseType: 'Grain Dealer and Warehouse License',
       title: 'Case Accepted – Case Number generated.',
       primaryParty: 'North District Foods',
       firstParty: { name: 'North District Foods', attorney: 'Robert Lee' },
@@ -80,6 +85,7 @@ const mockCasesByStatus = {
     {
       id: '8',
       caseNumber: 'REG-2024-008',
+      caseType: 'Gift Ban Act',
       title: 'Case Accepted – Ready for hearing scheduling.',
       primaryParty: 'Coastal Industries',
       firstParty: { name: 'Coastal Industries', attorney: 'Patricia Moore' },
@@ -94,6 +100,7 @@ const mockCasesByStatus = {
     {
       id: '2',
       caseNumber: 'CASE-2024-002',
+      caseType: 'Environmental Protection',
       title: 'Correction required – Missing/incorrect info.',
       primaryParty: 'Sniders Group',
       firstParty: { name: 'Sniders Group', attorney: 'Mike Johnson' },
@@ -109,6 +116,7 @@ const mockCasesByStatus = {
     {
       id: '4',
       caseNumber: 'ABD-2024-001-EC',
+      caseType: 'Grant Recovery',
       title: 'Rejected – ALJ Review.',
       primaryParty: 'Valley Grain Solutions',
       firstParty: { name: 'Valley Grain Solutions', attorney: 'David Kim' },
@@ -123,6 +131,7 @@ const mockCasesByStatus = {
     {
       id: '9',
       caseNumber: 'INS-2024-004',
+      caseType: 'Good Faith Effort Appeals',
       title: 'Case Rejected – Insufficient documentation.',
       primaryParty: 'Alpine Insurance Co',
       firstParty: { name: 'Alpine Insurance Co', attorney: 'Richard Davis' },
@@ -137,6 +146,7 @@ const mockCasesByStatus = {
     {
       id: '10',
       caseNumber: 'FIN-2024-015',
+      caseType: 'Fire Protection',
       title: 'Case Rejected – Jurisdictional issues.',
       primaryParty: 'Pacific Financial',
       firstParty: { name: 'Pacific Financial', attorney: 'Amanda White' },
@@ -242,7 +252,7 @@ export function TasksNewApproach2View({ tasks, onViewTask }: TasksNewApproach2Vi
                       {/* Case Header */}
                       <div className="space-y-1">
                         <h3 className="text-sm font-bold text-foreground">
-                          {caseItem.caseNumber} – {caseItem.primaryParty}
+                          {caseItem.caseNumber} – {caseItem.caseType}
                         </h3>
                         <p className="text-sm text-muted-foreground">
                           {caseItem.title}
