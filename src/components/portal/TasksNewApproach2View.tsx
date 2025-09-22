@@ -85,7 +85,7 @@ const mockCasesByStatus = {
       id: '8',
       caseNumber: 'REG-2024-008',
       caseType: 'Gift Ban Act',
-      title: 'Case Accepted – Ready for hearing scheduling.',
+      title: 'Case accepted and case number generated.',
       primaryParty: 'Coastal Industries',
       firstParty: { name: 'Coastal Industries', attorney: 'Patricia Moore' },
       secondParty: { name: 'Regulatory Commission', attorney: 'Thomas Clark' },
