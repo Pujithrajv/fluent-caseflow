@@ -170,6 +170,82 @@ const mockCases = [
     appealDue: '9/15/2025',
     priority: 'Critical',
     status: 'Rejected'
+  },
+  {
+    id: '5',
+    caseNumber: 'CASE-2024-003',
+    title: 'New employment discrimination case submitted.',
+    primaryParty: 'Martinez Construction',
+    description: 'New employment discrimination case submitted for initial review.',
+    complainant: { name: 'Martinez Construction', attorney: 'Elena Rodriguez' },
+    defendant: { name: 'Labor Department', attorney: 'James Wilson' },
+    submittedDate: '9/22/2025',
+    priority: 'Normal',
+    status: 'Active'
+  },
+  {
+    id: '6',
+    caseNumber: 'ENV-2024-005',
+    title: 'Environmental compliance case created.',
+    primaryParty: 'Green Valley Corp',
+    description: 'Environmental compliance case created and awaiting initial processing.',
+    complainant: { name: 'Green Valley Corp', attorney: 'Michael Thompson' },
+    defendant: { name: 'Environmental Agency', attorney: 'Rachel Green' },
+    submittedDate: '9/20/2025',
+    priority: 'High',
+    status: 'Active'
+  },
+  {
+    id: '7',
+    caseNumber: 'TAX-2024-012',
+    title: 'New tax dispute case filed.',
+    primaryParty: 'Metro Retail Group',
+    description: 'New tax dispute case filed and pending initial assessment.',
+    complainant: { name: 'Metro Retail Group', attorney: 'Jennifer Adams' },
+    defendant: { name: 'Tax Authority', attorney: 'Mark Stevens' },
+    submittedDate: '9/18/2025',
+    priority: 'Normal',
+    status: 'Active'
+  },
+  {
+    id: '8',
+    caseNumber: 'REG-2024-008',
+    title: 'Case Accepted – Ready for hearing scheduling.',
+    primaryParty: 'Coastal Industries',
+    description: 'Case Accepted – Ready for hearing scheduling and discovery phase.',
+    complainant: { name: 'Coastal Industries', attorney: 'Patricia Moore' },
+    defendant: { name: 'Regulatory Commission', attorney: 'Thomas Clark' },
+    submittedDate: '8/15/2025',
+    acceptedDate: '8/20/2025',
+    decisionDate: '10/5/2025',
+    priority: 'High',
+    status: 'Accepted'
+  },
+  {
+    id: '9',
+    caseNumber: 'INS-2024-004',
+    title: 'Case Rejected – Insufficient documentation provided.',
+    primaryParty: 'Alpine Insurance Co',
+    description: 'Case Rejected – Insufficient documentation provided for regulatory review.',
+    complainant: { name: 'Alpine Insurance Co', attorney: 'Richard Davis' },
+    defendant: { name: 'Insurance Board', attorney: 'Susan Miller' },
+    submittedDate: '7/30/2025',
+    appealDue: '8/25/2025',
+    priority: 'Normal',
+    status: 'Rejected'
+  },
+  {
+    id: '10',
+    caseNumber: 'FIN-2024-015',
+    title: 'Case Rejected – Jurisdictional issues identified.',
+    primaryParty: 'Pacific Financial',
+    description: 'Case Rejected – Jurisdictional issues identified during preliminary review.',
+    complainant: { name: 'Pacific Financial', attorney: 'Amanda White' },
+    defendant: { name: 'Financial Authority', attorney: 'Kevin Brown' },
+    submittedDate: '8/5/2025',
+    appealDue: '9/1/2025',
+    priority: 'Alert',
+    status: 'Rejected'
   }
 ];
 
