@@ -165,7 +165,6 @@ const mockCases = [
     defendant: { name: 'Health Department', attorney: 'Lisa Chen' },
     submittedDate: '9/17/2025',
     acceptedDate: '9/19/2025',
-    decisionDate: '9/25/2025',
     priority: 'Normal',
     status: 'Accepted'
   },
@@ -228,7 +227,6 @@ const mockCases = [
     defendant: { name: 'Regulatory Commission', attorney: 'Thomas Clark' },
     submittedDate: '8/15/2025',
     acceptedDate: '8/20/2025',
-    decisionDate: '10/5/2025',
     priority: 'High',
     status: 'Accepted'
   },
