@@ -22,30 +22,6 @@ interface Tasks2ViewProps {
 
 // Mock data organized by status
 const mockTasksByStatus = {
-  "not-started": [
-    {
-      id: '1',
-      caseNumber: 'CASE-2024-001',
-      caseType: 'Environmental Protection',
-      title: 'Initial review pending',
-      primaryParty: 'Kirby Neroni',
-      firstParty: { name: 'Kirby Neroni', attorney: 'John Smith' },
-      secondParty: { name: 'State Agency', attorney: 'Jane Doe' },
-      createdDate: '9/7/2025',
-      priority: 'Medium'
-    },
-    {
-      id: '5',
-      caseNumber: 'CASE-2024-003',
-      caseType: 'Fire Protection',
-      title: 'Documentation review required',
-      primaryParty: 'Martinez Construction',
-      firstParty: { name: 'Martinez Construction', attorney: 'Elena Rodriguez' },
-      secondParty: { name: 'Labor Department', attorney: 'James Wilson' },
-      createdDate: '9/22/2025',
-      priority: 'Low'
-    }
-  ],
   "open": [
     {
       id: '2',
@@ -124,14 +100,6 @@ const mockTasksByStatus = {
 
 const columns = [
   {
-    id: 'not-started',
-    title: 'Not Started',
-    icon: Clock,
-    headerColor: 'bg-gray-600',
-    bgColor: 'bg-gray-50',
-    borderColor: 'border-gray-200'
-  },
-  {
     id: 'open',
     title: 'Open',
     icon: Play,
@@ -159,8 +127,6 @@ const columns = [
 
 const getStatusBadgeColor = (columnId: string) => {
   switch (columnId) {
-    case 'not-started':
-      return 'bg-gray-100 text-gray-800 border-gray-300';
     case 'open':
       return 'bg-blue-100 text-blue-800 border-blue-300';
     case 'inprogress':
@@ -199,7 +165,7 @@ export function Tasks2View({ tasks, onViewTask }: Tasks2ViewProps) {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {columns.map((column) => {
           const IconComponent = column.icon;
           const columnTasks = mockTasksByStatus[column.id as keyof typeof mockTasksByStatus] || [];
