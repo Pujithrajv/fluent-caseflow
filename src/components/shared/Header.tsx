@@ -46,9 +46,9 @@ export function Header({ showUserActions = true }: HeaderProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <img 
-              src="/lovable-uploads/34438d6b-1c2f-4220-9e05-ab41b2d386d9.png" 
-              alt="Illinois Bureau of Administrative Hearings" 
-              className="h-16 w-auto"
+              src="/lovable-uploads/cms-logo.png" 
+              alt="Illinois Department of Central Management Services" 
+              className="h-14 w-auto"
             />
           </div>
           
