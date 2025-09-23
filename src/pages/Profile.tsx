@@ -1515,418 +1515,250 @@ const Profile = () => {
                 </CardContent>
               </Card>
 
-              {/* Section 2 - Contacts Table */}
+              {/* Contacts Table Card */}
               <Card className="shadow-sm">
-                <CardHeader className="pb-4 flex flex-row items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-foreground">Organization Contacts</CardTitle>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button size="sm">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Contact
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-md">
-                      <DialogHeader>
-                        <DialogTitle>Add New Contact</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="contactName">Contact Name *</Label>
-                          <Input
-                            id="contactName"
-                            placeholder="Enter full name"
-                            className="mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="contactEmail">Email Address *</Label>
-                          <Input
-                            id="contactEmail"
-                            type="email"
-                            placeholder="Enter email address"
-                            className="mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="contactPhone">Phone Number</Label>
-                          <Input
-                            id="contactPhone"
-                            placeholder="Enter phone number"
-                            className="mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="contactRole">Role *</Label>
-                          <Select>
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select role" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Case Manager">Case Manager</SelectItem>
-                              <SelectItem value="Attorney">Attorney</SelectItem>
-                              <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="flex justify-end gap-2 pt-4">
-                          <Button variant="outline" size="sm">Cancel</Button>
-                          <Button size="sm">Add Contact</Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg font-semibold text-foreground">Organization Contacts</CardTitle>
+                    <Button onClick={handleAddContact} size="sm" className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" />
+                      Add Contact
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="overflow-x-auto">
+                  <TooltipProvider>
                     <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead>Contact Name</TableHead>
-                          <TableHead>Email</TableHead>
-                          <TableHead>Phone</TableHead>
-                          <TableHead>Current Role(s)</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead>Email Address</TableHead>
+                          <TableHead>Phone Number</TableHead>
+                          <TableHead>Current Role</TableHead>
+                          <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        <TableRow>
-                          <TableCell className="font-medium">John Smith</TableCell>
-                          <TableCell>j.smith@agr.gov</TableCell>
-                          <TableCell>555-111-2222</TableCell>
-                          <TableCell>
-                            <Select defaultValue="Attorney">
-                              <SelectTrigger className="w-[160px] h-8">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Case Manager">Case Manager</SelectItem>
-                                <SelectItem value="Attorney">Attorney</SelectItem>
-                                <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
-                                <SelectItem value="Other">Other</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button variant="ghost" size="sm">
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-md">
-                                  <DialogHeader>
-                                    <DialogTitle>Edit Contact</DialogTitle>
-                                  </DialogHeader>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <Label htmlFor="editName">Contact Name</Label>
-                                      <Input
-                                        id="editName"
-                                        defaultValue="John Smith"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editEmail">Email Address</Label>
-                                      <Input
-                                        id="editEmail"
-                                        defaultValue="j.smith@agr.gov"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editPhone">Phone Number</Label>
-                                      <Input
-                                        id="editPhone"
-                                        defaultValue="555-111-2222"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editRole">Role</Label>
-                                      <Select defaultValue="Attorney">
-                                        <SelectTrigger className="mt-1">
-                                          <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                          <SelectItem value="Case Manager">Case Manager</SelectItem>
-                                          <SelectItem value="Attorney">Attorney</SelectItem>
-                                          <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
-                                          <SelectItem value="Other">Other</SelectItem>
-                                        </SelectContent>
-                                      </Select>
-                                    </div>
-                                    <div className="flex justify-end gap-2 pt-4">
-                                      <Button variant="outline" size="sm">Cancel</Button>
-                                      <Button size="sm">Save Changes</Button>
-                                    </div>
-                                  </div>
-                                </DialogContent>
-                              </Dialog>
-                              <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                  <AlertDialogHeader>
-                                    <AlertDialogTitle>Remove Contact</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                      Are you sure you want to remove this contact? This action cannot be undone.
-                                    </AlertDialogDescription>
-                                  </AlertDialogHeader>
-                                  <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                      Remove Contact
-                                    </AlertDialogAction>
-                                  </AlertDialogFooter>
-                                </AlertDialogContent>
-                              </AlertDialog>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="sm">
-                                      <Info className="h-4 w-4" />
+                        {contacts.map((contact) => (
+                          <TableRow key={contact.id}>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Input
+                                  value={editContact.name}
+                                  onChange={(e) => setEditContact(prev => ({ ...prev, name: e.target.value }))}
+                                  className="w-full"
+                                  placeholder="Contact Name"
+                                />
+                              ) : (
+                                <div className="flex flex-col">
+                                  <span className="font-medium">{contact.name}</span>
+                                  <Badge className={`w-fit text-xs ${getRoleBadgeColor(contact.role)}`}>
+                                    {contact.role}
+                                  </Badge>
+                                </div>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Input
+                                  value={editContact.email}
+                                  onChange={(e) => setEditContact(prev => ({ ...prev, email: e.target.value }))}
+                                  className="w-full"
+                                  placeholder="Email Address"
+                                  type="email"
+                                />
+                              ) : (
+                                <a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline">
+                                  {contact.email}
+                                </a>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Input
+                                  value={editContact.phone}
+                                  onChange={(e) => setEditContact(prev => ({ ...prev, phone: formatPhone(e.target.value) }))}
+                                  className="w-full"
+                                  placeholder="Phone Number"
+                                />
+                              ) : (
+                                contact.phone
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Select value={editContact.role} onValueChange={(value) => setEditContact(prev => ({ ...prev, role: value }))}>
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select role" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Attorney">Attorney</SelectItem>
+                                    <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                    <SelectItem value="FDM (Final Decision Maker)">FDM (Final Decision Maker)</SelectItem>
+                                    <SelectItem value="Paralegal">Paralegal</SelectItem>
+                                    <SelectItem value="Support Staff">Support Staff</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              ) : (
+                                <Select value={contact.role} onValueChange={(value) => handleRoleChange(contact.id, value)}>
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Attorney">Attorney</SelectItem>
+                                    <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                    <SelectItem value="FDM (Final Decision Maker)">FDM (Final Decision Maker)</SelectItem>
+                                    <SelectItem value="Paralegal">Paralegal</SelectItem>
+                                    <SelectItem value="Support Staff">Support Staff</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                {editingContactId === contact.id ? (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => handleSaveEditContact(contact.id)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <Save className="h-3 w-3" />
+                                      Save
                                     </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Last updated by Case Manager Smith, on 2024-01-15</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell className="font-medium">Jane Doe</TableCell>
-                          <TableCell>j.doe@agr.gov</TableCell>
-                          <TableCell>555-333-4444</TableCell>
-                          <TableCell>
-                            <Select defaultValue="Case Manager">
-                              <SelectTrigger className="w-[160px] h-8">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Case Manager">Case Manager</SelectItem>
-                                <SelectItem value="Attorney">Attorney</SelectItem>
-                                <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
-                                <SelectItem value="Other">Other</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button variant="ghost" size="sm">
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-md">
-                                  <DialogHeader>
-                                    <DialogTitle>Edit Contact</DialogTitle>
-                                  </DialogHeader>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <Label htmlFor="editName2">Contact Name</Label>
-                                      <Input
-                                        id="editName2"
-                                        defaultValue="Jane Doe"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editEmail2">Email Address</Label>
-                                      <Input
-                                        id="editEmail2"
-                                        defaultValue="j.doe@agr.gov"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editPhone2">Phone Number</Label>
-                                      <Input
-                                        id="editPhone2"
-                                        defaultValue="555-333-4444"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editRole2">Role</Label>
-                                      <Select defaultValue="Case Manager">
-                                        <SelectTrigger className="mt-1">
-                                          <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                          <SelectItem value="Case Manager">Case Manager</SelectItem>
-                                          <SelectItem value="Attorney">Attorney</SelectItem>
-                                          <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
-                                          <SelectItem value="Other">Other</SelectItem>
-                                        </SelectContent>
-                                      </Select>
-                                    </div>
-                                    <div className="flex justify-end gap-2 pt-4">
-                                      <Button variant="outline" size="sm">Cancel</Button>
-                                      <Button size="sm">Save Changes</Button>
-                                    </div>
-                                  </div>
-                                </DialogContent>
-                              </Dialog>
-                              <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                  <AlertDialogHeader>
-                                    <AlertDialogTitle>Remove Contact</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                      Are you sure you want to remove this contact? This action cannot be undone.
-                                    </AlertDialogDescription>
-                                  </AlertDialogHeader>
-                                  <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                      Remove Contact
-                                    </AlertDialogAction>
-                                  </AlertDialogFooter>
-                                </AlertDialogContent>
-                              </AlertDialog>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="sm">
-                                      <Info className="h-4 w-4" />
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => setEditingContactId(null)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <X className="h-3 w-3" />
+                                      Cancel
                                     </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Last updated by Case Manager Johnson, on 2024-01-10</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell className="font-medium">Michael Brown</TableCell>
-                          <TableCell>m.brown@agr.gov</TableCell>
-                          <TableCell>555-555-6666</TableCell>
-                          <TableCell>
-                            <Select defaultValue="FDM">
-                              <SelectTrigger className="w-[160px] h-8">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Case Manager">Case Manager</SelectItem>
-                                <SelectItem value="Attorney">Attorney</SelectItem>
-                                <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
-                                <SelectItem value="Other">Other</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button variant="ghost" size="sm">
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-md">
-                                  <DialogHeader>
-                                    <DialogTitle>Edit Contact</DialogTitle>
-                                  </DialogHeader>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <Label htmlFor="editName3">Contact Name</Label>
-                                      <Input
-                                        id="editName3"
-                                        defaultValue="Michael Brown"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editEmail3">Email Address</Label>
-                                      <Input
-                                        id="editEmail3"
-                                        defaultValue="m.brown@agr.gov"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editPhone3">Phone Number</Label>
-                                      <Input
-                                        id="editPhone3"
-                                        defaultValue="555-555-6666"
-                                        className="mt-1"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="editRole3">Role</Label>
-                                      <Select defaultValue="FDM">
-                                        <SelectTrigger className="mt-1">
-                                          <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                          <SelectItem value="Case Manager">Case Manager</SelectItem>
-                                          <SelectItem value="Attorney">Attorney</SelectItem>
-                                          <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
-                                          <SelectItem value="Other">Other</SelectItem>
-                                        </SelectContent>
-                                      </Select>
-                                    </div>
-                                    <div className="flex justify-end gap-2 pt-4">
-                                      <Button variant="outline" size="sm">Cancel</Button>
-                                      <Button size="sm">Save Changes</Button>
-                                    </div>
-                                  </div>
-                                </DialogContent>
-                              </Dialog>
-                              <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                  <AlertDialogHeader>
-                                    <AlertDialogTitle>Remove Contact</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                      Are you sure you want to remove this contact? This action cannot be undone.
-                                    </AlertDialogDescription>
-                                  </AlertDialogHeader>
-                                  <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                      Remove Contact
-                                    </AlertDialogAction>
-                                  </AlertDialogFooter>
-                                </AlertDialogContent>
-                              </AlertDialog>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="sm">
-                                      <Info className="h-4 w-4" />
+                                  </>
+                                ) : (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => handleEditContact(contact)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <Edit className="h-3 w-3" />
+                                      Edit
                                     </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Last updated by Case Manager Davis, on 2024-01-08</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                          </TableCell>
-                        </TableRow>
+                                    <AlertDialog>
+                                      <AlertDialogTrigger asChild>
+                                        <Button
+                                          size="sm"
+                                          variant="ghost"
+                                          className="flex items-center gap-1 text-destructive hover:text-destructive"
+                                        >
+                                          <Trash2 className="h-3 w-3" />
+                                          Delete
+                                        </Button>
+                                      </AlertDialogTrigger>
+                                      <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                          <AlertDialogDescription>
+                                            Are you sure you want to remove this contact? This action cannot be undone.
+                                          </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                          <AlertDialogAction
+                                            onClick={() => handleDeleteContact(contact.id)}
+                                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                          >
+                                            Delete
+                                          </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                    </AlertDialog>
+                                    <Button
+                                      size="sm"
+                                      variant="default"
+                                      className="flex items-center gap-1"
+                                    >
+                                      Submit
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        
+                        {/* Add Contact Row */}
+                        {isAddingContact && (
+                          <TableRow className="bg-muted/50">
+                            <TableCell>
+                              <Input
+                                value={newContact.name}
+                                onChange={(e) => setNewContact(prev => ({ ...prev, name: e.target.value }))}
+                                placeholder="Contact Name"
+                                className="w-full"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={newContact.email}
+                                onChange={(e) => setNewContact(prev => ({ ...prev, email: e.target.value }))}
+                                placeholder="Email Address"
+                                type="email"
+                                className="w-full"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={newContact.phone}
+                                onChange={(e) => setNewContact(prev => ({ ...prev, phone: formatPhone(e.target.value) }))}
+                                placeholder="Phone Number"
+                                className="w-full"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select value={newContact.role} onValueChange={(value) => setNewContact(prev => ({ ...prev, role: value }))}>
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Select role" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Attorney">Attorney</SelectItem>
+                                  <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                  <SelectItem value="FDM (Final Decision Maker)">FDM (Final Decision Maker)</SelectItem>
+                                  <SelectItem value="Paralegal">Paralegal</SelectItem>
+                                  <SelectItem value="Support Staff">Support Staff</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={handleSaveNewContact}
+                                  className="flex items-center gap-1"
+                                >
+                                  <Save className="h-3 w-3" />
+                                  Save
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => setIsAddingContact(false)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <X className="h-3 w-3" />
+                                  Cancel
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )}
                       </TableBody>
                     </Table>
-                  </div>
+                  </TooltipProvider>
                 </CardContent>
               </Card>
 
