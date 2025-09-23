@@ -1051,19 +1051,13 @@ const Profile = () => {
                                         </AlertDialogFooter>
                                       </AlertDialogContent>
                                     </AlertDialog>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <Button size="sm" variant="ghost" className="p-1">
-                                          <Info className="h-3 w-3" />
-                                        </Button>
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p className="text-xs">
-                                          Last updated by {contact.lastUpdatedBy}<br />
-                                          on {contact.lastUpdatedDate}
-                                        </p>
-                                      </TooltipContent>
-                                    </Tooltip>
+                                    <Button
+                                      size="sm"
+                                      variant="default"
+                                      className="flex items-center gap-1"
+                                    >
+                                      Submit
+                                    </Button>
                                   </>
                                 )}
                               </div>
