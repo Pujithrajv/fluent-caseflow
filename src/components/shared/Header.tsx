@@ -41,7 +41,7 @@ export function Header({ showUserActions = true }: HeaderProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full bg-white border-b border-border">
+    <div className="w-full border-b border-border" style={{ backgroundColor: '#1e3a8a' }}>
       <div className="mx-auto max-w-7xl px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -56,8 +56,8 @@ export function Header({ showUserActions = true }: HeaderProps) {
             <div className="flex items-center space-x-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <User className="h-12 w-12" />
+                  <Button variant="ghost" size="icon" className="hover:bg-white/20">
+                    <User className="h-12 w-12 text-white" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -83,8 +83,8 @@ export function Header({ showUserActions = true }: HeaderProps) {
               
               <Sheet>
                 <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover:bg-muted/80 focus:bg-muted/80 transition-colors">
-                  <HelpCircle className="h-6 w-6 text-muted-foreground hover:text-foreground" />
+                <Button variant="ghost" size="icon" className="hover:bg-white/20 focus:bg-white/20 transition-colors">
+                  <HelpCircle className="h-6 w-6 text-white hover:text-white/80" />
                 </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[400px] sm:w-[540px]">
