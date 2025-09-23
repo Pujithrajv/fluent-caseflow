@@ -14,8 +14,6 @@ import { Header } from "@/components/shared/Header";
 import { TasksPlannerView } from "./TasksPlannerView";
 import { TasksJiraView } from "./TasksJiraView";
 import { TasksKanbanView } from "./TasksKanbanView";
-import { TasksTimelineView } from "./TasksTimelineView";
-import { TasksNewApproachView } from "./TasksNewApproachView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
 
@@ -524,18 +522,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Tasks2
             </TabsTrigger>
-            <TabsTrigger 
-              value="new-approach" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              New Approach
-            </TabsTrigger>
-            <TabsTrigger 
-              value="timeline" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Timeline View
-            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -932,24 +918,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           {/* Tasks2 Tab Content */}
           <TabsContent value="tasks2" className="mt-6">
             <Tasks2View 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-            />
-          </TabsContent>
-
-          {/* New Approach Tab Content */}
-          <TabsContent value="new-approach" className="mt-6">
-            <TasksNewApproachView 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-            />
-          </TabsContent>
-
-
-
-          {/* Timeline View Tab Content */}
-          <TabsContent value="timeline" className="mt-6">
-            <TasksTimelineView 
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
             />
