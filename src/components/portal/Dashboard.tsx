@@ -17,7 +17,6 @@ import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksTimelineView } from "./TasksTimelineView";
 import { TasksNewApproachView } from "./TasksNewApproachView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
-import TasksView from "./TasksView";
 
 interface CaseItem {
   id: string;
@@ -522,13 +521,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               value="new-approach" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
-              New Approach 2
-            </TabsTrigger>
-            <TabsTrigger 
-              value="tasks" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Tasks2
+              New Approach
             </TabsTrigger>
             <TabsTrigger 
               value="timeline" 
@@ -932,19 +925,13 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* New Approach Tab Content */}
           <TabsContent value="new-approach" className="mt-6">
-            <TasksNewApproach2View 
+            <TasksNewApproachView 
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
             />
           </TabsContent>
 
-          {/* Tasks Tab Content */}
-          <TabsContent value="tasks" className="mt-6">
-            <TasksView 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-            />
-          </TabsContent>
+
 
           {/* Timeline View Tab Content */}
           <TabsContent value="timeline" className="mt-6">
