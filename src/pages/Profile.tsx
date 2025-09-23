@@ -556,245 +556,193 @@ const Profile = () => {
           {/* Organization Tab */}
           <TabsContent value="account" className="mt-6">
             <div className="max-w-screen-xl mx-auto space-y-6">
-              {/* Header */}
+              {/* Page content with help icon */}
               <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground">Organization Contacts</h2>
-                  <p className="text-muted-foreground">Manage contacts and assign roles for this organization.</p>
-                </div>
+                <div></div>
                 <Button variant="ghost" size="icon" className="text-muted-foreground">
                   <HelpCircle className="h-5 w-5" />
                 </Button>
               </div>
 
-              {/* Organization Information Card */}
-              <Card className="shadow-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Two-column layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Organization Information Card */}
+                <Card className="shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div>
-                      <Label className="text-sm font-medium text-muted-foreground">Organization Name</Label>
-                      <p className="mt-1 text-sm font-medium">Dept. of AGR</p>
+                      <Label htmlFor="organizationName" className="text-sm font-medium">
+                        Organization Name <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="organizationName"
+                        value={accountProfile.organizationName}
+                        onChange={(e) => handleAccountChange("organizationName", e.target.value)}
+                        className="mt-1"
+                        required
+                      />
                     </div>
+                    
                     <div>
-                      <Label className="text-sm font-medium text-muted-foreground">Business Phone</Label>
-                      <p className="mt-1 text-sm font-medium">555-123-4567</p>
+                      <Label htmlFor="website" className="text-sm font-medium">Web Site</Label>
+                      <Input
+                        id="website"
+                        type="url"
+                        value={accountProfile.website}
+                        onChange={(e) => handleAccountChange("website", e.target.value)}
+                        className={`mt-1 ${
+                          accountProfile.website && !validateURL(accountProfile.website) 
+                            ? 'border-destructive' 
+                            : ''
+                        }`}
+                        placeholder="https://www.example.org"
+                      />
+                      {accountProfile.website && !validateURL(accountProfile.website) && (
+                        <p className="text-sm text-destructive mt-1">Please enter a valid URL starting with https://</p>
+                      )}
                     </div>
+                    
                     <div>
-                      <Label className="text-sm font-medium text-muted-foreground">Website</Label>
-                      <p className="mt-1 text-sm font-medium">www.agr.gov</p>
+                      <Label htmlFor="businessPhone" className="text-sm font-medium">Business Phone</Label>
+                      <Input
+                        id="businessPhone"
+                        value={accountProfile.telephone}
+                        onChange={(e) => handleAccountChange("telephone", formatPhone(e.target.value))}
+                        className="mt-1"
+                        placeholder="(555) 555-1234"
+                      />
                     </div>
+                    
                     <div>
-                      <Label className="text-sm font-medium text-muted-foreground">Primary Address</Label>
-                      <p className="mt-1 text-sm font-medium">123 Capital St, Springfield, IL</p>
+                      <Label htmlFor="orgParticipationType" className="text-sm font-medium">Participation Type</Label>
+                      <Select value={accountProfile.participationType || ""} onValueChange={(value) => handleAccountChange("participationType", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select participation type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="petitioner">Petitioner</SelectItem>
+                          <SelectItem value="respondent">Respondent</SelectItem>
+                          <SelectItem value="department-representative">Department Representative</SelectItem>
+                          <SelectItem value="attorney">Attorney</SelectItem>
+                          <SelectItem value="interpreter">Interpreter</SelectItem>
+                          <SelectItem value="witness">Witness</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
 
-              {/* Contacts Table Card */}
-              <Card className="shadow-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-foreground">Contacts</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-border">
-                          <th className="text-left p-4 text-sm font-medium text-muted-foreground">Contact Name</th>
-                          <th className="text-left p-4 text-sm font-medium text-muted-foreground">Email Address</th>
-                          <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone Number</th>
-                          <th className="text-left p-4 text-sm font-medium text-muted-foreground">Current Role</th>
-                          <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {[
-                          { id: 1, name: "John Smith", email: "j.smith@agr.gov", phone: "555-111-2222", role: "attorney", lastUpdated: "Case Manager A, 12/01/2024" },
-                          { id: 2, name: "Jane Doe", email: "j.doe@agr.gov", phone: "555-333-4444", role: "case-manager", lastUpdated: "Case Manager B, 12/02/2024" },
-                          { id: 3, name: "Michael Brown", email: "m.brown@agr.gov", phone: "555-555-6666", role: "fdm", lastUpdated: "Case Manager A, 12/03/2024" }
-                        ].map((contact, index) => (
-                          <tr key={contact.id} className="border-b border-border hover:bg-muted/50">
-                            <td className="p-4">
-                              <div className="flex flex-col">
-                                <span className="text-sm font-medium">{contact.name}</span>
-                                <div className="flex items-center mt-1">
-                                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                    contact.role === 'attorney' ? 'bg-blue-100 text-blue-800' :
-                                    contact.role === 'case-manager' ? 'bg-green-100 text-green-800' :
-                                    contact.role === 'fdm' ? 'bg-orange-100 text-orange-800' :
-                                    'bg-gray-100 text-gray-800'
-                                  }`}>
-                                    {contact.role === 'attorney' ? 'Attorney' :
-                                     contact.role === 'case-manager' ? 'Case Manager' :
-                                     contact.role === 'fdm' ? 'FDM' : contact.role}
-                                  </span>
-                                  <button className="ml-2 text-muted-foreground hover:text-foreground">
-                                    <Info className="h-3 w-3" />
-                                  </button>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="p-4 text-sm">{contact.email}</td>
-                            <td className="p-4 text-sm">{contact.phone}</td>
-                            <td className="p-4">
-                              <Select 
-                                value={contact.role} 
-                                onValueChange={(value) => {
-                                  toast({
-                                    title: "Role Updated",
-                                    description: "Role updated successfully."
-                                  });
-                                }}
-                              >
-                                <SelectTrigger className="w-40">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="attorney">Attorney</SelectItem>
-                                  <SelectItem value="case-manager">Case Manager</SelectItem>
-                                  <SelectItem value="fdm">FDM (Final Decision Maker)</SelectItem>
-                                  <SelectItem value="paralegal">Paralegal</SelectItem>
-                                  <SelectItem value="support-staff">Support Staff</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </td>
-                            <td className="p-4">
-                              <div className="flex items-center space-x-2">
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm"
-                                  onClick={() => {
-                                    toast({
-                                      title: "Edit Contact",
-                                      description: "Edit functionality would open here."
-                                    });
-                                  }}
-                                >
-                                  Edit
-                                </Button>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm"
-                                  onClick={() => {
-                                    toast({
-                                      title: "Delete Contact",
-                                      description: "Are you sure you want to remove this contact?",
-                                      variant: "destructive"
-                                    });
-                                  }}
-                                >
-                                  Delete
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                        {/* Add New Contact Row */}
-                        <tr className="border-b border-border bg-muted/20">
-                          <td className="p-4">
-                            <Input 
-                              placeholder="Contact Name" 
-                              className="text-sm"
-                            />
-                          </td>
-                          <td className="p-4">
-                            <Input 
-                              placeholder="Email Address" 
-                              type="email"
-                              className="text-sm"
-                            />
-                          </td>
-                          <td className="p-4">
-                            <Input 
-                              placeholder="Phone Number" 
-                              className="text-sm"
-                            />
-                          </td>
-                          <td className="p-4">
-                            <Select>
-                              <SelectTrigger className="w-40">
-                                <SelectValue placeholder="Select role" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="attorney">Attorney</SelectItem>
-                                <SelectItem value="case-manager">Case Manager</SelectItem>
-                                <SelectItem value="fdm">FDM (Final Decision Maker)</SelectItem>
-                                <SelectItem value="paralegal">Paralegal</SelectItem>
-                                <SelectItem value="support-staff">Support Staff</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </td>
-                          <td className="p-4">
-                            <div className="flex items-center space-x-2">
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => {
-                                  toast({
-                                    title: "Contact Added",
-                                    description: "New contact saved successfully."
-                                  });
-                                }}
-                              >
-                                Save
-                              </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                              >
-                                Cancel
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  
-                  {/* Add Contact Button */}
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <Button 
-                      variant="outline"
-                      onClick={() => {
-                        toast({
-                          title: "Add Contact",
-                          description: "Add contact form would be shown here."
-                        });
-                      }}
-                    >
-                      + Add Contact
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                {/* Address Information Card */}
+                <Card className="shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="orgAddress1" className="text-sm font-medium">
+                        Address Line 1 <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="orgAddress1"
+                        value={accountProfile.address}
+                        onChange={(e) => handleAccountChange("address", e.target.value)}
+                        className="mt-1"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="orgAddress2" className="text-sm font-medium">Address Line 2</Label>
+                      <Input
+                        id="orgAddress2"
+                        value={accountProfile.address2 || ""}
+                        onChange={(e) => handleAccountChange("address2", e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="orgCity" className="text-sm font-medium">
+                        City <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="orgCity"
+                        value={accountProfile.city}
+                        onChange={(e) => handleAccountChange("city", e.target.value)}
+                        className="mt-1"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="orgState" className="text-sm font-medium">
+                        State / Province <span className="text-destructive">*</span>
+                      </Label>
+                      <Select value={accountProfile.state} onValueChange={(value) => handleAccountChange("state", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select state/province" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="il">Illinois</SelectItem>
+                          <SelectItem value="ca">California</SelectItem>
+                          <SelectItem value="ny">New York</SelectItem>
+                          <SelectItem value="tx">Texas</SelectItem>
+                          <SelectItem value="fl">Florida</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="orgPostalCode" className="text-sm font-medium">
+                        Postal Code <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="orgPostalCode"
+                        value={accountProfile.zipCode}
+                        onChange={(e) => handleAccountChange("zipCode", formatZip(e.target.value))}
+                        className="mt-1"
+                        placeholder="12345"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="orgCountry" className="text-sm font-medium">
+                        Country <span className="text-destructive">*</span>
+                      </Label>
+                      <Select value={accountProfile.country || "United States"} onValueChange={(value) => handleAccountChange("country", value)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="United States">United States</SelectItem>
+                          <SelectItem value="Canada">Canada</SelectItem>
+                          <SelectItem value="Mexico">Mexico</SelectItem>
+                          <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-              {/* Action Bar */}
+              {/* Sticky Action Bar */}
               <div className="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
-                <div className="flex justify-end space-x-4">
-                  <Button 
-                    variant="outline"
-                    onClick={() => {
-                      toast({
-                        title: "Changes Cancelled",
-                        description: "All changes have been cancelled."
-                      });
-                    }}
-                  >
-                    Cancel
-                  </Button>
+                <div className="flex justify-end">
                   <Button 
                     onClick={() => {
                       toast({
                         title: "Success",
-                        description: "All changes saved successfully."
+                        description: "Organization information updated."
                       });
                     }}
+                    className="w-full sm:w-auto"
                   >
-                    Save All Changes
+                    Update Organization Information
                   </Button>
                 </div>
               </div>
