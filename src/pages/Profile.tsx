@@ -361,6 +361,12 @@ const Profile = () => {
             >
               Attorneys
             </TabsTrigger>
+            <TabsTrigger 
+              value="organizations2" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Organizations2
+            </TabsTrigger>
           </TabsList>
 
           {/* My Profile Tab */}
@@ -1418,6 +1424,517 @@ const Profile = () => {
                   </Button>
                 </CardContent>
               </Card>
+            </div>
+          </TabsContent>
+
+          {/* Organizations2 Tab */}
+          <TabsContent value="organizations2" className="mt-6">
+            <div className="max-w-screen-xl mx-auto space-y-6">
+              {/* Header */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-foreground">Organization Management</h2>
+                <p className="text-muted-foreground mt-2">Manage organization details and contacts.</p>
+              </div>
+
+              {/* Section 1 - Organization Information */}
+              <Card className="shadow-sm">
+                <CardHeader className="pb-4 flex flex-row items-center justify-between">
+                  <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
+                  {/* Show edit button only for Agency/Company Managers */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit Organization
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                      <DialogHeader>
+                        <DialogTitle>Edit Organization Details</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="orgName">Organization Name</Label>
+                          <Input
+                            id="orgName"
+                            defaultValue="Illinois Department of Agriculture"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="orgAddress">Address</Label>
+                          <Input
+                            id="orgAddress"
+                            defaultValue="801 E Sangamon Ave"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="orgPhone">Phone Number</Label>
+                          <Input
+                            id="orgPhone"
+                            defaultValue="(217) 782-2172"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="orgEmail">Email</Label>
+                          <Input
+                            id="orgEmail"
+                            defaultValue="info@agr.state.il.us"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2 pt-4">
+                          <Button variant="outline" size="sm">Cancel</Button>
+                          <Button size="sm">Save Changes</Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Organization Name</Label>
+                      <p className="text-foreground mt-1">Illinois Department of Agriculture</p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Address</Label>
+                      <p className="text-foreground mt-1">801 E Sangamon Ave, Springfield, IL 62794</p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Phone Number</Label>
+                      <p className="text-foreground mt-1">(217) 782-2172</p>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground">Email</Label>
+                      <p className="text-foreground mt-1">info@agr.state.il.us</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Section 2 - Contacts Table */}
+              <Card className="shadow-sm">
+                <CardHeader className="pb-4 flex flex-row items-center justify-between">
+                  <CardTitle className="text-lg font-semibold text-foreground">Organization Contacts</CardTitle>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button size="sm">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Contact
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                      <DialogHeader>
+                        <DialogTitle>Add New Contact</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="contactName">Contact Name *</Label>
+                          <Input
+                            id="contactName"
+                            placeholder="Enter full name"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="contactEmail">Email Address *</Label>
+                          <Input
+                            id="contactEmail"
+                            type="email"
+                            placeholder="Enter email address"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="contactPhone">Phone Number</Label>
+                          <Input
+                            id="contactPhone"
+                            placeholder="Enter phone number"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="contactRole">Role *</Label>
+                          <Select>
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Case Manager">Case Manager</SelectItem>
+                              <SelectItem value="Attorney">Attorney</SelectItem>
+                              <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="flex justify-end gap-2 pt-4">
+                          <Button variant="outline" size="sm">Cancel</Button>
+                          <Button size="sm">Add Contact</Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Contact Name</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Phone</TableHead>
+                          <TableHead>Current Role(s)</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium">John Smith</TableCell>
+                          <TableCell>j.smith@agr.gov</TableCell>
+                          <TableCell>555-111-2222</TableCell>
+                          <TableCell>
+                            <Select defaultValue="Attorney">
+                              <SelectTrigger className="w-[160px] h-8">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                <SelectItem value="Attorney">Attorney</SelectItem>
+                                <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-md">
+                                  <DialogHeader>
+                                    <DialogTitle>Edit Contact</DialogTitle>
+                                  </DialogHeader>
+                                  <div className="space-y-4">
+                                    <div>
+                                      <Label htmlFor="editName">Contact Name</Label>
+                                      <Input
+                                        id="editName"
+                                        defaultValue="John Smith"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editEmail">Email Address</Label>
+                                      <Input
+                                        id="editEmail"
+                                        defaultValue="j.smith@agr.gov"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editPhone">Phone Number</Label>
+                                      <Input
+                                        id="editPhone"
+                                        defaultValue="555-111-2222"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editRole">Role</Label>
+                                      <Select defaultValue="Attorney">
+                                        <SelectTrigger className="mt-1">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                          <SelectItem value="Attorney">Attorney</SelectItem>
+                                          <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
+                                          <SelectItem value="Other">Other</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <div className="flex justify-end gap-2 pt-4">
+                                      <Button variant="outline" size="sm">Cancel</Button>
+                                      <Button size="sm">Save Changes</Button>
+                                    </div>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Remove Contact</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Are you sure you want to remove this contact? This action cannot be undone.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                      Remove Contact
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button variant="ghost" size="sm">
+                                      <Info className="h-4 w-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Last updated by Case Manager Smith, on 2024-01-15</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">Jane Doe</TableCell>
+                          <TableCell>j.doe@agr.gov</TableCell>
+                          <TableCell>555-333-4444</TableCell>
+                          <TableCell>
+                            <Select defaultValue="Case Manager">
+                              <SelectTrigger className="w-[160px] h-8">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                <SelectItem value="Attorney">Attorney</SelectItem>
+                                <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-md">
+                                  <DialogHeader>
+                                    <DialogTitle>Edit Contact</DialogTitle>
+                                  </DialogHeader>
+                                  <div className="space-y-4">
+                                    <div>
+                                      <Label htmlFor="editName2">Contact Name</Label>
+                                      <Input
+                                        id="editName2"
+                                        defaultValue="Jane Doe"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editEmail2">Email Address</Label>
+                                      <Input
+                                        id="editEmail2"
+                                        defaultValue="j.doe@agr.gov"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editPhone2">Phone Number</Label>
+                                      <Input
+                                        id="editPhone2"
+                                        defaultValue="555-333-4444"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editRole2">Role</Label>
+                                      <Select defaultValue="Case Manager">
+                                        <SelectTrigger className="mt-1">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                          <SelectItem value="Attorney">Attorney</SelectItem>
+                                          <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
+                                          <SelectItem value="Other">Other</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <div className="flex justify-end gap-2 pt-4">
+                                      <Button variant="outline" size="sm">Cancel</Button>
+                                      <Button size="sm">Save Changes</Button>
+                                    </div>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Remove Contact</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Are you sure you want to remove this contact? This action cannot be undone.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                      Remove Contact
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button variant="ghost" size="sm">
+                                      <Info className="h-4 w-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Last updated by Case Manager Johnson, on 2024-01-10</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">Michael Brown</TableCell>
+                          <TableCell>m.brown@agr.gov</TableCell>
+                          <TableCell>555-555-6666</TableCell>
+                          <TableCell>
+                            <Select defaultValue="FDM">
+                              <SelectTrigger className="w-[160px] h-8">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                <SelectItem value="Attorney">Attorney</SelectItem>
+                                <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
+                                <SelectItem value="Other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-md">
+                                  <DialogHeader>
+                                    <DialogTitle>Edit Contact</DialogTitle>
+                                  </DialogHeader>
+                                  <div className="space-y-4">
+                                    <div>
+                                      <Label htmlFor="editName3">Contact Name</Label>
+                                      <Input
+                                        id="editName3"
+                                        defaultValue="Michael Brown"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editEmail3">Email Address</Label>
+                                      <Input
+                                        id="editEmail3"
+                                        defaultValue="m.brown@agr.gov"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editPhone3">Phone Number</Label>
+                                      <Input
+                                        id="editPhone3"
+                                        defaultValue="555-555-6666"
+                                        className="mt-1"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="editRole3">Role</Label>
+                                      <Select defaultValue="FDM">
+                                        <SelectTrigger className="mt-1">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                          <SelectItem value="Attorney">Attorney</SelectItem>
+                                          <SelectItem value="FDM">FDM (Final Decision Maker)</SelectItem>
+                                          <SelectItem value="Other">Other</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <div className="flex justify-end gap-2 pt-4">
+                                      <Button variant="outline" size="sm">Cancel</Button>
+                                      <Button size="sm">Save Changes</Button>
+                                    </div>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Remove Contact</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Are you sure you want to remove this contact? This action cannot be undone.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                      Remove Contact
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button variant="ghost" size="sm">
+                                      <Info className="h-4 w-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Last updated by Case Manager Davis, on 2024-01-08</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Footer Actions */}
+              <div className="flex justify-end gap-4 pt-6">
+                <Button variant="outline">Cancel</Button>
+                <Button>Save All Changes</Button>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
