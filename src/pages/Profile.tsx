@@ -7,9 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ArrowLeft, Info, HelpCircle } from "lucide-react";
+import { ChevronDown, ArrowLeft, Info, HelpCircle, Edit, Trash2, Save, X, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Header } from "@/components/shared/Header";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -76,6 +80,51 @@ const Profile = () => {
   const [phoneCallsConsent, setPhoneCallsConsent] = useState("ask-each-time");
   const [marketingCommunicationsConsent, setMarketingCommunicationsConsent] = useState("do-not-allow");
 
+  // Contacts state
+  const [contacts, setContacts] = useState([
+    {
+      id: "1",
+      name: "John Smith",
+      email: "j.smith@agr.gov",
+      phone: "555-111-2222",
+      role: "Attorney",
+      lastUpdatedBy: "Case Manager Smith",
+      lastUpdatedDate: "2024-01-15"
+    },
+    {
+      id: "2",
+      name: "Jane Doe",
+      email: "j.doe@agr.gov",
+      phone: "555-333-4444",
+      role: "Case Manager",
+      lastUpdatedBy: "Case Manager Johnson",
+      lastUpdatedDate: "2024-01-10"
+    },
+    {
+      id: "3",
+      name: "Michael Brown",
+      email: "m.brown@agr.gov",
+      phone: "555-555-6666",
+      role: "FDM (Final Decision Maker)",
+      lastUpdatedBy: "Case Manager Davis",
+      lastUpdatedDate: "2024-01-08"
+    }
+  ]);
+  const [isAddingContact, setIsAddingContact] = useState(false);
+  const [editingContactId, setEditingContactId] = useState<string | null>(null);
+  const [newContact, setNewContact] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    role: ""
+  });
+  const [editContact, setEditContact] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    role: ""
+  });
+
   const handlePersonalInfoChange = (field: string, value: string) => {
     setPersonalInfo(prev => ({ ...prev, [field]: value }));
     setHasUnsavedChanges(true);
@@ -139,6 +188,116 @@ const Profile = () => {
 
   const formatZip = (value: string) => {
     return value.replace(/\D/g, '').slice(0, 5);
+  };
+
+  const getRoleBadgeColor = (role: string) => {
+    switch (role) {
+      case "Attorney":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "Case Manager":
+        return "bg-green-100 text-green-800 border-green-200";
+      case "FDM (Final Decision Maker)":
+        return "bg-orange-100 text-orange-800 border-orange-200";
+      case "Paralegal":
+        return "bg-purple-100 text-purple-800 border-purple-200";
+      case "Support Staff":
+        return "bg-gray-100 text-gray-800 border-gray-200";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-200";
+    }
+  };
+
+  const handleAddContact = () => {
+    setIsAddingContact(true);
+    setNewContact({ name: "", email: "", phone: "", role: "" });
+  };
+
+  const handleSaveNewContact = () => {
+    if (!newContact.name || !newContact.email || !newContact.role) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const contactToAdd = {
+      id: Date.now().toString(),
+      ...newContact,
+      lastUpdatedBy: "Current Case Manager",
+      lastUpdatedDate: new Date().toISOString().split('T')[0]
+    };
+
+    setContacts(prev => [...prev, contactToAdd]);
+    setIsAddingContact(false);
+    setNewContact({ name: "", email: "", phone: "", role: "" });
+    toast({
+      title: "Success",
+      description: "Contact added successfully."
+    });
+  };
+
+  const handleEditContact = (contact: any) => {
+    setEditingContactId(contact.id);
+    setEditContact({
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone,
+      role: contact.role
+    });
+  };
+
+  const handleSaveEditContact = (contactId: string) => {
+    if (!editContact.name || !editContact.email || !editContact.role) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setContacts(prev => prev.map(contact => 
+      contact.id === contactId 
+        ? {
+            ...contact,
+            ...editContact,
+            lastUpdatedBy: "Current Case Manager",
+            lastUpdatedDate: new Date().toISOString().split('T')[0]
+          }
+        : contact
+    ));
+    setEditingContactId(null);
+    toast({
+      title: "Success",
+      description: "Contact updated successfully."
+    });
+  };
+
+  const handleDeleteContact = (contactId: string) => {
+    setContacts(prev => prev.filter(contact => contact.id !== contactId));
+    toast({
+      title: "Success",
+      description: "Contact deleted successfully."
+    });
+  };
+
+  const handleRoleChange = (contactId: string, newRole: string) => {
+    setContacts(prev => prev.map(contact => 
+      contact.id === contactId 
+        ? {
+            ...contact,
+            role: newRole,
+            lastUpdatedBy: "Current Case Manager",
+            lastUpdatedDate: new Date().toISOString().split('T')[0]
+          }
+        : contact
+    ));
+    toast({
+      title: "Success",
+      description: "Role updated successfully."
+    });
   };
 
   return (
@@ -730,19 +889,273 @@ const Profile = () => {
                 </Card>
               </div>
 
+              {/* Contacts Table Card */}
+              <Card className="shadow-sm">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg font-semibold text-foreground">Organization Contacts</CardTitle>
+                    <Button onClick={handleAddContact} size="sm" className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" />
+                      Add Contact
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <TooltipProvider>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Contact Name</TableHead>
+                          <TableHead>Email Address</TableHead>
+                          <TableHead>Phone Number</TableHead>
+                          <TableHead>Current Role</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {contacts.map((contact) => (
+                          <TableRow key={contact.id}>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Input
+                                  value={editContact.name}
+                                  onChange={(e) => setEditContact(prev => ({ ...prev, name: e.target.value }))}
+                                  className="w-full"
+                                  placeholder="Contact Name"
+                                />
+                              ) : (
+                                <div className="flex flex-col">
+                                  <span className="font-medium">{contact.name}</span>
+                                  <Badge className={`w-fit text-xs ${getRoleBadgeColor(contact.role)}`}>
+                                    {contact.role}
+                                  </Badge>
+                                </div>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Input
+                                  value={editContact.email}
+                                  onChange={(e) => setEditContact(prev => ({ ...prev, email: e.target.value }))}
+                                  className="w-full"
+                                  placeholder="Email Address"
+                                  type="email"
+                                />
+                              ) : (
+                                <a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline">
+                                  {contact.email}
+                                </a>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Input
+                                  value={editContact.phone}
+                                  onChange={(e) => setEditContact(prev => ({ ...prev, phone: formatPhone(e.target.value) }))}
+                                  className="w-full"
+                                  placeholder="Phone Number"
+                                />
+                              ) : (
+                                contact.phone
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {editingContactId === contact.id ? (
+                                <Select value={editContact.role} onValueChange={(value) => setEditContact(prev => ({ ...prev, role: value }))}>
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select role" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Attorney">Attorney</SelectItem>
+                                    <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                    <SelectItem value="FDM (Final Decision Maker)">FDM (Final Decision Maker)</SelectItem>
+                                    <SelectItem value="Paralegal">Paralegal</SelectItem>
+                                    <SelectItem value="Support Staff">Support Staff</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              ) : (
+                                <Select value={contact.role} onValueChange={(value) => handleRoleChange(contact.id, value)}>
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Attorney">Attorney</SelectItem>
+                                    <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                    <SelectItem value="FDM (Final Decision Maker)">FDM (Final Decision Maker)</SelectItem>
+                                    <SelectItem value="Paralegal">Paralegal</SelectItem>
+                                    <SelectItem value="Support Staff">Support Staff</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                {editingContactId === contact.id ? (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => handleSaveEditContact(contact.id)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <Save className="h-3 w-3" />
+                                      Save
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => setEditingContactId(null)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <X className="h-3 w-3" />
+                                      Cancel
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => handleEditContact(contact)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <Edit className="h-3 w-3" />
+                                      Edit
+                                    </Button>
+                                    <AlertDialog>
+                                      <AlertDialogTrigger asChild>
+                                        <Button
+                                          size="sm"
+                                          variant="ghost"
+                                          className="flex items-center gap-1 text-destructive hover:text-destructive"
+                                        >
+                                          <Trash2 className="h-3 w-3" />
+                                          Delete
+                                        </Button>
+                                      </AlertDialogTrigger>
+                                      <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                          <AlertDialogDescription>
+                                            Are you sure you want to remove this contact? This action cannot be undone.
+                                          </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                          <AlertDialogAction
+                                            onClick={() => handleDeleteContact(contact.id)}
+                                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                          >
+                                            Delete
+                                          </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                    </AlertDialog>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button size="sm" variant="ghost" className="p-1">
+                                          <Info className="h-3 w-3" />
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p className="text-xs">
+                                          Last updated by {contact.lastUpdatedBy}<br />
+                                          on {contact.lastUpdatedDate}
+                                        </p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        
+                        {/* Add Contact Row */}
+                        {isAddingContact && (
+                          <TableRow className="bg-muted/50">
+                            <TableCell>
+                              <Input
+                                value={newContact.name}
+                                onChange={(e) => setNewContact(prev => ({ ...prev, name: e.target.value }))}
+                                placeholder="Contact Name"
+                                className="w-full"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={newContact.email}
+                                onChange={(e) => setNewContact(prev => ({ ...prev, email: e.target.value }))}
+                                placeholder="Email Address"
+                                type="email"
+                                className="w-full"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={newContact.phone}
+                                onChange={(e) => setNewContact(prev => ({ ...prev, phone: formatPhone(e.target.value) }))}
+                                placeholder="Phone Number"
+                                className="w-full"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select value={newContact.role} onValueChange={(value) => setNewContact(prev => ({ ...prev, role: value }))}>
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="Select role" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Attorney">Attorney</SelectItem>
+                                  <SelectItem value="Case Manager">Case Manager</SelectItem>
+                                  <SelectItem value="FDM (Final Decision Maker)">FDM (Final Decision Maker)</SelectItem>
+                                  <SelectItem value="Paralegal">Paralegal</SelectItem>
+                                  <SelectItem value="Support Staff">Support Staff</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={handleSaveNewContact}
+                                  className="flex items-center gap-1"
+                                >
+                                  <Save className="h-3 w-3" />
+                                  Save
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => setIsAddingContact(false)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <X className="h-3 w-3" />
+                                  Cancel
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TooltipProvider>
+                </CardContent>
+              </Card>
+
               {/* Sticky Action Bar */}
               <div className="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
-                <div className="flex justify-end">
+                <div className="flex justify-end gap-4">
+                  <Button variant="outline">Cancel</Button>
                   <Button 
                     onClick={() => {
                       toast({
                         title: "Success",
-                        description: "Organization information updated."
+                        description: "All changes saved successfully."
                       });
                     }}
                     className="w-full sm:w-auto"
                   >
-                    Update Organization Information
+                    Save All Changes
                   </Button>
                 </div>
               </div>
