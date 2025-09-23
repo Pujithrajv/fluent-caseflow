@@ -528,7 +528,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               value="tasks" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
-              Tasks
+              Tasks2
             </TabsTrigger>
             <TabsTrigger 
               value="timeline" 
