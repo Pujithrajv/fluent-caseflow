@@ -41,13 +41,13 @@ export function Header({ showUserActions = true }: HeaderProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full border-b border-border" style={{ backgroundColor: "#1e3a8a" }}>
+    <div className="w-full bg-white border-b border-border">
       <div className="mx-auto max-w-7xl px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <img 
-              src="/lovable-uploads/cms-logo.png" 
-              alt="Illinois Department of Central Management Services" 
+              src="/lovable-uploads/34438d6b-1c2f-4220-9e05-ab41b2d386d9.png" 
+              alt="Illinois Bureau of Administrative Hearings" 
               className="h-16 w-auto"
             />
           </div>
