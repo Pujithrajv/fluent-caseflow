@@ -225,8 +225,8 @@ export function TaskDetail() {
               <div className="text-sm text-muted-foreground">
                 Primary Party
               </div>
-              {/* Blue line */}
-              <div className="absolute right-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+              {/* Blue line with 1cm gap */}
+              <div className="absolute -right-4 top-0 bottom-0 w-1 bg-blue-500"></div>
             </div>
             
             {/* Task Information */}
@@ -242,8 +242,8 @@ export function TaskDetail() {
               <div className="text-sm text-muted-foreground">
                 Send a copy of Motion Order to Respondent
               </div>
-              {/* Blue line */}
-              <div className="absolute right-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+              {/* Blue line with 1cm gap */}
+              <div className="absolute -right-4 top-0 bottom-0 w-1 bg-blue-500"></div>
             </div>
           </div>
         </div>
