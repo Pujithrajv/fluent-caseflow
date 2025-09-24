@@ -206,9 +206,24 @@ export function TaskDetail() {
         </Button>
 
         {/* Page Title */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-foreground">Task Details</h1>
-          <p className="text-muted-foreground">Manage and track task progress</p>
+        <div className="mb-6 flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-foreground">Task Details</h1>
+            <p className="text-muted-foreground">Manage and track task progress</p>
+          </div>
+          
+          {/* Case Information - Top Right */}
+          <div className="text-right">
+            <div className="text-sm font-medium text-foreground">
+              Case: {taskDetail.linkedCase.caseNumber}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {taskDetail.linkedCase.caseType}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Primary Party
+            </div>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -322,39 +337,6 @@ export function TaskDetail() {
                     rows={4}
                     placeholder="Enter task instructions or notes..."
                   />
-                </div>
-
-                {/* Linked Case */}
-                <div className="space-y-3">
-                  <Label>Linked Case</Label>
-                  <Card className="border-l-4 border-l-primary bg-muted/50">
-                    <CardContent className="pt-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-muted-foreground" />
-                          <span className="font-medium">{taskDetail.linkedCase.caseNumber}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Building className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm text-muted-foreground">{taskDetail.linkedCase.caseType}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm">
-                            <strong>{taskDetail.linkedCase.primaryParty}</strong> ({taskDetail.linkedCase.primaryPartyRole})
-                          </span>
-                        </div>
-                        {taskDetail.linkedCase.secondaryParty && (
-                          <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">
-                              <strong>{taskDetail.linkedCase.secondaryParty}</strong> ({taskDetail.linkedCase.secondaryPartyRole})
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
                 </div>
               </CardContent>
             </Card>
