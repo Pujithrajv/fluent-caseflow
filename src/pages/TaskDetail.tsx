@@ -218,17 +218,12 @@ export function TaskDetail() {
                   
                   <div className="space-y-2">
                     <Label htmlFor="assigned-to">Assigned To</Label>
-                    <Select value={taskDetail.assignedTo} onValueChange={(value) => handleTaskUpdate('assignedTo', value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="John Doe">John Doe</SelectItem>
-                        <SelectItem value="Sarah Johnson">Sarah Johnson</SelectItem>
-                        <SelectItem value="Mike Wilson">Mike Wilson</SelectItem>
-                        <SelectItem value="Lisa Davis">Lisa Davis</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input 
+                      id="assigned-to"
+                      value={taskDetail.assignedTo}
+                      readOnly
+                      className="bg-muted cursor-not-allowed"
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -243,16 +238,12 @@ export function TaskDetail() {
 
                   <div className="space-y-2">
                     <Label htmlFor="priority">Priority</Label>
-                    <Select value={taskDetail.priority} onValueChange={(value) => handleTaskUpdate('priority', value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="High Priority">High Priority</SelectItem>
-                        <SelectItem value="Medium Priority">Medium Priority</SelectItem>
-                        <SelectItem value="Low Priority">Low Priority</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input 
+                      id="priority"
+                      value={taskDetail.priority}
+                      readOnly
+                      className="bg-muted cursor-not-allowed"
+                    />
                   </div>
                 </div>
               </CardContent>
