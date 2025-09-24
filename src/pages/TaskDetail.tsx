@@ -236,7 +236,7 @@ export function TaskDetail() {
                 {taskDetail.status}
               </div>
               <div className="text-sm text-muted-foreground">
-                Send a copy of Motion Order to Respondent
+                {taskDetail.priority}
               </div>
             </div>
           </div>
