@@ -271,30 +271,6 @@ export function TaskDetail() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label>Priority</Label>
-                    <div>
-                      <Badge className={`${getPriorityColor(taskDetail.priority)} px-3 py-1`}>
-                        {taskDetail.priority}
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
-                    <Select value={taskDetail.status} onValueChange={(value: any) => setTaskDetail(prev => ({ ...prev, status: value }))}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Open">Open</SelectItem>
-                        <SelectItem value="In Progress">In Progress</SelectItem>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                        <SelectItem value="On Hold">On Hold</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
                     <Label htmlFor="assigned-to">Assigned To</Label>
                     <Select value={taskDetail.assignedTo} onValueChange={(value) => setTaskDetail(prev => ({ ...prev, assignedTo: value }))}>
                       <SelectTrigger>
@@ -307,33 +283,6 @@ export function TaskDetail() {
                         <SelectItem value="Lisa Davis">Lisa Davis</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-                  
-                  <div className="space-y-2 md:col-span-2">
-                    <Label>Due Date & Time</Label>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <Input 
-                          type="date" 
-                          value={taskDetail.dueDate}
-                          onChange={(e) => setTaskDetail(prev => ({ ...prev, dueDate: e.target.value }))}
-                          className="w-auto"
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-muted-foreground" />
-                        <Input 
-                          type="time" 
-                          value={taskDetail.dueTime}
-                          onChange={(e) => setTaskDetail(prev => ({ ...prev, dueTime: e.target.value }))}
-                          className="w-auto"
-                        />
-                      </div>
-                      <Badge variant="outline" className="text-sm">
-                        {getDaysLeft()}
-                      </Badge>
-                    </div>
                   </div>
                 </div>
               </CardContent>
