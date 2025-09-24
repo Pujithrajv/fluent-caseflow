@@ -49,6 +49,17 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
       status: 'in-progress' as const
     },
     {
+      id: '4',
+      title: 'Order of Motion is finalized for Request: Appeal-Appeal - Motions - Motion to Compel Discovery',
+      priority: 'High Priority',
+      caseNumber: 'DNR-OGRM-EU-CO-0426: Abandoned Well',
+      department: 'Department of Natural Resources',
+      assignedTo: 'John Doe',
+      dueDate: 'September 23, 2025',
+      description: 'Order of Motion is generated for Request: Appeal-Appeal - Motions - Motion to Compel Discovery\n\nPlease go to the portal and sign the document.',
+      status: 'in-progress' as const
+    },
+    {
       id: '3',
       title: 'File Initial Complaint',
       priority: 'High Priority',

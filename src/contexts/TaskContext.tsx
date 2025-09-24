@@ -128,6 +128,36 @@ const mockTasks: TaskDetail[] = [
       }
     ],
     notes: 'Complaint successfully filed. All parties have been served.'
+  },
+  {
+    id: '4',
+    title: 'Order of Motion is finalized for Request: Appeal-Appeal - Motions - Motion to Compel Discovery',
+    priority: 'High Priority',
+    status: 'In Progress',
+    assignedTo: 'John Doe',
+    dueDate: '2025-09-23',
+    dueTime: '15:00',
+    description: 'Order of Motion is generated for Request: Appeal-Appeal - Motions - Motion to Compel Discovery\n\nPlease go to the portal and sign the document.',
+    linkedCase: {
+      caseNumber: 'DNR-OGRM-EU-CO-0426',
+      caseType: 'Abandoned Well',
+      primaryParty: 'North District Foods',
+      primaryPartyRole: 'Complainant',
+      secondaryParty: 'Metro Agricultural Corp',
+      secondaryPartyRole: 'Respondent',
+      department: 'Department of Natural Resources'
+    },
+    relatedDocument: 'Motion to Compel Discovery',
+    attachments: [
+      {
+        id: 'att-4',
+        name: 'Motion_Order_Draft.pdf',
+        type: 'PDF',
+        uploadedBy: 'John Doe',
+        uploadedDate: '2025-09-23'
+      }
+    ],
+    notes: 'Motion order has been generated and is ready for review and signature.'
   }
 ];
 
