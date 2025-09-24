@@ -186,14 +186,6 @@ export function TaskDetail() {
                 </Badge>
               </div>
               <div className="text-sm text-muted-foreground">
-                <Badge variant="destructive" className="mr-2">
-                  {taskDetail.priority}
-                </Badge>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Due: {taskDetail.dueDate}
-              </div>
-              <div className="text-sm text-muted-foreground">
                 {taskDetail.title}
               </div>
               {/* Blue line with 1cm gap */}
