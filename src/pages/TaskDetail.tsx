@@ -230,6 +230,30 @@ export function TaskDetail() {
                       </SelectContent>
                     </Select>
                   </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="due-date">Due Date</Label>
+                    <Input 
+                      id="due-date"
+                      type="date"
+                      value={taskDetail.dueDate}
+                      onChange={(e) => handleTaskUpdate('dueDate', e.target.value)}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="priority">Priority</Label>
+                    <Select value={taskDetail.priority} onValueChange={(value) => handleTaskUpdate('priority', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="High Priority">High Priority</SelectItem>
+                        <SelectItem value="Medium Priority">Medium Priority</SelectItem>
+                        <SelectItem value="Low Priority">Low Priority</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </CardContent>
             </Card>
