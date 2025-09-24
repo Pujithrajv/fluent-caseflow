@@ -12,8 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { 
   ArrowLeft, 
   FileText, 
-  CheckCircle,
-  RotateCcw
+  CheckCircle
 } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
 import { useTask, TaskDetail as TaskDetailType } from '@/contexts/TaskContext';
@@ -121,9 +120,6 @@ export function TaskDetail() {
     }
   };
 
-  const handleReassignTask = () => {
-    console.log('Reassign task');
-  };
 
   const handleTaskUpdate = (field: keyof TaskDetailType, value: any) => {
     if (taskDetail) {
@@ -260,16 +256,10 @@ export function TaskDetail() {
 
             <Card>
               <CardContent className="pt-6">
-                <div className="flex gap-3">
-                  <Button onClick={handleMarkComplete} className="flex-1">
-                    <CheckCircle className="w-4 h-4 mr-2" />
-                    Mark as Complete
-                  </Button>
-                  <Button variant="outline" onClick={handleReassignTask} className="flex-1">
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Reassign Task
-                  </Button>
-                </div>
+                <Button onClick={handleMarkComplete} className="w-full">
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                  Mark as Complete
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
