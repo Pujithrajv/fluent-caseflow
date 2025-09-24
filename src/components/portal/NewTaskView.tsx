@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ interface NewTaskViewProps {
 }
 
 export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) => {
+  const navigate = useNavigate();
   // Mock data for the kanban columns with proper status distribution
   const mockKanbanTasks = [
     {
@@ -74,6 +76,10 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
       default:
         return 'bg-gray-500 text-white';
     }
+  };
+
+  const handleOpenTask = (taskId: string) => {
+    navigate(`/task-detail/${taskId}`);
   };
 
   const TaskCard = ({ task }: { task: typeof mockKanbanTasks[0] }) => (
@@ -137,7 +143,12 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
               <FileText className="w-4 h-4 mr-2" />
               Open Case
             </Button>
-            <Button variant="outline" size="sm" className="flex-1">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              onClick={() => handleOpenTask(task.id)}
+            >
               <span className="mr-2">≡</span>
               Open Task
             </Button>
@@ -148,7 +159,12 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
               <FileText className="w-4 h-4 mr-2" />
               Open Case
             </Button>
-            <Button variant="outline" size="sm" className="flex-1">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              onClick={() => handleOpenTask(task.id)}
+            >
               <span className="mr-2">≡</span>
               Open Task
             </Button>
