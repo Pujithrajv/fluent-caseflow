@@ -16,9 +16,7 @@ import {
   Calendar, 
   Clock,
   CheckCircle,
-  RotateCcw,
-  Paperclip,
-  Plus
+  RotateCcw
 } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
 
@@ -178,11 +176,6 @@ export function TaskDetail() {
   const handleReassignTask = () => {
     // Open reassignment modal/dialog
     console.log('Reassign task');
-  };
-
-  const handleAddDocument = () => {
-    // Open file upload dialog
-    console.log('Add document');
   };
 
   const getDaysLeft = () => {
@@ -363,66 +356,9 @@ export function TaskDetail() {
                     </CardContent>
                   </Card>
                 </div>
-
-                {/* Related Request/Document */}
-                <div className="space-y-2">
-                  <Label htmlFor="related-document">Related Request / Document</Label>
-                  <Input 
-                    id="related-document"
-                    value={taskDetail.relatedDocument}
-                    onChange={(e) => setTaskDetail(prev => ({ ...prev, relatedDocument: e.target.value }))}
-                    placeholder="e.g., Motion to Compel Discovery"
-                  />
-                </div>
-
-                {/* Attachments */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Label>Attachments</Label>
-                    <Button variant="outline" size="sm" onClick={handleAddDocument}>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Document
-                    </Button>
-                  </div>
-                  <div className="space-y-2">
-                    {taskDetail.attachments.map((attachment) => (
-                      <Card key={attachment.id} className="border-dashed">
-                        <CardContent className="pt-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <Paperclip className="w-4 h-4 text-muted-foreground" />
-                              <div>
-                                <p className="font-medium text-sm">{attachment.name}</p>
-                                <p className="text-xs text-muted-foreground">
-                                  {attachment.type} • Uploaded by {attachment.uploadedBy} on {attachment.uploadedDate}
-                                </p>
-                              </div>
-                            </div>
-                            <Button variant="ghost" size="sm">
-                              Download
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Notes/Comments */}
-                <div className="space-y-2">
-                  <Label htmlFor="notes">Notes / Comments</Label>
-                  <Textarea 
-                    id="notes"
-                    value={taskDetail.notes}
-                    onChange={(e) => setTaskDetail(prev => ({ ...prev, notes: e.target.value }))}
-                    rows={3}
-                    placeholder="Add progress updates or additional notes..."
-                  />
-                </div>
               </CardContent>
             </Card>
 
-            {/* Action Buttons */}
             <Card>
               <CardContent className="pt-6">
                 <div className="flex gap-3">
@@ -433,10 +369,6 @@ export function TaskDetail() {
                   <Button variant="outline" onClick={handleReassignTask} className="flex-1">
                     <RotateCcw className="w-4 h-4 mr-2" />
                     Reassign Task
-                  </Button>
-                  <Button variant="outline" onClick={handleAddDocument} className="flex-1">
-                    <Paperclip className="w-4 h-4 mr-2" />
-                    Add Document
                   </Button>
                 </div>
               </CardContent>
