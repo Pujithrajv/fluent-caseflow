@@ -212,16 +212,32 @@ export function TaskDetail() {
             <p className="text-muted-foreground">Manage and track task progress</p>
           </div>
           
-          {/* Case Information - Top Right */}
-          <div className="text-right">
-            <div className="text-sm font-medium text-foreground">
-              Case: {taskDetail.linkedCase.caseNumber}
+          {/* Case and Task Information - Top Right */}
+          <div className="flex gap-8">
+            {/* Case Information */}
+            <div className="text-right">
+              <div className="text-sm font-medium text-foreground">
+                Case: {taskDetail.linkedCase.caseNumber}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {taskDetail.linkedCase.caseType}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Primary Party
+              </div>
             </div>
-            <div className="text-sm text-muted-foreground">
-              {taskDetail.linkedCase.caseType}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Primary Party
+            
+            {/* Task Information */}
+            <div className="text-right">
+              <div className="text-sm font-medium text-foreground">
+                Task: {taskDetail.id}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {taskDetail.status}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {taskDetail.priority}
+              </div>
             </div>
           </div>
         </div>
