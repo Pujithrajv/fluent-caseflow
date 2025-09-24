@@ -16,6 +16,7 @@ import { TasksJiraView } from "./TasksJiraView";
 import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
+import { NewTaskView } from "./NewTaskView";
 
 interface CaseItem {
   id: string;
@@ -522,6 +523,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Tasks2
             </TabsTrigger>
+            <TabsTrigger 
+              value="new-task" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              New Task
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -918,6 +925,14 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           {/* Tasks2 Tab Content */}
           <TabsContent value="tasks2" className="mt-6">
             <Tasks2View 
+              tasks={tasks} 
+              onViewTask={(taskId) => console.log('View task:', taskId)}
+            />
+          </TabsContent>
+
+          {/* New Task Tab Content */}
+          <TabsContent value="new-task" className="mt-6">
+            <NewTaskView 
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
             />
