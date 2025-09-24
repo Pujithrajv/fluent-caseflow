@@ -233,7 +233,9 @@ export function TaskDetail() {
                 Task: {taskDetail.id}
               </div>
               <div className="text-sm text-muted-foreground">
-                {taskDetail.status}
+                <Badge className="bg-yellow-500 text-white hover:bg-yellow-600">
+                  {taskDetail.status}
+                </Badge>
               </div>
               <div className="text-sm text-muted-foreground">
                 Send a copy of Motion Order to Respondent
