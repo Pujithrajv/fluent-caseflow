@@ -12,25 +12,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { 
   ArrowLeft, 
   FileText, 
-  Building, 
-  User, 
-  Calendar, 
-  Clock,
   CheckCircle,
   RotateCcw
 } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
 import { useTask, TaskDetail as TaskDetailType } from '@/contexts/TaskContext';
-
-interface HistoryEntry {
-  id: string;
-  changedDate: string;
-  changedBy: string;
-  event: string;
-  changedField: string;
-  oldValue: string;
-  newValue: string;
-}
 
 export function TaskDetail() {
   const navigate = useNavigate();
@@ -65,34 +51,6 @@ export function TaskDetail() {
     );
   }
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'High Priority':
-        return 'bg-orange-500 text-white';
-      case 'Medium Priority':
-        return 'bg-yellow-500 text-white';
-      case 'Low Priority':
-        return 'bg-green-500 text-white';
-      default:
-        return 'bg-gray-500 text-white';
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Open':
-        return 'bg-gray-100 text-gray-800 border-gray-300';
-      case 'In Progress':
-        return 'bg-blue-100 text-blue-800 border-blue-300';
-      case 'Completed':
-        return 'bg-green-100 text-green-800 border-green-300';
-      case 'On Hold':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-300';
-    }
-  };
-
   const handleBackClick = () => {
     navigate('/portal');
   };
@@ -106,7 +64,6 @@ export function TaskDetail() {
   };
 
   const handleReassignTask = () => {
-    // Open reassignment modal/dialog
     console.log('Reassign task');
   };
 
@@ -116,18 +73,6 @@ export function TaskDetail() {
       setTaskDetail(updatedTask);
       updateTask(taskDetail.id, { [field]: value });
     }
-  };
-
-  const getDaysLeft = () => {
-    const today = new Date();
-    const dueDate = new Date(taskDetail.dueDate);
-    const diffTime = dueDate.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return `${Math.abs(diffDays)} days overdue`;
-    if (diffDays === 0) return 'Due today';
-    if (diffDays === 1) return '1 day left';
-    return `${diffDays} days left`;
   };
 
   return (
