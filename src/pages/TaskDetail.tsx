@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,34 +19,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
-
-interface TaskDetail {
-  id: string;
-  title: string;
-  priority: 'High Priority' | 'Medium Priority' | 'Low Priority';
-  status: 'Open' | 'In Progress' | 'Completed' | 'On Hold';
-  assignedTo: string;
-  dueDate: string;
-  dueTime: string;
-  description: string;
-  linkedCase: {
-    caseNumber: string;
-    caseType: string;
-    primaryParty: string;
-    primaryPartyRole: string;
-    secondaryParty?: string;
-    secondaryPartyRole?: string;
-  };
-  relatedDocument: string;
-  attachments: Array<{
-    id: string;
-    name: string;
-    type: string;
-    uploadedBy: string;
-    uploadedDate: string;
-  }>;
-  notes: string;
-}
+import { useTask, TaskDetail as TaskDetailType } from '@/contexts/TaskContext';
 
 interface HistoryEntry {
   id: string;
@@ -55,43 +28,6 @@ interface HistoryEntry {
   timestamp: string;
   details?: string;
 }
-
-const mockTaskDetail: TaskDetail = {
-  id: '1',
-  title: 'Send copy of Motion Order to Respondent',
-  priority: 'High Priority',
-  status: 'In Progress',
-  assignedTo: 'John Doe',
-  dueDate: '2025-09-25',
-  dueTime: '14:00',
-  description: 'Review all submitted documents and case data for completeness and compliance. Ensure all required forms are properly filled out and supporting documentation is attached.',
-  linkedCase: {
-    caseNumber: 'DBE-2025-004',
-    caseType: 'Licensing Violation',
-    primaryParty: 'North District Foods',
-    primaryPartyRole: 'Complainant',
-    secondaryParty: 'Metro Agricultural Corp',
-    secondaryPartyRole: 'Respondent'
-  },
-  relatedDocument: 'Motion to Compel Discovery',
-  attachments: [
-    {
-      id: 'att-1',
-      name: 'Motion_Order_Final.pdf',
-      type: 'PDF',
-      uploadedBy: 'John Doe',
-      uploadedDate: '2025-09-20'
-    },
-    {
-      id: 'att-2',
-      name: 'Supporting_Evidence.docx',
-      type: 'Word Document',
-      uploadedBy: 'Sarah Johnson',
-      uploadedDate: '2025-09-19'
-    }
-  ],
-  notes: 'Initial review completed. Waiting for additional documentation from respondent before proceeding with final compliance check.'
-};
 
 const mockHistory: HistoryEntry[] = [
   {
@@ -134,8 +70,35 @@ const mockHistory: HistoryEntry[] = [
 export function TaskDetail() {
   const navigate = useNavigate();
   const { taskId } = useParams();
-  const [taskDetail, setTaskDetail] = useState<TaskDetail>(mockTaskDetail);
+  const { getTaskById, updateTask } = useTask();
   const [activeTab, setActiveTab] = useState('details');
+  
+  // Get task data from context
+  const task = getTaskById(taskId || '');
+  const [taskDetail, setTaskDetail] = useState<TaskDetailType | null>(task || null);
+
+  useEffect(() => {
+    if (task) {
+      setTaskDetail(task);
+    }
+  }, [task]);
+
+  // Redirect if task not found
+  if (!taskDetail) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="mx-auto max-w-7xl px-6 py-6">
+          <div className="text-center">
+            <h1 className="text-2xl font-semibold text-foreground mb-4">Task Not Found</h1>
+            <Button onClick={() => navigate('/portal')}>
+              Back to Dashboard
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -170,12 +133,24 @@ export function TaskDetail() {
   };
 
   const handleMarkComplete = () => {
-    setTaskDetail(prev => ({ ...prev, status: 'Completed' }));
+    if (taskDetail) {
+      const updatedTask = { ...taskDetail, status: 'Completed' as const };
+      setTaskDetail(updatedTask);
+      updateTask(taskDetail.id, { status: 'Completed' });
+    }
   };
 
   const handleReassignTask = () => {
     // Open reassignment modal/dialog
     console.log('Reassign task');
+  };
+
+  const handleTaskUpdate = (field: keyof TaskDetailType, value: any) => {
+    if (taskDetail) {
+      const updatedTask = { ...taskDetail, [field]: value };
+      setTaskDetail(updatedTask);
+      updateTask(taskDetail.id, { [field]: value });
+    }
   };
 
   const getDaysLeft = () => {
@@ -223,7 +198,10 @@ export function TaskDetail() {
                 {taskDetail.linkedCase.caseType}
               </div>
               <div className="text-sm text-muted-foreground">
-                Primary Party
+                {taskDetail.linkedCase.department}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {taskDetail.linkedCase.primaryParty}
               </div>
               {/* Blue line with 1cm gap */}
               <div className="absolute -right-4 top-0 bottom-0 w-1 bg-blue-500"></div>
@@ -240,7 +218,7 @@ export function TaskDetail() {
                 </Badge>
               </div>
               <div className="text-sm text-muted-foreground">
-                Send a copy of Motion Order to Respondent
+                {taskDetail.title}
               </div>
               {/* Blue line with 1cm gap */}
               <div className="absolute -right-4 top-0 bottom-0 w-1 bg-blue-500"></div>
@@ -269,14 +247,14 @@ export function TaskDetail() {
                     <Input 
                       id="task-title"
                       value={taskDetail.title}
-                      onChange={(e) => setTaskDetail(prev => ({ ...prev, title: e.target.value }))}
+                      onChange={(e) => handleTaskUpdate('title', e.target.value)}
                       className="font-medium"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="assigned-to">Assigned To</Label>
-                    <Select value={taskDetail.assignedTo} onValueChange={(value) => setTaskDetail(prev => ({ ...prev, assignedTo: value }))}>
+                    <Select value={taskDetail.assignedTo} onValueChange={(value) => handleTaskUpdate('assignedTo', value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -304,7 +282,7 @@ export function TaskDetail() {
                   <Textarea 
                     id="description"
                     value={taskDetail.description}
-                    onChange={(e) => setTaskDetail(prev => ({ ...prev, description: e.target.value }))}
+                    onChange={(e) => handleTaskUpdate('description', e.target.value)}
                     rows={4}
                     placeholder="Enter task instructions or notes..."
                   />
