@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Building, User, Calendar, FileText, Info } from 'lucide-react';
+import { TaskDetailModal } from './TaskDetailModal';
 
 interface DashboardTask {
   id: string;
@@ -22,6 +23,8 @@ interface NewTaskViewProps {
 }
 
 export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) => {
+  const [selectedTaskId, setSelectedTaskId] = React.useState<string | undefined>();
+  const [taskDetailOpen, setTaskDetailOpen] = React.useState(false);
   // Mock data for the kanban columns with proper status distribution
   const mockKanbanTasks = [
     {
@@ -74,6 +77,11 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
       default:
         return 'bg-gray-500 text-white';
     }
+  };
+
+  const handleOpenTask = (taskId: string) => {
+    setSelectedTaskId(taskId);
+    setTaskDetailOpen(true);
   };
 
   const TaskCard = ({ task }: { task: typeof mockKanbanTasks[0] }) => (
@@ -137,7 +145,12 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
               <FileText className="w-4 h-4 mr-2" />
               Open Case
             </Button>
-            <Button variant="outline" size="sm" className="flex-1">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              onClick={() => handleOpenTask(task.id)}
+            >
               <span className="mr-2">≡</span>
               Open Task
             </Button>
@@ -148,7 +161,12 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
               <FileText className="w-4 h-4 mr-2" />
               Open Case
             </Button>
-            <Button variant="outline" size="sm" className="flex-1">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              onClick={() => handleOpenTask(task.id)}
+            >
               <span className="mr-2">≡</span>
               Open Task
             </Button>
@@ -180,27 +198,34 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
   );
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
-      <div className="flex gap-6 max-w-7xl mx-auto">
-        <Column 
-          title="New" 
-          count={newTasks.length} 
-          tasks={newTasks} 
-          headerColor="bg-gray-600"
-        />
-        <Column 
-          title="In-Progress" 
-          count={inProgressTasks.length} 
-          tasks={inProgressTasks} 
-          headerColor="bg-blue-600"
-        />
-        <Column 
-          title="Complete" 
-          count={completeTasks.length} 
-          tasks={completeTasks} 
-          headerColor="bg-green-600"
-        />
+    <>
+      <TaskDetailModal 
+        open={taskDetailOpen}
+        onOpenChange={setTaskDetailOpen}
+        taskId={selectedTaskId}
+      />
+      <div className="bg-gray-50 min-h-screen p-6">
+        <div className="flex gap-6 max-w-7xl mx-auto">
+          <Column 
+            title="New" 
+            count={newTasks.length} 
+            tasks={newTasks} 
+            headerColor="bg-gray-600"
+          />
+          <Column 
+            title="In-Progress" 
+            count={inProgressTasks.length} 
+            tasks={inProgressTasks} 
+            headerColor="bg-blue-600"
+          />
+          <Column 
+            title="Complete" 
+            count={completeTasks.length} 
+            tasks={completeTasks} 
+            headerColor="bg-green-600"
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
