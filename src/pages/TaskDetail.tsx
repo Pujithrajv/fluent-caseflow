@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { 
   ArrowLeft, 
   FileText, 
@@ -23,49 +24,13 @@ import { useTask, TaskDetail as TaskDetailType } from '@/contexts/TaskContext';
 
 interface HistoryEntry {
   id: string;
-  action: string;
-  user: string;
-  timestamp: string;
-  details?: string;
+  changedDate: string;
+  changedBy: string;
+  event: string;
+  changedField: string;
+  oldValue: string;
+  newValue: string;
 }
-
-const mockHistory: HistoryEntry[] = [
-  {
-    id: 'hist-1',
-    action: 'Task Created',
-    user: 'System',
-    timestamp: '2025-09-20 09:00 AM',
-    details: 'Task automatically generated from case workflow'
-  },
-  {
-    id: 'hist-2',
-    action: 'Status Updated',
-    user: 'John Doe',
-    timestamp: '2025-09-20 10:30 AM',
-    details: 'Changed from Open to In Progress'
-  },
-  {
-    id: 'hist-3',
-    action: 'Priority Updated',
-    user: 'Sarah Johnson',
-    timestamp: '2025-09-20 02:15 PM',
-    details: 'Changed from Medium Priority to High Priority'
-  },
-  {
-    id: 'hist-4',
-    action: 'Comment Added',
-    user: 'John Doe',
-    timestamp: '2025-09-21 11:45 AM',
-    details: 'Added progress notes about document review'
-  },
-  {
-    id: 'hist-5',
-    action: 'Due Date Modified',
-    user: 'Sarah Johnson',
-    timestamp: '2025-09-22 09:20 AM',
-    details: 'Extended due date from Sep 24 to Sep 25 due to respondent delay'
-  }
-];
 
 export function TaskDetail() {
   const navigate = useNavigate();
@@ -314,24 +279,66 @@ export function TaskDetail() {
                 <p className="text-sm text-muted-foreground">Complete audit trail of all task activities</p>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {mockHistory.map((entry, index) => (
-                    <div key={entry.id} className="flex gap-4 pb-4 border-b border-border last:border-b-0">
-                      <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                      <div className="flex-1 space-y-1">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium text-sm">{entry.action}</h4>
-                          <span className="text-xs text-muted-foreground">{entry.timestamp}</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          by <strong>{entry.user}</strong>
-                        </p>
-                        {entry.details && (
-                          <p className="text-sm text-muted-foreground italic">{entry.details}</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                {/* Table Header */}
+                <div className="border rounded-lg">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/50">
+                        <TableHead className="text-muted-foreground font-medium">Changed Date</TableHead>
+                        <TableHead className="text-muted-foreground font-medium">Changed By</TableHead>
+                        <TableHead className="text-muted-foreground font-medium">Event</TableHead>
+                        <TableHead className="text-muted-foreground font-medium">Changed Field</TableHead>
+                        <TableHead className="text-muted-foreground font-medium">Old Value</TableHead>
+                        <TableHead className="text-muted-foreground font-medium">New Value</TableHead>
+                        <TableHead className="w-10"></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {/* Empty state */}
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center py-16">
+                          <div className="flex flex-col items-center space-y-4">
+                            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                              <FileText className="w-8 h-8 text-muted-foreground" />
+                            </div>
+                            <div className="text-center">
+                              <p className="text-muted-foreground">
+                                No Audits found for this Task. Select Add (+).
+                              </p>
+                            </div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+                
+                {/* Pagination Footer */}
+                <div className="flex items-center justify-between mt-4 text-sm text-muted-foreground">
+                  <div className="flex items-center space-x-2">
+                    <Button variant="ghost" size="sm" disabled>
+                      <ArrowLeft className="w-4 h-4" />
+                    </Button>
+                    <span>0 - 0 of 0</span>
+                    <Button variant="ghost" size="sm" disabled>
+                      <ArrowLeft className="w-4 h-4 transform rotate-180" />
+                    </Button>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button variant="ghost" size="sm" disabled>
+                      ⏮
+                    </Button>
+                    <Button variant="ghost" size="sm" disabled>
+                      ⏪
+                    </Button>
+                    <span>Page 1</span>
+                    <Button variant="ghost" size="sm" disabled>
+                      ⏩
+                    </Button>
+                    <Button variant="ghost" size="sm" disabled>
+                      ⏭
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
