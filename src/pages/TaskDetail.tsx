@@ -18,6 +18,64 @@ import {
 import { Header } from '@/components/shared/Header';
 import { useTask, TaskDetail as TaskDetailType } from '@/contexts/TaskContext';
 
+interface HistoryEntry {
+  id: string;
+  changedDate: string;
+  changedBy: string;
+  event: string;
+  changedField: string;
+  oldValue: string;
+  newValue: string;
+}
+
+const mockHistory: HistoryEntry[] = [
+  {
+    id: 'hist-1',
+    changedDate: '2025-09-20 09:00 AM',
+    changedBy: 'System',
+    event: 'Task Created',
+    changedField: 'Status',
+    oldValue: '',
+    newValue: 'Open'
+  },
+  {
+    id: 'hist-2',
+    changedDate: '2025-09-20 10:30 AM',
+    changedBy: 'John Doe',
+    event: 'Status Updated',
+    changedField: 'Status',
+    oldValue: 'Open',
+    newValue: 'In Progress'
+  },
+  {
+    id: 'hist-3',
+    changedDate: '2025-09-20 02:15 PM',
+    changedBy: 'Sarah Johnson',
+    event: 'Priority Updated',
+    changedField: 'Priority',
+    oldValue: 'Medium Priority',
+    newValue: 'High Priority'
+  },
+  {
+    id: 'hist-4',
+    changedDate: '2025-09-21 11:45 AM',
+    changedBy: 'John Doe',
+    event: 'Comment Added',
+    changedField: 'Notes',
+    oldValue: '',
+    newValue: 'Added progress notes about document review'
+  },
+  {
+    id: 'hist-5',
+    changedDate: '2025-09-22 09:20 AM',
+    changedBy: 'Sarah Johnson',
+    event: 'Due Date Modified',
+    changedField: 'Due Date',
+    oldValue: 'Sep 24, 2025',
+    newValue: 'Sep 25, 2025'
+  }
+];
+
 export function TaskDetail() {
   const navigate = useNavigate();
   const { taskId } = useParams();
@@ -239,21 +297,17 @@ export function TaskDetail() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {/* Empty state */}
-                      <TableRow>
-                        <TableCell colSpan={7} className="text-center py-16">
-                          <div className="flex flex-col items-center space-y-4">
-                            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-                              <FileText className="w-8 h-8 text-muted-foreground" />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-muted-foreground">
-                                No Audits found for this Task. Select Add (+).
-                              </p>
-                            </div>
-                          </div>
-                        </TableCell>
-                      </TableRow>
+                      {mockHistory.map((entry) => (
+                        <TableRow key={entry.id}>
+                          <TableCell className="font-medium">{entry.changedDate}</TableCell>
+                          <TableCell>{entry.changedBy}</TableCell>
+                          <TableCell>{entry.event}</TableCell>
+                          <TableCell>{entry.changedField}</TableCell>
+                          <TableCell className="text-muted-foreground">{entry.oldValue || '-'}</TableCell>
+                          <TableCell>{entry.newValue}</TableCell>
+                          <TableCell></TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
                 </div>
@@ -264,7 +318,7 @@ export function TaskDetail() {
                     <Button variant="ghost" size="sm" disabled>
                       <ArrowLeft className="w-4 h-4" />
                     </Button>
-                    <span>0 - 0 of 0</span>
+                    <span>1 - 5 of 5</span>
                     <Button variant="ghost" size="sm" disabled>
                       <ArrowLeft className="w-4 h-4 transform rotate-180" />
                     </Button>
