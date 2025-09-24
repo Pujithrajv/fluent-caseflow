@@ -215,7 +215,7 @@ export function TaskDetail() {
           {/* Case and Task Information - Top Right */}
           <div className="flex gap-8">
             {/* Case Information */}
-            <div className="text-right">
+            <div className="text-right relative">
               <div className="text-sm font-medium text-foreground">
                 Case: {taskDetail.linkedCase.caseNumber}
               </div>
@@ -225,10 +225,12 @@ export function TaskDetail() {
               <div className="text-sm text-muted-foreground">
                 Primary Party
               </div>
+              {/* Blue line */}
+              <div className="absolute right-0 top-0 bottom-0 w-1 bg-blue-500"></div>
             </div>
             
             {/* Task Information */}
-            <div className="text-right">
+            <div className="text-right relative">
               <div className="text-sm font-medium text-foreground">
                 Task: {taskDetail.id}
               </div>
@@ -240,6 +242,8 @@ export function TaskDetail() {
               <div className="text-sm text-muted-foreground">
                 Send a copy of Motion Order to Respondent
               </div>
+              {/* Blue line */}
+              <div className="absolute right-0 top-0 bottom-0 w-1 bg-blue-500"></div>
             </div>
           </div>
         </div>
