@@ -363,6 +363,7 @@ const mockTasks = [
 ];
 
 export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardProps) {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("cases");
   const [tasks, setTasks] = useState(mockTasks);
@@ -373,7 +374,10 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [showPhysicalLocation, setShowPhysicalLocation] = useState<Record<number, boolean>>({});
   const [activeLocationTab, setActiveLocationTab] = useState<Record<number, 'online' | 'location'>>({});
   const [accordionOpen, setAccordionOpen] = useState<Record<number, boolean>>({ 7: true }); // Option C open by default
-  const navigate = useNavigate();
+  
+  const handleViewTask = (taskId: string) => {
+    navigate(`/task-detail/${taskId}`);
+  };
 
   // Filter and sort events
   const filteredAndSortedEvents = useMemo(() => {
@@ -918,7 +922,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           <TabsContent value="new-approach-2" className="mt-6">
             <TasksNewApproach2View 
               tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
+              onViewTask={handleViewTask}
             />
           </TabsContent>
 
@@ -926,7 +930,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           <TabsContent value="tasks2" className="mt-6">
             <Tasks2View 
               tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
+              onViewTask={handleViewTask}
             />
           </TabsContent>
 
@@ -934,7 +938,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           <TabsContent value="new-task" className="mt-6">
             <NewTaskView 
               tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
+              onViewTask={handleViewTask}
             />
           </TabsContent>
         </Tabs>
