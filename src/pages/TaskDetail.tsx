@@ -49,7 +49,7 @@ const mockHistory: HistoryEntry[] = [
   {
     id: 'hist-5',
     changedDate: '2025-09-22 09:20 AM',
-    changedBy: 'Sarah Johnson',
+    changedBy: 'John Doe',
     event: 'Due Date Modified',
     changedField: 'Due Date',
     oldValue: 'Sep 24, 2025',
