@@ -190,12 +190,19 @@ export function TaskDetail() {
           </div>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs with Open Case Button */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-md">
-            <TabsTrigger value="details">Task Details</TabsTrigger>
-            <TabsTrigger value="history">History</TabsTrigger>
-          </TabsList>
+          <div className="flex items-center justify-between mb-6">
+            <TabsList className="grid grid-cols-2 max-w-md">
+              <TabsTrigger value="details">Task Details</TabsTrigger>
+              <TabsTrigger value="history">History</TabsTrigger>
+            </TabsList>
+            
+            <Button variant="default" className="ml-4 shrink-0">
+              <FileText className="w-4 h-4 mr-2" />
+              Open Case
+            </Button>
+          </div>
 
           {/* Task Details Tab */}
           <TabsContent value="details" className="space-y-6 mt-6">
