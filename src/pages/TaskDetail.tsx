@@ -47,24 +47,6 @@ const mockHistory: HistoryEntry[] = [
     newValue: 'In Progress'
   },
   {
-    id: 'hist-3',
-    changedDate: '2025-09-20 02:15 PM',
-    changedBy: 'Sarah Johnson',
-    event: 'Priority Updated',
-    changedField: 'Priority',
-    oldValue: 'Medium Priority',
-    newValue: 'High Priority'
-  },
-  {
-    id: 'hist-4',
-    changedDate: '2025-09-21 11:45 AM',
-    changedBy: 'John Doe',
-    event: 'Comment Added',
-    changedField: 'Notes',
-    oldValue: '',
-    newValue: 'Added progress notes about document review'
-  },
-  {
     id: 'hist-5',
     changedDate: '2025-09-22 09:20 AM',
     changedBy: 'Sarah Johnson',
@@ -330,7 +312,7 @@ export function TaskDetail() {
                     <Button variant="ghost" size="sm" disabled>
                       <ArrowLeft className="w-4 h-4" />
                     </Button>
-                    <span>1 - 5 of 5</span>
+                    <span>1 - 3 of 3</span>
                     <Button variant="ghost" size="sm" disabled>
                       <ArrowLeft className="w-4 h-4 transform rotate-180" />
                     </Button>
