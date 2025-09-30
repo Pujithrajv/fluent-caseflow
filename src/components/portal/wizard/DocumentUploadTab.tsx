@@ -152,11 +152,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
   // Available document types for dropdown
   const availableDocumentTypes = [
     ...requiredDocuments.map(doc => doc.name),
-    'Supporting Evidence',
-    'Correspondence', 
-    'Legal Document',
-    'Technical Drawing',
-    'Other'
+    'Supporting Evidence'
   ];
 
   return (
