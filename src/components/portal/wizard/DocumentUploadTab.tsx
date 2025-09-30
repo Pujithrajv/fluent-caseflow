@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Upload, FileText, Trash2, Download, Check, ExternalLink, AlertTriangle, X } from "lucide-react";
 import { useState } from "react";
@@ -268,22 +269,28 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                           </div>
                         </td>
                         <td className="px-4 py-4">
-                          <Select 
-                            value={doc.type} 
+                          <RadioGroup 
+                            value={doc.type}
                             onValueChange={(value) => handleDocumentTypeChange(doc.id, value)}
                             disabled={isReadOnly}
+                            className="space-y-2"
                           >
-                            <SelectTrigger className="w-48">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {availableDocumentTypes.map((type) => (
-                                <SelectItem key={type} value={type}>
+                            {availableDocumentTypes.map((type) => (
+                              <div key={type} className="flex items-center space-x-2">
+                                <RadioGroupItem 
+                                  value={type} 
+                                  id={`${doc.id}-${type}`}
+                                  className="border-primary"
+                                />
+                                <Label 
+                                  htmlFor={`${doc.id}-${type}`}
+                                  className="text-sm font-fluent cursor-pointer"
+                                >
                                   {type}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                                </Label>
+                              </div>
+                            ))}
+                          </RadioGroup>
                         </td>
                         <td className="px-4 py-4">
                           <span className="text-sm font-fluent text-foreground">{doc.size}</span>
