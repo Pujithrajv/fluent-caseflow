@@ -94,7 +94,7 @@ const requiredDocumentsByCase: Record<string, RequiredDocument[]> = {
 const mockDocuments: UploadedDocument[] = [
   {
     id: 1,
-    name: "Notice_of_Violation_2024.pdf",
+    name: "Environmental_Assessment_Report.pdf",
     type: "Notice of Violation",
     size: "1.2 MB",
     uploadedDate: "2024-01-15",
@@ -102,7 +102,7 @@ const mockDocuments: UploadedDocument[] = [
   },
   {
     id: 2,
-    name: "Well_Inspection_Report_2024.pdf",
+    name: "Site_Inspection_Documentation.pdf",
     type: "Well Inspection Report",
     size: "2.8 MB", 
     uploadedDate: "2024-01-14",
@@ -110,7 +110,7 @@ const mockDocuments: UploadedDocument[] = [
   },
   {
     id: 3,
-    name: "Additional_Documentation.pdf",
+    name: "Compliance_Review_Summary.pdf",
     type: "Supporting Evidence",
     size: "0.9 MB",
     uploadedDate: "2024-01-13"
