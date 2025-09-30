@@ -235,16 +235,16 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                 <table className="w-full">
                   <thead className="bg-muted/50">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider w-1/4">
                         Document Name
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider w-2/5">
                         Type
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider w-1/6">
                         Uploaded Date
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider w-24">
                         Actions
                       </th>
                     </tr>
@@ -252,7 +252,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                   <tbody className="divide-y divide-border bg-card">
                     {uploadedDocuments.map((doc) => (
                       <tr key={doc.id} className="hover:bg-muted/30 transition-colors">
-                        <td className="px-4 py-4">
+                        <td className="px-4 py-4 w-1/4">
                           <div className="flex items-center space-x-3">
                             <FileText className="h-5 w-5 text-primary flex-shrink-0" />
                             <span className="font-medium font-fluent text-foreground">{doc.name}</span>
@@ -261,7 +261,7 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                             )}
                           </div>
                         </td>
-                        <td className="px-4 py-4">
+                        <td className="px-4 py-4 w-2/5">
                           <RadioGroup 
                             value={doc.type}
                             onValueChange={(value) => handleDocumentTypeChange(doc.id, value)}
@@ -285,10 +285,10 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                             ))}
                           </RadioGroup>
                         </td>
-                        <td className="px-4 py-4">
+                        <td className="px-4 py-4 w-1/6">
                           <span className="text-sm font-fluent text-foreground">{doc.uploadedDate}</span>
                         </td>
-                        <td className="px-4 py-4">
+                        <td className="px-4 py-4 w-24">
                           {!isReadOnly && (
                             <Button 
                               variant="ghost" 
