@@ -242,9 +242,6 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                         Type
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
-                        Size
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
                         Uploaded Date
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium font-fluent text-muted-foreground uppercase tracking-wider">
@@ -289,26 +286,18 @@ export function DocumentUploadTab({ onDataChange, data, isReadOnly = false, onNe
                           </RadioGroup>
                         </td>
                         <td className="px-4 py-4">
-                          <span className="text-sm font-fluent text-foreground">{doc.size}</span>
-                        </td>
-                        <td className="px-4 py-4">
                           <span className="text-sm font-fluent text-foreground">{doc.uploadedDate}</span>
                         </td>
                         <td className="px-4 py-4">
-                          <div className="flex space-x-2">
-                            <Button variant="ghost" size="sm">
-                              <Download className="h-4 w-4" />
+                          {!isReadOnly && (
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => handleDeleteDocument(doc.id)}
+                            >
+                              <Trash2 className="h-4 w-4 text-destructive" />
                             </Button>
-                            {!isReadOnly && (
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                onClick={() => handleDeleteDocument(doc.id)}
-                              >
-                                <Trash2 className="h-4 w-4 text-destructive" />
-                              </Button>
-                            )}
-                          </div>
+                          )}
                         </td>
                       </tr>
                     ))}
