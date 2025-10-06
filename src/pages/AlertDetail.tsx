@@ -137,47 +137,6 @@ export const AlertDetail: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Required Action */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Required Action</h3>
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-                    <p className="text-gray-900">{alertData.requiredAction}</p>
-                  </div>
-                </div>
-
-                {/* Linked Documents */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Linked Documents</h3>
-                  <div className="space-y-2">
-                    {alertData.linkedDocuments.map((doc, index) => {
-                      const isMissing = doc.includes('MISSING');
-                      const needsCorrection = doc.includes('Needs Correction');
-                      
-                      return (
-                        <div 
-                          key={index}
-                          className={`flex items-center gap-2 p-3 rounded-md border ${
-                            isMissing 
-                              ? 'bg-red-50 border-red-200' 
-                              : needsCorrection 
-                                ? 'bg-yellow-50 border-yellow-200'
-                                : 'bg-green-50 border-green-200'
-                          }`}
-                        >
-                          <FileText className={`w-4 h-4 ${
-                            isMissing 
-                              ? 'text-red-600' 
-                              : needsCorrection 
-                                ? 'text-yellow-600'
-                                : 'text-green-600'
-                          }`} />
-                          <span className="text-gray-900">{doc}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
                 {/* Action Buttons */}
                 <div className="flex gap-4 pt-4 border-t">
                   <Button 
