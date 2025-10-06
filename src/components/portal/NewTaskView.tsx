@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Building, User, Calendar, FileText, Info } from 'lucide-react';
+import { AlertCard } from './AlertCard';
 
 interface DashboardTask {
   id: string;
@@ -24,6 +25,18 @@ interface NewTaskViewProps {
 
 export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) => {
   const navigate = useNavigate();
+  
+  // Mock alert data
+  const mockAlert = {
+    id: 'alert-1',
+    caseNumber: 'DBE-2025-001',
+    caseType: 'Abandoned Well',
+    department: 'Department of Natural Resources',
+    assignedTo: 'John Doe',
+    rejectionDate: 'March 15, 2025',
+    description: 'Clerk has returned this case for correction. Missing or invalid documents detected. Please review and update before resubmitting.',
+  };
+  
   // Mock data for the kanban columns with proper status distribution
   const mockKanbanTasks = [
     {
@@ -185,20 +198,34 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
     </Card>
   );
 
-  const Column = ({ title, count, tasks, headerColor }: { 
+  const Column = ({ title, count, tasks, headerColor, showAlert = false }: { 
     title: string; 
     count: number; 
     tasks: typeof mockKanbanTasks; 
     headerColor: string;
+    showAlert?: boolean;
   }) => (
     <div className="flex-1">
       <div className={`${headerColor} text-white p-4 flex items-center justify-between mb-4`}>
         <h2 className="font-semibold text-lg">{title}</h2>
         <Badge variant="secondary" className="bg-white/20 text-white border-0">
-          {count}
+          {count + (showAlert ? 1 : 0)}
         </Badge>
       </div>
       <div className="px-2">
+        {showAlert && (
+          <AlertCard
+            id={mockAlert.id}
+            caseNumber={mockAlert.caseNumber}
+            caseType={mockAlert.caseType}
+            department={mockAlert.department}
+            assignedTo={mockAlert.assignedTo}
+            rejectionDate={mockAlert.rejectionDate}
+            description={mockAlert.description}
+            onViewDetails={() => navigate(`/alert-detail/${mockAlert.id}`)}
+            onOpenCase={() => navigate(`/case/${mockAlert.caseNumber}`)}
+          />
+        )}
         {tasks.map(task => (
           <TaskCard key={task.id} task={task} />
         ))}
@@ -214,6 +241,7 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
           count={newTasks.length} 
           tasks={newTasks} 
           headerColor="bg-gray-600"
+          showAlert={true}
         />
         <Column 
           title="In-Progress" 

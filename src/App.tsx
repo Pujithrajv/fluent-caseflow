@@ -20,6 +20,7 @@ import RequestWizard from "./pages/RequestWizard";
 import NotFound from "./pages/NotFound";
 import { AppointmentDetails } from "./components/portal/AppointmentDetails";
 import { TaskDetail } from "./pages/TaskDetail";
+import { AlertDetail } from "./pages/AlertDetail";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/attorney/case/:caseId/add-request" element={<RequestWizard />} />
             <Route path="/appointment/:appointmentId" element={<AppointmentDetails />} />
             <Route path="/task-detail/:taskId" element={<TaskDetail />} />
+            <Route path="/alert-detail/:alertId" element={<AlertDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
