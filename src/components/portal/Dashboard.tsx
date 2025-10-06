@@ -512,18 +512,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               Tasks & Alerts
             </TabsTrigger>
             <TabsTrigger 
-              value="new-approach-2" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              New Approach 2
-            </TabsTrigger>
-            <TabsTrigger 
-              value="tasks2" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Tasks2
-            </TabsTrigger>
-            <TabsTrigger 
               value="new-task" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
@@ -913,22 +901,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             </Card>
           </TabsContent>
 
-
-          {/* New Approach 2 Tab Content */}
-          <TabsContent value="new-approach-2" className="mt-6">
-            <TasksNewApproach2View 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-            />
-          </TabsContent>
-
-          {/* Tasks2 Tab Content */}
-          <TabsContent value="tasks2" className="mt-6">
-            <Tasks2View 
-              tasks={tasks} 
-              onViewTask={(taskId) => console.log('View task:', taskId)}
-            />
-          </TabsContent>
 
           {/* New Task Tab Content */}
           <TabsContent value="new-task" className="mt-6">
