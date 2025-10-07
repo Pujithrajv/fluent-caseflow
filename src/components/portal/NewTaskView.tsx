@@ -221,7 +221,7 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
       <div className={`${headerColor} text-white p-4 flex items-center justify-between mb-4`}>
         <h2 className="font-semibold text-lg">{title}</h2>
         <Badge variant="secondary" className="bg-white/20 text-white border-0">
-          {count + (showAlert ? 1 : 0)}
+          {count + (showAlert ? 2 : 0)}
         </Badge>
       </div>
       <div className="px-2">
