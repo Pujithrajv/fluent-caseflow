@@ -34,9 +34,6 @@ export const DecisionAlertCard: React.FC<DecisionAlertCardProps> = ({
             <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
             <h3 className="font-semibold text-gray-900">Final Decision Issued</h3>
           </div>
-          <Badge className="bg-yellow-500 text-white text-xs px-2 py-1 hover:bg-yellow-600">
-            Action Required
-          </Badge>
         </div>
         
         <div className="mb-3">
