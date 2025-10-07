@@ -51,6 +51,17 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
       status: 'new' as const
     },
     {
+      id: '1a',
+      title: 'Complete Case Intake',
+      priority: 'High Priority',
+      caseNumber: 'DNR-OGRM-EU-CO-0426: Abandoned Well',
+      department: 'Department of Natural Resources',
+      assignedTo: 'John Doe',
+      dueDate: 'September 22, 2025',
+      description: 'Review all submitted documents and case data for completeness and compliance.',
+      status: 'new' as const
+    },
+    {
       id: '2',
       title: 'Complete Case Intake',
       priority: 'High Priority',
