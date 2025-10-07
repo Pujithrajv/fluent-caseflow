@@ -52,17 +52,6 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
   // Mock data for the kanban columns with proper status distribution
   const mockKanbanTasks = [
     {
-      id: '1',
-      title: 'Complete Case Intake',
-      priority: 'High Priority',
-      caseNumber: 'DNR-OGRM-EU-CO-0426: Abandoned Well',
-      department: 'Department of Natural Resources',
-      assignedTo: 'John Doe',
-      dueDate: 'September 22, 2025',
-      description: 'Review all submitted documents and case data for completeness and compliance.',
-      status: 'new' as const
-    },
-    {
       id: '2',
       title: 'Complete Case Intake',
       priority: 'High Priority',
@@ -97,7 +86,7 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
     }
   ];
 
-  const newTasks = mockKanbanTasks.filter(task => task.status === 'new');
+  const newTasks: typeof mockKanbanTasks = [];
   const inProgressTasks = mockKanbanTasks.filter(task => task.status === 'in-progress');
   const completeTasks = mockKanbanTasks.filter(task => task.status === 'complete');
 
