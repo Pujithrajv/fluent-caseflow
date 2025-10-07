@@ -13,7 +13,7 @@ interface DecisionAlertCardProps {
   decisionDate: string;
   description: string;
   onViewDetails: () => void;
-  onGenerateReport: () => void;
+  onOpenCase: () => void;
 }
 
 export const DecisionAlertCard: React.FC<DecisionAlertCardProps> = ({
@@ -24,7 +24,7 @@ export const DecisionAlertCard: React.FC<DecisionAlertCardProps> = ({
   decisionDate,
   description,
   onViewDetails,
-  onGenerateReport,
+  onOpenCase,
 }) => {
   return (
     <Card className="mb-4 shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-blue-500 bg-blue-50/30">
@@ -71,13 +71,13 @@ export const DecisionAlertCard: React.FC<DecisionAlertCardProps> = ({
         
         <div className="flex gap-2">
           <Button 
-            variant="default" 
+            variant="outline" 
             size="sm" 
-            className="flex-1 bg-blue-600 hover:bg-blue-700"
-            onClick={onGenerateReport}
+            className="flex-1"
+            onClick={onOpenCase}
           >
             <FileText className="w-4 h-4 mr-2" />
-            Generate Report
+            Open Case
           </Button>
           <Button 
             variant="outline" 

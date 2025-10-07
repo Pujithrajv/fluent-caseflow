@@ -247,7 +247,7 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
               decisionDate={mockDecisionAlert.decisionDate}
               description={mockDecisionAlert.description}
               onViewDetails={() => navigate(`/decision-detail/${mockDecisionAlert.id}`)}
-              onGenerateReport={() => navigate(`/decision-detail/${mockDecisionAlert.id}`)}
+              onOpenCase={() => navigate(`/case/${mockDecisionAlert.caseNumber}`)}
             />
           </>
         )}
