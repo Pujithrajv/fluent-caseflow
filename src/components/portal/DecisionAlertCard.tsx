@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Building, User, Calendar, Gavel, FileText } from 'lucide-react';
+import { Building, User, Calendar, AlertCircle, FileText } from 'lucide-react';
 
 interface DecisionAlertCardProps {
   id: string;
@@ -27,15 +27,15 @@ export const DecisionAlertCard: React.FC<DecisionAlertCardProps> = ({
   onOpenCase,
 }) => {
   return (
-    <Card className="mb-4 shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-blue-500 bg-blue-50/30">
+    <Card className="mb-4 shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-red-500 bg-red-50/30">
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Gavel className="w-5 h-5 text-blue-600 flex-shrink-0" />
+            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
             <h3 className="font-semibold text-gray-900">Final Decision Issued</h3>
           </div>
-          <Badge className="bg-blue-600 text-white text-xs px-2 py-1 hover:bg-blue-700">
-            Decision Finalized
+          <Badge className="bg-yellow-500 text-white text-xs px-2 py-1 hover:bg-yellow-600">
+            Action Required
           </Badge>
         </div>
         
