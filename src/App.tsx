@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 import { AppointmentDetails } from "./components/portal/AppointmentDetails";
 import { TaskDetail } from "./pages/TaskDetail";
 import { AlertDetail } from "./pages/AlertDetail";
+import { DecisionDetail } from "./pages/DecisionDetail";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/appointment/:appointmentId" element={<AppointmentDetails />} />
             <Route path="/task-detail/:taskId" element={<TaskDetail />} />
             <Route path="/alert-detail/:alertId" element={<AlertDetail />} />
+            <Route path="/decision-detail/:decisionId" element={<DecisionDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

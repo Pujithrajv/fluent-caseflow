@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Building, User, Calendar, FileText, Info } from 'lucide-react';
 import { AlertCard } from './AlertCard';
+import { DecisionAlertCard } from './DecisionAlertCard';
 
 interface DashboardTask {
   id: string;
@@ -35,6 +36,17 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
     assignedTo: 'John Doe',
     rejectionDate: 'March 15, 2025',
     description: 'Clerk has returned this case for correction. Missing or invalid documents detected. Please review and update before resubmitting.',
+  };
+
+  // Mock decision alert data
+  const mockDecisionAlert = {
+    id: 'decision-1',
+    caseNumber: 'CASE-2025-004',
+    caseType: 'Food Safety — North District Foods',
+    department: 'Department of Public Health',
+    assignedTo: 'John Doe',
+    decisionDate: 'Sep 18, 2025',
+    description: 'The ALJ has finalized the ruling for this case. Please generate and distribute the Final Decision Report to all involved parties.',
   };
   
   // Mock data for the kanban columns with proper status distribution
@@ -214,17 +226,30 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
       </div>
       <div className="px-2">
         {showAlert && (
-          <AlertCard
-            id={mockAlert.id}
-            caseNumber={mockAlert.caseNumber}
-            caseType={mockAlert.caseType}
-            department={mockAlert.department}
-            assignedTo={mockAlert.assignedTo}
-            rejectionDate={mockAlert.rejectionDate}
-            description={mockAlert.description}
-            onViewDetails={() => navigate(`/alert-detail/${mockAlert.id}`)}
-            onOpenCase={() => navigate(`/case/${mockAlert.caseNumber}`)}
-          />
+          <>
+            <AlertCard
+              id={mockAlert.id}
+              caseNumber={mockAlert.caseNumber}
+              caseType={mockAlert.caseType}
+              department={mockAlert.department}
+              assignedTo={mockAlert.assignedTo}
+              rejectionDate={mockAlert.rejectionDate}
+              description={mockAlert.description}
+              onViewDetails={() => navigate(`/alert-detail/${mockAlert.id}`)}
+              onOpenCase={() => navigate(`/case/${mockAlert.caseNumber}`)}
+            />
+            <DecisionAlertCard
+              id={mockDecisionAlert.id}
+              caseNumber={mockDecisionAlert.caseNumber}
+              caseType={mockDecisionAlert.caseType}
+              department={mockDecisionAlert.department}
+              assignedTo={mockDecisionAlert.assignedTo}
+              decisionDate={mockDecisionAlert.decisionDate}
+              description={mockDecisionAlert.description}
+              onViewDetails={() => navigate(`/decision-detail/${mockDecisionAlert.id}`)}
+              onGenerateReport={() => navigate(`/decision-detail/${mockDecisionAlert.id}`)}
+            />
+          </>
         )}
         {tasks.map(task => (
           <TaskCard key={task.id} task={task} />
