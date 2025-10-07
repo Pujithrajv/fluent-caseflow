@@ -40,25 +40,14 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
   // Mock data for the kanban columns with proper status distribution
   const mockKanbanTasks = [
     {
-      id: 'alert-task-1',
-      title: 'Case Returned for Correction',
+      id: '1',
+      title: 'Complete Case Intake',
       priority: 'High Priority',
-      caseNumber: 'DBE-2025-001: Abandoned Well',
+      caseNumber: 'DNR-OGRM-EU-CO-0426: Abandoned Well',
       department: 'Department of Natural Resources',
       assignedTo: 'John Doe',
-      dueDate: 'March 15, 2025',
-      description: 'Clerk has returned this case for correction. Missing or invalid documents detected. Please review and update before resubmitting.',
-      status: 'new' as const
-    },
-    {
-      id: 'alert-task-2',
-      title: 'Case Returned for Correction',
-      priority: 'High Priority',
-      caseNumber: 'DBE-2025-001: Abandoned Well',
-      department: 'Department of Natural Resources',
-      assignedTo: 'John Doe',
-      dueDate: 'March 15, 2025',
-      description: 'Clerk has returned this case for correction. Missing or invalid documents detected. Please review and update before resubmitting.',
+      dueDate: 'September 22, 2025',
+      description: 'Review all submitted documents and case data for completeness and compliance.',
       status: 'new' as const
     },
     {
@@ -70,6 +59,17 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
       assignedTo: 'John Doe',
       dueDate: 'September 22, 2025',
       description: 'Review all submitted documents and case data for completeness and compliance.',
+      status: 'in-progress' as const
+    },
+    {
+      id: '4',
+      title: 'Order of Motion is finalized for Request: Appeal-Appeal - Motions - Motion to Compel Discovery',
+      priority: 'High Priority',
+      caseNumber: 'DNR-OGRM-EU-CO-0426: Abandoned Well',
+      department: 'Department of Natural Resources',
+      assignedTo: 'John Doe',
+      dueDate: 'September 23, 2025',
+      description: 'Order of Motion is generated for Request: Appeal-Appeal - Motions - Motion to Compel Discovery\n\nPlease go to the portal and sign the document.',
       status: 'in-progress' as const
     },
     {
@@ -241,6 +241,7 @@ export const NewTaskView: React.FC<NewTaskViewProps> = ({ tasks, onViewTask }) =
           count={newTasks.length} 
           tasks={newTasks} 
           headerColor="bg-gray-600"
+          showAlert={true}
         />
         <Column 
           title="In-Progress" 
