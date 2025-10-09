@@ -522,7 +522,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
             {/* PII Question */}
             <div className="space-y-4 p-4 border border-input-border rounded-lg bg-background/50">
               <div className="space-y-2">
-                <Label className="font-fluent font-medium text-base">Does the item contain any Personally Identifiable Information (PII) such as names, addresses, phone numbers, Social Security number, Driver's License Number, or any other identification number? *</Label>
+                <Label className="font-fluent font-medium text-base">Does this content contain Personally Identifiable Information (PII)? *</Label>
                 <p className="text-sm text-muted-foreground font-fluent">PII includes names, addresses, social security numbers, etc.</p>
               </div>
               
