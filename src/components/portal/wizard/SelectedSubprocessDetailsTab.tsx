@@ -494,7 +494,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
             {/* Public Viewing Question */}
             <div className="space-y-4 p-4 border border-input-border rounded-lg bg-background/50">
               <div className="space-y-2">
-                <Label className="font-fluent font-medium text-base">Is this content appropriate for public viewing? *</Label>
+                <Label className="font-fluent font-medium text-base">Does the item contain any depiction of any persons or places which, if disclosed, would be considered to be embarrassing, inappropriate, or otherwise not suitable for public viewing?</Label>
                 <p className="text-sm text-muted-foreground font-fluent">Consider if the content contains sensitive or inappropriate material</p>
               </div>
               
