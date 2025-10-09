@@ -510,7 +510,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
               </RadioGroup>
 
               {hasInappropriateContent === "yes" && (
-                <Alert className="bg-yellow-50 border-yellow-200">
+                <Alert className="bg-orange-50 border-orange-200">
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
                     This exhibit may contain material that is not suitable for public viewing. The submission will be flagged for administrative review.
