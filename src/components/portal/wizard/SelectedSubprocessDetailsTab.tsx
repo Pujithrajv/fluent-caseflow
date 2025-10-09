@@ -583,7 +583,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
 
                   {hasProtectiveOrder === "yes" && (
                     <div className="space-y-2">
-                      <Label className="font-fluent font-semibold text-sm">Exhibit ID Number *</Label>
+                      <Label className="font-fluent font-semibold text-sm">Enter the Protective Order ID Number. *</Label>
                       <Input 
                         value={exhibitIdNumber}
                         onChange={(e) => setExhibitIdNumber(e.target.value)}
