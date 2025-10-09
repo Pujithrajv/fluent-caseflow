@@ -508,18 +508,6 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
                   <Label htmlFor="appropriate-no" className="font-fluent">No</Label>
                 </div>
               </RadioGroup>
-
-              {hasInappropriateContent === "no" && (
-                <Alert className="bg-blue-50 border-blue-200">
-                  <Info className="h-4 w-4" />
-                  <AlertDescription>
-                    In Camera inspection required. 
-                    <Button variant="outline" size="sm" className="ml-2">
-                      Complete In Camera Inspection
-                    </Button>
-                  </AlertDescription>
-                </Alert>
-              )}
             </div>
 
             {/* PII Question */}
