@@ -77,6 +77,8 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
   const [deliverableByCarrier, setDeliverableByCarrier] = useState(data.deliverableByCarrier || "");
   const [specialHandling, setSpecialHandling] = useState(data.specialHandling || "");
   const [specialHandlingDescription, setSpecialHandlingDescription] = useState(data.specialHandlingDescription || "");
+  const [lithiumBatteryDescription, setLithiumBatteryDescription] = useState(data.lithiumBatteryDescription || "");
+  const [alternateDeliveryMethod, setAlternateDeliveryMethod] = useState(data.alternateDeliveryMethod || "");
   const [evidenceJustification, setEvidenceJustification] = useState(data.evidenceJustification || "");
   const [itemPhoto, setItemPhoto] = useState(data.itemPhoto || null);
 
@@ -175,6 +177,8 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
       deliverableByCarrier,
       specialHandling,
       specialHandlingDescription,
+      lithiumBatteryDescription,
+      alternateDeliveryMethod,
       evidenceJustification,
       itemPhoto,
       selectedDiscoveryTypes,
@@ -194,7 +198,8 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
     hasProtectiveOrder, exhibitIdNumber, physicalItemCategory, itemName, itemDescription,
     estimatedSize, estimatedWeight, hasBiologicalHazard, hasChemicalHazard, hasRadiationHazard,
     hasLithiumBattery, deliverableByCarrier, specialHandling, specialHandlingDescription,
-    evidenceJustification, itemPhoto, selectedDiscoveryTypes, discoverySchedule, discoveryStartDate,
+    lithiumBatteryDescription, alternateDeliveryMethod, evidenceJustification, itemPhoto, 
+    selectedDiscoveryTypes, discoverySchedule, discoveryStartDate,
     discoveryCutoffDate, discoveryConferenceDate, discoverySummary, description, onDataChange,
     discoverySubTabData, currentDiscoverySubTab
   ]);
@@ -217,7 +222,11 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
         return physicalItemCategory && itemName.trim() && itemDescription.trim() && 
                estimatedSize.trim() && estimatedWeight.trim() && 
                hasBiologicalHazard && hasChemicalHazard && hasRadiationHazard &&
-               hasLithiumBattery && deliverableByCarrier && specialHandling &&
+               hasLithiumBattery && 
+               (hasLithiumBattery !== "yes" || lithiumBatteryDescription.trim()) &&
+               deliverableByCarrier && 
+               (deliverableByCarrier !== "no" || alternateDeliveryMethod.trim()) &&
+               specialHandling &&
                (specialHandling !== "yes" || specialHandlingDescription.trim()) &&
                evidenceJustification.trim() && itemPhoto;
       }
@@ -416,40 +425,152 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
             <div className="space-y-4">
               <h4 className="font-fluent font-semibold">Safety Questions *</h4>
               
-              {[
-                { state: hasBiologicalHazard, setter: setHasBiologicalHazard, label: "Biological hazard?" },
-                { state: hasChemicalHazard, setter: setHasChemicalHazard, label: "Chemical hazard?" },
-                { state: hasRadiationHazard, setter: setHasRadiationHazard, label: "Radiation hazard?" },
-                { state: hasLithiumBattery, setter: setHasLithiumBattery, label: "Permanently mounted lithium battery?" },
-                { state: deliverableByCarrier, setter: setDeliverableByCarrier, label: "Deliverable by common carrier?" },
-                { state: specialHandling, setter: setSpecialHandling, label: "Special handling required?" }
-              ].map((question, index) => (
-                <div key={index} className="space-y-2">
-                  <Label className="font-fluent font-medium">{question.label}</Label>
-                  <RadioGroup value={question.state} onValueChange={question.setter} className="flex space-x-6">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id={`${index}-yes`} />
-                      <Label htmlFor={`${index}-yes`} className="font-fluent">Yes</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id={`${index}-no`} />
-                      <Label htmlFor={`${index}-no`} className="font-fluent">No</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-              ))}
+              {/* Biological Hazard */}
+              <div className="space-y-2">
+                <Label className="font-fluent font-medium">Biological hazard?</Label>
+                <RadioGroup value={hasBiologicalHazard} onValueChange={setHasBiologicalHazard} className="flex space-x-6">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yes" id="bio-yes" />
+                    <Label htmlFor="bio-yes" className="font-fluent">Yes</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no" id="bio-no" />
+                    <Label htmlFor="bio-no" className="font-fluent">No</Label>
+                  </div>
+                </RadioGroup>
+                {hasBiologicalHazard === "yes" && (
+                  <Alert className="bg-red-50 border-red-200">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      This item cannot be submitted until cleared by administrative review.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
 
-              {specialHandling === "yes" && (
-                <div className="space-y-2">
-                  <Label className="font-fluent font-semibold text-sm">Describe Special Handling *</Label>
-                  <Textarea 
-                    value={specialHandlingDescription}
-                    onChange={(e) => setSpecialHandlingDescription(e.target.value)}
-                    placeholder="Describe the special handling requirements"
-                    className="shadow-fluent-8 border-input-border min-h-20"
-                  />
-                </div>
-              )}
+              {/* Chemical Hazard */}
+              <div className="space-y-2">
+                <Label className="font-fluent font-medium">Chemical hazard?</Label>
+                <RadioGroup value={hasChemicalHazard} onValueChange={setHasChemicalHazard} className="flex space-x-6">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yes" id="chem-yes" />
+                    <Label htmlFor="chem-yes" className="font-fluent">Yes</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no" id="chem-no" />
+                    <Label htmlFor="chem-no" className="font-fluent">No</Label>
+                  </div>
+                </RadioGroup>
+                {hasChemicalHazard === "yes" && (
+                  <Alert className="bg-red-50 border-red-200">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      This item cannot be submitted until cleared by administrative review.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+
+              {/* Radiation Hazard */}
+              <div className="space-y-2">
+                <Label className="font-fluent font-medium">Radiation hazard?</Label>
+                <RadioGroup value={hasRadiationHazard} onValueChange={setHasRadiationHazard} className="flex space-x-6">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yes" id="rad-yes" />
+                    <Label htmlFor="rad-yes" className="font-fluent">Yes</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no" id="rad-no" />
+                    <Label htmlFor="rad-no" className="font-fluent">No</Label>
+                  </div>
+                </RadioGroup>
+                {hasRadiationHazard === "yes" && (
+                  <Alert className="bg-red-50 border-red-200">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      This item cannot be submitted until cleared by administrative review.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+
+              {/* Lithium Battery */}
+              <div className="space-y-2">
+                <Label className="font-fluent font-medium">Permanently mounted lithium battery?</Label>
+                <RadioGroup value={hasLithiumBattery} onValueChange={setHasLithiumBattery} className="flex space-x-6">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yes" id="lithium-yes" />
+                    <Label htmlFor="lithium-yes" className="font-fluent">Yes</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no" id="lithium-no" />
+                    <Label htmlFor="lithium-no" className="font-fluent">No</Label>
+                  </div>
+                </RadioGroup>
+                {hasLithiumBattery === "yes" && (
+                  <div className="space-y-2 mt-2">
+                    <Label className="font-fluent font-semibold text-sm">Describe the lithium battery *</Label>
+                    <Textarea 
+                      value={lithiumBatteryDescription}
+                      onChange={(e) => setLithiumBatteryDescription(e.target.value)}
+                      placeholder="Provide details about the lithium battery"
+                      className="shadow-fluent-8 border-input-border min-h-20"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Deliverable by Carrier */}
+              <div className="space-y-2">
+                <Label className="font-fluent font-medium">Deliverable by common carrier?</Label>
+                <RadioGroup value={deliverableByCarrier} onValueChange={setDeliverableByCarrier} className="flex space-x-6">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yes" id="carrier-yes" />
+                    <Label htmlFor="carrier-yes" className="font-fluent">Yes</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no" id="carrier-no" />
+                    <Label htmlFor="carrier-no" className="font-fluent">No</Label>
+                  </div>
+                </RadioGroup>
+                {deliverableByCarrier === "no" && (
+                  <div className="space-y-2 mt-2">
+                    <Label className="font-fluent font-semibold text-sm">Describe alternate delivery or transfer method *</Label>
+                    <Textarea 
+                      value={alternateDeliveryMethod}
+                      onChange={(e) => setAlternateDeliveryMethod(e.target.value)}
+                      placeholder="Describe how this item will be delivered or transferred"
+                      className="shadow-fluent-8 border-input-border min-h-20"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Special Handling */}
+              <div className="space-y-2">
+                <Label className="font-fluent font-medium">Special handling required?</Label>
+                <RadioGroup value={specialHandling} onValueChange={setSpecialHandling} className="flex space-x-6">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yes" id="special-yes" />
+                    <Label htmlFor="special-yes" className="font-fluent">Yes</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no" id="special-no" />
+                    <Label htmlFor="special-no" className="font-fluent">No</Label>
+                  </div>
+                </RadioGroup>
+                {specialHandling === "yes" && (
+                  <div className="space-y-2 mt-2">
+                    <Label className="font-fluent font-semibold text-sm">Describe Special Handling *</Label>
+                    <Textarea 
+                      value={specialHandlingDescription}
+                      onChange={(e) => setSpecialHandlingDescription(e.target.value)}
+                      placeholder="Describe the special handling requirements"
+                      className="shadow-fluent-8 border-input-border min-h-20"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Photo Upload */}
