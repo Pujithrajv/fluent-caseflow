@@ -550,7 +550,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
             {/* Confidential Information Question */}
             <div className="space-y-4 p-4 border border-input-border rounded-lg bg-background/50">
               <div className="space-y-2">
-                <Label className="font-fluent font-medium text-base">Does this content contain confidential, privileged, or trade secret information? *</Label>
+                <Label className="font-fluent font-medium text-base">Does the item contain any information that is confidential, subject to privilege (e.g., Attorney-Client, Doctor-Patient, Trade Secret, etc.), or otherwise exempt from disclosure by law?</Label>
                 <p className="text-sm text-muted-foreground font-fluent">Consider if the content requires special protection</p>
               </div>
               
