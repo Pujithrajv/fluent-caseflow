@@ -568,7 +568,7 @@ export function SelectedSubprocessDetailsTab({ onDataChange, data, onComplete, o
               {hasConfidentialInfo === "yes" && (
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="font-fluent font-medium text-base">Is there a protective order in place? *</Label>
+                    <Label className="font-fluent font-medium text-base">In order for this document to be submitted as an exhibit, a Protective Order must be issued. Has a Protective Order for this document been issued? *</Label>
                     <RadioGroup value={hasProtectiveOrder} onValueChange={setHasProtectiveOrder} className="flex space-x-6">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="protective-yes" />
