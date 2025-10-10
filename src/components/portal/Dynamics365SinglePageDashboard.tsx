@@ -335,19 +335,6 @@ export const Dynamics365SinglePageDashboard = () => {
                 </CardTitle>
                 <p className="text-sm text-gray-500 mt-1">Agency ID: {agencyInfo.id}</p>
               </div>
-              <div className="flex items-center space-x-3">
-                <Label htmlFor="agency-status" className="text-sm font-medium">
-                  Status
-                </Label>
-                <Switch
-                  id="agency-status"
-                  checked={agencyStatus}
-                  onCheckedChange={setAgencyStatus}
-                />
-                <Badge className={agencyStatus ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
-                  {agencyStatus ? "Active" : "Inactive"}
-                </Badge>
-              </div>
             </div>
           </CardHeader>
         </Card>
