@@ -113,11 +113,9 @@ export function DepartmentTab({ onDataChange, data, isReadOnly = false, isPartia
                     <SelectValue placeholder="Select Department" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="planning">Planning Department</SelectItem>
-                    <SelectItem value="environmental">Environmental Services</SelectItem>
-                    <SelectItem value="legal">Legal Department</SelectItem>
-                    <SelectItem value="admin">Administration</SelectItem>
+                    <SelectItem value="Department of Agriculture">Department of Agriculture</SelectItem>
                     <SelectItem value="Department of Natural Resources">Department of Natural Resources</SelectItem>
+                    <SelectItem value="Department of Permit Violation">Department of Permit Violation</SelectItem>
                   </SelectContent>
                 </Select>
               </TooltipTrigger>
