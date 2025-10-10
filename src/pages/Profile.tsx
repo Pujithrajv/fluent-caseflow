@@ -18,6 +18,7 @@ import { Header } from "@/components/shared/Header";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { AgencyManagementDashboard } from "@/components/portal/AgencyManagementDashboard";
+import { Dynamics365AgencyDashboard } from "@/components/portal/Dynamics365AgencyDashboard";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -373,6 +374,12 @@ const Profile = () => {
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               Dummy Tab
+            </TabsTrigger>
+            <TabsTrigger 
+              value="testing" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Testing Tab
             </TabsTrigger>
           </TabsList>
 
@@ -1782,6 +1789,11 @@ const Profile = () => {
             <div className="max-w-screen-xl mx-auto">
               <AgencyManagementDashboard />
             </div>
+          </TabsContent>
+
+          {/* Testing Tab - Dynamics 365 Style */}
+          <TabsContent value="testing" className="mt-0 p-0">
+            <Dynamics365AgencyDashboard />
           </TabsContent>
         </Tabs>
       </div>
