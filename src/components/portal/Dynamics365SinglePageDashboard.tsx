@@ -180,36 +180,6 @@ export const Dynamics365SinglePageDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Command Bar */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Button variant="default" size="sm" className="bg-blue-600 hover:bg-blue-700">
-                <Save className="h-4 w-4 mr-2" />
-                Save
-              </Button>
-              <Button variant="outline" size="sm">
-                <XCircle className="h-4 w-4 mr-2" />
-                Deactivate
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => setIsAddContactOpen(true)}>
-                <UserPlus className="h-4 w-4 mr-2" />
-                Add Contact
-              </Button>
-              <Button variant="outline" size="sm">
-                <FileDown className="h-4 w-4 mr-2" />
-                Export
-              </Button>
-              <Button variant="outline" size="sm">
-                <Eye className="h-4 w-4 mr-2" />
-                View Audit Log
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         {/* Agency Information Section */}
         <Card className="shadow-sm">
