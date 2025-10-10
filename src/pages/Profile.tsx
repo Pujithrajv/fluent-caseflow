@@ -17,6 +17,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Header } from "@/components/shared/Header";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { AgencyManagementDashboard } from "@/components/portal/AgencyManagementDashboard";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -366,6 +367,12 @@ const Profile = () => {
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               Organizations2
+            </TabsTrigger>
+            <TabsTrigger 
+              value="dummy" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Dummy Tab
             </TabsTrigger>
           </TabsList>
 
@@ -1767,6 +1774,13 @@ const Profile = () => {
                 <Button variant="outline">Cancel</Button>
                 <Button>Save All Changes</Button>
               </div>
+            </div>
+          </TabsContent>
+
+          {/* Dummy Tab */}
+          <TabsContent value="dummy" className="mt-6">
+            <div className="max-w-screen-xl mx-auto">
+              <AgencyManagementDashboard />
             </div>
           </TabsContent>
         </Tabs>
