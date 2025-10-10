@@ -211,33 +211,6 @@ export const Dynamics365SinglePageDashboard = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
-        {/* Header Section */}
-        <Card className="shadow-sm">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-2xl font-semibold text-gray-900">
-                  {agencyInfo.name}
-                </CardTitle>
-                <p className="text-sm text-gray-500 mt-1">Agency ID: {agencyInfo.id}</p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Label htmlFor="agency-status" className="text-sm font-medium">
-                  Status
-                </Label>
-                <Switch
-                  id="agency-status"
-                  checked={agencyStatus}
-                  onCheckedChange={setAgencyStatus}
-                />
-                <Badge className={agencyStatus ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
-                  {agencyStatus ? "Active" : "Inactive"}
-                </Badge>
-              </div>
-            </div>
-          </CardHeader>
-        </Card>
-
         {/* Agency Information Section */}
         <Card className="shadow-sm">
           <CardHeader>
@@ -350,6 +323,33 @@ export const Dynamics365SinglePageDashboard = () => {
               </div>
             </div>
           </CardContent>
+        </Card>
+
+        {/* Header Section */}
+        <Card className="shadow-sm">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl font-semibold text-gray-900">
+                  {agencyInfo.name}
+                </CardTitle>
+                <p className="text-sm text-gray-500 mt-1">Agency ID: {agencyInfo.id}</p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Label htmlFor="agency-status" className="text-sm font-medium">
+                  Status
+                </Label>
+                <Switch
+                  id="agency-status"
+                  checked={agencyStatus}
+                  onCheckedChange={setAgencyStatus}
+                />
+                <Badge className={agencyStatus ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+                  {agencyStatus ? "Active" : "Inactive"}
+                </Badge>
+              </div>
+            </div>
+          </CardHeader>
         </Card>
 
         {/* Contacts Management Section */}
