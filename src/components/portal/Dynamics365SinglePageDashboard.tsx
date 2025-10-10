@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Save, FileDown, UserPlus, XCircle, Edit, Trash2, Eye } from "lucide-react";
+import { Save, FileDown, UserPlus, XCircle, Edit, Trash2, Eye, Loader2 } from "lucide-react";
 
 interface Contact {
   id: string;
@@ -37,82 +37,337 @@ interface AuditEntry {
 }
 
 export const Dynamics365SinglePageDashboard = () => {
+  const [selectedDepartment, setSelectedDepartment] = useState("Department of Agriculture");
+  const [isLoading, setIsLoading] = useState(false);
   const [agencyStatus, setAgencyStatus] = useState<boolean>(true);
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const [isAddDelegationOpen, setIsAddDelegationOpen] = useState(false);
+
+  // Department-specific data
+  const departmentData: Record<string, any> = {
+    "Department of Agriculture": {
+      info: {
+        name: "Department of Agriculture",
+        id: "AGR-2025-001",
+        address: "123 Government Street",
+        city: "Springfield",
+        state: "IL",
+        zip: "62701",
+        division: "Agricultural Compliance",
+        primaryContact: "John Smith",
+        phone: "(217) 555-0100",
+        dateCreated: "2024-01-15",
+        lastModified: "2025-10-08"
+      },
+      contacts: [
+        {
+          id: "1",
+          name: "John Smith",
+          roles: ["Agency Manager", "Case Manager"],
+          email: "j.smith@agr.gov",
+          phone: "(217) 555-0101",
+          status: "Active"
+        },
+        {
+          id: "2",
+          name: "Sarah Johnson",
+          roles: ["Case Manager"],
+          email: "s.johnson@agr.gov",
+          phone: "(217) 555-0102",
+          status: "Active"
+        },
+        {
+          id: "3",
+          name: "Michael Davis",
+          roles: ["Attorney"],
+          email: "m.davis@agr.gov",
+          phone: "(217) 555-0103",
+          status: "Active"
+        }
+      ],
+      delegations: [
+        {
+          id: "1",
+          delegatee: "Sarah Johnson",
+          startDate: "2025-10-01",
+          endDate: "2025-10-31",
+          rolesCovered: ["Agency Manager"],
+          status: "Active"
+        }
+      ],
+      auditTrail: [
+        {
+          id: "1",
+          date: "2025-10-08 14:30",
+          modifiedBy: "John Smith",
+          changeSummary: "Updated agency phone number"
+        },
+        {
+          id: "2",
+          date: "2025-10-05 09:15",
+          modifiedBy: "Sarah Johnson",
+          changeSummary: "Added new contact: Michael Davis"
+        },
+        {
+          id: "3",
+          date: "2025-10-01 11:00",
+          modifiedBy: "John Smith",
+          changeSummary: "Created delegation for Sarah Johnson"
+        }
+      ]
+    },
+    "Department of Natural Resources": {
+      info: {
+        name: "Department of Natural Resources",
+        id: "DNR-2025-002",
+        address: "456 Conservation Drive",
+        city: "Springfield",
+        state: "IL",
+        zip: "62702",
+        division: "Wildlife & Parks",
+        primaryContact: "Laura Chen",
+        phone: "(217) 555-0200",
+        dateCreated: "2024-02-20",
+        lastModified: "2025-10-09"
+      },
+      contacts: [
+        {
+          id: "1",
+          name: "Laura Chen",
+          roles: ["Agency Manager", "FDM"],
+          email: "l.chen@dnr.gov",
+          phone: "(217) 555-0201",
+          status: "Active"
+        },
+        {
+          id: "2",
+          name: "Peter Morales",
+          roles: ["Case Manager", "Attorney"],
+          email: "p.morales@dnr.gov",
+          phone: "(217) 555-0202",
+          status: "Active"
+        }
+      ],
+      delegations: [
+        {
+          id: "1",
+          delegatee: "Peter Morales",
+          startDate: "2025-10-15",
+          endDate: "2025-11-15",
+          rolesCovered: ["Agency Manager"],
+          status: "Upcoming"
+        }
+      ],
+      auditTrail: [
+        {
+          id: "1",
+          date: "2025-10-09 10:15",
+          modifiedBy: "Laura Chen",
+          changeSummary: "Updated division information"
+        },
+        {
+          id: "2",
+          date: "2025-10-07 14:20",
+          modifiedBy: "Peter Morales",
+          changeSummary: "Modified contact roles"
+        }
+      ]
+    },
+    "Environmental Permit & Violation Division": {
+      info: {
+        name: "Environmental Permit & Violation Division",
+        id: "EPV-2025-003",
+        address: "789 Compliance Boulevard",
+        city: "Springfield",
+        state: "IL",
+        zip: "62703",
+        division: "Permit Enforcement",
+        primaryContact: "Greg Holt",
+        phone: "(217) 555-0300",
+        dateCreated: "2024-03-10",
+        lastModified: "2025-10-07"
+      },
+      contacts: [
+        {
+          id: "1",
+          name: "Greg Holt",
+          roles: ["Agency Manager"],
+          email: "g.holt@epv.gov",
+          phone: "(217) 555-0301",
+          status: "Active"
+        },
+        {
+          id: "2",
+          name: "Nina Reyes",
+          roles: ["Case Manager", "Attorney"],
+          email: "n.reyes@epv.gov",
+          phone: "(217) 555-0302",
+          status: "Active"
+        },
+        {
+          id: "3",
+          name: "Tom Bradley",
+          roles: ["Agency User"],
+          email: "t.bradley@epv.gov",
+          phone: "(217) 555-0303",
+          status: "Inactive"
+        }
+      ],
+      delegations: [],
+      auditTrail: [
+        {
+          id: "1",
+          date: "2025-10-07 16:45",
+          modifiedBy: "Greg Holt",
+          changeSummary: "Deactivated user: Tom Bradley"
+        },
+        {
+          id: "2",
+          date: "2025-10-05 11:30",
+          modifiedBy: "Nina Reyes",
+          changeSummary: "Updated phone directory"
+        }
+      ]
+    },
+    "Department of Public Safety": {
+      info: {
+        name: "Department of Public Safety",
+        id: "DPS-2025-004",
+        address: "321 Safety Plaza",
+        city: "Springfield",
+        state: "IL",
+        zip: "62704",
+        division: "Emergency Services",
+        primaryContact: "Robert Kim",
+        phone: "(217) 555-0400",
+        dateCreated: "2024-01-05",
+        lastModified: "2025-10-10"
+      },
+      contacts: [
+        {
+          id: "1",
+          name: "Robert Kim",
+          roles: ["Agency Manager", "FDM"],
+          email: "r.kim@dps.gov",
+          phone: "(217) 555-0401",
+          status: "Active"
+        },
+        {
+          id: "2",
+          name: "Jessica Wu",
+          roles: ["Case Manager"],
+          email: "j.wu@dps.gov",
+          phone: "(217) 555-0402",
+          status: "Active"
+        }
+      ],
+      delegations: [
+        {
+          id: "1",
+          delegatee: "Jessica Wu",
+          startDate: "2025-09-15",
+          endDate: "2025-09-30",
+          rolesCovered: ["FDM"],
+          status: "Expired"
+        }
+      ],
+      auditTrail: [
+        {
+          id: "1",
+          date: "2025-10-10 08:00",
+          modifiedBy: "Robert Kim",
+          changeSummary: "Updated emergency contact protocols"
+        }
+      ]
+    },
+    "Wildlife Conservation Agency": {
+      info: {
+        name: "Wildlife Conservation Agency",
+        id: "WCA-2025-005",
+        address: "555 Nature Way",
+        city: "Springfield",
+        state: "IL",
+        zip: "62705",
+        division: "Species Protection",
+        primaryContact: "Amanda Foster",
+        phone: "(217) 555-0500",
+        dateCreated: "2024-04-12",
+        lastModified: "2025-10-06"
+      },
+      contacts: [
+        {
+          id: "1",
+          name: "Amanda Foster",
+          roles: ["Agency Manager"],
+          email: "a.foster@wca.gov",
+          phone: "(217) 555-0501",
+          status: "Active"
+        },
+        {
+          id: "2",
+          name: "David Park",
+          roles: ["Attorney", "Case Manager"],
+          email: "d.park@wca.gov",
+          phone: "(217) 555-0502",
+          status: "Active"
+        },
+        {
+          id: "3",
+          name: "Maria Santos",
+          roles: ["Agency User"],
+          email: "m.santos@wca.gov",
+          phone: "(217) 555-0503",
+          status: "Active"
+        }
+      ],
+      delegations: [
+        {
+          id: "1",
+          delegatee: "David Park",
+          startDate: "2025-10-20",
+          endDate: "2025-11-05",
+          rolesCovered: ["Agency Manager"],
+          status: "Upcoming"
+        }
+      ],
+      auditTrail: [
+        {
+          id: "1",
+          date: "2025-10-06 13:25",
+          modifiedBy: "Amanda Foster",
+          changeSummary: "Added new contact: Maria Santos"
+        },
+        {
+          id: "2",
+          date: "2025-10-03 09:40",
+          modifiedBy: "David Park",
+          changeSummary: "Updated conservation protocols"
+        }
+      ]
+    }
+  };
+
+  const currentDepartmentData = departmentData[selectedDepartment];
   
-  const [agencyInfo, setAgencyInfo] = useState({
-    name: "Department of Agriculture",
-    id: "AGR-2025-001",
-    address: "123 Government Street",
-    city: "Springfield",
-    state: "IL",
-    zip: "62701",
-    division: "Agricultural Compliance",
-    primaryContact: "John Smith",
-    phone: "(217) 555-0100",
-    dateCreated: "2024-01-15",
-    lastModified: "2025-10-08"
-  });
+  const [agencyInfo, setAgencyInfo] = useState(currentDepartmentData.info);
+  const [contacts, setContacts] = useState<Contact[]>(currentDepartmentData.contacts);
+  const [delegations, setDelegations] = useState<Delegation[]>(currentDepartmentData.delegations);
+  const [auditTrail, setAuditTrail] = useState<AuditEntry[]>(currentDepartmentData.auditTrail);
 
-  const [contacts, setContacts] = useState<Contact[]>([
-    {
-      id: "1",
-      name: "John Smith",
-      roles: ["Agency Manager", "Case Manager"],
-      email: "j.smith@agr.gov",
-      phone: "(217) 555-0101",
-      status: "Active"
-    },
-    {
-      id: "2",
-      name: "Sarah Johnson",
-      roles: ["Case Manager"],
-      email: "s.johnson@agr.gov",
-      phone: "(217) 555-0102",
-      status: "Active"
-    },
-    {
-      id: "3",
-      name: "Michael Davis",
-      roles: ["Attorney"],
-      email: "m.davis@agr.gov",
-      phone: "(217) 555-0103",
-      status: "Active"
-    }
-  ]);
-
-  const [delegations, setDelegations] = useState<Delegation[]>([
-    {
-      id: "1",
-      delegatee: "Sarah Johnson",
-      startDate: "2025-10-01",
-      endDate: "2025-10-31",
-      rolesCovered: ["Agency Manager"],
-      status: "Active"
-    }
-  ]);
-
-  const [auditTrail, setAuditTrail] = useState<AuditEntry[]>([
-    {
-      id: "1",
-      date: "2025-10-08 14:30",
-      modifiedBy: "John Smith",
-      changeSummary: "Updated agency phone number"
-    },
-    {
-      id: "2",
-      date: "2025-10-05 09:15",
-      modifiedBy: "Sarah Johnson",
-      changeSummary: "Added new contact: Michael Davis"
-    },
-    {
-      id: "3",
-      date: "2025-10-01 11:00",
-      modifiedBy: "John Smith",
-      changeSummary: "Created delegation for Sarah Johnson"
-    }
-  ]);
+  const handleDepartmentChange = (department: string) => {
+    setIsLoading(true);
+    setSelectedDepartment(department);
+    
+    // Simulate loading delay
+    setTimeout(() => {
+      const newData = departmentData[department];
+      setAgencyInfo(newData.info);
+      setContacts(newData.contacts);
+      setDelegations(newData.delegations);
+      setAuditTrail(newData.auditTrail);
+      setIsLoading(false);
+    }, 800);
+  };
 
   const [newContact, setNewContact] = useState({
     name: "",
@@ -181,6 +436,48 @@ export const Dynamics365SinglePageDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+        {/* Department Selector */}
+        <Card className="shadow-sm border-2 border-blue-200">
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="department-select" className="text-sm font-semibold text-gray-700 mb-2 block">
+                  Select Department / Agency
+                </Label>
+                <Select value={selectedDepartment} onValueChange={handleDepartmentChange}>
+                  <SelectTrigger 
+                    id="department-select"
+                    className="w-full md:w-2/3 lg:w-1/2 h-11 bg-white border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white z-50">
+                    <SelectItem value="Department of Agriculture">Department of Agriculture</SelectItem>
+                    <SelectItem value="Department of Natural Resources">Department of Natural Resources</SelectItem>
+                    <SelectItem value="Environmental Permit & Violation Division">Environmental Permit & Violation Division</SelectItem>
+                    <SelectItem value="Department of Public Safety">Department of Public Safety</SelectItem>
+                    <SelectItem value="Wildlife Conservation Agency">Wildlife Conservation Agency</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Currently Viewing Display */}
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-600">Currently viewing:</span>
+                <span className="text-sm font-bold text-blue-700">{selectedDepartment}</span>
+              </div>
+
+              {/* Loading Indicator */}
+              {isLoading && (
+                <div className="flex items-center space-x-2 text-blue-600 animate-pulse">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span className="text-sm">Refreshing data for selected department...</span>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Agency Information Section */}
         <Card className="shadow-sm">
           <CardHeader>
