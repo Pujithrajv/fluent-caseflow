@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { AgencyManagementDashboard } from "@/components/portal/AgencyManagementDashboard";
 import { Dynamics365AgencyDashboard } from "@/components/portal/Dynamics365AgencyDashboard";
+import { Dynamics365SinglePageDashboard } from "@/components/portal/Dynamics365SinglePageDashboard";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -1791,9 +1792,9 @@ const Profile = () => {
             </div>
           </TabsContent>
 
-          {/* Testing Tab - Dynamics 365 Style */}
+          {/* Testing Tab - Dynamics 365 Single Page Style */}
           <TabsContent value="testing" className="mt-0 p-0">
-            <Dynamics365AgencyDashboard />
+            <Dynamics365SinglePageDashboard />
           </TabsContent>
         </Tabs>
       </div>
