@@ -27,6 +27,16 @@ interface RoleDelegation {
   endDate: string;
 }
 
+interface Delegation {
+  id: string;
+  originalUser: string;
+  role: string;
+  delegatedTo: string;
+  startDate: string;
+  endDate: string;
+  status: "Active" | "Pending" | "Expired";
+}
+
 export const AgencyManagementDashboard = () => {
   const [contacts, setContacts] = useState<Contact[]>([
     {
@@ -65,8 +75,30 @@ export const AgencyManagementDashboard = () => {
     }
   ]);
 
+  const [userDelegations, setUserDelegations] = useState<Delegation[]>([
+    {
+      id: "1",
+      originalUser: "Tom Wilson",
+      role: "Case Manager",
+      delegatedTo: "Sarah Johnson",
+      startDate: "2024-04-01",
+      endDate: "2024-04-30",
+      status: "Active"
+    },
+    {
+      id: "2",
+      originalUser: "Michael Chen",
+      role: "Agency User",
+      delegatedTo: "Emily Rodriguez",
+      startDate: "2024-05-15",
+      endDate: "2024-05-30",
+      status: "Pending"
+    }
+  ]);
+
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const [isDelegationOpen, setIsDelegationOpen] = useState(false);
+  const [isUserDelegationOpen, setIsUserDelegationOpen] = useState(false);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
 
   const [newContact, setNewContact] = useState({
@@ -435,6 +467,158 @@ export const AgencyManagementDashboard = () => {
                   </TableCell>
                   <TableCell>{delegation.startDate}</TableCell>
                   <TableCell>{delegation.endDate}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button variant="ghost" size="sm">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* Delegation Section */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>Delegation</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              Manage temporary role delegations for absences or vacations
+            </p>
+          </div>
+          <Dialog open={isUserDelegationOpen} onOpenChange={setIsUserDelegationOpen}>
+            <DialogTrigger asChild>
+              <Button variant="default" size="sm">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Delegation
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-xl">
+              <DialogHeader>
+                <DialogTitle>Create New Delegation</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                <div>
+                  <Label htmlFor="originalUser">Original User (Person Delegating)</Label>
+                  <Select>
+                    <SelectTrigger id="originalUser">
+                      <SelectValue placeholder="Select user" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {contacts.map((contact) => (
+                        <SelectItem key={contact.id} value={contact.id}>
+                          {contact.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="userRole">Role Being Delegated</Label>
+                  <Select>
+                    <SelectTrigger id="userRole">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="case-manager">Case Manager</SelectItem>
+                      <SelectItem value="agency-manager">Agency Manager</SelectItem>
+                      <SelectItem value="agency-user">Agency User</SelectItem>
+                      <SelectItem value="fdm">FDM</SelectItem>
+                      <SelectItem value="attorney">Attorney</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="delegateTo">Delegate To</Label>
+                  <Select>
+                    <SelectTrigger id="delegateTo">
+                      <SelectValue placeholder="Select person to delegate to" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {contacts.map((contact) => (
+                        <SelectItem key={contact.id} value={contact.id}>
+                          {contact.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="delegationStartDate">Start Date</Label>
+                    <Input id="delegationStartDate" type="date" />
+                  </div>
+                  <div>
+                    <Label htmlFor="delegationEndDate">End Date</Label>
+                    <Input id="delegationEndDate" type="date" />
+                  </div>
+                </div>
+                <div className="bg-blue-50 border border-blue-200 rounded-md p-3 text-sm text-blue-800">
+                  <p className="font-medium">Note</p>
+                  <p className="text-xs mt-1">
+                    The delegated person will have full access to perform all duties of this role during the specified period.
+                  </p>
+                </div>
+                <div className="flex justify-end gap-2 pt-4">
+                  <Button variant="outline" onClick={() => setIsUserDelegationOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button>Create Delegation</Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Original User</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Delegated To</TableHead>
+                <TableHead>Start Date</TableHead>
+                <TableHead>End Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {userDelegations.map((delegation) => (
+                <TableRow key={delegation.id}>
+                  <TableCell className="font-medium">{delegation.originalUser}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary">{delegation.role}</Badge>
+                  </TableCell>
+                  <TableCell>{delegation.delegatedTo}</TableCell>
+                  <TableCell>{delegation.startDate}</TableCell>
+                  <TableCell>{delegation.endDate}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        delegation.status === "Active" 
+                          ? "default" 
+                          : delegation.status === "Pending" 
+                          ? "secondary" 
+                          : "outline"
+                      }
+                      className={
+                        delegation.status === "Active" 
+                          ? "bg-green-500" 
+                          : delegation.status === "Pending"
+                          ? "bg-amber-500"
+                          : ""
+                      }
+                    >
+                      {delegation.status}
+                    </Badge>
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Button variant="ghost" size="sm">
