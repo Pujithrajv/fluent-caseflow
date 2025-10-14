@@ -17,6 +17,7 @@ import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
 import { NewTaskView } from "./NewTaskView";
+import { PrimaryPartyTab } from "./wizard/PrimaryPartyTab";
 
 interface CaseItem {
   id: string;
@@ -367,6 +368,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
   const [activeTab, setActiveTab] = useState("cases");
   const [tasks, setTasks] = useState(mockTasks);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [primaryPartyData, setPrimaryPartyData] = useState<any>({});
   const [eventsSearchQuery, setEventsSearchQuery] = useState("");
   const [selectedTypeFilters, setSelectedTypeFilters] = useState<string[]>([]);
   const [selectedDateFilter, setSelectedDateFilter] = useState<string>("");
@@ -516,6 +518,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               New Task
+            </TabsTrigger>
+            <TabsTrigger 
+              value="primary-party" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Primary Party
             </TabsTrigger>
           </TabsList>
 
@@ -908,6 +916,22 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
             />
+          </TabsContent>
+
+          {/* Primary Party Tab Content */}
+          <TabsContent value="primary-party" className="mt-6">
+            <div className="max-w-4xl">
+              <div className="mb-6">
+                <h2 className="text-2xl font-semibold text-foreground mb-2">Primary Party</h2>
+                <p className="text-sm text-muted-foreground">
+                  Select an existing Organization (Account) or Contact for the Primary Party, or create a new one.
+                </p>
+              </div>
+              <PrimaryPartyTab 
+                onDataChange={setPrimaryPartyData}
+                data={primaryPartyData}
+              />
+            </div>
           </TabsContent>
         </Tabs>
 
