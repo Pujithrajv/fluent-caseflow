@@ -16,10 +16,7 @@ interface RequestSelectionTabProps {
 const requestGroups = [
   { value: "motion", label: "Motion", icon: Scale },
   { value: "exhibit", label: "Exhibit", icon: FileText },
-  { value: "discovery", label: "Discovery", icon: Search },
-  { value: "certificate", label: "Certificate", icon: Award },
-  { value: "pleading", label: "Pleading", icon: FileX },
-  { value: "notices", label: "Notices", icon: Bell }
+  { value: "discovery", label: "Discovery", icon: Search }
 ];
 
 // Motion types from the existing Motion Details component
