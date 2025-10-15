@@ -21,6 +21,7 @@ import { PrimaryPartyTab } from "./wizard/PrimaryPartyTab";
 import { PrimaryPartyTestTab } from "./wizard/PrimaryPartyTestTab";
 import { PrimaryPartyTest2Tab } from "./wizard/PrimaryPartyTest2Tab";
 import { PrimaryPartyTest3Tab } from "./wizard/PrimaryPartyTest3Tab";
+import { NewPrimaryTab } from "./wizard/NewPrimaryTab";
 
 interface CaseItem {
   id: string;
@@ -546,6 +547,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Primary Party Test 3
             </TabsTrigger>
+            <TabsTrigger 
+              value="new-primary" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              New Primary
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -968,6 +975,11 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           {/* Primary Party Test 3 Tab Content */}
           <TabsContent value="primary-party-test-3" className="mt-6">
             <PrimaryPartyTest3Tab />
+          </TabsContent>
+
+          {/* New Primary Tab Content */}
+          <TabsContent value="new-primary" className="mt-6">
+            <NewPrimaryTab />
           </TabsContent>
         </Tabs>
 
