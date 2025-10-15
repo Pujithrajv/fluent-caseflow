@@ -20,6 +20,7 @@ import { NewTaskView } from "./NewTaskView";
 import { PrimaryPartyTab } from "./wizard/PrimaryPartyTab";
 import { PrimaryPartyTestTab } from "./wizard/PrimaryPartyTestTab";
 import { PrimaryPartyTest2Tab } from "./wizard/PrimaryPartyTest2Tab";
+import { PrimaryPartyTest3Tab } from "./wizard/PrimaryPartyTest3Tab";
 
 interface CaseItem {
   id: string;
@@ -539,6 +540,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Primary Party Test 2
             </TabsTrigger>
+            <TabsTrigger 
+              value="primary-party-test-3" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Primary Party Test 3
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -956,6 +963,11 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           {/* Primary Party Test 2 Tab Content */}
           <TabsContent value="primary-party-test-2" className="mt-6">
             <PrimaryPartyTest2Tab />
+          </TabsContent>
+
+          {/* Primary Party Test 3 Tab Content */}
+          <TabsContent value="primary-party-test-3" className="mt-6">
+            <PrimaryPartyTest3Tab />
           </TabsContent>
         </Tabs>
 
