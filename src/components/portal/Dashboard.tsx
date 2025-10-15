@@ -22,6 +22,7 @@ import { PrimaryPartyTestTab } from "./wizard/PrimaryPartyTestTab";
 import { PrimaryPartyTest3Tab } from "./wizard/PrimaryPartyTest3Tab";
 import { NewPrimaryTab } from "./wizard/NewPrimaryTab";
 import { PrimaryFinalTab } from "./wizard/PrimaryFinalTab";
+import { PrimaryFinalFinalTab } from "./wizard/PrimaryFinalFinalTab";
 
 interface CaseItem {
   id: string;
@@ -547,6 +548,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Primary Final
             </TabsTrigger>
+            <TabsTrigger 
+              value="primary-final-final" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Primary Final Final
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -913,6 +920,11 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           {/* Primary Final Tab Content */}
           <TabsContent value="primary-final" className="mt-6">
             <PrimaryFinalTab />
+          </TabsContent>
+
+          {/* Primary Final Final Tab Content */}
+          <TabsContent value="primary-final-final" className="mt-6">
+            <PrimaryFinalFinalTab />
           </TabsContent>
         </Tabs>
 
