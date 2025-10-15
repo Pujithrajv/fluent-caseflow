@@ -512,12 +512,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               Upcoming Events
             </TabsTrigger>
             <TabsTrigger 
-              value="tasks" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Tasks & Alerts
-            </TabsTrigger>
-            <TabsTrigger 
               value="new-task" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
@@ -875,67 +869,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             )}
           </TabsContent>
 
-          {/* Tasks and Alerts Tab Content */}
-          <TabsContent value="tasks" className="mt-6">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2 font-fluent">
-                  <Clock className="h-5 w-5 text-primary" />
-                  <span>Tasks and Alerts</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-white border border-border rounded-lg overflow-hidden">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-1/5">Case Number</TableHead>
-                        <TableHead className="w-1/5">Primary Party</TableHead>
-                        <TableHead className="w-2/5">Description</TableHead>
-                        <TableHead className="w-1/5">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={handleSortByDate}
-                            className="h-auto p-0 font-medium text-muted-foreground hover:text-foreground"
-                          >
-                            Priority & Due Date
-                            <ArrowUpDown className="ml-1 h-3 w-3" />
-                          </Button>
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {tasks.map((task) => (
-                        <TableRow key={task.id}>
-                          <TableCell className="font-medium">{task.caseNumber}</TableCell>
-                          <TableCell className="font-medium">{task.primaryParty}</TableCell>
-                          <TableCell>
-                            <div>
-                              <p className="text-sm text-foreground">{task.description}</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="space-y-2">
-                              <Badge variant="outline" className={`text-xs font-medium px-2.5 py-1 rounded-full ${task.priorityClass}`}>
-                                {task.priority}
-                              </Badge>
-                              {task.dueDate && (
-                                <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                                  <Calendar className="h-3 w-3" />
-                                  <span>Due: {formatDate(task.dueDate)}</span>
-                                </div>
-                              )}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
 
 
           {/* New Task Tab Content */}
