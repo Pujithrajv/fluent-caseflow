@@ -10,7 +10,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Search, Plus, Building2, User, CheckCircle2, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface Account {
   id: string;
@@ -51,7 +50,6 @@ export const PrimaryFinalTab = () => {
   const [lookupOpen, setLookupOpen] = useState(false);
   const [createAccountOpen, setCreateAccountOpen] = useState(false);
   const [createContactOpen, setCreateContactOpen] = useState(false);
-  const [contactDropdownOpen, setContactDropdownOpen] = useState(false);
   const [lookupSearch, setLookupSearch] = useState("");
   const [lookupView, setLookupView] = useState<"account" | "contact">("account");
   const [selectedParty, setSelectedParty] = useState<Account | Contact | null>(null);
@@ -168,7 +166,6 @@ export const PrimaryFinalTab = () => {
       // If creating from account form, set as primary contact
       setSelectedPrimaryContact(newContact);
       setCreateContactOpen(false);
-      setContactDropdownOpen(false);
       toast({
         title: "Contact Created",
         description: `${newContact.fullName} has been created and set as Primary Contact.`,
@@ -556,98 +553,15 @@ export const PrimaryFinalTab = () => {
                   <User className="h-4 w-4" />
                   Primary Contact
                 </h3>
-                <DropdownMenu open={contactDropdownOpen} onOpenChange={setContactDropdownOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      style={{ color: "#0B5FFF" }}
-                    >
-                      <Plus className="h-4 w-4 mr-1" />
-                      Create New Record
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-80 p-4 bg-background" align="end">
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="text-sm font-semibold mb-3">Create New Contact</h4>
-                        <p className="text-xs text-muted-foreground mb-4">Add contact information</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <Label htmlFor="dropdown-firstName" className="text-xs">First Name *</Label>
-                          <Input
-                            id="dropdown-firstName"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            placeholder="First name"
-                            className="h-9"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="dropdown-lastName" className="text-xs">Last Name *</Label>
-                          <Input
-                            id="dropdown-lastName"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            placeholder="Last name"
-                            className="h-9"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="dropdown-email" className="text-xs">Email</Label>
-                        <Input
-                          id="dropdown-email"
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="email@example.com"
-                          className="h-9"
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="dropdown-businessPhone" className="text-xs">Business Phone</Label>
-                        <Input
-                          id="dropdown-businessPhone"
-                          value={businessPhone}
-                          onChange={(e) => setBusinessPhone(e.target.value)}
-                          placeholder="(123) 456-7890"
-                          className="h-9"
-                        />
-                      </div>
-                      
-                      <div className="flex gap-2 pt-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            setContactDropdownOpen(false);
-                            setFirstName("");
-                            setLastName("");
-                            setEmail("");
-                            setBusinessPhone("");
-                          }}
-                          className="flex-1"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={handleSaveContact}
-                          disabled={!firstName || !lastName}
-                          style={{ backgroundColor: firstName && lastName ? "#0B5FFF" : undefined }}
-                          className="flex-1"
-                        >
-                          Save
-                        </Button>
-                      </div>
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setCreateContactOpen(true)}
+                  style={{ color: "#0B5FFF" }}
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                  Create New Record
+                </Button>
               </div>
               
               {selectedPrimaryContact ? (
