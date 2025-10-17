@@ -525,10 +525,10 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               Testdemo
             </TabsTrigger>
             <TabsTrigger 
-              value="newtab" 
+              value="demo2" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
-              New Tab
+              Demo2
             </TabsTrigger>
           </TabsList>
 
@@ -978,16 +978,19 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             </div>
           </TabsContent>
 
-          {/* New Tab Content */}
-          <TabsContent value="newtab" className="mt-6">
+          {/* Demo2 Tab Content */}
+          <TabsContent value="demo2" className="mt-6">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold text-foreground">New Tab</h2>
+                  <h2 className="text-2xl font-semibold text-foreground">Demo 2</h2>
                   <p className="text-sm text-muted-foreground mt-1">
-                    New tab content area
+                    Discovery & Compliance demonstration
                   </p>
                 </div>
+                <Button size="lg" className="font-fluent" onClick={() => navigate("/discovery-compliance")}>
+                  Mockup2
+                </Button>
               </div>
 
               <Card>
@@ -996,7 +999,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Add your content here.
+                    Click Mockup2 to view the Discovery & Compliance workflow.
                   </p>
                 </CardContent>
               </Card>
