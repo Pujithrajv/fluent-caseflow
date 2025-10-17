@@ -954,7 +954,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                     Test demonstration area
                   </p>
                 </div>
-                <Button size="lg" className="font-fluent">
+                <Button size="lg" className="font-fluent" onClick={() => navigate("/discovery-workflow")}>
                   Mockup
                 </Button>
               </div>
