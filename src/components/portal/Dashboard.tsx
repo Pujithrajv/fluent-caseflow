@@ -17,12 +17,6 @@ import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
 import { NewTaskView } from "./NewTaskView";
-import { PrimaryPartyTab } from "./wizard/PrimaryPartyTab";
-import { PrimaryPartyTestTab } from "./wizard/PrimaryPartyTestTab";
-import { PrimaryPartyTest3Tab } from "./wizard/PrimaryPartyTest3Tab";
-import { NewPrimaryTab } from "./wizard/NewPrimaryTab";
-import { PrimaryFinalTab } from "./wizard/PrimaryFinalTab";
-import { PrimaryFinalFinalTab } from "./wizard/PrimaryFinalFinalTab";
 
 interface CaseItem {
   id: string;
@@ -518,36 +512,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               New Task
             </TabsTrigger>
-            <TabsTrigger 
-              value="primary-party" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Primary Party
-            </TabsTrigger>
-            <TabsTrigger 
-              value="primary-party-test-3" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Primary Party Test 3
-            </TabsTrigger>
-            <TabsTrigger 
-              value="new-primary" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              New Primary
-            </TabsTrigger>
-            <TabsTrigger 
-              value="primary-final" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Primary Final
-            </TabsTrigger>
-            <TabsTrigger 
-              value="primary-final-final" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Primary Final Final
-            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -880,42 +844,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             />
           </TabsContent>
 
-          {/* Primary Party Tab Content */}
-          <TabsContent value="primary-party" className="mt-6">
-            <div className="max-w-4xl">
-              <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-foreground mb-2">Primary Party</h2>
-                <p className="text-sm text-muted-foreground">
-                  Select an existing Organization (Account) or Contact for the Primary Party, or create a new one.
-                </p>
-              </div>
-              <PrimaryPartyTab 
-                onDataChange={setPrimaryPartyData}
-                data={primaryPartyData}
-              />
-            </div>
-          </TabsContent>
-
-
-          {/* Primary Party Test 3 Tab Content */}
-          <TabsContent value="primary-party-test-3" className="mt-6">
-            <PrimaryPartyTest3Tab />
-          </TabsContent>
-
-          {/* New Primary Tab Content */}
-          <TabsContent value="new-primary" className="mt-6">
-            <NewPrimaryTab />
-          </TabsContent>
-
-          {/* Primary Final Tab Content */}
-          <TabsContent value="primary-final" className="mt-6">
-            <PrimaryFinalTab />
-          </TabsContent>
-
-          {/* Primary Final Final Tab Content */}
-          <TabsContent value="primary-final-final" className="mt-6">
-            <PrimaryFinalFinalTab />
-          </TabsContent>
         </Tabs>
 
       </div>
