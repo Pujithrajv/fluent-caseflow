@@ -632,8 +632,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                                 onClick={() => {
                                   if (caseItem.status === 'draft') {
                                     onEditCase?.(caseItem.id, caseItem.lastWizardTab);
-                                  } else if (caseItem.status === 'accepted') {
-                                    navigate(`/case/${caseItem.id}`);
                                   } else {
                                     onViewCase(caseItem.id);
                                   }
