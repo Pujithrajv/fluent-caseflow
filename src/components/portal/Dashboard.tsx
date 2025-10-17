@@ -947,11 +947,16 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
           {/* Testdemo Tab Content */}
           <TabsContent value="testdemo" className="mt-6">
             <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-semibold text-foreground">Test Demo</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Test demonstration area
-                </p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold text-foreground">Test Demo</h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Test demonstration area
+                  </p>
+                </div>
+                <Button size="lg" className="font-fluent">
+                  Mockup
+                </Button>
               </div>
 
               <Card>
