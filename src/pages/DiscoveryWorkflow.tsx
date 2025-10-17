@@ -244,18 +244,13 @@ export default function DiscoveryWorkflow() {
             className={`transition-colors ${process.configured ? "bg-green-50 border-green-200" : ""}`}
           >
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  {process.status === "completed" ? (
-                    <CheckCircle className="h-5 w-5 text-green-600" />
-                  ) : (
-                    <Circle className="h-5 w-5 text-gray-400" />
-                  )}
-                  <span>{process.title}</span>
-                </div>
-                <Badge variant={process.configured ? "default" : "outline"}>
-                  {process.description}
-                </Badge>
+              <CardTitle className="flex items-center gap-3">
+                {process.status === "completed" ? (
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                ) : (
+                  <Circle className="h-5 w-5 text-gray-400" />
+                )}
+                <span>{process.title}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
