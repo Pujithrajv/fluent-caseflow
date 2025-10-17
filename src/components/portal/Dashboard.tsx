@@ -518,6 +518,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Subprocess
             </TabsTrigger>
+            <TabsTrigger 
+              value="testdemo" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Testdemo
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -935,6 +941,29 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   </CardContent>
                 </Card>
               </div>
+            </div>
+          </TabsContent>
+
+          {/* Testdemo Tab Content */}
+          <TabsContent value="testdemo" className="mt-6">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-semibold text-foreground">Test Demo</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Test demonstration area
+                </p>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Demo Content</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    This is a test demo tab. You can add your content here.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
