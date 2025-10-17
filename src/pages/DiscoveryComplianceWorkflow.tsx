@@ -7,14 +7,17 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowLeft, FileText, CheckCircle, Upload, Calendar, Clock, User, AlertCircle, Check } from "lucide-react";
+import { ArrowLeft, FileText, CheckCircle, Upload, Calendar, Clock, User, AlertCircle, Check, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/shared/Header";
 
 type Step = 
   | "dashboard"
   | "select-type"
-  | "details"
+  | "interrogatory-details"
+  | "document-production-details"
+  | "deposition-details"
+  | "inspection-details"
   | "upload"
   | "confirm"
   | "submitted"
@@ -27,6 +30,8 @@ export default function DiscoveryComplianceWorkflow() {
   const [selectedDiscoveryType, setSelectedDiscoveryType] = useState<string>("");
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [referenceNumber, setReferenceNumber] = useState("");
+  const [recipients, setRecipients] = useState<any[]>([]);
+  const [inspectionEntries, setInspectionEntries] = useState<any[]>([{ id: 1 }]);
 
   const discoveryTypes = [
     {
@@ -282,11 +287,491 @@ export default function DiscoveryComplianceWorkflow() {
                 Cancel
               </Button>
               <Button 
-                onClick={() => setCurrentStep("upload")}
+                onClick={() => {
+                  if (selectedDiscoveryType === "interrogatories") {
+                    setCurrentStep("interrogatory-details");
+                  } else if (selectedDiscoveryType === "document-production") {
+                    setCurrentStep("document-production-details");
+                  } else if (selectedDiscoveryType === "deposition") {
+                    setCurrentStep("deposition-details");
+                  } else if (selectedDiscoveryType === "inspection") {
+                    setCurrentStep("inspection-details");
+                  }
+                }}
                 disabled={!selectedDiscoveryType}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 Next
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Interrogatory Details Screen
+  if (currentStep === "interrogatory-details") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="mx-auto max-w-4xl px-6 py-6">
+          <Button
+            variant="ghost"
+            onClick={() => setCurrentStep("select-type")}
+            className="mb-4 text-blue-600"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Discovery Information
+          </Button>
+
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Interrogatory Details</h1>
+              <p className="text-muted-foreground">Enter recipient and interrogatory-specific information</p>
+            </div>
+
+            {/* Section 1 - Recipients Table */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Recipients</CardTitle>
+                <Button 
+                  size="sm" 
+                  className="bg-blue-600 hover:bg-blue-700"
+                  onClick={() => setRecipients([...recipients, { id: Date.now(), name: "", phone: "", email: "" }])}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add New Person
+                </Button>
+              </CardHeader>
+              <CardContent>
+                {recipients.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-4">No recipients added yet</p>
+                ) : (
+                  <div className="border rounded-lg overflow-hidden">
+                    <table className="w-full">
+                      <thead className="bg-muted">
+                        <tr>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Name</th>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Phone</th>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Email</th>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {recipients.map((recipient) => (
+                          <tr key={recipient.id}>
+                            <td className="px-4 py-2"><Input placeholder="Name" className="h-8" /></td>
+                            <td className="px-4 py-2"><Input placeholder="Phone" className="h-8" /></td>
+                            <td className="px-4 py-2"><Input placeholder="Email" className="h-8" /></td>
+                            <td className="px-4 py-2">
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => setRecipients(recipients.filter(r => r.id !== recipient.id))}
+                              >
+                                <Trash2 className="h-4 w-4 text-red-500" />
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Section 2 - Schedule Fields */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <CardTitle>Schedule</CardTitle>
+              </CardHeader>
+              <CardContent className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>When will they receive?</Label>
+                  <Input type="date" />
+                </div>
+                <div className="space-y-2">
+                  <Label>When is reply due?</Label>
+                  <Input type="date" />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Section 3 - Additional Details */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <CardTitle>Additional Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Interrogatory Set Type</Label>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="general">General</SelectItem>
+                      <SelectItem value="special">Special</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <input type="checkbox" id="share-opposing" className="rounded" />
+                  <Label htmlFor="share-opposing" className="cursor-pointer">Share with Opposing Party</Label>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Actions */}
+            <div className="flex justify-between mt-8">
+              <Button variant="outline" onClick={() => setCurrentStep("select-type")}>
+                Back
+              </Button>
+              <Button 
+                onClick={() => setCurrentStep("upload")}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Save & Return
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Document Production Details Screen
+  if (currentStep === "document-production-details") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="mx-auto max-w-4xl px-6 py-6">
+          <Button
+            variant="ghost"
+            onClick={() => setCurrentStep("select-type")}
+            className="mb-4 text-blue-600"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Discovery Information
+          </Button>
+
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Document Production Details</h1>
+              <p className="text-muted-foreground">Enter recipient information and document production details</p>
+            </div>
+
+            {/* Section 1 - Recipients Table */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Recipients</CardTitle>
+                <Button 
+                  size="sm" 
+                  className="bg-blue-600 hover:bg-blue-700"
+                  onClick={() => setRecipients([...recipients, { id: Date.now(), name: "", phone: "", email: "" }])}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add New Person
+                </Button>
+              </CardHeader>
+              <CardContent>
+                {recipients.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-4">No recipients added yet</p>
+                ) : (
+                  <div className="border rounded-lg overflow-hidden">
+                    <table className="w-full">
+                      <thead className="bg-muted">
+                        <tr>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Name</th>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Phone</th>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Email</th>
+                          <th className="px-4 py-2 text-left text-sm font-medium">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {recipients.map((recipient) => (
+                          <tr key={recipient.id}>
+                            <td className="px-4 py-2"><Input placeholder="Name" className="h-8" /></td>
+                            <td className="px-4 py-2"><Input placeholder="Phone" className="h-8" /></td>
+                            <td className="px-4 py-2"><Input placeholder="Email" className="h-8" /></td>
+                            <td className="px-4 py-2">
+                              <Button 
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => setRecipients(recipients.filter(r => r.id !== recipient.id))}
+                              >
+                                <Trash2 className="h-4 w-4 text-red-500" />
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Section 2 - Schedule Fields */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <CardTitle>Schedule</CardTitle>
+              </CardHeader>
+              <CardContent className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>When will they receive?</Label>
+                  <Input type="date" />
+                </div>
+                <div className="space-y-2">
+                  <Label>When is production due?</Label>
+                  <Input type="date" />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Section 3 - Document Information */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <CardTitle>Document Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Document Category</Label>
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="internal">Internal</SelectItem>
+                      <SelectItem value="public">Public</SelectItem>
+                      <SelectItem value="privileged">Privileged</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <input type="checkbox" id="flag-alj" className="rounded" />
+                  <Label htmlFor="flag-alj" className="cursor-pointer">Flag for ALJ Review</Label>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Section 4 - Supporting Files Upload */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <CardTitle>Supporting Files</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <Upload className="h-10 w-10 text-gray-400 mx-auto mb-3" />
+                  <p className="text-sm font-medium mb-2">Drag and drop files here</p>
+                  <p className="text-xs text-muted-foreground mb-3">or</p>
+                  <Button variant="outline" size="sm">Browse Files</Button>
+                  <p className="text-xs text-muted-foreground mt-3">Supported formats: PDF, JPG, PNG (Max 10MB)</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Actions */}
+            <div className="flex justify-between mt-8">
+              <Button variant="outline" onClick={() => setCurrentStep("select-type")}>
+                Back
+              </Button>
+              <Button 
+                onClick={() => setCurrentStep("upload")}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Save & Return
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Deposition Details Screen
+  if (currentStep === "deposition-details") {
+    const [expertEnabled, setExpertEnabled] = useState(false);
+    
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="mx-auto max-w-4xl px-6 py-6">
+          <Button
+            variant="ghost"
+            onClick={() => setCurrentStep("select-type")}
+            className="mb-4 text-blue-600"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Discovery Information
+          </Button>
+
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Deposition Details</h1>
+              <p className="text-muted-foreground">Configure deposition information and expert details</p>
+            </div>
+
+            {/* Section 1 - Expert Section */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Expert Information</CardTitle>
+                  <div className="flex items-center space-x-2">
+                    <Label htmlFor="expert-toggle">Is there an Expert?</Label>
+                    <input 
+                      type="checkbox" 
+                      id="expert-toggle" 
+                      className="rounded"
+                      checked={expertEnabled}
+                      onChange={(e) => setExpertEnabled(e.target.checked)}
+                    />
+                  </div>
+                </div>
+              </CardHeader>
+              {expertEnabled && (
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Expert Name</Label>
+                    <Input placeholder="Enter expert name" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Area of Expertise</Label>
+                    <Input placeholder="Enter area of expertise" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Upload Expert CV</Label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                      <Button variant="outline" size="sm">Browse Files</Button>
+                      <p className="text-xs text-muted-foreground mt-2">PDF format (Max 5MB)</p>
+                    </div>
+                  </div>
+                </CardContent>
+              )}
+            </Card>
+
+            {/* Section 2 - Deposition Information */}
+            <Card className="bg-white shadow-sm">
+              <CardHeader>
+                <CardTitle>Deposition Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Why is the deposition necessary?</Label>
+                  <Textarea 
+                    placeholder="Explain the necessity of this deposition..."
+                    rows={4}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>If deposition allowed, date range for completion</Label>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Input type="date" placeholder="Start date" />
+                    <Input type="date" placeholder="End date" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Actions */}
+            <div className="flex justify-between mt-8">
+              <Button variant="outline" onClick={() => setCurrentStep("select-type")}>
+                Back
+              </Button>
+              <Button 
+                onClick={() => setCurrentStep("upload")}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Save & Return
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Inspection Details Screen
+  if (currentStep === "inspection-details") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="mx-auto max-w-4xl px-6 py-6">
+          <Button
+            variant="ghost"
+            onClick={() => setCurrentStep("select-type")}
+            className="mb-4 text-blue-600"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Discovery Information
+          </Button>
+
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Inspection Questions</h1>
+                <p className="text-muted-foreground">Define what needs to be inspected and why</p>
+              </div>
+              <Button 
+                size="sm" 
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => setInspectionEntries([...inspectionEntries, { id: Date.now() }])}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add New Inspection
+              </Button>
+            </div>
+
+            {/* Inspection Entries */}
+            <div className="space-y-4">
+              {inspectionEntries.map((entry, index) => (
+                <Card key={entry.id} className="bg-gray-50 shadow-sm border-gray-200">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Inspection {index + 1}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>What is to be inspected?</Label>
+                      <Textarea 
+                        placeholder="Describe the item, location, or property to be inspected..."
+                        rows={3}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>What is the purpose of the inspection?</Label>
+                      <Textarea 
+                        placeholder="Explain the purpose and relevance of this inspection..."
+                        rows={3}
+                      />
+                    </div>
+                    {inspectionEntries.length > 1 && (
+                      <Button 
+                        variant="destructive" 
+                        size="sm"
+                        onClick={() => setInspectionEntries(inspectionEntries.filter(e => e.id !== entry.id))}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Remove Inspection
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-between mt-8">
+              <Button variant="outline" onClick={() => setCurrentStep("select-type")}>
+                Back
+              </Button>
+              <Button 
+                onClick={() => setCurrentStep("upload")}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Save & Return
               </Button>
             </div>
           </div>
