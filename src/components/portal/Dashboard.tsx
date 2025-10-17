@@ -524,6 +524,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Testdemo
             </TabsTrigger>
+            <TabsTrigger 
+              value="newtab" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              New Tab
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -966,6 +972,31 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 <CardContent>
                   <p className="text-muted-foreground">
                     This is a test demo tab. You can add your content here.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* New Tab Content */}
+          <TabsContent value="newtab" className="mt-6">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold text-foreground">New Tab</h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    New tab content area
+                  </p>
+                </div>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Content Area</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Add your content here.
                   </p>
                 </CardContent>
               </Card>
