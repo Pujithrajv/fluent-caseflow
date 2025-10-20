@@ -379,12 +379,6 @@ const Profile = () => {
               Testing Tab
             </TabsTrigger>
             <TabsTrigger 
-              value="agency" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Agency Tab
-            </TabsTrigger>
-            <TabsTrigger 
               value="agency-test" 
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
@@ -1550,11 +1544,6 @@ const Profile = () => {
           {/* Testing Tab - Dynamics 365 Single Page Style */}
           <TabsContent value="testing" className="mt-0 p-0">
             <Dynamics365SinglePageDashboard />
-          </TabsContent>
-
-          {/* Agency Tab - Agency Manager Screen */}
-          <TabsContent value="agency" className="mt-0 p-0">
-            <AgencyManagerScreen />
           </TabsContent>
 
           {/* Agency Test Tab - Agency Test Screen */}
