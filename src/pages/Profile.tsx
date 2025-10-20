@@ -391,6 +391,12 @@ const Profile = () => {
             >
               Test2
             </TabsTrigger>
+            <TabsTrigger 
+              value="test1" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Test1
+            </TabsTrigger>
           </TabsList>
 
           {/* My Profile Tab */}
@@ -1561,6 +1567,11 @@ const Profile = () => {
           {/* Test2 Tab - Power Pages Style Agency Management */}
           <TabsContent value="test2" className="mt-0 p-0">
             <AgencyTest2Screen />
+          </TabsContent>
+
+          {/* Test1 Tab - Copy of Agency Test Screen */}
+          <TabsContent value="test1" className="mt-0 p-0">
+            <AgencyTestScreen />
           </TabsContent>
         </Tabs>
       </div>
