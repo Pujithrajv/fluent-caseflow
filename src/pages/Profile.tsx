@@ -1249,157 +1249,73 @@ const Profile = () => {
                   </CardContent>
                 </Card>
 
-                {/* Address Information Card */}
-                <Card className="shadow-sm border-border">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">Your organization's primary mailing location.</p>
+                {/* Department Details Card */}
+                <Card className="shadow-sm border">
+                  <CardHeader className="bg-gray-50 border-b">
+                    <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label htmlFor="addressLine1_2" className="text-sm font-medium text-foreground">Address Line 1</Label>
-                      <Input
-                        id="addressLine1_2"
-                        value="100 Gold St"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="addressLine2_2" className="text-sm font-medium text-foreground">Address Line 2</Label>
-                      <Input
-                        id="addressLine2_2"
-                        value=""
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
+                  <CardContent className="pt-6">
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                       <div>
-                        <Label htmlFor="city2" className="text-sm font-medium text-foreground">City</Label>
-                        <Input
-                          id="city2"
-                          value="New York"
-                          className="mt-1 bg-muted"
-                          readOnly
+                        <Label className="text-sm font-medium text-gray-700">Street</Label>
+                        <Input 
+                          value="465 Conservation Drive" 
+                          disabled
+                          className="mt-1"
                         />
                       </div>
-                      
                       <div>
-                        <Label htmlFor="county2" className="text-sm font-medium text-foreground">County</Label>
-                        <Input
-                          id="county2"
-                          value=""
-                          className="mt-1 bg-muted"
-                          readOnly
+                        <Label className="text-sm font-medium text-gray-700">City</Label>
+                        <Input 
+                          value="Springfield" 
+                          disabled
+                          className="mt-1"
                         />
                       </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="state2" className="text-sm font-medium text-foreground">State/Province</Label>
-                        <Input
-                          id="state2"
-                          value="NY"
-                          className="mt-1 bg-muted"
-                          readOnly
+                        <Label className="text-sm font-medium text-gray-700">State</Label>
+                        <Input 
+                          value="IL" 
+                          disabled
+                          className="mt-1"
                         />
                       </div>
-                      
                       <div>
-                        <Label htmlFor="postalCode2" className="text-sm font-medium text-foreground">Postal Code</Label>
-                        <Input
-                          id="postalCode2"
-                          value="10038"
-                          className="mt-1 bg-muted"
-                          readOnly
+                        <Label className="text-sm font-medium text-gray-700">Postal Code</Label>
+                        <Input 
+                          value="62701" 
+                          disabled
+                          className="mt-1"
                         />
                       </div>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="country2" className="text-sm font-medium text-foreground">Country</Label>
-                      <Input
-                        id="country2"
-                        value="United States"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Phone</Label>
+                        <Input 
+                          value="(217) 555-1000" 
+                          disabled
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Primary Contact</Label>
+                        <Input 
+                          value="Laura Chen" 
+                          disabled
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <Label className="text-sm font-medium text-gray-700">Website</Label>
+                        <Input 
+                          value="https://dnr.illinois.gov" 
+                          disabled
+                          className="mt-1"
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
               </div>
-
-
-              {/* Department Details Card from test1 */}
-              <Card className="shadow-sm border">
-                <CardHeader className="bg-gray-50 border-b">
-                  <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Street</Label>
-                      <Input 
-                        value="465 Conservation Drive" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">City</Label>
-                      <Input 
-                        value="Springfield" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">State</Label>
-                      <Input 
-                        value="IL" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Postal Code</Label>
-                      <Input 
-                        value="62701" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Phone</Label>
-                      <Input 
-                        value="(217) 555-1000" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Primary Contact</Label>
-                      <Input 
-                        value="Laura Chen" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <Label className="text-sm font-medium text-gray-700">Website</Label>
-                      <Input 
-                        value="https://dnr.illinois.gov" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
 
               {/* Divisions List from test1 */}
               <Card className="shadow-sm border">
