@@ -22,6 +22,7 @@ import { Dynamics365AgencyDashboard } from "@/components/portal/Dynamics365Agenc
 import { Dynamics365SinglePageDashboard } from "@/components/portal/Dynamics365SinglePageDashboard";
 import { AgencyManagerScreen } from "@/components/portal/AgencyManagerScreen";
 import { AgencyTestScreen } from "@/components/portal/AgencyTestScreen";
+import { AgencyTest2Screen } from "@/components/portal/AgencyTest2Screen";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -383,6 +384,12 @@ const Profile = () => {
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               Agency Test
+            </TabsTrigger>
+            <TabsTrigger 
+              value="test2" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Test2
             </TabsTrigger>
           </TabsList>
 
@@ -1549,6 +1556,11 @@ const Profile = () => {
           {/* Agency Test Tab - Agency Test Screen */}
           <TabsContent value="agency-test" className="mt-0 p-0">
             <AgencyTestScreen />
+          </TabsContent>
+
+          {/* Test2 Tab - Power Pages Style Agency Management */}
+          <TabsContent value="test2" className="mt-0 p-0">
+            <AgencyTest2Screen />
           </TabsContent>
         </Tabs>
       </div>
