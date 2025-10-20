@@ -1370,7 +1370,6 @@ const Profile = () => {
                     <div className="flex gap-2">
                       <Button size="sm" className="bg-[#0078D4] hover:bg-[#106EBE]">Create New</Button>
                       <Button size="sm" variant="outline">Edit</Button>
-                      <Button size="sm" variant="outline">Deactivate</Button>
                     </div>
                   </div>
                 </CardHeader>
