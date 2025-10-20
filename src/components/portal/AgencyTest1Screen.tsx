@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ChevronRight, AlertTriangle } from "lucide-react";
+import { ChevronRight, AlertTriangle, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Contact {
@@ -54,6 +54,11 @@ export function AgencyTest1Screen() {
   const [isEditingEntity, setIsEditingEntity] = useState(false);
 
   const [departmentForm, setDepartmentForm] = useState({
+    name: "Department of Natural Resources",
+    code: "DNR",
+    parentEntity: "",
+    participationGroup: "State Entities",
+    participationType: "Department",
     address: "465 Conservation Drive",
     city: "Springfield",
     state: "IL",
@@ -140,121 +145,151 @@ export function AgencyTest1Screen() {
       <div className="space-y-6 p-6 bg-gray-50">
         {/* Header */}
         <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h1 className="text-3xl font-semibold text-gray-900">{departmentInfo.name}</h1>
-          <p className="text-sm text-gray-600 mt-1">Agency ID: {departmentInfo.agencyId}</p>
+          <h1 className="text-2xl font-semibold text-gray-900">{departmentForm.name}</h1>
         </div>
 
-        {/* Two-Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Department Details Form */}
-          <div className="lg:col-span-2">
-            <Card className="shadow-sm border">
-              <CardHeader className="bg-gray-50 border-b">
-                <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">Address (Line 1)</Label>
-                    <Input 
-                      value={departmentForm.address} 
-                      onChange={(e) => setDepartmentForm({...departmentForm, address: e.target.value})} 
-                      disabled={!isEditingDepartment}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">City</Label>
-                    <Input 
-                      value={departmentForm.city} 
-                      onChange={(e) => setDepartmentForm({...departmentForm, city: e.target.value})} 
-                      disabled={!isEditingDepartment}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">State</Label>
-                    <Input 
-                      value={departmentForm.state} 
-                      onChange={(e) => setDepartmentForm({...departmentForm, state: e.target.value})} 
-                      disabled={!isEditingDepartment}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">ZIP</Label>
-                    <Input 
-                      value={departmentForm.zip} 
-                      onChange={(e) => setDepartmentForm({...departmentForm, zip: e.target.value})} 
-                      disabled={!isEditingDepartment}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">Phone</Label>
-                    <Input 
-                      value={departmentForm.phone} 
-                      onChange={(e) => setDepartmentForm({...departmentForm, phone: e.target.value})} 
-                      disabled={!isEditingDepartment}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-700">Primary Contact (lookup)</Label>
-                    <Input 
-                      value={departmentForm.primaryContact} 
-                      onChange={(e) => setDepartmentForm({...departmentForm, primaryContact: e.target.value})} 
-                      disabled={!isEditingDepartment}
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-3 mt-6">
-                  {!isEditingDepartment ? (
-                    <Button onClick={() => setIsEditingDepartment(true)} className="bg-[#0078D4] hover:bg-[#106EBE]">
-                      Edit
-                    </Button>
-                  ) : (
-                    <>
-                      <Button onClick={handleSaveDepartment} className="bg-[#0078D4] hover:bg-[#106EBE]">
-                        Save
-                      </Button>
-                      <Button variant="outline" onClick={() => setIsEditingDepartment(false)}>
-                        Cancel
-                      </Button>
-                    </>
+        {/* Entity Fields Card */}
+        <Card className="shadow-sm border">
+          <CardHeader className="bg-gray-50 border-b flex flex-row items-center justify-between">
+            <CardTitle className="text-lg font-semibold">Entity Information</CardTitle>
+            {!isEditingDepartment && (
+              <Button size="sm" onClick={() => setIsEditingDepartment(true)} className="bg-[#0078D4] hover:bg-[#106EBE]">
+                Edit
+              </Button>
+            )}
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Department Name</Label>
+                <Input 
+                  value={departmentForm.name} 
+                  onChange={(e) => setDepartmentForm({...departmentForm, name: e.target.value})} 
+                  disabled={!isEditingDepartment}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Department Code</Label>
+                <Input 
+                  value={departmentForm.code} 
+                  onChange={(e) => setDepartmentForm({...departmentForm, code: e.target.value})} 
+                  disabled={!isEditingDepartment}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Parent Entity</Label>
+                <div className="relative mt-1">
+                  <Input 
+                    value={departmentForm.parentEntity} 
+                    onChange={(e) => setDepartmentForm({...departmentForm, parentEntity: e.target.value})} 
+                    disabled={!isEditingDepartment}
+                    placeholder="(None)"
+                  />
+                  {isEditingDepartment && (
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-4 italic">Department record managed through Dynamics 365.</p>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Participation Group</Label>
+                <Input 
+                  value={departmentForm.participationGroup} 
+                  disabled
+                  className="mt-1 bg-muted"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label className="text-sm font-medium text-gray-700">Participation Type</Label>
+                <Input 
+                  value={departmentForm.participationType} 
+                  disabled
+                  className="mt-1 bg-muted"
+                />
+              </div>
+            </div>
+            {isEditingDepartment && (
+              <div className="flex gap-3 mt-6">
+                <Button onClick={handleSaveDepartment} className="bg-[#0078D4] hover:bg-[#106EBE]">
+                  Save
+                </Button>
+                <Button variant="outline" onClick={() => setIsEditingDepartment(false)}>
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-          {/* Right Column - Key Metrics */}
-          <div>
-            <Card className="shadow-sm border">
-              <CardHeader className="bg-gray-50 border-b">
-                <CardTitle className="text-lg font-semibold">Key Metrics</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center border-b pb-3">
-                    <span className="text-sm font-medium text-gray-700">Total Divisions</span>
-                    <span className="text-2xl font-bold text-gray-900">{departmentInfo.totalDivisions}</span>
-                  </div>
-                  <div className="flex justify-between items-center border-b pb-3">
-                    <span className="text-sm font-medium text-gray-700">Total Bureaus</span>
-                    <span className="text-2xl font-bold text-gray-900">{departmentInfo.totalBureaus}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-700">Total Contacts</span>
-                    <span className="text-2xl font-bold text-gray-900">{departmentInfo.totalContacts}</span>
-                  </div>
+        {/* Department Details Card */}
+        <Card className="shadow-sm border">
+          <CardHeader className="bg-gray-50 border-b">
+            <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Street</Label>
+                <Input 
+                  value={departmentForm.address} 
+                  onChange={(e) => setDepartmentForm({...departmentForm, address: e.target.value})} 
+                  disabled={!isEditingDepartment}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">City</Label>
+                <Input 
+                  value={departmentForm.city} 
+                  onChange={(e) => setDepartmentForm({...departmentForm, city: e.target.value})} 
+                  disabled={!isEditingDepartment}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">State</Label>
+                <Input 
+                  value={departmentForm.state} 
+                  onChange={(e) => setDepartmentForm({...departmentForm, state: e.target.value})} 
+                  disabled={!isEditingDepartment}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Postal Code</Label>
+                <Input 
+                  value={departmentForm.zip} 
+                  onChange={(e) => setDepartmentForm({...departmentForm, zip: e.target.value})} 
+                  disabled={!isEditingDepartment}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Phone</Label>
+                <Input 
+                  value={departmentForm.phone} 
+                  onChange={(e) => setDepartmentForm({...departmentForm, phone: e.target.value})} 
+                  disabled={!isEditingDepartment}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Primary Contact</Label>
+                <div className="relative mt-1">
+                  <Input 
+                    value={departmentForm.primaryContact} 
+                    onChange={(e) => setDepartmentForm({...departmentForm, primaryContact: e.target.value})} 
+                    disabled={!isEditingDepartment}
+                  />
+                  {isEditingDepartment && (
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  )}
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Divisions List */}
         <Card className="shadow-sm border">
@@ -303,11 +338,11 @@ export function AgencyTest1Screen() {
           </CardContent>
         </Card>
 
-        {/* Department-Level Contacts */}
+        {/* Department Contacts */}
         <Card className="shadow-sm border">
           <CardHeader className="bg-gray-50 border-b">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">Department-Level Contacts</CardTitle>
+              <CardTitle className="text-lg font-semibold">Department Contacts</CardTitle>
               <div className="flex gap-2">
                 <Button size="sm" className="bg-[#0078D4] hover:bg-[#106EBE]">Create New</Button>
                 <Button size="sm" variant="outline">Edit</Button>
@@ -316,28 +351,30 @@ export function AgencyTest1Screen() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <Alert className="m-4 bg-yellow-50 border-yellow-200">
-              <AlertTriangle className="h-4 w-4 text-yellow-600" />
-              <AlertDescription className="text-yellow-800">
-                Only Department-level contacts can be assigned Agency Manager or Case Manager roles.
+            <Alert className="m-4 bg-blue-50 border-blue-200">
+              <AlertTriangle className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-800">
+                Restrict roles to <strong>Agency Manager</strong> and <strong>Case Manager</strong>.
               </AlertDescription>
             </Alert>
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50">
                   <TableHead className="font-semibold">Name</TableHead>
-                  <TableHead className="font-semibold">Role</TableHead>
+                  <TableHead className="font-semibold">Contact Role</TableHead>
                   <TableHead className="font-semibold">Email</TableHead>
                   <TableHead className="font-semibold">Phone</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {getContactsForCurrentView().map((contact) => (
                   <TableRow key={contact.id} className="hover:bg-gray-50">
                     <TableCell className="font-medium">{contact.firstName} {contact.lastName}</TableCell>
-                    <TableCell><Badge variant="secondary" className="bg-blue-100 text-blue-800">{contact.role}</Badge></TableCell>
+                    <TableCell>{contact.role}</TableCell>
                     <TableCell className="text-[#0078D4]">{contact.email}</TableCell>
                     <TableCell>{contact.phone}</TableCell>
+                    <TableCell><Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -359,24 +396,70 @@ export function AgencyTest1Screen() {
         <div className="flex items-center gap-2 text-sm text-gray-600 bg-white p-4 rounded-lg shadow-sm border">
           <button onClick={navigateToOverview} className="hover:text-[#0078D4] hover:underline">Home</button>
           <ChevronRight className="h-4 w-4" />
-          <button onClick={navigateToOverview} className="hover:text-[#0078D4] hover:underline">{departmentInfo.name}</button>
+          <button onClick={navigateToOverview} className="hover:text-[#0078D4] hover:underline">{departmentForm.name}</button>
           <ChevronRight className="h-4 w-4" />
           <span className="text-gray-900 font-medium">{division.name}</span>
         </div>
 
-        {/* Division Form */}
+        {/* Header */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h1 className="text-2xl font-semibold text-gray-900">{division.name}</h1>
+        </div>
+
+        {/* Entity Fields Card */}
+        <Card className="shadow-sm border">
+          <CardHeader className="bg-gray-50 border-b flex flex-row items-center justify-between">
+            <CardTitle className="text-lg font-semibold">Entity Information</CardTitle>
+            {!isEditingEntity && (
+              <Button size="sm" onClick={() => setIsEditingEntity(true)} className="bg-[#0078D4] hover:bg-[#106EBE]">
+                Edit
+              </Button>
+            )}
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Division Name</Label>
+                <Input value={division.name} disabled={!isEditingEntity} className="mt-1" />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Parent Entity</Label>
+                <div className="relative mt-1">
+                  <Input value={departmentForm.name} disabled className="bg-muted" />
+                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                </div>
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Participation Group</Label>
+                <Input value="State Entities" disabled className="mt-1 bg-muted" />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Participation Type</Label>
+                <Input value="Division" disabled className="mt-1 bg-muted" />
+              </div>
+            </div>
+            {isEditingEntity && (
+              <div className="flex gap-3 mt-6">
+                <Button onClick={() => { toast({ title: "Success", description: "Division saved." }); setIsEditingEntity(false); }} className="bg-[#0078D4] hover:bg-[#106EBE]">
+                  Save
+                </Button>
+                <Button variant="outline" onClick={() => setIsEditingEntity(false)}>
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Division Details Card */}
         <Card className="shadow-sm border">
           <CardHeader className="bg-gray-50 border-b">
             <CardTitle className="text-lg font-semibold">Division Details</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div>
-                <Label className="text-sm font-medium text-gray-700">Name</Label>
-                <Input value={division.name} disabled={!isEditingEntity} className="mt-1" />
-              </div>
-              <div>
-                <Label className="text-sm font-medium text-gray-700">Address (Address 1)</Label>
+                <Label className="text-sm font-medium text-gray-700">Street</Label>
                 <Input value={division.address} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
@@ -388,7 +471,7 @@ export function AgencyTest1Screen() {
                 <Input value={division.state} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
-                <Label className="text-sm font-medium text-gray-700">ZIP</Label>
+                <Label className="text-sm font-medium text-gray-700">Postal Code</Label>
                 <Input value={division.zip} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
@@ -396,19 +479,14 @@ export function AgencyTest1Screen() {
                 <Input value={division.phone} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
-                <Label className="text-sm font-medium text-gray-700">Primary Contact (lookup)</Label>
-                <Input value={division.primaryContact} disabled={!isEditingEntity} className="mt-1" />
+                <Label className="text-sm font-medium text-gray-700">Primary Contact</Label>
+                <div className="relative mt-1">
+                  <Input value={division.primaryContact} disabled={!isEditingEntity} />
+                  {isEditingEntity && (
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="flex gap-3 mt-6">
-              {!isEditingEntity ? (
-                <Button onClick={() => setIsEditingEntity(true)} className="bg-[#0078D4] hover:bg-[#106EBE]">Edit</Button>
-              ) : (
-                <>
-                  <Button onClick={() => { toast({ title: "Success", description: "Division saved." }); setIsEditingEntity(false); }} className="bg-[#0078D4] hover:bg-[#106EBE]">Save</Button>
-                  <Button variant="outline" onClick={() => setIsEditingEntity(false)}>Cancel</Button>
-                </>
-              )}
             </div>
           </CardContent>
         </Card>
@@ -473,28 +551,30 @@ export function AgencyTest1Screen() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <Alert className="m-4 bg-yellow-50 border-yellow-200">
-              <AlertTriangle className="h-4 w-4 text-yellow-600" />
-              <AlertDescription className="text-yellow-800">
-                Division/Bureau contacts cannot be assigned Agency Manager or Case Manager.
+            <Alert className="m-4 bg-blue-50 border-blue-200">
+              <AlertTriangle className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-800">
+                Allowed roles: <strong>Bureau Manager</strong>, <strong>Staff</strong>, <strong>Contact Person</strong>. Division/Bureau contacts cannot be assigned Agency Manager or Case Manager roles.
               </AlertDescription>
             </Alert>
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50">
                   <TableHead className="font-semibold">Name</TableHead>
-                  <TableHead className="font-semibold">Role</TableHead>
+                  <TableHead className="font-semibold">Contact Role</TableHead>
                   <TableHead className="font-semibold">Email</TableHead>
                   <TableHead className="font-semibold">Phone</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {getContactsForCurrentView().map((contact) => (
                   <TableRow key={contact.id} className="hover:bg-gray-50">
                     <TableCell className="font-medium">{contact.firstName} {contact.lastName}</TableCell>
-                    <TableCell><Badge variant="secondary" className="bg-green-100 text-green-800">{contact.role}</Badge></TableCell>
+                    <TableCell>{contact.role}</TableCell>
                     <TableCell className="text-[#0078D4]">{contact.email}</TableCell>
                     <TableCell>{contact.phone}</TableCell>
+                    <TableCell><Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -517,26 +597,72 @@ export function AgencyTest1Screen() {
         <div className="flex items-center gap-2 text-sm text-gray-600 bg-white p-4 rounded-lg shadow-sm border">
           <button onClick={navigateToOverview} className="hover:text-[#0078D4] hover:underline">Home</button>
           <ChevronRight className="h-4 w-4" />
-          <button onClick={navigateToOverview} className="hover:text-[#0078D4] hover:underline">{departmentInfo.name}</button>
+          <button onClick={navigateToOverview} className="hover:text-[#0078D4] hover:underline">{departmentForm.name}</button>
           <ChevronRight className="h-4 w-4" />
           <button onClick={() => navigateToDivision(division.id)} className="hover:text-[#0078D4] hover:underline">{division.name}</button>
           <ChevronRight className="h-4 w-4" />
           <span className="text-gray-900 font-medium">{bureau.name}</span>
         </div>
 
-        {/* Bureau Form */}
+        {/* Header */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h1 className="text-2xl font-semibold text-gray-900">{bureau.name}</h1>
+        </div>
+
+        {/* Entity Fields Card */}
         <Card className="shadow-sm border">
-          <CardHeader className="bg-gray-50 border-b">
-            <CardTitle className="text-lg font-semibold">Bureau Details</CardTitle>
+          <CardHeader className="bg-gray-50 border-b flex flex-row items-center justify-between">
+            <CardTitle className="text-lg font-semibold">Entity Information</CardTitle>
+            {!isEditingEntity && (
+              <Button size="sm" onClick={() => setIsEditingEntity(true)} className="bg-[#0078D4] hover:bg-[#106EBE]">
+                Edit
+              </Button>
+            )}
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div>
                 <Label className="text-sm font-medium text-gray-700">Bureau Name</Label>
                 <Input value={bureau.name} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
-                <Label className="text-sm font-medium text-gray-700">Address (Address 1)</Label>
+                <Label className="text-sm font-medium text-gray-700">Parent Entity</Label>
+                <div className="relative mt-1">
+                  <Input value={division.name} disabled className="bg-muted" />
+                  <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                </div>
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Participation Group</Label>
+                <Input value="State Entities" disabled className="mt-1 bg-muted" />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Participation Type</Label>
+                <Input value="Bureau" disabled className="mt-1 bg-muted" />
+              </div>
+            </div>
+            {isEditingEntity && (
+              <div className="flex gap-3 mt-6">
+                <Button onClick={() => { toast({ title: "Success", description: "Bureau saved." }); setIsEditingEntity(false); }} className="bg-[#0078D4] hover:bg-[#106EBE]">
+                  Save
+                </Button>
+                <Button variant="outline" onClick={() => setIsEditingEntity(false)}>
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Bureau Details Card */}
+        <Card className="shadow-sm border">
+          <CardHeader className="bg-gray-50 border-b">
+            <CardTitle className="text-lg font-semibold">Bureau Details</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              <div>
+                <Label className="text-sm font-medium text-gray-700">Street</Label>
                 <Input value={bureau.address} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
@@ -548,7 +674,7 @@ export function AgencyTest1Screen() {
                 <Input value={bureau.state} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
-                <Label className="text-sm font-medium text-gray-700">ZIP</Label>
+                <Label className="text-sm font-medium text-gray-700">Postal Code</Label>
                 <Input value={bureau.zip} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
@@ -556,19 +682,14 @@ export function AgencyTest1Screen() {
                 <Input value={bureau.phone} disabled={!isEditingEntity} className="mt-1" />
               </div>
               <div>
-                <Label className="text-sm font-medium text-gray-700">Primary Contact (lookup)</Label>
-                <Input value={bureau.primaryContact} disabled={!isEditingEntity} className="mt-1" />
+                <Label className="text-sm font-medium text-gray-700">Primary Contact</Label>
+                <div className="relative mt-1">
+                  <Input value={bureau.primaryContact} disabled={!isEditingEntity} />
+                  {isEditingEntity && (
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="flex gap-3 mt-6">
-              {!isEditingEntity ? (
-                <Button onClick={() => setIsEditingEntity(true)} className="bg-[#0078D4] hover:bg-[#106EBE]">Edit</Button>
-              ) : (
-                <>
-                  <Button onClick={() => { toast({ title: "Success", description: "Bureau saved." }); setIsEditingEntity(false); }} className="bg-[#0078D4] hover:bg-[#106EBE]">Save</Button>
-                  <Button variant="outline" onClick={() => setIsEditingEntity(false)}>Cancel</Button>
-                </>
-              )}
             </div>
           </CardContent>
         </Card>
@@ -586,28 +707,30 @@ export function AgencyTest1Screen() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <Alert className="m-4 bg-yellow-50 border-yellow-200">
-              <AlertTriangle className="h-4 w-4 text-yellow-600" />
-              <AlertDescription className="text-yellow-800">
-                Roles available at Bureau: Bureau Manager, Staff, Contact Person.
+            <Alert className="m-4 bg-blue-50 border-blue-200">
+              <AlertTriangle className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-800">
+                Roles available at Bureau: <strong>Bureau Manager</strong>, <strong>Staff</strong>, <strong>Contact Person</strong>.
               </AlertDescription>
             </Alert>
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50">
                   <TableHead className="font-semibold">Name</TableHead>
-                  <TableHead className="font-semibold">Role</TableHead>
+                  <TableHead className="font-semibold">Contact Role</TableHead>
                   <TableHead className="font-semibold">Email</TableHead>
                   <TableHead className="font-semibold">Phone</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {getContactsForCurrentView().map((contact) => (
                   <TableRow key={contact.id} className="hover:bg-gray-50">
                     <TableCell className="font-medium">{contact.firstName} {contact.lastName}</TableCell>
-                    <TableCell><Badge variant="secondary" className="bg-purple-100 text-purple-800">{contact.role}</Badge></TableCell>
+                    <TableCell>{contact.role}</TableCell>
                     <TableCell className="text-[#0078D4]">{contact.email}</TableCell>
                     <TableCell>{contact.phone}</TableCell>
+                    <TableCell><Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
