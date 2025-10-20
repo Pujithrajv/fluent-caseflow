@@ -222,13 +222,15 @@ export function AgencyTest1Screen() {
           </CardContent>
         </Card>
 
-        {/* Department Details Card */}
-        <Card className="shadow-sm border">
-          <CardHeader className="bg-gray-50 border-b">
-            <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Department Details Card */}
+          <div className="lg:col-span-2">
+            <Card className="shadow-sm border">
+              <CardHeader className="bg-gray-50 border-b">
+                <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div>
                 <Label className="text-sm font-medium text-gray-700">Street</Label>
                 <Input 
@@ -290,6 +292,33 @@ export function AgencyTest1Screen() {
             </div>
           </CardContent>
         </Card>
+          </div>
+
+          {/* Right Column - Key Metrics */}
+          <div>
+            <Card className="shadow-sm border">
+              <CardHeader className="bg-gray-50 border-b">
+                <CardTitle className="text-lg font-semibold">Key Metrics</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center border-b pb-3">
+                    <span className="text-sm font-medium text-gray-700">Total Divisions</span>
+                    <span className="text-2xl font-bold text-gray-900">{departmentInfo.totalDivisions}</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b pb-3">
+                    <span className="text-sm font-medium text-gray-700">Total Bureaus</span>
+                    <span className="text-2xl font-bold text-gray-900">{departmentInfo.totalBureaus}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700">Total Contacts</span>
+                    <span className="text-2xl font-bold text-gray-900">{departmentInfo.totalContacts}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         {/* Divisions List */}
         <Card className="shadow-sm border">
