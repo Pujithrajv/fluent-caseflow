@@ -2,7 +2,17 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Search, Plus, Trash2 } from "lucide-react";
+
+interface Person {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+}
 
 interface InspectionQuestionsTabProps {
   data: any;
@@ -20,8 +30,7 @@ export function InspectionQuestionsTab({
   const [formData, setFormData] = useState({
     whatToInspect: data.whatToInspect || '',
     inspectionPurpose: data.inspectionPurpose || '',
-    whoPresent: data.whoPresent || '',
-    whoControls: data.whoControls || '',
+    whoControlsPersons: data.whoControlsPersons || [{ id: '1', name: '', phone: '', email: '' }],
     ...data
   });
 
@@ -32,10 +41,12 @@ export function InspectionQuestionsTab({
   };
 
   const validateForm = () => {
+    const hasWhoControlsPersons = formData.whoControlsPersons.some((person: Person) => 
+      person.name.trim() && person.phone.trim() && person.email.trim()
+    );
     const isValid = formData.whatToInspect.trim().length > 0 &&
                    formData.inspectionPurpose.trim().length > 0 &&
-                   formData.whoPresent.trim().length > 0 &&
-                   formData.whoControls.trim().length > 0;
+                   hasWhoControlsPersons;
     
     if (onValidationChange) onValidationChange(isValid);
     return isValid;
@@ -44,6 +55,27 @@ export function InspectionQuestionsTab({
   useEffect(() => {
     validateForm();
   }, [formData]);
+
+  const addWhoControlsPerson = () => {
+    const newPerson = { id: Date.now().toString(), name: '', phone: '', email: '' };
+    updateFormData({ whoControlsPersons: [...formData.whoControlsPersons, newPerson] });
+  };
+
+  const removeWhoControlsPerson = (id: string) => {
+    if (formData.whoControlsPersons.length > 1) {
+      updateFormData({ 
+        whoControlsPersons: formData.whoControlsPersons.filter((p: Person) => p.id !== id) 
+      });
+    }
+  };
+
+  const updateWhoControlsPerson = (id: string, field: keyof Person, value: string) => {
+    updateFormData({
+      whoControlsPersons: formData.whoControlsPersons.map((p: Person) =>
+        p.id === id ? { ...p, [field]: value } : p
+      )
+    });
+  };
 
   return (
     <Card className="shadow-fluent-8">
@@ -79,6 +111,82 @@ export function InspectionQuestionsTab({
             value={formData.inspectionPurpose}
             onChange={(e) => updateFormData({ inspectionPurpose: e.target.value })}
           />
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label className="font-fluent">Who controls the inspection? *</Label>
+            {!isReadOnly && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addWhoControlsPerson}
+                className="shadow-fluent-8"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Person
+              </Button>
+            )}
+          </div>
+          <div className="border rounded-md shadow-fluent-8">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Email</TableHead>
+                  {!isReadOnly && <TableHead className="w-[50px]"></TableHead>}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {formData.whoControlsPersons.map((person: Person) => (
+                  <TableRow key={person.id}>
+                    <TableCell>
+                      <Input
+                        value={person.name}
+                        onChange={(e) => updateWhoControlsPerson(person.id, 'name', e.target.value)}
+                        placeholder="Enter name"
+                        disabled={isReadOnly}
+                        className="shadow-fluent-8 border-input-border"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        value={person.phone}
+                        onChange={(e) => updateWhoControlsPerson(person.id, 'phone', e.target.value)}
+                        placeholder="Enter phone"
+                        disabled={isReadOnly}
+                        className="shadow-fluent-8 border-input-border"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        value={person.email}
+                        onChange={(e) => updateWhoControlsPerson(person.id, 'email', e.target.value)}
+                        placeholder="Enter email"
+                        disabled={isReadOnly}
+                        className="shadow-fluent-8 border-input-border"
+                      />
+                    </TableCell>
+                    {!isReadOnly && (
+                      <TableCell>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeWhoControlsPerson(person.id)}
+                          disabled={formData.whoControlsPersons.length === 1}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </CardContent>
     </Card>
