@@ -1200,7 +1200,7 @@ const Profile = () => {
                 {/* Organization Information Card */}
                 <Card className="shadow-sm border-border">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg font-semibold text-foreground">Entity Information</CardTitle>
+                    <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
                     <p className="text-sm text-muted-foreground mt-1">Your organization's contact details.</p>
                   </CardHeader>
                   <CardContent className="space-y-4">
