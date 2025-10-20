@@ -746,196 +746,154 @@ const Profile = () => {
           {/* Organization Tab */}
           <TabsContent value="account" className="mt-6">
             <div className="max-w-screen-xl mx-auto space-y-6">
-              {/* Page content with help icon */}
-              <div className="flex items-center justify-between mb-6">
-                <div></div>
-                <Button variant="ghost" size="icon" className="text-muted-foreground">
-                  <HelpCircle className="h-5 w-5" />
-                </Button>
-              </div>
-
               {/* Two-column layout */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Organization Information Card */}
-                <Card className="shadow-sm">
-                  <CardHeader className="pb-4">
+                <Card className="shadow-sm border-border">
+                  <CardHeader className="pb-3">
                     <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">Your organization's contact details.</p>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label htmlFor="organizationName" className="text-sm font-medium">
+                      <Label htmlFor="organizationName" className="text-sm font-medium text-foreground">
                         Organization Name <span className="text-destructive">*</span>
                       </Label>
                       <Input
                         id="organizationName"
-                        value={accountProfile.organizationName}
-                        onChange={(e) => handleAccountChange("organizationName", e.target.value)}
-                        className="mt-1"
-                        required
+                        value="Department of Natural Resources"
+                        className="mt-1 bg-muted"
+                        readOnly
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="website" className="text-sm font-medium">Web Site</Label>
+                      <Label htmlFor="website" className="text-sm font-medium text-foreground">Website</Label>
                       <Input
                         id="website"
                         type="url"
-                        value={accountProfile.website}
-                        onChange={(e) => handleAccountChange("website", e.target.value)}
-                        className={`mt-1 ${
-                          accountProfile.website && !validateURL(accountProfile.website) 
-                            ? 'border-destructive' 
-                            : ''
-                        }`}
-                        placeholder="https://www.example.org"
+                        value="https://dnr.illinois.gov"
+                        className="mt-1 bg-muted"
+                        readOnly
                       />
-                      {accountProfile.website && !validateURL(accountProfile.website) && (
-                        <p className="text-sm text-destructive mt-1">Please enter a valid URL starting with https://</p>
-                      )}
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="businessPhone" className="text-sm font-medium text-foreground">Business Phone</Label>
+                        <Input
+                          id="businessPhone"
+                          value=""
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="fax" className="text-sm font-medium text-foreground">Fax</Label>
+                        <Input
+                          id="fax"
+                          value=""
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
                     </div>
                     
                     <div>
-                      <Label htmlFor="businessPhone" className="text-sm font-medium">Business Phone</Label>
+                      <Label htmlFor="businessForm" className="text-sm font-medium text-foreground">Business Form</Label>
                       <Input
-                        id="businessPhone"
-                        value={accountProfile.telephone}
-                        onChange={(e) => handleAccountChange("telephone", formatPhone(e.target.value))}
-                        className="mt-1"
-                        placeholder="(555) 555-1234"
+                        id="businessForm"
+                        value="Government"
+                        className="mt-1 bg-muted"
+                        readOnly
                       />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="orgParticipationType" className="text-sm font-medium">Participation Type</Label>
-                      <Select value={accountProfile.participationType || ""} onValueChange={(value) => handleAccountChange("participationType", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select participation type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="petitioner">Petitioner</SelectItem>
-                          <SelectItem value="respondent">Respondent</SelectItem>
-                          <SelectItem value="department-representative">Department Representative</SelectItem>
-                          <SelectItem value="attorney">Attorney</SelectItem>
-                          <SelectItem value="interpreter">Interpreter</SelectItem>
-                          <SelectItem value="witness">Witness</SelectItem>
-                        </SelectContent>
-                      </Select>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Address Information Card */}
-                <Card className="shadow-sm">
-                  <CardHeader className="pb-4">
+                <Card className="shadow-sm border-border">
+                  <CardHeader className="pb-3">
                     <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">Your organization's primary mailing location.</p>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label htmlFor="orgAddress1" className="text-sm font-medium">
-                        Address Line 1 <span className="text-destructive">*</span>
-                      </Label>
+                      <Label htmlFor="addressLine1" className="text-sm font-medium text-foreground">Address Line 1</Label>
                       <Input
-                        id="orgAddress1"
-                        value={accountProfile.address}
-                        onChange={(e) => handleAccountChange("address", e.target.value)}
-                        className="mt-1"
-                        required
+                        id="addressLine1"
+                        value="100 Gold St"
+                        className="mt-1 bg-muted"
+                        readOnly
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="orgAddress2" className="text-sm font-medium">Address Line 2</Label>
+                      <Label htmlFor="addressLine2" className="text-sm font-medium text-foreground">Address Line 2</Label>
                       <Input
-                        id="orgAddress2"
-                        value={accountProfile.address2 || ""}
-                        onChange={(e) => handleAccountChange("address2", e.target.value)}
-                        className="mt-1"
+                        id="addressLine2"
+                        value=""
+                        className="mt-1 bg-muted"
+                        readOnly
                       />
                     </div>
                     
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="city" className="text-sm font-medium text-foreground">City</Label>
+                        <Input
+                          id="city"
+                          value="New York"
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="county" className="text-sm font-medium text-foreground">County</Label>
+                        <Input
+                          id="county"
+                          value=""
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="state" className="text-sm font-medium text-foreground">State/Province</Label>
+                        <Input
+                          id="state"
+                          value="NY"
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="postalCode" className="text-sm font-medium text-foreground">Postal Code</Label>
+                        <Input
+                          id="postalCode"
+                          value="10038"
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    
                     <div>
-                      <Label htmlFor="orgCity" className="text-sm font-medium">
-                        City <span className="text-destructive">*</span>
-                      </Label>
+                      <Label htmlFor="country" className="text-sm font-medium text-foreground">Country</Label>
                       <Input
-                        id="orgCity"
-                        value={accountProfile.city}
-                        onChange={(e) => handleAccountChange("city", e.target.value)}
-                        className="mt-1"
-                        required
+                        id="country"
+                        value="United States"
+                        className="mt-1 bg-muted"
+                        readOnly
                       />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="orgState" className="text-sm font-medium">
-                        State / Province <span className="text-destructive">*</span>
-                      </Label>
-                      <Select value={accountProfile.state} onValueChange={(value) => handleAccountChange("state", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select state/province" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="il">Illinois</SelectItem>
-                          <SelectItem value="ca">California</SelectItem>
-                          <SelectItem value="ny">New York</SelectItem>
-                          <SelectItem value="tx">Texas</SelectItem>
-                          <SelectItem value="fl">Florida</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="orgPostalCode" className="text-sm font-medium">
-                        Postal Code <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="orgPostalCode"
-                        value={accountProfile.zipCode}
-                        onChange={(e) => handleAccountChange("zipCode", formatZip(e.target.value))}
-                        className="mt-1"
-                        placeholder="12345"
-                        required
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="orgCountry" className="text-sm font-medium">
-                        Country <span className="text-destructive">*</span>
-                      </Label>
-                      <Select value={accountProfile.country || "United States"} onValueChange={(value) => handleAccountChange("country", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="United States">United States</SelectItem>
-                          <SelectItem value="Canada">Canada</SelectItem>
-                          <SelectItem value="Mexico">Mexico</SelectItem>
-                          <SelectItem value="United Kingdom">United Kingdom</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-
-              {/* Sticky Action Bar */}
-              <div className="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
-                <div className="flex justify-end gap-4">
-                  <Button variant="outline">Cancel</Button>
-                  <Button 
-                    onClick={() => {
-                      toast({
-                        title: "Success",
-                        description: "All changes saved successfully."
-                      });
-                    }}
-                    className="w-full sm:w-auto"
-                  >
-                    Save All Changes
-                  </Button>
-                </div>
               </div>
             </div>
           </TabsContent>
