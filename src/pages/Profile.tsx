@@ -1452,6 +1452,14 @@ const Profile = () => {
                         className="mt-1"
                       />
                     </div>
+                    <div className="col-span-2">
+                      <Label className="text-sm font-medium text-gray-700">Website</Label>
+                      <Input 
+                        value="https://dnr.illinois.gov" 
+                        disabled
+                        className="mt-1"
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
