@@ -54,15 +54,15 @@ export function AgencyTestScreen() {
     {
       id: "div-1",
       name: "Office of Forestry",
-      address: "465 Conservation Dr, Springfield, IL",
+      address: "465 Conservation Dr., Springfield, IL 62701",
       phone: "(217) 555-2100",
       primaryContact: "Rachel Evans",
       bureausCount: 3
     },
     {
       id: "div-2",
-      name: "Office of Oil & Gas Resource Mgmt",
-      address: "12 Energy Way, Springfield, IL",
+      name: "Office of Oil & Gas Resource Management",
+      address: "12 Energy Way, Springfield, IL 62702",
       phone: "(217) 555-2200",
       primaryContact: "Tom Reyes",
       bureausCount: 2
@@ -70,7 +70,7 @@ export function AgencyTestScreen() {
     {
       id: "div-3",
       name: "Office of Water Resources",
-      address: "77 River Rd, Springfield, IL",
+      address: "77 River Rd, Springfield, IL 62703",
       phone: "(217) 555-2300",
       primaryContact: "Priya Nair",
       bureausCount: 2
@@ -78,6 +78,7 @@ export function AgencyTestScreen() {
   ]);
 
   const [bureaus, setBureaus] = useState<Bureau[]>([
+    // Office of Forestry bureaus
     {
       id: "bur-1",
       divisionId: "div-1",
@@ -102,27 +103,46 @@ export function AgencyTestScreen() {
       phone: "(217) 555-3113",
       primaryContact: "Maria Stone"
     },
+    // Office of Oil & Gas bureaus
     {
       id: "bur-4",
       divisionId: "div-2",
       name: "Bureau of Drilling Oversight",
-      address: "20 Oil Rd, Springfield, IL",
+      address: "22 Rig Rd, Springfield, IL",
       phone: "(217) 555-3211",
-      primaryContact: "Kevin Hart"
+      primaryContact: "Carla Jenkins"
     },
     {
       id: "bur-5",
       divisionId: "div-2",
       name: "Bureau of Energy Safety",
-      address: "30 Gas Ave, Springfield, IL",
-      phone: "(217) 555-3212",
-      primaryContact: "Lisa Chang"
+      address: "40 Pipeline Dr, Springfield, IL",
+      phone: "(217) 555-3222",
+      primaryContact: "Nathan Yates"
+    },
+    // Office of Water Resources bureaus
+    {
+      id: "bur-6",
+      divisionId: "div-3",
+      name: "Bureau of Flood Management",
+      address: "90 Basin Blvd, Springfield, IL",
+      phone: "(217) 555-3311",
+      primaryContact: "Jacob Miller"
+    },
+    {
+      id: "bur-7",
+      divisionId: "div-3",
+      name: "Bureau of Irrigation",
+      address: "101 Canal St, Springfield, IL",
+      phone: "(217) 555-3322",
+      primaryContact: "Sophia Clark"
     }
   ]);
 
   const [contacts, setContacts] = useState<Contact[]>([
+    // Department level contacts
     {
-      id: "c-1",
+      id: "c-dept-1",
       name: "Laura Chen",
       role: "Agency Manager",
       level: "department",
@@ -131,7 +151,7 @@ export function AgencyTestScreen() {
       phone: "(217) 555-1111"
     },
     {
-      id: "c-2",
+      id: "c-dept-2",
       name: "Peter Morales",
       role: "Case Manager",
       level: "department",
@@ -139,14 +159,295 @@ export function AgencyTestScreen() {
       email: "p.morales@dnr.gov",
       phone: "(217) 555-1112"
     },
+    
+    // Office of Forestry (Division) contacts
     {
-      id: "c-3",
+      id: "c-div1-1",
       name: "Rachel Evans",
       role: "Bureau Manager",
       level: "division",
       levelName: "Office of Forestry",
       email: "r.evans@dnr.gov",
       phone: "(217) 555-2222"
+    },
+    {
+      id: "c-div1-2",
+      name: "Samuel Green",
+      role: "Senior Analyst",
+      level: "division",
+      levelName: "Office of Forestry",
+      email: "s.green@dnr.gov",
+      phone: "(217) 555-2223"
+    },
+    {
+      id: "c-div1-3",
+      name: "Lisa Park",
+      role: "Administrative Staff",
+      level: "division",
+      levelName: "Office of Forestry",
+      email: "l.park@dnr.gov",
+      phone: "(217) 555-2224"
+    },
+    
+    // Bureau of Timber Licensing contacts
+    {
+      id: "c-bur1-1",
+      name: "Alan Brooks",
+      role: "Bureau Manager",
+      level: "bureau",
+      levelName: "Bureau of Timber Licensing",
+      email: "a.brooks@dnr.gov",
+      phone: "(217) 555-3111"
+    },
+    {
+      id: "c-bur1-2",
+      name: "Chloe Matthews",
+      role: "Licensing Officer",
+      level: "bureau",
+      levelName: "Bureau of Timber Licensing",
+      email: "c.matthews@dnr.gov",
+      phone: "(217) 555-3112"
+    },
+    {
+      id: "c-bur1-3",
+      name: "Ian Wallace",
+      role: "Compliance Clerk",
+      level: "bureau",
+      levelName: "Bureau of Timber Licensing",
+      email: "i.wallace@dnr.gov",
+      phone: "(217) 555-3113"
+    },
+    
+    // Bureau of Wildlife contacts
+    {
+      id: "c-bur2-1",
+      name: "Dana West",
+      role: "Bureau Manager",
+      level: "bureau",
+      levelName: "Bureau of Wildlife",
+      email: "d.west@dnr.gov",
+      phone: "(217) 555-3121"
+    },
+    {
+      id: "c-bur2-2",
+      name: "Olivia Tran",
+      role: "Field Biologist",
+      level: "bureau",
+      levelName: "Bureau of Wildlife",
+      email: "o.tran@dnr.gov",
+      phone: "(217) 555-3122"
+    },
+    {
+      id: "c-bur2-3",
+      name: "Ethan Reid",
+      role: "Support Specialist",
+      level: "bureau",
+      levelName: "Bureau of Wildlife",
+      email: "e.reid@dnr.gov",
+      phone: "(217) 555-3123"
+    },
+    
+    // Bureau of Conservation Services contacts
+    {
+      id: "c-bur3-1",
+      name: "Maria Stone",
+      role: "Bureau Manager",
+      level: "bureau",
+      levelName: "Bureau of Conservation Services",
+      email: "m.stone@dnr.gov",
+      phone: "(217) 555-3131"
+    },
+    {
+      id: "c-bur3-2",
+      name: "Kevin Hughes",
+      role: "Policy Analyst",
+      level: "bureau",
+      levelName: "Bureau of Conservation Services",
+      email: "k.hughes@dnr.gov",
+      phone: "(217) 555-3132"
+    },
+    {
+      id: "c-bur3-3",
+      name: "Amy Patel",
+      role: "Records Officer",
+      level: "bureau",
+      levelName: "Bureau of Conservation Services",
+      email: "a.patel@dnr.gov",
+      phone: "(217) 555-3133"
+    },
+    
+    // Office of Oil & Gas Resource Management (Division) contacts
+    {
+      id: "c-div2-1",
+      name: "Tom Reyes",
+      role: "Bureau Manager",
+      level: "division",
+      levelName: "Office of Oil & Gas Resource Management",
+      email: "t.reyes@dnr.gov",
+      phone: "(217) 555-2201"
+    },
+    {
+      id: "c-div2-2",
+      name: "Zoe Kim",
+      role: "Environmental Engineer",
+      level: "division",
+      levelName: "Office of Oil & Gas Resource Management",
+      email: "z.kim@dnr.gov",
+      phone: "(217) 555-2202"
+    },
+    {
+      id: "c-div2-3",
+      name: "Liam Foster",
+      role: "Policy Advisor",
+      level: "division",
+      levelName: "Office of Oil & Gas Resource Management",
+      email: "l.foster@dnr.gov",
+      phone: "(217) 555-2203"
+    },
+    
+    // Bureau of Drilling Oversight contacts
+    {
+      id: "c-bur4-1",
+      name: "Carla Jenkins",
+      role: "Bureau Manager",
+      level: "bureau",
+      levelName: "Bureau of Drilling Oversight",
+      email: "c.jenkins@dnr.gov",
+      phone: "(217) 555-3211"
+    },
+    {
+      id: "c-bur4-2",
+      name: "Derek Hall",
+      role: "Safety Inspector",
+      level: "bureau",
+      levelName: "Bureau of Drilling Oversight",
+      email: "d.hall@dnr.gov",
+      phone: "(217) 555-3212"
+    },
+    {
+      id: "c-bur4-3",
+      name: "Emily Wu",
+      role: "Geology Analyst",
+      level: "bureau",
+      levelName: "Bureau of Drilling Oversight",
+      email: "e.wu@dnr.gov",
+      phone: "(217) 555-3213"
+    },
+    
+    // Bureau of Energy Safety contacts
+    {
+      id: "c-bur5-1",
+      name: "Nathan Yates",
+      role: "Bureau Manager",
+      level: "bureau",
+      levelName: "Bureau of Energy Safety",
+      email: "n.yates@dnr.gov",
+      phone: "(217) 555-3221"
+    },
+    {
+      id: "c-bur5-2",
+      name: "Marcus Grant",
+      role: "Energy Compliance Officer",
+      level: "bureau",
+      levelName: "Bureau of Energy Safety",
+      email: "m.grant@dnr.gov",
+      phone: "(217) 555-3222"
+    },
+    {
+      id: "c-bur5-3",
+      name: "Sarah Owens",
+      role: "Technical Coordinator",
+      level: "bureau",
+      levelName: "Bureau of Energy Safety",
+      email: "s.owens@dnr.gov",
+      phone: "(217) 555-3223"
+    },
+    
+    // Office of Water Resources (Division) contacts
+    {
+      id: "c-div3-1",
+      name: "Priya Nair",
+      role: "Bureau Manager",
+      level: "division",
+      levelName: "Office of Water Resources",
+      email: "p.nair@dnr.gov",
+      phone: "(217) 555-2301"
+    },
+    {
+      id: "c-div3-2",
+      name: "Henry Scott",
+      role: "Hydrologist",
+      level: "division",
+      levelName: "Office of Water Resources",
+      email: "h.scott@dnr.gov",
+      phone: "(217) 555-2302"
+    },
+    {
+      id: "c-div3-3",
+      name: "Grace Lee",
+      role: "Environmental Analyst",
+      level: "division",
+      levelName: "Office of Water Resources",
+      email: "g.lee@dnr.gov",
+      phone: "(217) 555-2303"
+    },
+    
+    // Bureau of Flood Management contacts
+    {
+      id: "c-bur6-1",
+      name: "Jacob Miller",
+      role: "Bureau Manager",
+      level: "bureau",
+      levelName: "Bureau of Flood Management",
+      email: "j.miller@dnr.gov",
+      phone: "(217) 555-3311"
+    },
+    {
+      id: "c-bur6-2",
+      name: "Natalie Brooks",
+      role: "Civil Engineer",
+      level: "bureau",
+      levelName: "Bureau of Flood Management",
+      email: "n.brooks@dnr.gov",
+      phone: "(217) 555-3312"
+    },
+    {
+      id: "c-bur6-3",
+      name: "Victor Chang",
+      role: "GIS Specialist",
+      level: "bureau",
+      levelName: "Bureau of Flood Management",
+      email: "v.chang@dnr.gov",
+      phone: "(217) 555-3313"
+    },
+    
+    // Bureau of Irrigation contacts
+    {
+      id: "c-bur7-1",
+      name: "Sophia Clark",
+      role: "Bureau Manager",
+      level: "bureau",
+      levelName: "Bureau of Irrigation",
+      email: "s.clark@dnr.gov",
+      phone: "(217) 555-3321"
+    },
+    {
+      id: "c-bur7-2",
+      name: "Daniel Ross",
+      role: "Field Technician",
+      level: "bureau",
+      levelName: "Bureau of Irrigation",
+      email: "d.ross@dnr.gov",
+      phone: "(217) 555-3322"
+    },
+    {
+      id: "c-bur7-3",
+      name: "Emma Price",
+      role: "Data Analyst",
+      level: "bureau",
+      levelName: "Bureau of Irrigation",
+      email: "e.price@dnr.gov",
+      phone: "(217) 555-3323"
     }
   ]);
 
