@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Building2, Edit, ExternalLink, AlertCircle } from "lucide-react";
+import { Building2, Edit, ExternalLink, AlertCircle, ChevronDown, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -44,7 +43,8 @@ interface Contact {
 export function AgencyTestScreen() {
   const { toast } = useToast();
   const [selectedDivision, setSelectedDivision] = useState<string | null>(null);
-  const [contactLevel, setContactLevel] = useState<"department" | "division" | "bureau">("department");
+  const [selectedBureau, setSelectedBureau] = useState<string | null>(null);
+  const [expandedDivisions, setExpandedDivisions] = useState<Set<string>>(new Set());
   const [editingDivision, setEditingDivision] = useState<Division | null>(null);
   const [editingBureau, setEditingBureau] = useState<Bureau | null>(null);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
@@ -152,7 +152,26 @@ export function AgencyTestScreen() {
 
   const departmentInfo = {
     name: "Department of Natural Resources",
-    agencyId: "DNR-2025-001"
+    agencyId: "DNR-2025-001",
+    address: "465 Conservation Drive, Springfield, IL 62701",
+    phone: "(217) 555-1000",
+    primaryContact: "Laura Chen",
+    totalDivisions: 3,
+    totalContacts: 25
+  };
+
+  const toggleDivision = (divisionId: string) => {
+    const newExpanded = new Set(expandedDivisions);
+    if (newExpanded.has(divisionId)) {
+      newExpanded.delete(divisionId);
+      if (selectedDivision === divisionId) {
+        setSelectedDivision(null);
+        setSelectedBureau(null);
+      }
+    } else {
+      newExpanded.add(divisionId);
+    }
+    setExpandedDivisions(newExpanded);
   };
 
   const handleSaveDivision = () => {
@@ -196,10 +215,35 @@ export function AgencyTestScreen() {
     toast({ title: "Success", description: "Contact updated successfully." });
   };
 
-  const filteredContacts = contacts.filter(c => c.level === contactLevel);
+  const getContactsForLevel = () => {
+    if (selectedBureau) {
+      const bureau = bureaus.find(b => b.id === selectedBureau);
+      return contacts.filter(c => c.level === "bureau" && c.levelName === bureau?.name);
+    }
+    if (selectedDivision) {
+      const division = divisions.find(d => d.id === selectedDivision);
+      return contacts.filter(c => c.level === "division" && c.levelName === division?.name);
+    }
+    return contacts.filter(c => c.level === "department");
+  };
+
+  const filteredContacts = getContactsForLevel();
   const selectedDivisionBureaus = selectedDivision
     ? bureaus.filter(b => b.divisionId === selectedDivision)
     : [];
+
+  const getContactCount = (level: "department" | "division" | "bureau", id?: string) => {
+    if (level === "department") return contacts.filter(c => c.level === "department").length;
+    if (level === "division" && id) {
+      const division = divisions.find(d => d.id === id);
+      return contacts.filter(c => c.level === "division" && c.levelName === division?.name).length;
+    }
+    if (level === "bureau" && id) {
+      const bureau = bureaus.find(b => b.id === id);
+      return contacts.filter(c => c.level === "bureau" && c.levelName === bureau?.name).length;
+    }
+    return 0;
+  };
 
   const getRoleOptions = (level: "department" | "division" | "bureau") => {
     if (level === "department") {
@@ -214,6 +258,18 @@ export function AgencyTestScreen() {
     return "bg-gray-100 text-gray-800 border-gray-200";
   };
 
+  const getCurrentLevelName = () => {
+    if (selectedBureau) {
+      const bureau = bureaus.find(b => b.id === selectedBureau);
+      return `Bureau: ${bureau?.name}`;
+    }
+    if (selectedDivision) {
+      const division = divisions.find(d => d.id === selectedDivision);
+      return `Division: ${division?.name}`;
+    }
+    return "Department";
+  };
+
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
@@ -224,7 +280,7 @@ export function AgencyTestScreen() {
             {departmentInfo.name}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Agency ID: {departmentInfo.agencyId} • <Button variant="link" className="p-0 h-auto">
+            Agency ID: {departmentInfo.agencyId} • <Button variant="link" className="p-0 h-auto text-xs">
               <ExternalLink className="h-3 w-3 mr-1" />
               View in CRM
             </Button>
@@ -235,145 +291,180 @@ export function AgencyTestScreen() {
       {/* Two-pane layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left pane: Organization */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Organization</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Divisions Table */}
-            <div>
-              <h3 className="font-semibold mb-3">Divisions</h3>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Division Name</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Primary Contact</TableHead>
-                    <TableHead>Bureaus</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {divisions.map(division => (
-                    <TableRow key={division.id}>
-                      <TableCell className="font-medium">{division.name}</TableCell>
-                      <TableCell className="text-sm">{division.address}</TableCell>
-                      <TableCell className="text-sm">{division.phone}</TableCell>
-                      <TableCell className="text-sm">{division.primaryContact}</TableCell>
-                      <TableCell>{division.bureausCount}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setSelectedDivision(division.id)}
-                          >
-                            View
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setEditingDivision(division)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-
-            {/* Bureaus Table (contextual) */}
-            {selectedDivision && (
-              <div>
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="font-semibold">
-                    Bureaus - {divisions.find(d => d.id === selectedDivision)?.name}
-                  </h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedDivision(null)}
-                  >
-                    Close
-                  </Button>
+        <div className="space-y-6">
+          {/* Department Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Department Overview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-muted-foreground text-xs">Address</Label>
+                  <p className="text-sm mt-1">{departmentInfo.address}</p>
                 </div>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Bureau Name</TableHead>
-                      <TableHead>Address</TableHead>
-                      <TableHead>Phone</TableHead>
-                      <TableHead>Primary Contact</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {selectedDivisionBureaus.map(bureau => (
-                      <TableRow key={bureau.id}>
-                        <TableCell className="font-medium">{bureau.name}</TableCell>
-                        <TableCell className="text-sm">{bureau.address}</TableCell>
-                        <TableCell className="text-sm">{bureau.phone}</TableCell>
-                        <TableCell className="text-sm">{bureau.primaryContact}</TableCell>
-                        <TableCell>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setEditingBureau(bureau)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <div>
+                  <Label className="text-muted-foreground text-xs">Phone</Label>
+                  <p className="text-sm mt-1">{departmentInfo.phone}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground text-xs">Primary Contact</Label>
+                  <p className="text-sm mt-1">{departmentInfo.primaryContact}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground text-xs">Total Divisions</Label>
+                  <p className="text-sm mt-1">{departmentInfo.totalDivisions}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground text-xs">Total Contacts</Label>
+                  <p className="text-sm mt-1">{departmentInfo.totalContacts}</p>
+                </div>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+
+          {/* Divisions & Bureaus Structure */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Department Structure</CardTitle>
+              <CardDescription>Divisions and Bureaus</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {divisions.map(division => (
+                <div key={division.id} className="space-y-2">
+                  {/* Division Row */}
+                  <div 
+                    className={`p-3 rounded-lg border cursor-pointer transition-colors ${
+                      selectedDivision === division.id && !selectedBureau
+                        ? 'bg-primary/10 border-primary' 
+                        : 'hover:bg-muted/50'
+                    }`}
+                    onClick={() => {
+                      setSelectedDivision(division.id);
+                      setSelectedBureau(null);
+                      toggleDivision(division.id);
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {expandedDivisions.has(division.id) ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                        <div>
+                          <p className="font-semibold text-sm">{division.name}</p>
+                          <p className="text-xs text-muted-foreground">{division.address}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {getContactCount("division", division.id)} contacts
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {bureaus.filter(b => b.divisionId === division.id).length} bureaus
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingDivision(division);
+                          }}
+                        >
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bureaus (nested) */}
+                  {expandedDivisions.has(division.id) && (
+                    <div className="ml-6 space-y-2">
+                      {bureaus
+                        .filter(b => b.divisionId === division.id)
+                        .map(bureau => (
+                          <div
+                            key={bureau.id}
+                            className={`p-3 rounded-lg border cursor-pointer transition-colors ${
+                              selectedBureau === bureau.id
+                                ? 'bg-primary/10 border-primary'
+                                : 'hover:bg-muted/50'
+                            }`}
+                            onClick={() => {
+                              setSelectedBureau(bureau.id);
+                              setSelectedDivision(division.id);
+                            }}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-sm">{bureau.name}</p>
+                                <p className="text-xs text-muted-foreground">{bureau.address}</p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="secondary" className="text-xs">
+                                  {getContactCount("bureau", bureau.id)} contacts
+                                </Badge>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setEditingBureau(bureau);
+                                  }}
+                                >
+                                  <Edit className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Right pane: Contacts & Roles */}
         <Card>
           <CardHeader>
             <CardTitle>Contacts & Roles</CardTitle>
+            <CardDescription>
+              Viewing: <span className="font-semibold">{getCurrentLevelName()}</span>
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Tabs value={contactLevel} onValueChange={(v: any) => setContactLevel(v)}>
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="department">Department</TabsTrigger>
-                <TabsTrigger value="division">Division</TabsTrigger>
-                <TabsTrigger value="bureau">Bureau</TabsTrigger>
-              </TabsList>
+          <CardContent className="space-y-4">
+            {/* Role rules alert */}
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                <strong>Agency Manager and Case Manager roles are restricted to the Department level only.</strong>
+                {(selectedDivision || selectedBureau) && (
+                  <span className="block mt-1 text-xs">
+                    Contacts at this level can only be assigned: Bureau Manager, Staff, Contact Person
+                  </span>
+                )}
+              </AlertDescription>
+            </Alert>
 
-              <TabsContent value={contactLevel} className="space-y-4">
-                {/* Alert for role rules */}
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    {contactLevel === "department"
-                      ? "Department-only roles: Agency Manager, Case Manager."
-                      : "Agency Manager and Case Manager cannot be assigned at this level."}
-                  </AlertDescription>
-                </Alert>
-
-                {/* Contacts table */}
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Current Role(s)</TableHead>
-                      <TableHead>Level</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Phone</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredContacts.map(contact => (
+            {/* Contacts table */}
+            <div className="border rounded-lg">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredContacts.length > 0 ? (
+                    filteredContacts.map(contact => (
                       <TableRow key={contact.id}>
                         <TableCell className="font-medium">{contact.name}</TableCell>
                         <TableCell>
@@ -381,13 +472,15 @@ export function AgencyTestScreen() {
                             {contact.role}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-sm">{contact.levelName}</TableCell>
                         <TableCell>
                           <a href={`mailto:${contact.email}`} className="text-primary hover:underline text-sm">
                             {contact.email}
                           </a>
                         </TableCell>
                         <TableCell className="text-sm">{contact.phone}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="text-xs">Active</Badge>
+                        </TableCell>
                         <TableCell>
                           <Button
                             variant="ghost"
@@ -398,11 +491,21 @@ export function AgencyTestScreen() {
                           </Button>
                         </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TabsContent>
-            </Tabs>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                        No contacts assigned to this level
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            <Button variant="outline" className="w-full">
+              + Add Contact to {getCurrentLevelName()}
+            </Button>
           </CardContent>
         </Card>
       </div>
