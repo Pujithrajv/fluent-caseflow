@@ -1197,66 +1197,54 @@ const Profile = () => {
             <div className="max-w-screen-xl mx-auto space-y-6">
               {/* Two-column layout */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Organization Information Card */}
-                <Card className="shadow-sm border-border">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">Your organization's contact details.</p>
+                {/* Entity Information Card */}
+                <Card className="shadow-sm border">
+                  <CardHeader className="bg-gray-50 border-b">
+                    <CardTitle className="text-lg font-semibold">Entity Information</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label htmlFor="organizationName2" className="text-sm font-medium text-foreground">
-                        Organization Name <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="organizationName2"
-                        value="Department of Natural Resources"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="website2" className="text-sm font-medium text-foreground">Website</Label>
-                      <Input
-                        id="website2"
-                        type="url"
-                        value="https://dnr.illinois.gov"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
+                  <CardContent className="pt-6">
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                       <div>
-                        <Label htmlFor="businessPhone2" className="text-sm font-medium text-foreground">Business Phone</Label>
-                        <Input
-                          id="businessPhone2"
-                          value=""
-                          className="mt-1 bg-muted"
-                          readOnly
+                        <Label className="text-sm font-medium text-gray-700">Department Name</Label>
+                        <Input 
+                          value="Department of Natural Resources" 
+                          disabled
+                          className="mt-1"
                         />
                       </div>
-                      
                       <div>
-                        <Label htmlFor="fax2" className="text-sm font-medium text-foreground">Fax</Label>
-                        <Input
-                          id="fax2"
-                          value=""
-                          className="mt-1 bg-muted"
-                          readOnly
+                        <Label className="text-sm font-medium text-gray-700">Department Code</Label>
+                        <Input 
+                          value="DNR" 
+                          disabled
+                          className="mt-1"
                         />
                       </div>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="businessForm2" className="text-sm font-medium text-foreground">Business Form</Label>
-                      <Input
-                        id="businessForm2"
-                        value="Government"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Parent Entity</Label>
+                        <Input 
+                          value="" 
+                          disabled
+                          placeholder="(None)"
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Participation Group</Label>
+                        <Input 
+                          value="State Entities" 
+                          disabled
+                          className="mt-1 bg-muted"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <Label className="text-sm font-medium text-gray-700">Participation Type</Label>
+                        <Input 
+                          value="Department" 
+                          disabled
+                          className="mt-1 bg-muted"
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -1345,57 +1333,6 @@ const Profile = () => {
                 </Card>
               </div>
 
-              {/* Entity Information Card from test1 */}
-              <Card className="shadow-sm border">
-                <CardHeader className="bg-gray-50 border-b">
-                  <CardTitle className="text-lg font-semibold">Entity Information</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Department Name</Label>
-                      <Input 
-                        value="Department of Natural Resources" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Department Code</Label>
-                      <Input 
-                        value="DNR" 
-                        disabled
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Parent Entity</Label>
-                      <Input 
-                        value="" 
-                        disabled
-                        placeholder="(None)"
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-700">Participation Group</Label>
-                      <Input 
-                        value="State Entities" 
-                        disabled
-                        className="mt-1 bg-muted"
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <Label className="text-sm font-medium text-gray-700">Participation Type</Label>
-                      <Input 
-                        value="Department" 
-                        disabled
-                        className="mt-1 bg-muted"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
 
               {/* Department Details Card from test1 */}
               <Card className="shadow-sm border">
