@@ -42,7 +42,7 @@ export function DepositionQuestionsTab({
     depositionNecessaryReason: data.depositionNecessaryReason || '',
     interrogatoriesText: data.interrogatoriesText || '',
     completionDate: data.completionDate ? new Date(data.completionDate) : undefined,
-    whoToBeDeposed: data.whoToBeDeposed || '',
+    whoToBeDeposedPersons: data.whoToBeDeposedPersons || [{ id: '1', name: '', phone: '', email: '' }],
     testimonyFromInterrogatories: data.testimonyFromInterrogatories || false,
     ...data
   });
@@ -71,8 +71,10 @@ export function DepositionQuestionsTab({
     const hasNecessaryReason = formData.depositionNecessaryReason.trim().length > 0;
     const hasInterrogatoriesText = formData.interrogatoriesText.trim().length > 0;
     const hasCompletionDate = !!formData.completionDate;
-    const hasWhoToBeDeposed = formData.whoToBeDeposed.trim().length > 0;
-    if (!hasValidDepositionPersons || !hasNecessaryReason || !hasInterrogatoriesText || !hasCompletionDate || !hasWhoToBeDeposed) {
+    const hasWhoToBeDeposedPersons = formData.whoToBeDeposedPersons.some((person: Person) => 
+      person.name.trim() && person.phone.trim() && person.email.trim()
+    );
+    if (!hasValidDepositionPersons || !hasNecessaryReason || !hasInterrogatoriesText || !hasCompletionDate || !hasWhoToBeDeposedPersons) {
       isValid = false;
     }
     if (onValidationChange) onValidationChange(isValid);
@@ -82,6 +84,27 @@ export function DepositionQuestionsTab({
   useEffect(() => {
     validateForm();
   }, [formData]);
+
+  const addWhoToBeDeposedPerson = () => {
+    const newPerson = { id: Date.now().toString(), name: '', phone: '', email: '' };
+    updateFormData({ whoToBeDeposedPersons: [...formData.whoToBeDeposedPersons, newPerson] });
+  };
+
+  const removeWhoToBeDeposedPerson = (id: string) => {
+    if (formData.whoToBeDeposedPersons.length > 1) {
+      updateFormData({ 
+        whoToBeDeposedPersons: formData.whoToBeDeposedPersons.filter((p: Person) => p.id !== id) 
+      });
+    }
+  };
+
+  const updateWhoToBeDeposedPerson = (id: string, field: keyof Person, value: string) => {
+    updateFormData({
+      whoToBeDeposedPersons: formData.whoToBeDeposedPersons.map((p: Person) =>
+        p.id === id ? { ...p, [field]: value } : p
+      )
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -116,17 +139,79 @@ export function DepositionQuestionsTab({
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="whoToBeDeposed" className="font-fluent">
-              Who to be deposed? *
-            </Label>
-            <Textarea
-              id="whoToBeDeposed"
-              placeholder="Enter who will be deposed..."
-              className="min-h-[80px] shadow-fluent-8 border-input-border"
-              disabled={isReadOnly}
-              value={formData.whoToBeDeposed}
-              onChange={(e) => updateFormData({ whoToBeDeposed: e.target.value })}
-            />
+            <div className="flex items-center justify-between">
+              <Label className="font-fluent">Who to be deposed? *</Label>
+              {!isReadOnly && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addWhoToBeDeposedPerson}
+                  className="shadow-fluent-8"
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                  Add Person
+                </Button>
+              )}
+            </div>
+            <div className="border rounded-md shadow-fluent-8">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Email</TableHead>
+                    {!isReadOnly && <TableHead className="w-[50px]"></TableHead>}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {formData.whoToBeDeposedPersons.map((person: Person) => (
+                    <TableRow key={person.id}>
+                      <TableCell>
+                        <Input
+                          value={person.name}
+                          onChange={(e) => updateWhoToBeDeposedPerson(person.id, 'name', e.target.value)}
+                          placeholder="Enter name"
+                          disabled={isReadOnly}
+                          className="shadow-fluent-8 border-input-border"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Input
+                          value={person.phone}
+                          onChange={(e) => updateWhoToBeDeposedPerson(person.id, 'phone', e.target.value)}
+                          placeholder="Enter phone"
+                          disabled={isReadOnly}
+                          className="shadow-fluent-8 border-input-border"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Input
+                          value={person.email}
+                          onChange={(e) => updateWhoToBeDeposedPerson(person.id, 'email', e.target.value)}
+                          placeholder="Enter email"
+                          disabled={isReadOnly}
+                          className="shadow-fluent-8 border-input-border"
+                        />
+                      </TableCell>
+                      {!isReadOnly && (
+                        <TableCell>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeWhoToBeDeposedPerson(person.id)}
+                            disabled={formData.whoToBeDeposedPersons.length === 1}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
 
           <div className="space-y-2">
