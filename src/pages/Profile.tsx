@@ -23,6 +23,7 @@ import { Dynamics365SinglePageDashboard } from "@/components/portal/Dynamics365S
 import { AgencyManagerScreen } from "@/components/portal/AgencyManagerScreen";
 import { AgencyTestScreen } from "@/components/portal/AgencyTestScreen";
 import { AgencyTest2Screen } from "@/components/portal/AgencyTest2Screen";
+import { AgencyTest1Screen } from "@/components/portal/AgencyTest1Screen";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -1571,7 +1572,7 @@ const Profile = () => {
 
           {/* Test1 Tab - Copy of Agency Test Screen */}
           <TabsContent value="test1" className="mt-0 p-0">
-            <AgencyTestScreen />
+            <AgencyTest1Screen />
           </TabsContent>
         </Tabs>
       </div>
