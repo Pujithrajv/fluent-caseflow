@@ -3,20 +3,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { ChevronDown, ChevronRight, Building2, FolderTree, Folder, Plus, Edit, Trash2, ExternalLink, Phone, Mail, MapPin, Users } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ChevronRight, Building2, Plus, Edit, ExternalLink, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Contact {
   id: string;
   name: string;
   role: string;
-  divisionBureau: string;
+  parentEntity: string;
   email: string;
   phone: string;
   status: string;
@@ -26,464 +24,561 @@ interface Contact {
 interface Bureau {
   id: string;
   name: string;
-  address?: string;
-  phone?: string;
-  primaryContact?: string;
-  totalEmployees?: number;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
+  primaryContact: string;
+  divisionId: string;
 }
 
 interface Division {
   id: string;
   name: string;
-  address?: string;
-  phone?: string;
-  primaryContact?: string;
-  totalEmployees?: number;
-  bureaus: Bureau[];
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  phone: string;
+  primaryContact: string;
 }
+
+type ViewType = "department" | "division" | "bureau";
 
 export function AgencyManagerScreen() {
   const { toast } = useToast();
-  const [expandedDivisions, setExpandedDivisions] = useState<string[]>(["div-1"]);
-  const [selectedEntity, setSelectedEntity] = useState<{ type: "department" | "division" | "bureau"; id: string; name: string }>({
-    type: "department",
-    id: "dept-1",
-    name: "Department of Natural Resources"
-  });
-  const [filterLevel, setFilterLevel] = useState<string>("all");
+  const [currentView, setCurrentView] = useState<ViewType>("department");
+  const [selectedDivisionId, setSelectedDivisionId] = useState<string | null>(null);
+  const [selectedBureauId, setSelectedBureauId] = useState<string | null>(null);
+  const [isEditingDepartment, setIsEditingDepartment] = useState(false);
+  const [isEditingEntity, setIsEditingEntity] = useState(false);
   const [isAddingContact, setIsAddingContact] = useState(false);
-  const [editingContactId, setEditingContactId] = useState<string | null>(null);
 
-  const [newContact, setNewContact] = useState({
-    name: "",
-    role: "",
-    divisionBureau: "",
-    email: "",
-    phone: "",
-    level: "department" as "department" | "division" | "bureau"
+  const [departmentForm, setDepartmentForm] = useState({
+    address: "465 Conservation Drive",
+    city: "Springfield",
+    state: "IL",
+    zip: "62701",
+    phone: "(217) 555-1000",
+    primaryContact: "Laura Chen"
   });
 
-  // Mock data
   const departmentInfo = {
     name: "Department of Natural Resources",
-    agencyId: "DNR-2025-001",
-    address: "465 Conservation Drive, Springfield, IL 62701",
-    primaryContact: "Laura Chen",
-    phone: "(217) 555-1000",
-    totalDivisions: 3,
-    totalContacts: 25
+    agencyId: "DNR-2025-001"
   };
 
   const divisions: Division[] = [
-    {
-      id: "div-1",
-      name: "Office of Forestry",
-      address: "100 Forest Lane, Springfield, IL 62701",
-      phone: "(217) 555-1100",
-      primaryContact: "Mark Johnson",
-      totalEmployees: 45,
-      bureaus: [
-        { id: "bur-1", name: "Bureau of Timber Licensing", phone: "(217) 555-1110", primaryContact: "Sarah Williams", totalEmployees: 15 },
-        { id: "bur-2", name: "Bureau of Wildlife", phone: "(217) 555-1120", primaryContact: "David Brown", totalEmployees: 18 },
-        { id: "bur-3", name: "Bureau of Conservation Services", phone: "(217) 555-1130", primaryContact: "Emily Davis", totalEmployees: 12 }
-      ]
-    },
-    {
-      id: "div-2",
-      name: "Office of Oil & Gas Resource Management",
-      address: "200 Energy Blvd, Springfield, IL 62702",
-      phone: "(217) 555-1200",
-      primaryContact: "James Wilson",
-      totalEmployees: 38,
-      bureaus: [
-        { id: "bur-4", name: "Bureau of Drilling Oversight", phone: "(217) 555-1210", primaryContact: "Michael Lee", totalEmployees: 20 },
-        { id: "bur-5", name: "Bureau of Energy Safety", phone: "(217) 555-1220", primaryContact: "Jennifer Taylor", totalEmployees: 18 }
-      ]
-    },
-    {
-      id: "div-3",
-      name: "Office of Water Resources",
-      address: "300 River Road, Springfield, IL 62703",
-      phone: "(217) 555-1300",
-      primaryContact: "Patricia Martinez",
-      totalEmployees: 42,
-      bureaus: [
-        { id: "bur-6", name: "Bureau of Flood Management", phone: "(217) 555-1310", primaryContact: "Robert Anderson", totalEmployees: 22 },
-        { id: "bur-7", name: "Bureau of Irrigation", phone: "(217) 555-1320", primaryContact: "Linda Thomas", totalEmployees: 20 }
-      ]
-    }
+    { id: "div-1", name: "Office of Forestry", address: "465 Conservation Dr", city: "Springfield", state: "IL", zip: "62701", phone: "(217) 555-2100", primaryContact: "Rachel Evans" },
+    { id: "div-2", name: "Office of Oil & Gas Resource Management", address: "12 Energy Way", city: "Springfield", state: "IL", zip: "62702", phone: "(217) 555-2200", primaryContact: "Tom Reyes" },
+    { id: "div-3", name: "Office of Water Resources", address: "77 River Rd", city: "Springfield", state: "IL", zip: "62703", phone: "(217) 555-2300", primaryContact: "Priya Nair" }
+  ];
+
+  const bureaus: Bureau[] = [
+    { id: "bur-1", divisionId: "div-1", name: "Bureau of Timber Licensing", address: "101 Pine St", city: "Springfield", state: "IL", zip: "62701", phone: "(217) 555-3111", primaryContact: "Alan Brooks" },
+    { id: "bur-2", divisionId: "div-1", name: "Bureau of Wildlife", address: "55 Habitat Ln", city: "Springfield", state: "IL", zip: "62701", phone: "(217) 555-3121", primaryContact: "Dana West" },
+    { id: "bur-3", divisionId: "div-1", name: "Bureau of Conservation Services", address: "9 Preserve Ct", city: "Springfield", state: "IL", zip: "62701", phone: "(217) 555-3131", primaryContact: "Maria Stone" },
+    { id: "bur-4", divisionId: "div-2", name: "Bureau of Drilling Oversight", address: "22 Rig Rd", city: "Springfield", state: "IL", zip: "62702", phone: "(217) 555-3211", primaryContact: "Carla Jenkins" },
+    { id: "bur-5", divisionId: "div-2", name: "Bureau of Energy Safety", address: "40 Pipeline Dr", city: "Springfield", state: "IL", zip: "62702", phone: "(217) 555-3222", primaryContact: "Nathan Yates" },
+    { id: "bur-6", divisionId: "div-3", name: "Bureau of Flood Management", address: "90 Basin Blvd", city: "Springfield", state: "IL", zip: "62703", phone: "(217) 555-3311", primaryContact: "Jacob Miller" },
+    { id: "bur-7", divisionId: "div-3", name: "Bureau of Irrigation", address: "101 Canal St", city: "Springfield", state: "IL", zip: "62703", phone: "(217) 555-3322", primaryContact: "Sophia Clark" }
   ];
 
   const [contacts, setContacts] = useState<Contact[]>([
-    { id: "1", name: "Laura Chen", role: "Agency Manager", divisionBureau: "Department", email: "l.chen@dnr.gov", phone: "(217) 555-1001", status: "Active", level: "department" },
-    { id: "2", name: "Mark Johnson", role: "Division Director", divisionBureau: "Office of Forestry", email: "m.johnson@dnr.gov", phone: "(217) 555-1100", status: "Active", level: "division" },
-    { id: "3", name: "Sarah Williams", role: "Bureau Manager", divisionBureau: "Bureau of Timber Licensing", email: "s.williams@dnr.gov", phone: "(217) 555-1110", status: "Active", level: "bureau" },
-    { id: "4", name: "David Brown", role: "Contact Person", divisionBureau: "Bureau of Wildlife", email: "d.brown@dnr.gov", phone: "(217) 555-1120", status: "Active", level: "bureau" },
-    { id: "5", name: "John Smith", role: "Case Manager", divisionBureau: "Department", email: "j.smith@dnr.gov", phone: "(217) 555-1002", status: "Active", level: "department" }
+    { id: "c1", name: "Laura Chen", role: "Agency Manager", parentEntity: "Department", email: "l.chen@dnr.gov", phone: "(217) 555-1111", status: "Active", level: "department" },
+    { id: "c2", name: "Peter Morales", role: "Case Manager", parentEntity: "Department", email: "p.morales@dnr.gov", phone: "(217) 555-1112", status: "Active", level: "department" },
+    { id: "c3", name: "Kelly Zhou", role: "Attorney", parentEntity: "Department", email: "k.zhou@dnr.gov", phone: "(217) 555-1113", status: "Active", level: "department" },
+    { id: "c4", name: "Rachel Evans", role: "Bureau Manager", parentEntity: "div-1", email: "r.evans@dnr.gov", phone: "(217) 555-2222", status: "Active", level: "division" },
+    { id: "c5", name: "Samuel Green", role: "Staff", parentEntity: "div-1", email: "s.green@dnr.gov", phone: "(217) 555-2223", status: "Active", level: "division" },
+    { id: "c6", name: "Lisa Park", role: "Contact Person", parentEntity: "div-1", email: "l.park@dnr.gov", phone: "(217) 555-2224", status: "Active", level: "division" },
+    { id: "c7", name: "Alan Brooks", role: "Bureau Manager", parentEntity: "bur-1", email: "a.brooks@dnr.gov", phone: "(217) 555-3111", status: "Active", level: "bureau" },
+    { id: "c8", name: "Chloe Matthews", role: "Staff", parentEntity: "bur-1", email: "c.matthews@dnr.gov", phone: "(217) 555-3112", status: "Active", level: "bureau" },
+    { id: "c9", name: "Ian Wallace", role: "Contact Person", parentEntity: "bur-1", email: "i.wallace@dnr.gov", phone: "(217) 555-3113", status: "Active", level: "bureau" }
   ]);
 
-  const toggleDivision = (divisionId: string) => {
-    setExpandedDivisions(prev =>
-      prev.includes(divisionId)
-        ? prev.filter(id => id !== divisionId)
-        : [...prev, divisionId]
-    );
+  const navigateToDivision = (divisionId: string) => {
+    setSelectedDivisionId(divisionId);
+    setCurrentView("division");
   };
 
-  const getRoleBadgeColor = (role: string, level: "department" | "division" | "bureau") => {
-    if (level === "department") return "bg-blue-100 text-blue-800 border-blue-200";
-    if (level === "division") return "bg-green-100 text-green-800 border-green-200";
-    return "bg-gray-100 text-gray-800 border-gray-200";
+  const navigateToBureau = (bureauId: string) => {
+    setSelectedBureauId(bureauId);
+    setCurrentView("bureau");
   };
 
-  const handleAddContact = () => {
-    setIsAddingContact(true);
-    setNewContact({ name: "", role: "", divisionBureau: "", email: "", phone: "", level: "department" });
+  const navigateToOverview = () => {
+    setCurrentView("department");
+    setSelectedDivisionId(null);
+    setSelectedBureauId(null);
   };
 
-  const handleSaveNewContact = () => {
-    if (!newContact.name || !newContact.email || !newContact.role) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
-        variant: "destructive"
-      });
-      return;
+  const getContactsForCurrentView = () => {
+    if (currentView === "department") {
+      return contacts.filter(c => c.level === "department");
+    } else if (currentView === "division" && selectedDivisionId) {
+      return contacts.filter(c => c.parentEntity === selectedDivisionId);
+    } else if (currentView === "bureau" && selectedBureauId) {
+      return contacts.filter(c => c.parentEntity === selectedBureauId);
     }
-
-    // Validate role and level match
-    const departmentRoles = ["Agency Manager", "Case Manager"];
-    const bureauRoles = ["Bureau Manager", "Contact Person"];
-
-    if (departmentRoles.includes(newContact.role) && newContact.level !== "department") {
-      toast({
-        title: "Role Assignment Error",
-        description: "⚠️ This role can only be assigned at the Department level.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (bureauRoles.includes(newContact.role) && newContact.level === "department") {
-      toast({
-        title: "Role Assignment Error",
-        description: "⚠️ This role can only be assigned at the Division or Bureau level.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const contactToAdd: Contact = {
-      id: Date.now().toString(),
-      ...newContact,
-      status: "Active"
-    };
-
-    setContacts(prev => [...prev, contactToAdd]);
-    setIsAddingContact(false);
-    toast({ title: "Success", description: "Contact added successfully." });
+    return [];
   };
 
-  const handleDeleteContact = (contactId: string) => {
-    setContacts(prev => prev.filter(c => c.id !== contactId));
-    toast({ title: "Success", description: "Contact deleted successfully." });
+  const getCurrentDivision = () => divisions.find(d => d.id === selectedDivisionId);
+  const getCurrentBureau = () => bureaus.find(b => b.id === selectedBureauId);
+  const getBureausForDivision = (divId: string) => bureaus.filter(b => b.divisionId === divId);
+
+  const handleSaveDepartment = () => {
+    toast({ title: "Success", description: "Department details saved successfully." });
+    setIsEditingDepartment(false);
   };
 
-  const filteredContacts = contacts.filter(contact => {
-    if (filterLevel === "all") return true;
-    return contact.level === filterLevel;
-  });
+  const handleDeactivateContact = (contactId: string) => {
+    toast({ title: "Success", description: "Contact has been deactivated." });
+  };
 
-  return (
-    <div className="space-y-6 p-6">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
-            <Building2 className="h-8 w-8 text-primary" />
-            {departmentInfo.name}
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">Agency ID: {departmentInfo.agencyId}</p>
+  // Department Overview View
+  if (currentView === "department") {
+    return (
+      <div className="space-y-6 p-6">
+        {/* Header */}
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">{departmentInfo.name}</h1>
+            <p className="text-sm text-muted-foreground mt-1">Agency ID: {departmentInfo.agencyId}</p>
+          </div>
+          <Button variant="outline" size="sm">
+            <ExternalLink className="h-4 w-4 mr-2" />
+            View in CRM
+          </Button>
         </div>
-        <Button variant="outline" size="sm">
-          <ExternalLink className="h-4 w-4 mr-2" />
-          View in CRM
-        </Button>
-      </div>
 
-      {/* Department Overview */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Department Overview</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="flex items-start gap-3">
-              <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Address</p>
-                <p className="text-sm text-foreground">{departmentInfo.address}</p>
-              </div>
+        {/* Department Details Form */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Department Details</CardTitle>
+              {!isEditingDepartment && (
+                <Button variant="outline" size="sm" onClick={() => setIsEditingDepartment(true)}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+              )}
             </div>
-            <div className="flex items-start gap-3">
-              <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Primary Contact</p>
-                <p className="text-sm text-foreground">{departmentInfo.primaryContact}</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Phone className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Department Phone</p>
-                <p className="text-sm text-foreground">{departmentInfo.phone}</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <FolderTree className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Divisions</p>
-                <p className="text-sm text-foreground">{departmentInfo.totalDivisions}</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Contacts</p>
-                <p className="text-sm text-foreground">{departmentInfo.totalContacts}</p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Division & Bureau Hierarchy */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Division & Bureau Hierarchy</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {/* Department Level */}
-            <div className="flex items-center gap-2 p-3 rounded-md bg-blue-50 border border-blue-200">
-              <Building2 className="h-5 w-5 text-blue-600" />
-              <span className="font-semibold text-blue-900">{departmentInfo.name}</span>
-            </div>
-
-            {/* Divisions */}
-            {divisions.map(division => (
-              <div key={division.id} className="ml-4 space-y-2">
-                <Collapsible
-                  open={expandedDivisions.includes(division.id)}
-                  onOpenChange={() => toggleDivision(division.id)}
-                >
-                  <CollapsibleTrigger className="flex items-center gap-2 p-3 rounded-md bg-green-50 border border-green-200 hover:bg-green-100 transition-colors w-full">
-                    {expandedDivisions.includes(division.id) ? (
-                      <ChevronDown className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4 text-green-600" />
-                    )}
-                    <FolderTree className="h-5 w-5 text-green-600" />
-                    <span className="font-semibold text-green-900">{division.name}</span>
-                    <Badge variant="outline" className="ml-auto text-xs">
-                      {division.bureaus.length} bureaus
-                    </Badge>
-                  </CollapsibleTrigger>
-
-                  <CollapsibleContent className="ml-6 space-y-1 mt-2">
-                    {division.bureaus.map(bureau => (
-                      <div
-                        key={bureau.id}
-                        className="flex items-center gap-2 p-2 rounded-md bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors"
-                      >
-                        <Folder className="h-4 w-4 text-gray-600" />
-                        <span className="text-sm text-gray-900">{bureau.name}</span>
-                      </div>
-                    ))}
-                  </CollapsibleContent>
-                </Collapsible>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Contacts & Roles Management */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Contacts & Roles Management</CardTitle>
-            <div className="flex items-center gap-4">
-              <Select value={filterLevel} onValueChange={setFilterLevel}>
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Show All Contacts</SelectItem>
-                  <SelectItem value="department">Department Only</SelectItem>
-                  <SelectItem value="division">Division Only</SelectItem>
-                  <SelectItem value="bureau">Bureau Only</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button onClick={handleAddContact} size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Contact
-              </Button>
-            </div>
-          </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            ⚠️ Role and access changes must be made manually by department administrators.
-          </p>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Role(s)</TableHead>
-                <TableHead>Division/Bureau</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredContacts.map(contact => (
-                <TableRow key={contact.id}>
-                  <TableCell className="font-medium">{contact.name}</TableCell>
-                  <TableCell>
-                    <Badge className={getRoleBadgeColor(contact.role, contact.level)}>
-                      {contact.role}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{contact.divisionBureau}</TableCell>
-                  <TableCell>
-                    <a href={`mailto:${contact.email}`} className="text-primary hover:underline text-sm">
-                      {contact.email}
-                    </a>
-                  </TableCell>
-                  <TableCell className="text-sm">{contact.phone}</TableCell>
-                  <TableCell>
-                    <Badge variant={contact.status === "Active" ? "default" : "secondary"}>
-                      {contact.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Contact</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete this contact? This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDeleteContact(contact.id)}>
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-
-      {/* Add Contact Dialog */}
-      <Dialog open={isAddingContact} onOpenChange={setIsAddingContact}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Add New Contact</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
+          </CardHeader>
+          <CardContent>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="name">Name *</Label>
-                <Input
-                  id="name"
-                  value={newContact.name}
-                  onChange={(e) => setNewContact(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Full Name"
-                />
+                <Label>Address</Label>
+                <Input value={departmentForm.address} onChange={(e) => setDepartmentForm({...departmentForm, address: e.target.value})} disabled={!isEditingDepartment} />
               </div>
               <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={newContact.email}
-                  onChange={(e) => setNewContact(prev => ({ ...prev, email: e.target.value }))}
-                  placeholder="email@dnr.gov"
-                />
+                <Label>City</Label>
+                <Input value={departmentForm.city} onChange={(e) => setDepartmentForm({...departmentForm, city: e.target.value})} disabled={!isEditingDepartment} />
               </div>
               <div>
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  value={newContact.phone}
-                  onChange={(e) => setNewContact(prev => ({ ...prev, phone: e.target.value }))}
-                  placeholder="(217) 555-0000"
-                />
+                <Label>State</Label>
+                <Input value={departmentForm.state} onChange={(e) => setDepartmentForm({...departmentForm, state: e.target.value})} disabled={!isEditingDepartment} />
               </div>
               <div>
-                <Label htmlFor="level">Level *</Label>
-                <Select value={newContact.level} onValueChange={(value: any) => setNewContact(prev => ({ ...prev, level: value }))}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="department">Department</SelectItem>
-                    <SelectItem value="division">Division</SelectItem>
-                    <SelectItem value="bureau">Bureau</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label>Postal Code</Label>
+                <Input value={departmentForm.zip} onChange={(e) => setDepartmentForm({...departmentForm, zip: e.target.value})} disabled={!isEditingDepartment} />
               </div>
               <div>
-                <Label htmlFor="role">Role *</Label>
-                <Select value={newContact.role} onValueChange={(value) => setNewContact(prev => ({ ...prev, role: value }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Agency Manager">Agency Manager</SelectItem>
-                    <SelectItem value="Case Manager">Case Manager</SelectItem>
-                    <SelectItem value="Bureau Manager">Bureau Manager</SelectItem>
-                    <SelectItem value="Contact Person">Contact Person</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label>Phone</Label>
+                <Input value={departmentForm.phone} onChange={(e) => setDepartmentForm({...departmentForm, phone: e.target.value})} disabled={!isEditingDepartment} />
               </div>
               <div>
-                <Label htmlFor="divisionBureau">Division/Bureau *</Label>
-                <Input
-                  id="divisionBureau"
-                  value={newContact.divisionBureau}
-                  onChange={(e) => setNewContact(prev => ({ ...prev, divisionBureau: e.target.value }))}
-                  placeholder="e.g., Office of Forestry"
-                />
+                <Label>Primary Contact</Label>
+                <Input value={departmentForm.primaryContact} onChange={(e) => setDepartmentForm({...departmentForm, primaryContact: e.target.value})} disabled={!isEditingDepartment} />
               </div>
             </div>
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setIsAddingContact(false)}>Cancel</Button>
-              <Button onClick={handleSaveNewContact}>Save Contact</Button>
+            {isEditingDepartment && (
+              <div className="flex gap-2 mt-4">
+                <Button onClick={handleSaveDepartment}>Save</Button>
+                <Button variant="outline" onClick={() => setIsEditingDepartment(false)}>Cancel</Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Divisions List */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Divisions</CardTitle>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm"><Plus className="h-4 w-4 mr-2" />Create New</Button>
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Division Name</TableHead>
+                  <TableHead>Address (City)</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Primary Contact</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {divisions.map((div) => (
+                  <TableRow key={div.id}>
+                    <TableCell className="font-medium">{div.name}</TableCell>
+                    <TableCell>{div.city}</TableCell>
+                    <TableCell>{div.phone}</TableCell>
+                    <TableCell>{div.primaryContact}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm" onClick={() => navigateToDivision(div.id)}>
+                          Open Division Details
+                        </Button>
+                        <Button variant="ghost" size="sm"><Edit className="h-4 w-4" /></Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Department Contacts */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Department Contacts</CardTitle>
+              <Button size="sm" onClick={() => setIsAddingContact(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Create New
+              </Button>
+            </div>
+            <Alert className="mt-4">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Only department-level contacts can be assigned "Agency Manager" or "Case Manager."
+              </AlertDescription>
+            </Alert>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact Role</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {getContactsForCurrentView().map((contact) => (
+                  <TableRow key={contact.id}>
+                    <TableCell className="font-medium">{contact.name}</TableCell>
+                    <TableCell><Badge variant="secondary">{contact.role}</Badge></TableCell>
+                    <TableCell>{contact.email}</TableCell>
+                    <TableCell>{contact.phone}</TableCell>
+                    <TableCell><Badge>{contact.status}</Badge></TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm"><Edit className="h-4 w-4" /></Button>
+                        <Button variant="ghost" size="sm" onClick={() => handleDeactivateContact(contact.id)}>Deactivate</Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Division Details View
+  if (currentView === "division" && selectedDivisionId) {
+    const division = getCurrentDivision();
+    if (!division) return null;
+
+    return (
+      <div className="space-y-6 p-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <button onClick={navigateToOverview} className="hover:text-foreground">Home</button>
+          <ChevronRight className="h-4 w-4" />
+          <button onClick={navigateToOverview} className="hover:text-foreground">{departmentInfo.name}</button>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-foreground font-medium">{division.name}</span>
+        </div>
+
+        <h1 className="text-3xl font-bold text-foreground">{division.name}</h1>
+
+        {/* Division Details Form */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Division Details</CardTitle>
+              <Button variant="outline" size="sm" onClick={() => setIsEditingEntity(!isEditingEntity)}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Division Name</Label>
+                <Input value={division.name} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Address</Label>
+                <Input value={division.address} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>City</Label>
+                <Input value={division.city} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>State</Label>
+                <Input value={division.state} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Postal Code</Label>
+                <Input value={division.zip} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Phone</Label>
+                <Input value={division.phone} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Primary Contact</Label>
+                <Input value={division.primaryContact} disabled={!isEditingEntity} />
+              </div>
+            </div>
+            {isEditingEntity && (
+              <div className="flex gap-2 mt-4">
+                <Button onClick={() => { toast({ title: "Success", description: "Division saved." }); setIsEditingEntity(false); }}>Save</Button>
+                <Button variant="outline" onClick={() => setIsEditingEntity(false)}>Cancel</Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Bureaus List */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Bureaus in this Division</CardTitle>
+              <Button variant="outline" size="sm"><Plus className="h-4 w-4 mr-2" />Create New</Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Bureau Name</TableHead>
+                  <TableHead>Address (City)</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Primary Contact</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {getBureausForDivision(selectedDivisionId).map((bureau) => (
+                  <TableRow key={bureau.id}>
+                    <TableCell className="font-medium">{bureau.name}</TableCell>
+                    <TableCell>{bureau.city}</TableCell>
+                    <TableCell>{bureau.phone}</TableCell>
+                    <TableCell>{bureau.primaryContact}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm" onClick={() => navigateToBureau(bureau.id)}>
+                          Open Bureau Details
+                        </Button>
+                        <Button variant="ghost" size="sm"><Edit className="h-4 w-4" /></Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Division Contacts */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Division Contacts</CardTitle>
+              <Button size="sm"><Plus className="h-4 w-4 mr-2" />Create New</Button>
+            </div>
+            <Alert className="mt-4">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Division/Bureau contacts cannot be assigned "Agency Manager" or "Case Manager."
+              </AlertDescription>
+            </Alert>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact Role</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {getContactsForCurrentView().map((contact) => (
+                  <TableRow key={contact.id}>
+                    <TableCell className="font-medium">{contact.name}</TableCell>
+                    <TableCell><Badge variant="secondary">{contact.role}</Badge></TableCell>
+                    <TableCell>{contact.email}</TableCell>
+                    <TableCell>{contact.phone}</TableCell>
+                    <TableCell><Badge>{contact.status}</Badge></TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm"><Edit className="h-4 w-4" /></Button>
+                        <Button variant="ghost" size="sm">Deactivate</Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Bureau Details View
+  if (currentView === "bureau" && selectedBureauId) {
+    const bureau = getCurrentBureau();
+    const division = getCurrentDivision();
+    if (!bureau || !division) return null;
+
+    return (
+      <div className="space-y-6 p-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <button onClick={navigateToOverview} className="hover:text-foreground">Home</button>
+          <ChevronRight className="h-4 w-4" />
+          <button onClick={navigateToOverview} className="hover:text-foreground">{departmentInfo.name}</button>
+          <ChevronRight className="h-4 w-4" />
+          <button onClick={() => navigateToDivision(division.id)} className="hover:text-foreground">{division.name}</button>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-foreground font-medium">{bureau.name}</span>
+        </div>
+
+        <h1 className="text-3xl font-bold text-foreground">{bureau.name}</h1>
+
+        {/* Bureau Details Form */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Bureau Details</CardTitle>
+              <Button variant="outline" size="sm" onClick={() => setIsEditingEntity(!isEditingEntity)}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Bureau Name</Label>
+                <Input value={bureau.name} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Address</Label>
+                <Input value={bureau.address} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>City</Label>
+                <Input value={bureau.city} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>State</Label>
+                <Input value={bureau.state} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Postal Code</Label>
+                <Input value={bureau.zip} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Phone</Label>
+                <Input value={bureau.phone} disabled={!isEditingEntity} />
+              </div>
+              <div>
+                <Label>Primary Contact</Label>
+                <Input value={bureau.primaryContact} disabled={!isEditingEntity} />
+              </div>
+            </div>
+            {isEditingEntity && (
+              <div className="flex gap-2 mt-4">
+                <Button onClick={() => { toast({ title: "Success", description: "Bureau saved." }); setIsEditingEntity(false); }}>Save</Button>
+                <Button variant="outline" onClick={() => setIsEditingEntity(false)}>Cancel</Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Bureau Contacts */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Bureau Contacts</CardTitle>
+              <Button size="sm"><Plus className="h-4 w-4 mr-2" />Create New</Button>
+            </div>
+            <Alert className="mt-4">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Roles available at Bureau: Bureau Manager, Staff, Contact Person (not Agency/Case Manager).
+              </AlertDescription>
+            </Alert>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact Role</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {getContactsForCurrentView().map((contact) => (
+                  <TableRow key={contact.id}>
+                    <TableCell className="font-medium">{contact.name}</TableCell>
+                    <TableCell><Badge variant="secondary">{contact.role}</Badge></TableCell>
+                    <TableCell>{contact.email}</TableCell>
+                    <TableCell>{contact.phone}</TableCell>
+                    <TableCell><Badge>{contact.status}</Badge></TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm"><Edit className="h-4 w-4" /></Button>
+                        <Button variant="ghost" size="sm">Deactivate</Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return null;
 }
