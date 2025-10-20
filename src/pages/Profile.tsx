@@ -392,6 +392,12 @@ const Profile = () => {
             >
               Test1
             </TabsTrigger>
+            <TabsTrigger 
+              value="organization2" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Organization2
+            </TabsTrigger>
           </TabsList>
 
           {/* My Profile Tab */}
@@ -1183,6 +1189,161 @@ const Profile = () => {
           {/* Test1 Tab - Copy of Agency Test Screen */}
           <TabsContent value="test1" className="mt-0 p-0">
             <AgencyTest1Screen />
+          </TabsContent>
+
+          {/* Organization2 Tab - Copy of Organization Tab */}
+          <TabsContent value="organization2" className="mt-6">
+            <div className="max-w-screen-xl mx-auto space-y-6">
+              {/* Two-column layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Organization Information Card */}
+                <Card className="shadow-sm border-border">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">Your organization's contact details.</p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="organizationName2" className="text-sm font-medium text-foreground">
+                        Organization Name <span className="text-destructive">*</span>
+                      </Label>
+                      <Input
+                        id="organizationName2"
+                        value="Department of Natural Resources"
+                        className="mt-1 bg-muted"
+                        readOnly
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="website2" className="text-sm font-medium text-foreground">Website</Label>
+                      <Input
+                        id="website2"
+                        type="url"
+                        value="https://dnr.illinois.gov"
+                        className="mt-1 bg-muted"
+                        readOnly
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="businessPhone2" className="text-sm font-medium text-foreground">Business Phone</Label>
+                        <Input
+                          id="businessPhone2"
+                          value=""
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="fax2" className="text-sm font-medium text-foreground">Fax</Label>
+                        <Input
+                          id="fax2"
+                          value=""
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="businessForm2" className="text-sm font-medium text-foreground">Business Form</Label>
+                      <Input
+                        id="businessForm2"
+                        value="Government"
+                        className="mt-1 bg-muted"
+                        readOnly
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Address Information Card */}
+                <Card className="shadow-sm border-border">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">Your organization's primary mailing location.</p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="addressLine1_2" className="text-sm font-medium text-foreground">Address Line 1</Label>
+                      <Input
+                        id="addressLine1_2"
+                        value="100 Gold St"
+                        className="mt-1 bg-muted"
+                        readOnly
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="addressLine2_2" className="text-sm font-medium text-foreground">Address Line 2</Label>
+                      <Input
+                        id="addressLine2_2"
+                        value=""
+                        className="mt-1 bg-muted"
+                        readOnly
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="city2" className="text-sm font-medium text-foreground">City</Label>
+                        <Input
+                          id="city2"
+                          value="New York"
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="county2" className="text-sm font-medium text-foreground">County</Label>
+                        <Input
+                          id="county2"
+                          value=""
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="state2" className="text-sm font-medium text-foreground">State/Province</Label>
+                        <Input
+                          id="state2"
+                          value="NY"
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="postalCode2" className="text-sm font-medium text-foreground">Postal Code</Label>
+                        <Input
+                          id="postalCode2"
+                          value="10038"
+                          className="mt-1 bg-muted"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="country2" className="text-sm font-medium text-foreground">Country</Label>
+                      <Input
+                        id="country2"
+                        value="United States"
+                        className="mt-1 bg-muted"
+                        readOnly
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
