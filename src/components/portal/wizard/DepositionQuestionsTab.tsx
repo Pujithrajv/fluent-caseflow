@@ -42,6 +42,8 @@ export function DepositionQuestionsTab({
     depositionNecessaryReason: data.depositionNecessaryReason || '',
     interrogatoriesText: data.interrogatoriesText || '',
     completionDate: data.completionDate ? new Date(data.completionDate) : undefined,
+    whoToBeDeposed: data.whoToBeDeposed || '',
+    testimonyFromInterrogatories: data.testimonyFromInterrogatories || false,
     ...data
   });
 
@@ -69,7 +71,8 @@ export function DepositionQuestionsTab({
     const hasNecessaryReason = formData.depositionNecessaryReason.trim().length > 0;
     const hasInterrogatoriesText = formData.interrogatoriesText.trim().length > 0;
     const hasCompletionDate = !!formData.completionDate;
-    if (!hasValidDepositionPersons || !hasNecessaryReason || !hasInterrogatoriesText || !hasCompletionDate) {
+    const hasWhoToBeDeposed = formData.whoToBeDeposed.trim().length > 0;
+    if (!hasValidDepositionPersons || !hasNecessaryReason || !hasInterrogatoriesText || !hasCompletionDate || !hasWhoToBeDeposed) {
       isValid = false;
     }
     if (onValidationChange) onValidationChange(isValid);
@@ -113,6 +116,20 @@ export function DepositionQuestionsTab({
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
+            <Label htmlFor="whoToBeDeposed" className="font-fluent">
+              Who to be deposed? *
+            </Label>
+            <Textarea
+              id="whoToBeDeposed"
+              placeholder="Enter who will be deposed..."
+              className="min-h-[80px] shadow-fluent-8 border-input-border"
+              disabled={isReadOnly}
+              value={formData.whoToBeDeposed}
+              onChange={(e) => updateFormData({ whoToBeDeposed: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="depositionNecessaryReason" className="font-fluent">
               Why is their deposition necessary *
             </Label>
@@ -125,6 +142,19 @@ export function DepositionQuestionsTab({
               onChange={(e) => updateFormData({ depositionNecessaryReason: e.target.value })}
             />
           </div>
+
+          <div className="flex items-center space-x-3">
+            <Switch
+              id="testimonyFromInterrogatories"
+              checked={formData.testimonyFromInterrogatories}
+              onCheckedChange={(checked) => updateFormData({ testimonyFromInterrogatories: checked })}
+              disabled={isReadOnly}
+            />
+            <Label htmlFor="testimonyFromInterrogatories" className="font-fluent text-base">
+              Are the testimony available from interrogatories?
+            </Label>
+          </div>
+
           <div className="space-y-2">
             <Label className="font-fluent">If deposition allowed, date range for completion *</Label>
             <Popover>
