@@ -1336,6 +1336,7 @@ const Profile = () => {
                         <TableHead className="font-semibold">City</TableHead>
                         <TableHead className="font-semibold">Phone</TableHead>
                         <TableHead className="font-semibold">Primary Contact</TableHead>
+                        <TableHead className="font-semibold">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -1344,18 +1345,27 @@ const Profile = () => {
                         <TableCell>Springfield</TableCell>
                         <TableCell>(217) 555-2100</TableCell>
                         <TableCell>Rachel Evans</TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline">View Details</Button>
+                        </TableCell>
                       </TableRow>
                       <TableRow className="hover:bg-gray-50">
                         <TableCell className="font-medium">Office of Oil & Gas Management</TableCell>
                         <TableCell>Springfield</TableCell>
                         <TableCell>(217) 555-2200</TableCell>
                         <TableCell>Tom Reyes</TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline">View Details</Button>
+                        </TableCell>
                       </TableRow>
                       <TableRow className="hover:bg-gray-50">
                         <TableCell className="font-medium">Office of Water Resources</TableCell>
                         <TableCell>Springfield</TableCell>
                         <TableCell>(217) 555-2300</TableCell>
                         <TableCell>Priya Nair</TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline">View Details</Button>
+                        </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
