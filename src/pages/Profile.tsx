@@ -20,6 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AgencyManagementDashboard } from "@/components/portal/AgencyManagementDashboard";
 import { Dynamics365AgencyDashboard } from "@/components/portal/Dynamics365AgencyDashboard";
 import { Dynamics365SinglePageDashboard } from "@/components/portal/Dynamics365SinglePageDashboard";
+import { AgencyManagerScreen } from "@/components/portal/AgencyManagerScreen";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -375,6 +376,12 @@ const Profile = () => {
               className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
             >
               Testing Tab
+            </TabsTrigger>
+            <TabsTrigger 
+              value="agency" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Agency Tab
             </TabsTrigger>
           </TabsList>
 
@@ -1536,6 +1543,11 @@ const Profile = () => {
           {/* Testing Tab - Dynamics 365 Single Page Style */}
           <TabsContent value="testing" className="mt-0 p-0">
             <Dynamics365SinglePageDashboard />
+          </TabsContent>
+
+          {/* Agency Tab - Agency Manager Screen */}
+          <TabsContent value="agency" className="mt-0 p-0">
+            <AgencyManagerScreen />
           </TabsContent>
         </Tabs>
       </div>
