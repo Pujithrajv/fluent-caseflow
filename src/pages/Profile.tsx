@@ -1346,7 +1346,7 @@ const Profile = () => {
                         <TableCell>(217) 555-2100</TableCell>
                         <TableCell>Rachel Evans</TableCell>
                         <TableCell>
-                          <Button size="sm" variant="outline">View Details</Button>
+                          <Button size="sm" variant="outline" onClick={() => navigate("/division/office-of-forestry")}>View Details</Button>
                         </TableCell>
                       </TableRow>
                       <TableRow className="hover:bg-gray-50">
@@ -1355,7 +1355,7 @@ const Profile = () => {
                         <TableCell>(217) 555-2200</TableCell>
                         <TableCell>Tom Reyes</TableCell>
                         <TableCell>
-                          <Button size="sm" variant="outline">View Details</Button>
+                          <Button size="sm" variant="outline" onClick={() => navigate("/division/office-of-oil-gas")}>View Details</Button>
                         </TableCell>
                       </TableRow>
                       <TableRow className="hover:bg-gray-50">
@@ -1364,7 +1364,7 @@ const Profile = () => {
                         <TableCell>(217) 555-2300</TableCell>
                         <TableCell>Priya Nair</TableCell>
                         <TableCell>
-                          <Button size="sm" variant="outline">View Details</Button>
+                          <Button size="sm" variant="outline" onClick={() => navigate("/division/office-of-water-resources")}>View Details</Button>
                         </TableCell>
                       </TableRow>
                     </TableBody>
