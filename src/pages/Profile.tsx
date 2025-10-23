@@ -1196,9 +1196,9 @@ const Profile = () => {
           <TabsContent value="organization2" className="mt-6">
             <div className="max-w-screen-xl mx-auto space-y-6">
               {/* Two-column layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-6">
                 {/* Entity Information Card */}
-                <Card className="shadow-sm border">
+                <Card className="shadow-sm border aspect-square">
                   <CardHeader className="bg-gray-50 border-b">
                     <CardTitle className="text-lg font-semibold">Entity Information</CardTitle>
                   </CardHeader>
@@ -1250,7 +1250,7 @@ const Profile = () => {
                 </Card>
 
                 {/* Department Details Card */}
-                <Card className="shadow-sm border">
+                <Card className="shadow-sm border aspect-square">
                   <CardHeader className="bg-gray-50 border-b">
                     <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
                   </CardHeader>
