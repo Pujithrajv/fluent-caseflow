@@ -17,6 +17,7 @@ import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
 import { NewTaskView } from "./NewTaskView";
+import { NewPrimaryTab } from "./wizard/NewPrimaryTab";
 
 interface CaseItem {
   id: string;
@@ -530,6 +531,12 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Demo2
             </TabsTrigger>
+            <TabsTrigger 
+              value="primary" 
+              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
+            >
+              Primary
+            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -1004,6 +1011,11 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Primary Tab Content */}
+          <TabsContent value="primary" className="mt-6">
+            <NewPrimaryTab />
           </TabsContent>
 
         </Tabs>
