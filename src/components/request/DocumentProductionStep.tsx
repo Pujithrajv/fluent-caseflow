@@ -63,7 +63,7 @@ export function DocumentProductionStep({ data, cutoffDate, onNext, onBack }: Doc
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Document Production (Request to Produce)</CardTitle>
+        <CardTitle>Document Production</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">

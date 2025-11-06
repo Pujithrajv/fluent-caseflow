@@ -13,7 +13,7 @@ const getStepDescription = (step: string): string => {
     "Exhibit": "Provide exhibit details",
     "Discovery": "Provide discovery details",
     "Interrogatories": "Provide interrogatories details",
-    "Document Production (Request to Produce)": "Provide document production details",
+    "Document Production": "Provide document production details",
     "Deposition": "Provide deposition details",
     "Inspection": "Provide inspection details",
     "Documents": "Upload required documents",

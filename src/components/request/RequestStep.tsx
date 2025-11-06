@@ -16,7 +16,7 @@ interface RequestStepProps {
 
 const discoveryTypes = [
   { id: "Interrogatories", label: "Interrogatories" },
-  { id: "Document Production (Request to Produce)", label: "Document Production (Request to Produce)" },
+  { id: "Document Production", label: "Document Production" },
   { id: "Deposition", label: "Deposition" },
   { id: "Inspection", label: "Inspection" }
 ];

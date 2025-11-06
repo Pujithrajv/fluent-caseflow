@@ -109,7 +109,7 @@ export default function DemoRequestWizard() {
             onBack={handleBack}
           />
         );
-      case "Document Production (Request to Produce)":
+      case "Document Production":
         return (
           <DocumentProductionStep
             data={requestData.documentProductionData}
