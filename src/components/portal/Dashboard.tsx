@@ -565,7 +565,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   className="font-fluent bg-blue-600 hover:bg-blue-700 text-white"
                   onClick={() => navigate('/request')}
                 >
-                  Request
+                  Demo Request
                 </Button>
               </div>
               
