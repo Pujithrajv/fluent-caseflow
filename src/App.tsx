@@ -24,6 +24,7 @@ import { AlertDetail } from "./pages/AlertDetail";
 import { DecisionDetail } from "./pages/DecisionDetail";
 import DiscoveryWorkflow from "./pages/DiscoveryWorkflow";
 import DiscoveryComplianceWorkflow from "./pages/DiscoveryComplianceWorkflow";
+import RequestScreen from "./pages/RequestScreen";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/decision-detail/:decisionId" element={<DecisionDetail />} />
             <Route path="/discovery-workflow" element={<DiscoveryWorkflow />} />
             <Route path="/discovery-compliance" element={<DiscoveryComplianceWorkflow />} />
+            <Route path="/request" element={<RequestScreen />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
