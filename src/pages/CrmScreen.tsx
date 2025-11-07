@@ -1,13 +1,56 @@
 import { ChevronLeft, ChevronRight, Search, X, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 const CrmScreen = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("General");
+  
+  // Discovery form state
+  const [discoveryData, setDiscoveryData] = useState({
+    status: "Inactive",
+    activationType: "",
+    activationSource: "",
+    startDate: "",
+    cutoffDate: "",
+    monitorDate: "",
+    suspendTimeline: false,
+    alj: "Pujith Raj (Available)",
+    clerk: "Pujith Raj (Available)"
+  });
+
+  // Calculate days remaining
+  const calculateDaysRemaining = () => {
+    if (!discoveryData.cutoffDate) return "—";
+    const today = new Date();
+    const cutoff = new Date(discoveryData.cutoffDate);
+    const diff = Math.ceil((cutoff.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    return diff >= 0 ? `${diff} days` : `${Math.abs(diff)} days overdue`;
+  };
+
+  // Validation
+  const validateDiscoveryDates = () => {
+    if (discoveryData.startDate && discoveryData.cutoffDate) {
+      if (new Date(discoveryData.startDate) > new Date(discoveryData.cutoffDate)) {
+        return "Start Date must be before or equal to Cutoff Date";
+      }
+    }
+    if (discoveryData.monitorDate && discoveryData.cutoffDate) {
+      if (new Date(discoveryData.monitorDate) > new Date(discoveryData.cutoffDate)) {
+        return "Monitor Date must be before or equal to Cutoff Date";
+      }
+    }
+    return null;
+  };
+
+  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Post Hearing", "Participants", "Requests", "Schedule", "Timeline / Docket", "Case Type", "Related"];
   return (
     <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
@@ -177,12 +220,13 @@ const CrmScreen = () => {
 
         {/* Tabs */}
         <div className="bg-white border-b border-[#edebe9] px-4">
-          <div className="flex items-center space-x-6">
-            {["General", "Intake", "Pre-Hearing", "Post Hearing", "Participants", "Requests", "Schedule", "Timeline / Docket", "Case Type", "Related"].map((tab, idx) => (
+          <div className="flex items-center space-x-6 overflow-x-auto">
+            {tabs.map((tab) => (
               <button
-                key={idx}
-                className={`py-3 text-sm font-semibold border-b-2 ${
-                  idx === 0 ? 'border-[#0078d4] text-[#0078d4]' : 'border-transparent text-[#605e5c] hover:text-[#323130]'
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-3 text-sm font-semibold border-b-2 whitespace-nowrap ${
+                  activeTab === tab ? 'border-[#0078d4] text-[#0078d4]' : 'border-transparent text-[#605e5c] hover:text-[#323130]'
                 }`}
               >
                 {tab}
@@ -193,7 +237,8 @@ const CrmScreen = () => {
 
         {/* Form Content */}
         <div className="flex-1 overflow-y-auto bg-[#faf9f8] p-6">
-          <div className="max-w-7xl mx-auto grid grid-cols-3 gap-6">
+          {activeTab === "General" && (
+            <div className="max-w-7xl mx-auto grid grid-cols-3 gap-6">
             {/* Left Column - DETAILS */}
             <div className="space-y-6">
               <div className="bg-white border border-[#edebe9] rounded">
@@ -469,6 +514,201 @@ const CrmScreen = () => {
               </div>
             </div>
           </div>
+          )}
+
+          {/* Discovery Tab */}
+          {activeTab === "Discovery" && (
+            <div className="max-w-7xl mx-auto">
+              {/* Validation Error Display */}
+              {validateDiscoveryDates() && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+                  ⚠️ {validateDiscoveryDates()}
+                </div>
+              )}
+
+              {/* Card A - Discovery Summary */}
+              <div className="bg-white border border-[#edebe9] rounded mb-6">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">DISCOVERY SUMMARY</h3>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    {/* Left Column */}
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130] mb-2 block">Discovery Status <span className="text-red-600">*</span></Label>
+                        <Select 
+                          value={discoveryData.status}
+                          onValueChange={(value) => setDiscoveryData({...discoveryData, status: value})}
+                        >
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Inactive">
+                              <Badge variant="secondary" className="bg-gray-200 text-gray-700">Inactive</Badge>
+                            </SelectItem>
+                            <SelectItem value="Active">
+                              <Badge className="bg-blue-600 text-white">Active</Badge>
+                            </SelectItem>
+                            <SelectItem value="Closed">
+                              <Badge className="bg-green-600 text-white">Closed</Badge>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Activation Type</Label>
+                        <Select 
+                          value={discoveryData.activationType}
+                          onValueChange={(value) => setDiscoveryData({...discoveryData, activationType: value})}
+                          disabled={discoveryData.status === "Active"}
+                        >
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                            <SelectValue placeholder="Select type..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ALJ Order">ALJ Order</SelectItem>
+                            <SelectItem value="Agreed Plan">Agreed Plan</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {discoveryData.status === "Active" && (
+                          <p className="text-xs text-[#605e5c] mt-1">Read-only once issued</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Activation Source</Label>
+                        <div className="flex items-center mt-1">
+                          <Input 
+                            value={discoveryData.activationSource}
+                            onChange={(e) => setDiscoveryData({...discoveryData, activationSource: e.target.value})}
+                            placeholder="Order/Motion ID..."
+                            className="bg-[#f3f2f1] border-[#8a8886]"
+                          />
+                          <Button variant="ghost" size="sm" className="ml-2">
+                            <Search className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-xs text-[#0078d4] mt-1 cursor-pointer hover:underline">🔗 Link to Order/Motion</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Start Date <span className="text-red-600">*</span></Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.startDate}
+                          onChange={(e) => setDiscoveryData({...discoveryData, startDate: e.target.value})}
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">Required before issuing order</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Cutoff Date <span className="text-red-600">*</span></Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.cutoffDate}
+                          onChange={(e) => setDiscoveryData({...discoveryData, cutoffDate: e.target.value})}
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">Editable by ALJ; updates Portal</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Monitor/Warning Date</Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.monitorDate}
+                          onChange={(e) => setDiscoveryData({...discoveryData, monitorDate: e.target.value})}
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">Optional monitoring checkpoint</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Suspend Main Timeline</Label>
+                        <div className="flex items-center mt-2 space-x-2">
+                          <Switch 
+                            checked={discoveryData.suspendTimeline}
+                            onCheckedChange={(checked) => setDiscoveryData({...discoveryData, suspendTimeline: checked})}
+                            className="data-[state=checked]:bg-[#0078d4]"
+                          />
+                          <span className="text-sm text-[#323130]">{discoveryData.suspendTimeline ? "Yes" : "No"}</span>
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Pause case timeline during discovery</p>
+                      </div>
+                    </div>
+
+                    {/* Right Column */}
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">ALJ</Label>
+                        <div className="flex items-center mt-1 space-x-2 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="bg-[#d13438] text-white text-xs">PR</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-[#0078d4]">{discoveryData.alj}</span>
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Read-only from case</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Clerk</Label>
+                        <div className="flex items-center mt-1 space-x-2 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="bg-[#d13438] text-white text-xs">PR</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-[#0078d4]">{discoveryData.clerk}</span>
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Read-only from case</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Days Remaining</Label>
+                        <div className="mt-1 p-3 bg-[#fff4ce] border border-[#ffb900] rounded">
+                          <p className="text-2xl font-semibold text-[#323130]">{calculateDaysRemaining()}</p>
+                          <p className="text-xs text-[#605e5c] mt-1">Until cutoff date</p>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded">
+                        <h4 className="text-sm font-semibold text-[#323130] mb-2">📋 Quick Info</h4>
+                        <ul className="text-xs text-[#605e5c] space-y-1">
+                          <li>• Status: <strong>{discoveryData.status}</strong></li>
+                          <li>• Type: <strong>{discoveryData.activationType || "Not set"}</strong></li>
+                          <li>• Timeline: <strong>{discoveryData.suspendTimeline ? "Suspended" : "Active"}</strong></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between bg-white border border-[#edebe9] rounded p-4">
+                <div className="text-xs text-[#605e5c]">
+                  Phase 1: Discovery Summary - Additional cards coming in next phases
+                </div>
+                <div className="flex space-x-2">
+                  <Button 
+                    variant="outline" 
+                    className="border-[#8a8886]"
+                    disabled={discoveryData.status === "Active"}
+                  >
+                    Save Draft
+                  </Button>
+                  <Button 
+                    className="bg-[#0078d4] hover:bg-[#106ebe] text-white"
+                    disabled={!discoveryData.startDate || !discoveryData.cutoffDate || validateDiscoveryDates() !== null}
+                  >
+                    Issue Discovery Order
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
