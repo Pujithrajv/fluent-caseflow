@@ -63,7 +63,7 @@ export function RequestStepper({ steps, currentStep }: RequestStepperProps) {
                       !isActive && !isCompleted && "text-foreground"
                     )}
                   >
-                    {step}
+                    {step === "Discovery" ? "Discovery only CRM" : step}
                   </p>
                   <p
                     className={cn(
