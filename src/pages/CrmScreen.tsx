@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload, Calendar, FileText, ClipboardList, Filter } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload, Calendar, FileText, ClipboardList, Filter, FileCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,10 +9,13 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 const CrmScreen = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("General");
+  const [isOrderIssued, setIsOrderIssued] = useState(false);
   
   // Discovery form state
   const [discoveryData, setDiscoveryData] = useState({
@@ -78,6 +81,48 @@ const CrmScreen = () => {
     const cutoff = new Date(discoveryData.cutoffDate);
     const diff = Math.ceil((cutoff.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     return diff >= 0 ? `${diff} days` : `${Math.abs(diff)} days overdue`;
+  };
+
+  // Handler to issue discovery order
+  const handleIssueOrder = () => {
+    // Validate required fields
+    if (!discoveryData.startDate || !discoveryData.cutoffDate) {
+      toast({
+        title: "Validation Error",
+        description: "Start Date and Cutoff Date are required to issue the order.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Check for validation errors
+    const validationError = validateDiscoveryDates();
+    if (validationError) {
+      toast({
+        title: "Validation Error",
+        description: validationError,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Lock dates and activate discovery
+    setIsOrderIssued(true);
+    setDiscoveryData({...discoveryData, status: "Active"});
+    
+    // Simulate PDF generation
+    toast({
+      title: "Discovery Order Issued",
+      description: "Discovery order has been generated and dates are now locked. PDF summary is being prepared.",
+    });
+
+    // Simulate PDF download after 2 seconds
+    setTimeout(() => {
+      toast({
+        title: "PDF Generated",
+        description: "Discovery order summary is ready for download.",
+      });
+    }, 2000);
   };
 
   // Validation
@@ -691,9 +736,10 @@ const CrmScreen = () => {
                           type="date"
                           value={discoveryData.startDate}
                           onChange={(e) => setDiscoveryData({...discoveryData, startDate: e.target.value})}
+                          disabled={isOrderIssued}
                           className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
                         />
-                        <p className="text-xs text-[#605e5c] mt-1">Required before issuing order</p>
+                        <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued" : "Required before issuing order"}</p>
                       </div>
 
                       <div>
@@ -702,9 +748,10 @@ const CrmScreen = () => {
                           type="date"
                           value={discoveryData.cutoffDate}
                           onChange={(e) => setDiscoveryData({...discoveryData, cutoffDate: e.target.value})}
+                          disabled={isOrderIssued}
                           className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
                         />
-                        <p className="text-xs text-[#605e5c] mt-1">Editable by ALJ; updates Portal</p>
+                        <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued (ALJ can override)" : "Editable by ALJ; updates Portal"}</p>
                       </div>
 
                       <div>
@@ -713,9 +760,10 @@ const CrmScreen = () => {
                           type="date"
                           value={discoveryData.monitorDate}
                           onChange={(e) => setDiscoveryData({...discoveryData, monitorDate: e.target.value})}
+                          disabled={isOrderIssued}
                           className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
                         />
-                        <p className="text-xs text-[#605e5c] mt-1">Optional monitoring checkpoint</p>
+                        <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued" : "Optional monitoring checkpoint"}</p>
                       </div>
 
                       <div>
@@ -774,6 +822,31 @@ const CrmScreen = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* Issue Discovery Order Button */}
+                  {!isOrderIssued && (
+                    <div className="mt-6 pt-6 border-t border-[#edebe9] flex justify-end">
+                      <Button 
+                        onClick={handleIssueOrder}
+                        className="bg-[#0078d4] hover:bg-[#106ebe] text-white"
+                      >
+                        <FileCheck className="mr-2 h-4 w-4" />
+                        Issue Discovery Order
+                      </Button>
+                    </div>
+                  )}
+
+                  {isOrderIssued && (
+                    <div className="mt-6 pt-6 border-t border-[#edebe9]">
+                      <div className="p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                        <FileCheck className="mr-2 h-5 w-5 text-green-600" />
+                        <div>
+                          <p className="text-sm font-semibold text-green-800">Discovery Order Issued</p>
+                          <p className="text-xs text-green-700">Dates are locked. Discovery is now active.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
