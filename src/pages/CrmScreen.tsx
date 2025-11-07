@@ -772,10 +772,273 @@ const CrmScreen = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* Settlement Status Card */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">SETTLEMENT STATUS</h3>
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">Settlement Discussions</Label>
+                        <Select defaultValue="none">
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">None</SelectItem>
+                            <SelectItem value="ongoing">Ongoing</SelectItem>
+                            <SelectItem value="stalled">Stalled</SelectItem>
+                            <SelectItem value="near-agreement">Near Agreement</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Mediation Scheduled</Label>
+                        <div className="flex items-center mt-2 space-x-2">
+                          <Switch className="data-[state=checked]:bg-[#0078d4]" />
+                          <span className="text-sm text-[#323130]">No</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Mediator</Label>
+                        <div className="flex items-center mt-1 space-x-2">
+                          <Input 
+                            placeholder="Search mediator..."
+                            className="bg-[#f3f2f1] border-[#8a8886]"
+                          />
+                          <Button variant="ghost" size="sm">
+                            <Search className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions Card */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">QUICK ACTIONS</h3>
+                    </div>
+                    <div className="p-6 space-y-3">
+                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
+                        <FileText className="mr-2 h-4 w-4" />
+                        View Discovery Tab
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Schedule Pre-Hearing Conference
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload Pre-Hearing Documents
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           )}
+
+          {/* Discovery Tab */}
+          {activeTab === "Discovery" && (
+            <div className="max-w-7xl mx-auto">
+              {/* Validation Error Display */}
+              {validateDiscoveryDates() && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+                  ⚠️ {validateDiscoveryDates()}
+                </div>
+              )}
+
+              {/* Card A - Discovery Summary */}
+              <div className="bg-white border border-[#edebe9] rounded mb-6">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">DISCOVERY SUMMARY</h3>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    {/* Left Column */}
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130] mb-2 block">Discovery Status <span className="text-red-600">*</span></Label>
+                        <Select 
+                          value={discoveryData.status}
+                          onValueChange={(value) => setDiscoveryData({...discoveryData, status: value})}
+                        >
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Inactive">
+                              <Badge variant="secondary" className="bg-gray-200 text-gray-700">Inactive</Badge>
+                            </SelectItem>
+                            <SelectItem value="Active">
+                              <Badge className="bg-blue-600 text-white">Active</Badge>
+                            </SelectItem>
+                            <SelectItem value="Closed">
+                              <Badge className="bg-green-600 text-white">Closed</Badge>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Activation Type</Label>
+                        <Select 
+                          value={discoveryData.activationType}
+                          onValueChange={(value) => setDiscoveryData({...discoveryData, activationType: value})}
+                          disabled={discoveryData.status === "Active"}
+                        >
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                            <SelectValue placeholder="Select type..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ALJ Order">ALJ Order</SelectItem>
+                            <SelectItem value="Agreed Plan">Agreed Plan</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {discoveryData.status === "Active" && (
+                          <p className="text-xs text-[#605e5c] mt-1">Read-only once issued</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Activation Source</Label>
+                        <div className="flex items-center mt-1">
+                          <Input 
+                            value={discoveryData.activationSource}
+                            onChange={(e) => setDiscoveryData({...discoveryData, activationSource: e.target.value})}
+                            placeholder="Order/Motion ID..."
+                            className="bg-[#f3f2f1] border-[#8a8886]"
+                          />
+                          <Button variant="ghost" size="sm" className="ml-2">
+                            <Search className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-xs text-[#0078d4] mt-1 cursor-pointer hover:underline">🔗 Link to Order/Motion</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Start Date <span className="text-red-600">*</span></Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.startDate}
+                          onChange={(e) => setDiscoveryData({...discoveryData, startDate: e.target.value})}
+                          disabled={isOrderIssued}
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued" : "Required before issuing order"}</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Cutoff Date <span className="text-red-600">*</span></Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.cutoffDate}
+                          onChange={(e) => setDiscoveryData({...discoveryData, cutoffDate: e.target.value})}
+                          disabled={isOrderIssued}
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued (ALJ can override)" : "Editable by ALJ; updates Portal"}</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Monitor/Warning Date</Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.monitorDate}
+                          onChange={(e) => setDiscoveryData({...discoveryData, monitorDate: e.target.value})}
+                          disabled={isOrderIssued}
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued" : "Optional monitoring checkpoint"}</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Suspend Main Timeline</Label>
+                        <div className="flex items-center mt-2 space-x-2">
+                          <Switch 
+                            checked={discoveryData.suspendTimeline}
+                            onCheckedChange={(checked) => setDiscoveryData({...discoveryData, suspendTimeline: checked})}
+                            className="data-[state=checked]:bg-[#0078d4]"
+                          />
+                          <span className="text-sm text-[#323130]">{discoveryData.suspendTimeline ? "Yes" : "No"}</span>
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Pause case timeline during discovery</p>
+                      </div>
+                    </div>
+
+                    {/* Right Column */}
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">ALJ</Label>
+                        <div className="flex items-center mt-1 space-x-2 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="bg-[#d13438] text-white text-xs">PR</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-[#0078d4]">{discoveryData.alj}</span>
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Read-only from case</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Clerk</Label>
+                        <div className="flex items-center mt-1 space-x-2 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="bg-[#d13438] text-white text-xs">PR</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-[#0078d4]">{discoveryData.clerk}</span>
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Read-only from case</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Days Remaining</Label>
+                        <div className="mt-1 p-3 bg-[#fff4ce] border border-[#ffb900] rounded">
+                          <p className="text-2xl font-semibold text-[#323130]">{calculateDaysRemaining()}</p>
+                          <p className="text-xs text-[#605e5c] mt-1">Until cutoff date</p>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded">
+                        <h4 className="text-sm font-semibold text-[#323130] mb-2">📋 Quick Info</h4>
+                        <ul className="text-xs text-[#605e5c] space-y-1">
+                          <li>• Status: <strong>{discoveryData.status}</strong></li>
+                          <li>• Type: <strong>{discoveryData.activationType || "Not set"}</strong></li>
+                          <li>• Timeline: <strong>{discoveryData.suspendTimeline ? "Suspended" : "Active"}</strong></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Issue Discovery Order Button */}
+                  {!isOrderIssued && (
+                    <div className="mt-6 pt-6 border-t border-[#edebe9] flex justify-end">
+                      <Button 
+                        onClick={handleIssueOrder}
+                        className="bg-[#0078d4] hover:bg-[#106ebe] text-white"
+                      >
+                        <FileCheck className="mr-2 h-4 w-4" />
+                        Issue Discovery Order
+                      </Button>
+                    </div>
+                  )}
+
+                  {isOrderIssued && (
+                    <div className="mt-6 pt-6 border-t border-[#edebe9]">
+                      <div className="p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                        <FileCheck className="mr-2 h-5 w-5 text-green-600" />
+                        <div>
+                          <p className="text-sm font-semibold text-green-800">Discovery Order Issued</p>
+                          <p className="text-xs text-green-700">Dates are locked. Discovery is now active.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {/* Card B - Expert Discovery */}
               <div className="bg-white border border-[#edebe9] rounded mb-6">
