@@ -773,50 +773,6 @@ const CrmScreen = () => {
                     </div>
                   </div>
 
-                  {/* Settlement Status Card */}
-                  <div className="bg-white border border-[#edebe9] rounded">
-                    <div className="px-4 py-3 border-b border-[#edebe9]">
-                      <h3 className="text-sm font-semibold text-[#323130]">SETTLEMENT STATUS</h3>
-                    </div>
-                    <div className="p-6 space-y-4">
-                      <div>
-                        <Label className="text-xs text-[#323130]">Settlement Discussions</Label>
-                        <Select defaultValue="none">
-                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="none">None</SelectItem>
-                            <SelectItem value="ongoing">Ongoing</SelectItem>
-                            <SelectItem value="stalled">Stalled</SelectItem>
-                            <SelectItem value="near-agreement">Near Agreement</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Label className="text-xs text-[#323130]">Mediation Scheduled</Label>
-                        <div className="flex items-center mt-2 space-x-2">
-                          <Switch className="data-[state=checked]:bg-[#0078d4]" />
-                          <span className="text-sm text-[#323130]">No</span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label className="text-xs text-[#323130]">Mediator</Label>
-                        <div className="flex items-center mt-1 space-x-2">
-                          <Input 
-                            placeholder="Search mediator..."
-                            className="bg-[#f3f2f1] border-[#8a8886]"
-                          />
-                          <Button variant="ghost" size="sm">
-                            <Search className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Quick Actions Card */}
                   <div className="bg-white border border-[#edebe9] rounded">
                     <div className="px-4 py-3 border-b border-[#edebe9]">
