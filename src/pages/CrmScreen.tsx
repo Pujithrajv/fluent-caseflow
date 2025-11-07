@@ -829,26 +829,6 @@ const CrmScreen = () => {
                     </div>
                   </div>
 
-                  {/* Quick Actions Card */}
-                  <div className="bg-white border border-[#edebe9] rounded">
-                    <div className="px-4 py-3 border-b border-[#edebe9]">
-                      <h3 className="text-sm font-semibold text-[#323130]">QUICK ACTIONS</h3>
-                    </div>
-                    <div className="p-6 space-y-3">
-                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
-                        <FileText className="mr-2 h-4 w-4" />
-                        View Discovery Tab
-                      </Button>
-                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        Schedule Pre-Hearing Conference
-                      </Button>
-                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
-                        <Upload className="mr-2 h-4 w-4" />
-                        Upload Pre-Hearing Documents
-                      </Button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>}
