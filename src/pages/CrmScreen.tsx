@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight, Search, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const CrmScreen = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
@@ -94,8 +96,13 @@ const CrmScreen = () => {
         <div className="bg-white border-b border-[#edebe9] px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <ChevronLeft className="h-4 w-4" />
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-8 w-8 p-0"
+                onClick={() => navigate('/portal')}
+              >
+                <ArrowLeft className="h-4 w-4" />
               </Button>
               <div>
                 <div className="flex items-center space-x-2">
