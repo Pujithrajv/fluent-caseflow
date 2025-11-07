@@ -652,6 +652,268 @@ const CrmScreen = () => {
           </div>
           )}
 
+          {/* Pre-Hearing Tab */}
+          {activeTab === "Pre-Hearing" && (
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-2 gap-6">
+                {/* Left Column */}
+                <div className="space-y-6">
+                  {/* Discovery Cross-References Card */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">DISCOVERY STATUS (CROSS-REFERENCE)</h3>
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div className="p-3 bg-blue-50 border border-blue-200 rounded">
+                        <p className="text-xs text-blue-800 mb-2">ℹ️ These fields are automatically synced from the Discovery tab</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Discovery Status</Label>
+                        <div className="mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded flex items-center">
+                          {discoveryData.status === "Active" && (
+                            <Badge className="bg-blue-600 text-white">Active</Badge>
+                          )}
+                          {discoveryData.status === "Inactive" && (
+                            <Badge variant="secondary" className="bg-gray-200 text-gray-700">Inactive</Badge>
+                          )}
+                          {discoveryData.status === "Closed" && (
+                            <Badge className="bg-green-600 text-white">Closed</Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Read-only from Discovery tab</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Discovery Cutoff Date</Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.cutoffDate}
+                          readOnly
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886] cursor-not-allowed"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">Read-only from Discovery tab</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Discovery Start Date</Label>
+                        <Input 
+                          type="date"
+                          value={discoveryData.startDate}
+                          readOnly
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886] cursor-not-allowed"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">Read-only from Discovery tab</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Timeline Status</Label>
+                        <div className="mt-1 p-3 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <p className="text-sm font-semibold text-[#323130]">
+                            {discoveryData.suspendTimeline ? "⏸️ Suspended" : "▶️ Active"}
+                          </p>
+                        </div>
+                        <p className="text-xs text-[#605e5c] mt-1">Main case timeline status</p>
+                      </div>
+
+                      {discoveryData.cutoffDate && (
+                        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-xs text-[#605e5c]">Days Until Discovery Cutoff</p>
+                              <p className="text-2xl font-bold text-[#323130] mt-1">{calculateDaysRemaining()}</p>
+                            </div>
+                            <Calendar className="h-8 w-8 text-yellow-600" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Pre-Hearing Details Card */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">PRE-HEARING DETAILS</h3>
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">Pre-Hearing Conference Status</Label>
+                        <Select defaultValue="not-scheduled">
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="not-scheduled">Not Scheduled</SelectItem>
+                            <SelectItem value="scheduled">Scheduled</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Conference Date</Label>
+                        <Input 
+                          type="date"
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Pre-Hearing Briefs Due</Label>
+                        <Input 
+                          type="date"
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Witness List Due</Label>
+                        <Input 
+                          type="date"
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Exhibit List Due</Label>
+                        <Input 
+                          type="date"
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-6">
+                  {/* Hearing Preparation Card */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">HEARING PREPARATION</h3>
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">Hearing Date (Estimated)</Label>
+                        <Input 
+                          type="date"
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                        <p className="text-xs text-[#605e5c] mt-1">Tentative hearing date</p>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Hearing Location</Label>
+                        <Select defaultValue="not-set">
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="not-set">Not Set</SelectItem>
+                            <SelectItem value="in-person">In Person</SelectItem>
+                            <SelectItem value="virtual">Virtual</SelectItem>
+                            <SelectItem value="hybrid">Hybrid</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Estimated Duration (Days)</Label>
+                        <Input 
+                          type="number"
+                          placeholder="Enter number of days..."
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Number of Witnesses</Label>
+                        <Input 
+                          type="number"
+                          placeholder="Expected witnesses..."
+                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        />
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Stipulations Filed</Label>
+                        <div className="flex items-center mt-2 space-x-2">
+                          <Switch className="data-[state=checked]:bg-[#0078d4]" />
+                          <span className="text-sm text-[#323130]">No</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Settlement Status Card */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">SETTLEMENT STATUS</h3>
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">Settlement Discussions</Label>
+                        <Select defaultValue="none">
+                          <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">None</SelectItem>
+                            <SelectItem value="ongoing">Ongoing</SelectItem>
+                            <SelectItem value="stalled">Stalled</SelectItem>
+                            <SelectItem value="near-agreement">Near Agreement</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Mediation Scheduled</Label>
+                        <div className="flex items-center mt-2 space-x-2">
+                          <Switch className="data-[state=checked]:bg-[#0078d4]" />
+                          <span className="text-sm text-[#323130]">No</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-[#323130]">Mediator</Label>
+                        <div className="flex items-center mt-1 space-x-2">
+                          <Input 
+                            placeholder="Search mediator..."
+                            className="bg-[#f3f2f1] border-[#8a8886]"
+                          />
+                          <Button variant="ghost" size="sm">
+                            <Search className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions Card */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">QUICK ACTIONS</h3>
+                    </div>
+                    <div className="p-6 space-y-3">
+                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
+                        <FileText className="mr-2 h-4 w-4" />
+                        View Discovery Tab
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Schedule Pre-Hearing Conference
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start border-[#8a8886]">
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload Pre-Hearing Documents
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Discovery Tab */}
           {activeTab === "Discovery" && (
             <div className="max-w-7xl mx-auto">
