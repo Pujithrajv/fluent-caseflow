@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Search, X, ArrowLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,25 @@ const CrmScreen = () => {
     clerk: "Pujith Raj (Available)"
   });
 
+  // Expert Discovery state
+  const [expertDiscovery, setExpertDiscovery] = useState({
+    enabled: false,
+    identityDate: "",
+    reportRequired: false,
+    reportDate: "",
+    depositionDate: "",
+    vitae: null as File | null,
+    subjectMatter: ""
+  });
+
+  // Discovery Types state
+  const [discoveryTypes, setDiscoveryTypes] = useState([
+    { type: "Interrogatories", allowed: true, daysToRespond: 28 },
+    { type: "Document Production", allowed: true, daysToRespond: 28 },
+    { type: "Deposition", allowed: true, daysToRespond: 7 },
+    { type: "Inspection", allowed: true, daysToRespond: 7 }
+  ]);
+
   // Calculate days remaining
   const calculateDaysRemaining = () => {
     if (!discoveryData.cutoffDate) return "—";
@@ -47,7 +66,25 @@ const CrmScreen = () => {
         return "Monitor Date must be before or equal to Cutoff Date";
       }
     }
+    // Expert dates validation
+    if (expertDiscovery.enabled && discoveryData.cutoffDate) {
+      if (expertDiscovery.identityDate && new Date(expertDiscovery.identityDate) > new Date(discoveryData.cutoffDate)) {
+        return "Expert Identity Date must be before or equal to Cutoff Date";
+      }
+      if (expertDiscovery.reportDate && new Date(expertDiscovery.reportDate) > new Date(discoveryData.cutoffDate)) {
+        return "Expert Report Date must be before or equal to Cutoff Date";
+      }
+      if (expertDiscovery.depositionDate && new Date(expertDiscovery.depositionDate) > new Date(discoveryData.cutoffDate)) {
+        return "Expert Deposition Date must be before or equal to Cutoff Date";
+      }
+    }
     return null;
+  };
+
+  const updateDiscoveryType = (index: number, field: 'allowed' | 'daysToRespond', value: boolean | number) => {
+    const updated = [...discoveryTypes];
+    updated[index] = { ...updated[index], [field]: value };
+    setDiscoveryTypes(updated);
   };
 
   const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Post Hearing", "Participants", "Requests", "Schedule", "Timeline / Docket", "Case Type", "Related"];
@@ -686,10 +723,180 @@ const CrmScreen = () => {
                 </div>
               </div>
 
+              {/* Card B - Expert Discovery */}
+              <div className="bg-white border border-[#edebe9] rounded mb-6">
+                <button
+                  onClick={() => setExpertDiscovery({...expertDiscovery, enabled: !expertDiscovery.enabled})}
+                  className="w-full px-4 py-3 border-b border-[#edebe9] flex items-center justify-between hover:bg-[#f3f2f1] transition-colors"
+                >
+                  <h3 className="text-sm font-semibold text-[#323130]">EXPERT DISCOVERY</h3>
+                  {expertDiscovery.enabled ? (
+                    <ChevronUp className="h-4 w-4 text-[#605e5c]" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-[#605e5c]" />
+                  )}
+                </button>
+                
+                {expertDiscovery.enabled && (
+                  <div className="p-6 space-y-6">
+                    <div className="flex items-center space-x-2 p-3 bg-blue-50 border border-blue-200 rounded">
+                      <input
+                        type="checkbox"
+                        checked={expertDiscovery.enabled}
+                        onChange={(e) => setExpertDiscovery({...expertDiscovery, enabled: e.target.checked})}
+                        className="h-4 w-4 text-[#0078d4] rounded"
+                      />
+                      <Label className="text-sm text-[#323130]">Include Expert Discovery?</Label>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-6">
+                      {/* Left Column */}
+                      <div className="space-y-4">
+                        <div>
+                          <Label className="text-xs text-[#323130]">Expert Identity Disclosure Date <span className="text-red-600">*</span></Label>
+                          <Input 
+                            type="date"
+                            value={expertDiscovery.identityDate}
+                            onChange={(e) => setExpertDiscovery({...expertDiscovery, identityDate: e.target.value})}
+                            className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                          />
+                          <p className="text-xs text-[#605e5c] mt-1">Required if expert discovery enabled</p>
+                        </div>
+
+                        <div>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <input
+                              type="checkbox"
+                              checked={expertDiscovery.reportRequired}
+                              onChange={(e) => setExpertDiscovery({...expertDiscovery, reportRequired: e.target.checked})}
+                              className="h-4 w-4 text-[#0078d4] rounded"
+                            />
+                            <Label className="text-xs text-[#323130]">Expert Report Required?</Label>
+                          </div>
+                          {expertDiscovery.reportRequired && (
+                            <>
+                              <Label className="text-xs text-[#323130]">Report Disclosure Date <span className="text-red-600">*</span></Label>
+                              <Input 
+                                type="date"
+                                value={expertDiscovery.reportDate}
+                                onChange={(e) => setExpertDiscovery({...expertDiscovery, reportDate: e.target.value})}
+                                className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                              />
+                            </>
+                          )}
+                        </div>
+
+                        <div>
+                          <Label className="text-xs text-[#323130]">Expert Deposition Date</Label>
+                          <Input 
+                            type="date"
+                            value={expertDiscovery.depositionDate}
+                            onChange={(e) => setExpertDiscovery({...expertDiscovery, depositionDate: e.target.value})}
+                            className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                          />
+                          <p className="text-xs text-[#605e5c] mt-1">Optional</p>
+                        </div>
+                      </div>
+
+                      {/* Right Column */}
+                      <div className="space-y-4">
+                        <div>
+                          <Label className="text-xs text-[#323130]">Expert Vitae / CV</Label>
+                          <div className="mt-1 border-2 border-dashed border-[#8a8886] rounded p-4 text-center hover:border-[#0078d4] transition-colors cursor-pointer">
+                            <input
+                              type="file"
+                              accept=".pdf,.doc,.docx"
+                              onChange={(e) => setExpertDiscovery({...expertDiscovery, vitae: e.target.files?.[0] || null})}
+                              className="hidden"
+                              id="vitae-upload"
+                            />
+                            <label htmlFor="vitae-upload" className="cursor-pointer">
+                              <Upload className="h-8 w-8 mx-auto text-[#605e5c] mb-2" />
+                              <p className="text-xs text-[#605e5c]">
+                                {expertDiscovery.vitae ? expertDiscovery.vitae.name : "Click to upload CV (PDF, DOC)"}
+                              </p>
+                            </label>
+                          </div>
+                          <p className="text-xs text-[#605e5c] mt-1">Optional file upload</p>
+                        </div>
+
+                        <div>
+                          <Label className="text-xs text-[#323130]">Subject Matter / Scope</Label>
+                          <textarea
+                            value={expertDiscovery.subjectMatter}
+                            onChange={(e) => setExpertDiscovery({...expertDiscovery, subjectMatter: e.target.value})}
+                            className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none"
+                            placeholder="Describe the expert's subject matter area..."
+                          />
+                        </div>
+
+                        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                          <p className="text-xs text-[#605e5c]">
+                            ⚠️ All expert dates must be on or before the Discovery Cutoff Date
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Card C - Allowed Discovery Types & Durations */}
+              <div className="bg-white border border-[#edebe9] rounded mb-6">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">ALLOWED DISCOVERY TYPES & DURATIONS</h3>
+                  <p className="text-xs text-[#605e5c] mt-1">Configure which discovery types are allowed and response timeframes</p>
+                </div>
+                <div className="p-6">
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="border-b-2 border-[#edebe9]">
+                          <th className="text-left py-3 px-4 text-xs font-semibold text-[#323130] bg-[#f3f2f1]">Discovery Type</th>
+                          <th className="text-center py-3 px-4 text-xs font-semibold text-[#323130] bg-[#f3f2f1]">Allowed</th>
+                          <th className="text-center py-3 px-4 text-xs font-semibold text-[#323130] bg-[#f3f2f1]">Days to Respond/Coordinate</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {discoveryTypes.map((item, idx) => (
+                          <tr key={idx} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            <td className="py-3 px-4 text-sm text-[#323130] font-medium">{item.type}</td>
+                            <td className="py-3 px-4 text-center">
+                              <input
+                                type="checkbox"
+                                checked={item.allowed}
+                                onChange={(e) => updateDiscoveryType(idx, 'allowed', e.target.checked)}
+                                className="h-5 w-5 text-[#0078d4] rounded"
+                              />
+                            </td>
+                            <td className="py-3 px-4 text-center">
+                              <Input
+                                type="number"
+                                min="1"
+                                max="90"
+                                value={item.daysToRespond}
+                                onChange={(e) => updateDiscoveryType(idx, 'daysToRespond', parseInt(e.target.value) || 0)}
+                                disabled={!item.allowed}
+                                className="w-20 mx-auto text-center bg-[#f3f2f1] border-[#8a8886]"
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                    <p className="text-xs text-[#605e5c]">
+                      💡 <strong>Note:</strong> These values will be pushed to the Portal to set due-date defaults and enable/disable request types for parties.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Action Buttons */}
               <div className="flex items-center justify-between bg-white border border-[#edebe9] rounded p-4">
                 <div className="text-xs text-[#605e5c]">
-                  Phase 1: Discovery Summary - Additional cards coming in next phases
+                  Phase 2 Complete: Discovery Summary + Expert Discovery + Discovery Types Grid
                 </div>
                 <div className="flex space-x-2">
                   <Button 
