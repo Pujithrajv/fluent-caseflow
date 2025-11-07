@@ -10,13 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-
 const CrmScreen = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [activeTab, setActiveTab] = useState("General");
   const [isOrderIssued, setIsOrderIssued] = useState(false);
-  
+
   // Discovery form state
   const [discoveryData, setDiscoveryData] = useState({
     status: "Inactive",
@@ -42,31 +43,96 @@ const CrmScreen = () => {
   });
 
   // Discovery Types state
-  const [discoveryTypes, setDiscoveryTypes] = useState([
-    { type: "Interrogatories", allowed: true, daysToRespond: 28 },
-    { type: "Document Production", allowed: true, daysToRespond: 28 },
-    { type: "Deposition", allowed: true, daysToRespond: 7 },
-    { type: "Inspection", allowed: true, daysToRespond: 7 }
-  ]);
+  const [discoveryTypes, setDiscoveryTypes] = useState([{
+    type: "Interrogatories",
+    allowed: true,
+    daysToRespond: 28
+  }, {
+    type: "Document Production",
+    allowed: true,
+    daysToRespond: 28
+  }, {
+    type: "Deposition",
+    allowed: true,
+    daysToRespond: 7
+  }, {
+    type: "Inspection",
+    allowed: true,
+    daysToRespond: 7
+  }]);
 
   // Mock data for Card D tabs
-  const [conferences] = useState([
-    { id: 1, type: "Monitoring", date: "2025-12-15", time: "10:00 AM", outcome: "Parties on track", createdBy: "Pujith Raj" },
-    { id: 2, type: "Final", date: "2026-01-10", time: "2:00 PM", outcome: "Pending", createdBy: "Pujith Raj" }
-  ]);
-
-  const [motions] = useState([
-    { id: "MOT-2025-001", type: "Extend", filedBy: "Primary Party", status: "Granted", decisionDate: "2025-11-20", linkedRequest: "REQ-001" },
-    { id: "MOT-2025-002", type: "Compel", filedBy: "Department", status: "Pending", decisionDate: "", linkedRequest: "REQ-003" }
-  ]);
-
-  const [requests] = useState([
-    { id: "REQ-001", type: "Interrogatories", filedBy: "Primary Party", filedOn: "2025-10-15", due: "2025-11-12", certificateFiled: true, certificateDate: "2025-11-10", status: "Completed", daysOverdue: 0 },
-    { id: "REQ-002", type: "Document Production", filedBy: "Department", filedOn: "2025-10-20", due: "2025-11-17", certificateFiled: false, certificateDate: "", status: "Open", daysOverdue: 0 },
-    { id: "REQ-003", type: "Deposition", filedBy: "Primary Party", filedOn: "2025-11-01", due: "2025-11-08", certificateFiled: false, certificateDate: "", status: "Open", daysOverdue: 5 },
-    { id: "REQ-004", type: "Inspection", filedBy: "3rd Party", filedOn: "2025-11-05", due: "2025-11-19", certificateFiled: false, certificateDate: "", status: "Open", daysOverdue: 0 }
-  ]);
-
+  const [conferences] = useState([{
+    id: 1,
+    type: "Monitoring",
+    date: "2025-12-15",
+    time: "10:00 AM",
+    outcome: "Parties on track",
+    createdBy: "Pujith Raj"
+  }, {
+    id: 2,
+    type: "Final",
+    date: "2026-01-10",
+    time: "2:00 PM",
+    outcome: "Pending",
+    createdBy: "Pujith Raj"
+  }]);
+  const [motions] = useState([{
+    id: "MOT-2025-001",
+    type: "Extend",
+    filedBy: "Primary Party",
+    status: "Granted",
+    decisionDate: "2025-11-20",
+    linkedRequest: "REQ-001"
+  }, {
+    id: "MOT-2025-002",
+    type: "Compel",
+    filedBy: "Department",
+    status: "Pending",
+    decisionDate: "",
+    linkedRequest: "REQ-003"
+  }]);
+  const [requests] = useState([{
+    id: "REQ-001",
+    type: "Interrogatories",
+    filedBy: "Primary Party",
+    filedOn: "2025-10-15",
+    due: "2025-11-12",
+    certificateFiled: true,
+    certificateDate: "2025-11-10",
+    status: "Completed",
+    daysOverdue: 0
+  }, {
+    id: "REQ-002",
+    type: "Document Production",
+    filedBy: "Department",
+    filedOn: "2025-10-20",
+    due: "2025-11-17",
+    certificateFiled: false,
+    certificateDate: "",
+    status: "Open",
+    daysOverdue: 0
+  }, {
+    id: "REQ-003",
+    type: "Deposition",
+    filedBy: "Primary Party",
+    filedOn: "2025-11-01",
+    due: "2025-11-08",
+    certificateFiled: false,
+    certificateDate: "",
+    status: "Open",
+    daysOverdue: 5
+  }, {
+    id: "REQ-004",
+    type: "Inspection",
+    filedBy: "3rd Party",
+    filedOn: "2025-11-05",
+    due: "2025-11-19",
+    certificateFiled: false,
+    certificateDate: "",
+    status: "Open",
+    daysOverdue: 0
+  }]);
   const [trackerFilter, setTrackerFilter] = useState({
     type: "all",
     status: "all",
@@ -108,19 +174,22 @@ const CrmScreen = () => {
 
     // Lock dates and activate discovery
     setIsOrderIssued(true);
-    setDiscoveryData({...discoveryData, status: "Active"});
-    
+    setDiscoveryData({
+      ...discoveryData,
+      status: "Active"
+    });
+
     // Simulate PDF generation
     toast({
       title: "Discovery Order Issued",
-      description: "Discovery order has been generated and dates are now locked. PDF summary is being prepared.",
+      description: "Discovery order has been generated and dates are now locked. PDF summary is being prepared."
     });
 
     // Simulate PDF download after 2 seconds
     setTimeout(() => {
       toast({
         title: "PDF Generated",
-        description: "Discovery order summary is ready for download.",
+        description: "Discovery order summary is ready for download."
       });
     }, 2000);
   };
@@ -151,10 +220,12 @@ const CrmScreen = () => {
     }
     return null;
   };
-
   const updateDiscoveryType = (index: number, field: 'allowed' | 'daysToRespond', value: boolean | number) => {
     const updated = [...discoveryTypes];
-    updated[index] = { ...updated[index], [field]: value };
+    updated[index] = {
+      ...updated[index],
+      [field]: value
+    };
     setDiscoveryTypes(updated);
   };
 
@@ -185,10 +256,8 @@ const CrmScreen = () => {
     if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
     return "";
   };
-
   const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Post Hearing", "Participants", "Requests", "Schedule", "Timeline / Docket", "Case Type", "Related"];
-  return (
-    <div className="min-h-screen bg-[#f0f0f0] flex">
+  return <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
       <div className="w-48 bg-[#f3f2f1] border-r border-[#edebe9] flex flex-col">
         <div className="p-3 border-b border-[#edebe9]">
@@ -275,12 +344,7 @@ const CrmScreen = () => {
         <div className="bg-white border-b border-[#edebe9] px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="h-8 w-8 p-0"
-                onClick={() => navigate('/portal')}
-              >
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => navigate('/portal')}>
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               <div>
@@ -319,62 +383,79 @@ const CrmScreen = () => {
         {/* Progress Bar */}
         <div className="bg-white border-b border-[#edebe9] px-4 py-4">
           <div className="flex items-center justify-between relative">
-            <div className="absolute top-5 left-0 right-0 h-0.5 bg-[#edebe9]" style={{ width: 'calc(100% - 4rem)', marginLeft: '2rem' }}></div>
+            <div className="absolute top-5 left-0 right-0 h-0.5 bg-[#edebe9]" style={{
+            width: 'calc(100% - 4rem)',
+            marginLeft: '2rem'
+          }}></div>
             
-            {[
-              { label: "Case Processing", sublabel: "Active for 3 months", active: true, filled: true },
-              { label: "Intake", sublabel: "", active: false, filled: true },
-              { label: "Pre-Hearing (10 D)", sublabel: "", active: false, filled: false },
-              { label: "Hearing", sublabel: "", active: false, filled: false },
-              { label: "Post Hearing", sublabel: "", active: false, filled: false },
-              { label: "Decision", sublabel: "", active: false, filled: false },
-              { label: "Post Decision", sublabel: "", active: false, filled: false },
-              { label: "Close", sublabel: "", active: false, filled: false }
-            ].map((stage, idx) => (
-              <div key={idx} className="flex flex-col items-center relative z-10">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  stage.active ? 'bg-[#0078d4] border-2 border-[#0078d4]' : 
-                  stage.filled ? 'bg-[#107c10] border-2 border-[#107c10]' : 
-                  'bg-white border-2 border-[#d2d0ce]'
-                }`}>
+            {[{
+            label: "Case Processing",
+            sublabel: "Active for 3 months",
+            active: true,
+            filled: true
+          }, {
+            label: "Intake",
+            sublabel: "",
+            active: false,
+            filled: true
+          }, {
+            label: "Pre-Hearing (10 D)",
+            sublabel: "",
+            active: false,
+            filled: false
+          }, {
+            label: "Hearing",
+            sublabel: "",
+            active: false,
+            filled: false
+          }, {
+            label: "Post Hearing",
+            sublabel: "",
+            active: false,
+            filled: false
+          }, {
+            label: "Decision",
+            sublabel: "",
+            active: false,
+            filled: false
+          }, {
+            label: "Post Decision",
+            sublabel: "",
+            active: false,
+            filled: false
+          }, {
+            label: "Close",
+            sublabel: "",
+            active: false,
+            filled: false
+          }].map((stage, idx) => <div key={idx} className="flex flex-col items-center relative z-10">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${stage.active ? 'bg-[#0078d4] border-2 border-[#0078d4]' : stage.filled ? 'bg-[#107c10] border-2 border-[#107c10]' : 'bg-white border-2 border-[#d2d0ce]'}`}>
                   {stage.filled && <span className="text-white text-xl">✓</span>}
                 </div>
                 <div className="mt-2 text-center">
                   <div className={`text-xs font-semibold ${stage.active ? 'text-[#323130]' : 'text-[#605e5c]'}`}>
                     {stage.label}
                   </div>
-                  {stage.sublabel && (
-                    <div className="text-xs text-[#605e5c] bg-[#0078d4] text-white px-2 py-0.5 rounded mt-1">
+                  {stage.sublabel && <div className="text-xs text-[#605e5c] bg-[#0078d4] text-white px-2 py-0.5 rounded mt-1">
                       {stage.sublabel}
-                    </div>
-                  )}
+                    </div>}
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
 
         {/* Tabs */}
         <div className="bg-white border-b border-[#edebe9] px-4">
           <div className="flex items-center space-x-6 overflow-x-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`py-3 text-sm font-semibold border-b-2 whitespace-nowrap ${
-                  activeTab === tab ? 'border-[#0078d4] text-[#0078d4]' : 'border-transparent text-[#605e5c] hover:text-[#323130]'
-                }`}
-              >
+            {tabs.map(tab => <button key={tab} onClick={() => setActiveTab(tab)} className={`py-3 text-sm font-semibold border-b-2 whitespace-nowrap ${activeTab === tab ? 'border-[#0078d4] text-[#0078d4]' : 'border-transparent text-[#605e5c] hover:text-[#323130]'}`}>
                 {tab}
-              </button>
-            ))}
+              </button>)}
           </div>
         </div>
 
         {/* Form Content */}
         <div className="flex-1 overflow-y-auto bg-[#faf9f8] p-6">
-          {activeTab === "General" && (
-            <div className="max-w-7xl mx-auto grid grid-cols-3 gap-6">
+          {activeTab === "General" && <div className="max-w-7xl mx-auto grid grid-cols-3 gap-6">
             {/* Left Column - DETAILS */}
             <div className="space-y-6">
               <div className="bg-white border border-[#edebe9] rounded">
@@ -649,12 +730,10 @@ const CrmScreen = () => {
                 </div>
               </div>
             </div>
-          </div>
-          )}
+          </div>}
 
           {/* Pre-Hearing Tab */}
-          {activeTab === "Pre-Hearing" && (
-            <div className="max-w-7xl mx-auto">
+          {activeTab === "Pre-Hearing" && <div className="max-w-7xl mx-auto">
               <div className="grid grid-cols-2 gap-6">
                 {/* Left Column */}
                 <div className="space-y-6">
@@ -680,34 +759,22 @@ const CrmScreen = () => {
 
                       <div>
                         <Label className="text-xs text-[#323130]">Conference Date</Label>
-                        <Input 
-                          type="date"
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Pre-Hearing Briefs Due</Label>
-                        <Input 
-                          type="date"
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Witness List Due</Label>
-                        <Input 
-                          type="date"
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Exhibit List Due</Label>
-                        <Input 
-                          type="date"
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       </div>
                     </div>
                   </div>
@@ -723,10 +790,7 @@ const CrmScreen = () => {
                     <div className="p-6 space-y-4">
                       <div>
                         <Label className="text-xs text-[#323130]">Hearing Date (Estimated)</Label>
-                        <Input 
-                          type="date"
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                         <p className="text-xs text-[#605e5c] mt-1">Tentative hearing date</p>
                       </div>
 
@@ -747,20 +811,12 @@ const CrmScreen = () => {
 
                       <div>
                         <Label className="text-xs text-[#323130]">Estimated Duration (Days)</Label>
-                        <Input 
-                          type="number"
-                          placeholder="Enter number of days..."
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="number" placeholder="Enter number of days..." className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Number of Witnesses</Label>
-                        <Input 
-                          type="number"
-                          placeholder="Expected witnesses..."
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="number" placeholder="Expected witnesses..." className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       </div>
 
                       <div>
@@ -795,18 +851,14 @@ const CrmScreen = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
 
           {/* Discovery Tab */}
-          {activeTab === "Discovery" && (
-            <div className="max-w-7xl mx-auto">
+          {activeTab === "Discovery" && <div className="max-w-7xl mx-auto">
               {/* Validation Error Display */}
-              {validateDiscoveryDates() && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+              {validateDiscoveryDates() && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
                   ⚠️ {validateDiscoveryDates()}
-                </div>
-              )}
+                </div>}
 
               {/* Card A - Discovery Summary */}
               <div className="bg-white border border-[#edebe9] rounded mb-6">
@@ -819,10 +871,10 @@ const CrmScreen = () => {
                     <div className="space-y-4">
                       <div>
                         <Label className="text-xs text-[#323130] mb-2 block">Discovery Status <span className="text-red-600">*</span></Label>
-                        <Select 
-                          value={discoveryData.status}
-                          onValueChange={(value) => setDiscoveryData({...discoveryData, status: value})}
-                        >
+                        <Select value={discoveryData.status} onValueChange={value => setDiscoveryData({
+                      ...discoveryData,
+                      status: value
+                    })}>
                           <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886]">
                             <SelectValue />
                           </SelectTrigger>
@@ -842,11 +894,10 @@ const CrmScreen = () => {
 
                       <div>
                         <Label className="text-xs text-[#323130]">Activation Type</Label>
-                        <Select 
-                          value={discoveryData.activationType}
-                          onValueChange={(value) => setDiscoveryData({...discoveryData, activationType: value})}
-                          disabled={discoveryData.status === "Active"}
-                        >
+                        <Select value={discoveryData.activationType} onValueChange={value => setDiscoveryData({
+                      ...discoveryData,
+                      activationType: value
+                    })} disabled={discoveryData.status === "Active"}>
                           <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
                             <SelectValue placeholder="Select type..." />
                           </SelectTrigger>
@@ -855,20 +906,16 @@ const CrmScreen = () => {
                             <SelectItem value="Agreed Plan">Agreed Plan</SelectItem>
                           </SelectContent>
                         </Select>
-                        {discoveryData.status === "Active" && (
-                          <p className="text-xs text-[#605e5c] mt-1">Read-only once issued</p>
-                        )}
+                        {discoveryData.status === "Active" && <p className="text-xs text-[#605e5c] mt-1">Read-only once issued</p>}
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Activation Source</Label>
                         <div className="flex items-center mt-1">
-                          <Input 
-                            value={discoveryData.activationSource}
-                            onChange={(e) => setDiscoveryData({...discoveryData, activationSource: e.target.value})}
-                            placeholder="Order/Motion ID..."
-                            className="bg-[#f3f2f1] border-[#8a8886]"
-                          />
+                          <Input value={discoveryData.activationSource} onChange={e => setDiscoveryData({
+                        ...discoveryData,
+                        activationSource: e.target.value
+                      })} placeholder="Order/Motion ID..." className="bg-[#f3f2f1] border-[#8a8886]" />
                           <Button variant="ghost" size="sm" className="ml-2">
                             <Search className="h-4 w-4" />
                           </Button>
@@ -878,48 +925,38 @@ const CrmScreen = () => {
 
                       <div>
                         <Label className="text-xs text-[#323130]">Start Date <span className="text-red-600">*</span></Label>
-                        <Input 
-                          type="date"
-                          value={discoveryData.startDate}
-                          onChange={(e) => setDiscoveryData({...discoveryData, startDate: e.target.value})}
-                          disabled={isOrderIssued}
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" value={discoveryData.startDate} onChange={e => setDiscoveryData({
+                      ...discoveryData,
+                      startDate: e.target.value
+                    })} disabled={isOrderIssued} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                         <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued" : "Required before issuing order"}</p>
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Cutoff Date <span className="text-red-600">*</span></Label>
-                        <Input 
-                          type="date"
-                          value={discoveryData.cutoffDate}
-                          onChange={(e) => setDiscoveryData({...discoveryData, cutoffDate: e.target.value})}
-                          disabled={isOrderIssued}
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" value={discoveryData.cutoffDate} onChange={e => setDiscoveryData({
+                      ...discoveryData,
+                      cutoffDate: e.target.value
+                    })} disabled={isOrderIssued} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                         <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued (ALJ can override)" : "Editable by ALJ; updates Portal"}</p>
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Monitor/Warning Date</Label>
-                        <Input 
-                          type="date"
-                          value={discoveryData.monitorDate}
-                          onChange={(e) => setDiscoveryData({...discoveryData, monitorDate: e.target.value})}
-                          disabled={isOrderIssued}
-                          className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        />
+                        <Input type="date" value={discoveryData.monitorDate} onChange={e => setDiscoveryData({
+                      ...discoveryData,
+                      monitorDate: e.target.value
+                    })} disabled={isOrderIssued} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                         <p className="text-xs text-[#605e5c] mt-1">{isOrderIssued ? "Locked after order issued" : "Optional monitoring checkpoint"}</p>
                       </div>
 
                       <div>
                         <Label className="text-xs text-[#323130]">Suspend Main Timeline</Label>
                         <div className="flex items-center mt-2 space-x-2">
-                          <Switch 
-                            checked={discoveryData.suspendTimeline}
-                            onCheckedChange={(checked) => setDiscoveryData({...discoveryData, suspendTimeline: checked})}
-                            className="data-[state=checked]:bg-[#0078d4]"
-                          />
+                          <Switch checked={discoveryData.suspendTimeline} onCheckedChange={checked => setDiscoveryData({
+                        ...discoveryData,
+                        suspendTimeline: checked
+                      })} className="data-[state=checked]:bg-[#0078d4]" />
                           <span className="text-sm text-[#323130]">{discoveryData.suspendTimeline ? "Yes" : "No"}</span>
                         </div>
                         <p className="text-xs text-[#605e5c] mt-1">Pause case timeline during discovery</p>
@@ -970,20 +1007,14 @@ const CrmScreen = () => {
                   </div>
 
                   {/* Issue Discovery Order Button */}
-                  {!isOrderIssued && (
-                    <div className="mt-6 pt-6 border-t border-[#edebe9] flex justify-end">
-                      <Button 
-                        onClick={handleIssueOrder}
-                        className="bg-[#0078d4] hover:bg-[#106ebe] text-white"
-                      >
+                  {!isOrderIssued && <div className="mt-6 pt-6 border-t border-[#edebe9] flex justify-end">
+                      <Button onClick={handleIssueOrder} className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
                         <FileCheck className="mr-2 h-4 w-4" />
                         Issue Discovery Order
                       </Button>
-                    </div>
-                  )}
+                    </div>}
 
-                  {isOrderIssued && (
-                    <div className="mt-6 pt-6 border-t border-[#edebe9]">
+                  {isOrderIssued && <div className="mt-6 pt-6 border-t border-[#edebe9]">
                       <div className="p-3 bg-green-50 border border-green-200 rounded flex items-center">
                         <FileCheck className="mr-2 h-5 w-5 text-green-600" />
                         <div>
@@ -991,34 +1022,26 @@ const CrmScreen = () => {
                           <p className="text-xs text-green-700">Dates are locked. Discovery is now active.</p>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    </div>}
                 </div>
               </div>
 
               {/* Card B - Expert Discovery */}
               <div className="bg-white border border-[#edebe9] rounded mb-6">
-                <button
-                  onClick={() => setExpertDiscovery({...expertDiscovery, enabled: !expertDiscovery.enabled})}
-                  className="w-full px-4 py-3 border-b border-[#edebe9] flex items-center justify-between hover:bg-[#f3f2f1] transition-colors"
-                >
+                <button onClick={() => setExpertDiscovery({
+              ...expertDiscovery,
+              enabled: !expertDiscovery.enabled
+            })} className="w-full px-4 py-3 border-b border-[#edebe9] flex items-center justify-between hover:bg-[#f3f2f1] transition-colors">
                   <h3 className="text-sm font-semibold text-[#323130]">EXPERT DISCOVERY</h3>
-                  {expertDiscovery.enabled ? (
-                    <ChevronUp className="h-4 w-4 text-[#605e5c]" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4 text-[#605e5c]" />
-                  )}
+                  {expertDiscovery.enabled ? <ChevronUp className="h-4 w-4 text-[#605e5c]" /> : <ChevronDown className="h-4 w-4 text-[#605e5c]" />}
                 </button>
                 
-                {expertDiscovery.enabled && (
-                  <div className="p-6 space-y-6">
+                {expertDiscovery.enabled && <div className="p-6 space-y-6">
                     <div className="flex items-center space-x-2 p-3 bg-blue-50 border border-blue-200 rounded">
-                      <input
-                        type="checkbox"
-                        checked={expertDiscovery.enabled}
-                        onChange={(e) => setExpertDiscovery({...expertDiscovery, enabled: e.target.checked})}
-                        className="h-4 w-4 text-[#0078d4] rounded"
-                      />
+                      <input type="checkbox" checked={expertDiscovery.enabled} onChange={e => setExpertDiscovery({
+                  ...expertDiscovery,
+                  enabled: e.target.checked
+                })} className="h-4 w-4 text-[#0078d4] rounded" />
                       <Label className="text-sm text-[#323130]">Include Expert Discovery?</Label>
                     </div>
 
@@ -1027,46 +1050,36 @@ const CrmScreen = () => {
                       <div className="space-y-4">
                         <div>
                           <Label className="text-xs text-[#323130]">Expert Identity Disclosure Date <span className="text-red-600">*</span></Label>
-                          <Input 
-                            type="date"
-                            value={expertDiscovery.identityDate}
-                            onChange={(e) => setExpertDiscovery({...expertDiscovery, identityDate: e.target.value})}
-                            className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                          />
+                          <Input type="date" value={expertDiscovery.identityDate} onChange={e => setExpertDiscovery({
+                      ...expertDiscovery,
+                      identityDate: e.target.value
+                    })} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                           <p className="text-xs text-[#605e5c] mt-1">Required if expert discovery enabled</p>
                         </div>
 
                         <div>
                           <div className="flex items-center space-x-2 mb-2">
-                            <input
-                              type="checkbox"
-                              checked={expertDiscovery.reportRequired}
-                              onChange={(e) => setExpertDiscovery({...expertDiscovery, reportRequired: e.target.checked})}
-                              className="h-4 w-4 text-[#0078d4] rounded"
-                            />
+                            <input type="checkbox" checked={expertDiscovery.reportRequired} onChange={e => setExpertDiscovery({
+                        ...expertDiscovery,
+                        reportRequired: e.target.checked
+                      })} className="h-4 w-4 text-[#0078d4] rounded" />
                             <Label className="text-xs text-[#323130]">Expert Report Required?</Label>
                           </div>
-                          {expertDiscovery.reportRequired && (
-                            <>
+                          {expertDiscovery.reportRequired && <>
                               <Label className="text-xs text-[#323130]">Report Disclosure Date <span className="text-red-600">*</span></Label>
-                              <Input 
-                                type="date"
-                                value={expertDiscovery.reportDate}
-                                onChange={(e) => setExpertDiscovery({...expertDiscovery, reportDate: e.target.value})}
-                                className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                              />
-                            </>
-                          )}
+                              <Input type="date" value={expertDiscovery.reportDate} onChange={e => setExpertDiscovery({
+                        ...expertDiscovery,
+                        reportDate: e.target.value
+                      })} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
+                            </>}
                         </div>
 
                         <div>
                           <Label className="text-xs text-[#323130]">Expert Deposition Date</Label>
-                          <Input 
-                            type="date"
-                            value={expertDiscovery.depositionDate}
-                            onChange={(e) => setExpertDiscovery({...expertDiscovery, depositionDate: e.target.value})}
-                            className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                          />
+                          <Input type="date" value={expertDiscovery.depositionDate} onChange={e => setExpertDiscovery({
+                      ...expertDiscovery,
+                      depositionDate: e.target.value
+                    })} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                           <p className="text-xs text-[#605e5c] mt-1">Optional</p>
                         </div>
                       </div>
@@ -1076,13 +1089,10 @@ const CrmScreen = () => {
                         <div>
                           <Label className="text-xs text-[#323130]">Expert Vitae / CV</Label>
                           <div className="mt-1 border-2 border-dashed border-[#8a8886] rounded p-4 text-center hover:border-[#0078d4] transition-colors cursor-pointer">
-                            <input
-                              type="file"
-                              accept=".pdf,.doc,.docx"
-                              onChange={(e) => setExpertDiscovery({...expertDiscovery, vitae: e.target.files?.[0] || null})}
-                              className="hidden"
-                              id="vitae-upload"
-                            />
+                            <input type="file" accept=".pdf,.doc,.docx" onChange={e => setExpertDiscovery({
+                        ...expertDiscovery,
+                        vitae: e.target.files?.[0] || null
+                      })} className="hidden" id="vitae-upload" />
                             <label htmlFor="vitae-upload" className="cursor-pointer">
                               <Upload className="h-8 w-8 mx-auto text-[#605e5c] mb-2" />
                               <p className="text-xs text-[#605e5c]">
@@ -1095,12 +1105,10 @@ const CrmScreen = () => {
 
                         <div>
                           <Label className="text-xs text-[#323130]">Subject Matter / Scope</Label>
-                          <textarea
-                            value={expertDiscovery.subjectMatter}
-                            onChange={(e) => setExpertDiscovery({...expertDiscovery, subjectMatter: e.target.value})}
-                            className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none"
-                            placeholder="Describe the expert's subject matter area..."
-                          />
+                          <textarea value={expertDiscovery.subjectMatter} onChange={e => setExpertDiscovery({
+                      ...expertDiscovery,
+                      subjectMatter: e.target.value
+                    })} className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" placeholder="Describe the expert's subject matter area..." />
                         </div>
 
                         <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
@@ -1110,8 +1118,7 @@ const CrmScreen = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
 
               {/* Card C - Allowed Discovery Types & Durations */}
@@ -1131,30 +1138,15 @@ const CrmScreen = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {discoveryTypes.map((item, idx) => (
-                          <tr key={idx} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        {discoveryTypes.map((item, idx) => <tr key={idx} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                             <td className="py-3 px-4 text-sm text-[#323130] font-medium">{item.type}</td>
                             <td className="py-3 px-4 text-center">
-                              <input
-                                type="checkbox"
-                                checked={item.allowed}
-                                onChange={(e) => updateDiscoveryType(idx, 'allowed', e.target.checked)}
-                                className="h-5 w-5 text-[#0078d4] rounded"
-                              />
+                              <input type="checkbox" checked={item.allowed} onChange={e => updateDiscoveryType(idx, 'allowed', e.target.checked)} className="h-5 w-5 text-[#0078d4] rounded" />
                             </td>
                             <td className="py-3 px-4 text-center">
-                              <Input
-                                type="number"
-                                min="1"
-                                max="90"
-                                value={item.daysToRespond}
-                                onChange={(e) => updateDiscoveryType(idx, 'daysToRespond', parseInt(e.target.value) || 0)}
-                                disabled={!item.allowed}
-                                className="w-20 mx-auto text-center bg-[#f3f2f1] border-[#8a8886]"
-                              />
+                              <Input type="number" min="1" max="90" value={item.daysToRespond} onChange={e => updateDiscoveryType(idx, 'daysToRespond', parseInt(e.target.value) || 0)} disabled={!item.allowed} className="w-20 mx-auto text-center bg-[#f3f2f1] border-[#8a8886]" />
                             </td>
-                          </tr>
-                        ))}
+                          </tr>)}
                       </tbody>
                     </table>
                   </div>
@@ -1210,8 +1202,7 @@ const CrmScreen = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {conferences.map((conf) => (
-                              <tr key={conf.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            {conferences.map(conf => <tr key={conf.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                                 <td className="py-2 px-3 text-sm text-[#323130]">
                                   <Badge variant={conf.type === "Monitoring" ? "secondary" : "default"}>
                                     {conf.type}
@@ -1221,8 +1212,7 @@ const CrmScreen = () => {
                                 <td className="py-2 px-3 text-sm text-[#323130]">{conf.time}</td>
                                 <td className="py-2 px-3 text-sm text-[#605e5c]">{conf.outcome}</td>
                                 <td className="py-2 px-3 text-sm text-[#0078d4]">{conf.createdBy}</td>
-                              </tr>
-                            ))}
+                              </tr>)}
                           </tbody>
                         </table>
                       </div>
@@ -1251,8 +1241,7 @@ const CrmScreen = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {motions.map((motion) => (
-                              <tr key={motion.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            {motions.map(motion => <tr key={motion.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                                 <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
                                   🔗 {motion.id}
                                 </td>
@@ -1271,8 +1260,7 @@ const CrmScreen = () => {
                                 <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
                                   {motion.linkedRequest ? `🔗 ${motion.linkedRequest}` : "—"}
                                 </td>
-                              </tr>
-                            ))}
+                              </tr>)}
                           </tbody>
                         </table>
                       </div>
@@ -1292,7 +1280,10 @@ const CrmScreen = () => {
                             <Filter className="h-4 w-4 text-[#605e5c]" />
                             <span className="text-xs font-semibold text-[#323130]">Filters:</span>
                           </div>
-                          <Select value={trackerFilter.type} onValueChange={(val) => setTrackerFilter({...trackerFilter, type: val})}>
+                          <Select value={trackerFilter.type} onValueChange={val => setTrackerFilter({
+                        ...trackerFilter,
+                        type: val
+                      })}>
                             <SelectTrigger className="w-40 h-8 text-xs bg-white">
                               <SelectValue placeholder="Type" />
                             </SelectTrigger>
@@ -1304,7 +1295,10 @@ const CrmScreen = () => {
                               <SelectItem value="Inspection">Inspection</SelectItem>
                             </SelectContent>
                           </Select>
-                          <Select value={trackerFilter.status} onValueChange={(val) => setTrackerFilter({...trackerFilter, status: val})}>
+                          <Select value={trackerFilter.status} onValueChange={val => setTrackerFilter({
+                        ...trackerFilter,
+                        status: val
+                      })}>
                             <SelectTrigger className="w-32 h-8 text-xs bg-white">
                               <SelectValue placeholder="Status" />
                             </SelectTrigger>
@@ -1314,7 +1308,10 @@ const CrmScreen = () => {
                               <SelectItem value="Completed">Completed</SelectItem>
                             </SelectContent>
                           </Select>
-                          <Select value={trackerFilter.party} onValueChange={(val) => setTrackerFilter({...trackerFilter, party: val})}>
+                          <Select value={trackerFilter.party} onValueChange={val => setTrackerFilter({
+                        ...trackerFilter,
+                        party: val
+                      })}>
                             <SelectTrigger className="w-40 h-8 text-xs bg-white">
                               <SelectValue placeholder="Party" />
                             </SelectTrigger>
@@ -1326,12 +1323,10 @@ const CrmScreen = () => {
                             </SelectContent>
                           </Select>
                           <label className="flex items-center space-x-2 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={trackerFilter.lateOnly}
-                              onChange={(e) => setTrackerFilter({...trackerFilter, lateOnly: e.target.checked})}
-                              className="h-4 w-4 text-[#0078d4] rounded"
-                            />
+                            <input type="checkbox" checked={trackerFilter.lateOnly} onChange={e => setTrackerFilter({
+                          ...trackerFilter,
+                          lateOnly: e.target.checked
+                        })} className="h-4 w-4 text-[#0078d4] rounded" />
                             <span className="text-xs text-[#323130]">Late Only</span>
                           </label>
                         </div>
@@ -1354,8 +1349,7 @@ const CrmScreen = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {filteredRequests.map((req) => (
-                              <tr key={req.id} className={`border-b border-[#edebe9] hover:opacity-80 ${getRowColor(req)}`}>
+                            {filteredRequests.map(req => <tr key={req.id} className={`border-b border-[#edebe9] hover:opacity-80 ${getRowColor(req)}`}>
                                 <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
                                   🔗 {req.id}
                                 </td>
@@ -1364,11 +1358,7 @@ const CrmScreen = () => {
                                 <td className="py-2 px-3 text-sm text-[#605e5c]">{req.filedOn}</td>
                                 <td className="py-2 px-3 text-sm text-[#323130]">{req.due}</td>
                                 <td className="py-2 px-3 text-center">
-                                  {req.certificateFiled ? (
-                                    <Badge className="bg-green-600 text-white">Yes</Badge>
-                                  ) : (
-                                    <Badge variant="secondary">No</Badge>
-                                  )}
+                                  {req.certificateFiled ? <Badge className="bg-green-600 text-white">Yes</Badge> : <Badge variant="secondary">No</Badge>}
                                 </td>
                                 <td className="py-2 px-3 text-sm text-[#605e5c]">{req.certificateDate || "—"}</td>
                                 <td className="py-2 px-3 text-sm">
@@ -1377,14 +1367,9 @@ const CrmScreen = () => {
                                   </Badge>
                                 </td>
                                 <td className="py-2 px-3 text-center">
-                                  {req.daysOverdue > 0 ? (
-                                    <span className="text-sm font-semibold text-red-600">{req.daysOverdue}</span>
-                                  ) : (
-                                    <span className="text-sm text-[#605e5c]">—</span>
-                                  )}
+                                  {req.daysOverdue > 0 ? <span className="text-sm font-semibold text-red-600">{req.daysOverdue}</span> : <span className="text-sm text-[#605e5c]">—</span>}
                                 </td>
-                              </tr>
-                            ))}
+                              </tr>)}
                           </tbody>
                         </table>
                       </div>
@@ -1439,27 +1424,17 @@ const CrmScreen = () => {
                   Phase 3 Complete: Discovery Summary + Expert Discovery + Discovery Types + Conferences • Motions • Tracker
                 </div>
                 <div className="flex space-x-2">
-                  <Button 
-                    variant="outline" 
-                    className="border-[#8a8886]"
-                    disabled={discoveryData.status === "Active"}
-                  >
+                  <Button variant="outline" className="border-[#8a8886]" disabled={discoveryData.status === "Active"}>
                     Save Draft
                   </Button>
-                  <Button 
-                    className="bg-[#0078d4] hover:bg-[#106ebe] text-white"
-                    disabled={!discoveryData.startDate || !discoveryData.cutoffDate || validateDiscoveryDates() !== null}
-                  >
+                  <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white" disabled={!discoveryData.startDate || !discoveryData.cutoffDate || validateDiscoveryDates() !== null}>
                     Issue Discovery Order
                   </Button>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CrmScreen;
