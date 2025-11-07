@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload, Calendar, FileText, ClipboardList, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
 const CrmScreen = () => {
@@ -44,6 +45,31 @@ const CrmScreen = () => {
     { type: "Deposition", allowed: true, daysToRespond: 7 },
     { type: "Inspection", allowed: true, daysToRespond: 7 }
   ]);
+
+  // Mock data for Card D tabs
+  const [conferences] = useState([
+    { id: 1, type: "Monitoring", date: "2025-12-15", time: "10:00 AM", outcome: "Parties on track", createdBy: "Pujith Raj" },
+    { id: 2, type: "Final", date: "2026-01-10", time: "2:00 PM", outcome: "Pending", createdBy: "Pujith Raj" }
+  ]);
+
+  const [motions] = useState([
+    { id: "MOT-2025-001", type: "Extend", filedBy: "Primary Party", status: "Granted", decisionDate: "2025-11-20", linkedRequest: "REQ-001" },
+    { id: "MOT-2025-002", type: "Compel", filedBy: "Department", status: "Pending", decisionDate: "", linkedRequest: "REQ-003" }
+  ]);
+
+  const [requests] = useState([
+    { id: "REQ-001", type: "Interrogatories", filedBy: "Primary Party", filedOn: "2025-10-15", due: "2025-11-12", certificateFiled: true, certificateDate: "2025-11-10", status: "Completed", daysOverdue: 0 },
+    { id: "REQ-002", type: "Document Production", filedBy: "Department", filedOn: "2025-10-20", due: "2025-11-17", certificateFiled: false, certificateDate: "", status: "Open", daysOverdue: 0 },
+    { id: "REQ-003", type: "Deposition", filedBy: "Primary Party", filedOn: "2025-11-01", due: "2025-11-08", certificateFiled: false, certificateDate: "", status: "Open", daysOverdue: 5 },
+    { id: "REQ-004", type: "Inspection", filedBy: "3rd Party", filedOn: "2025-11-05", due: "2025-11-19", certificateFiled: false, certificateDate: "", status: "Open", daysOverdue: 0 }
+  ]);
+
+  const [trackerFilter, setTrackerFilter] = useState({
+    type: "all",
+    status: "all",
+    party: "all",
+    lateOnly: false
+  });
 
   // Calculate days remaining
   const calculateDaysRemaining = () => {
@@ -85,6 +111,34 @@ const CrmScreen = () => {
     const updated = [...discoveryTypes];
     updated[index] = { ...updated[index], [field]: value };
     setDiscoveryTypes(updated);
+  };
+
+  // Filter requests based on tracker filters
+  const filteredRequests = requests.filter(req => {
+    if (trackerFilter.type !== "all" && req.type !== trackerFilter.type) return false;
+    if (trackerFilter.status !== "all" && req.status !== trackerFilter.status) return false;
+    if (trackerFilter.party !== "all" && req.filedBy !== trackerFilter.party) return false;
+    if (trackerFilter.lateOnly && req.daysOverdue <= 0) return false;
+    return true;
+  });
+
+  // Calculate KPIs
+  const kpis = {
+    total: requests.length,
+    completed: requests.filter(r => r.status === "Completed").length,
+    open: requests.filter(r => r.status === "Open").length,
+    openPastDue: requests.filter(r => r.status === "Open" && r.daysOverdue > 0).length
+  };
+
+  // Determine row color for tracker
+  const getRowColor = (request: typeof requests[0]) => {
+    if (request.status === "Completed") return "bg-green-50";
+    if (request.daysOverdue > 0) return "bg-red-50";
+    const dueDate = new Date(request.due);
+    const today = new Date();
+    const daysUntilDue = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
+    return "";
   };
 
   const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Post Hearing", "Participants", "Requests", "Schedule", "Timeline / Docket", "Case Type", "Related"];
@@ -893,10 +947,277 @@ const CrmScreen = () => {
                 </div>
               </div>
 
+              {/* Card D - Conferences • Motions • Tracker */}
+              <div className="bg-white border border-[#edebe9] rounded mb-6">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">CONFERENCES • MOTIONS • TRACKER</h3>
+                  <p className="text-xs text-[#605e5c] mt-1">Monitor discovery activities, motions, and request compliance</p>
+                </div>
+                <div className="p-6">
+                  <Tabs defaultValue="tracker" className="w-full">
+                    <TabsList className="grid w-full grid-cols-3 bg-[#f3f2f1]">
+                      <TabsTrigger value="conferences" className="data-[state=active]:bg-white">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        Conferences
+                      </TabsTrigger>
+                      <TabsTrigger value="motions" className="data-[state=active]:bg-white">
+                        <FileText className="h-4 w-4 mr-2" />
+                        Motions
+                      </TabsTrigger>
+                      <TabsTrigger value="tracker" className="data-[state=active]:bg-white">
+                        <ClipboardList className="h-4 w-4 mr-2" />
+                        Requests & Certificates
+                      </TabsTrigger>
+                    </TabsList>
+
+                    {/* Tab 1: Conferences */}
+                    <TabsContent value="conferences" className="mt-4">
+                      <div className="mb-4 flex justify-between items-center">
+                        <p className="text-xs text-[#605e5c]">Discovery-related appointments and conferences</p>
+                        <Button size="sm" className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                          <Calendar className="h-4 w-4 mr-2" />
+                          Schedule Conference
+                        </Button>
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b-2 border-[#edebe9] bg-[#f3f2f1]">
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Type</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Date</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Time</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Outcome/Notes</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Created By</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {conferences.map((conf) => (
+                              <tr key={conf.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                                <td className="py-2 px-3 text-sm text-[#323130]">
+                                  <Badge variant={conf.type === "Monitoring" ? "secondary" : "default"}>
+                                    {conf.type}
+                                  </Badge>
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{conf.date}</td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{conf.time}</td>
+                                <td className="py-2 px-3 text-sm text-[#605e5c]">{conf.outcome}</td>
+                                <td className="py-2 px-3 text-sm text-[#0078d4]">{conf.createdBy}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded">
+                        <p className="text-xs text-[#605e5c]">
+                          📅 <strong>Reminder:</strong> 5-day pre-conference alerts sent to ALJ/Clerk automatically
+                        </p>
+                      </div>
+                    </TabsContent>
+
+                    {/* Tab 2: Motions */}
+                    <TabsContent value="motions" className="mt-4">
+                      <div className="mb-4">
+                        <p className="text-xs text-[#605e5c]">Discovery-related motions (Extend, Compel, Approve Plan)</p>
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b-2 border-[#edebe9] bg-[#f3f2f1]">
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Motion ID</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Type</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Filed By</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Status</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Decision Date</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Linked Request</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {motions.map((motion) => (
+                              <tr key={motion.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                                <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                                  🔗 {motion.id}
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">
+                                  <Badge variant="outline">{motion.type}</Badge>
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{motion.filedBy}</td>
+                                <td className="py-2 px-3 text-sm">
+                                  <Badge variant={motion.status === "Granted" ? "default" : "secondary"}>
+                                    {motion.status}
+                                  </Badge>
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">
+                                  {motion.decisionDate || "Pending"}
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                                  {motion.linkedRequest ? `🔗 ${motion.linkedRequest}` : "—"}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
+                        <p className="text-xs text-[#605e5c]">
+                          ⚖️ <strong>Extend Motion Granted?</strong> Update Cutoff Date inline to notify Portal automatically
+                        </p>
+                      </div>
+                    </TabsContent>
+
+                    {/* Tab 3: Requests & Certificates Tracker */}
+                    <TabsContent value="tracker" className="mt-4">
+                      {/* Filters */}
+                      <div className="mb-4 p-3 bg-[#f3f2f1] rounded border border-[#edebe9]">
+                        <div className="flex items-center space-x-4 flex-wrap gap-2">
+                          <div className="flex items-center space-x-2">
+                            <Filter className="h-4 w-4 text-[#605e5c]" />
+                            <span className="text-xs font-semibold text-[#323130]">Filters:</span>
+                          </div>
+                          <Select value={trackerFilter.type} onValueChange={(val) => setTrackerFilter({...trackerFilter, type: val})}>
+                            <SelectTrigger className="w-40 h-8 text-xs bg-white">
+                              <SelectValue placeholder="Type" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white z-50">
+                              <SelectItem value="all">All Types</SelectItem>
+                              <SelectItem value="Interrogatories">Interrogatories</SelectItem>
+                              <SelectItem value="Document Production">Document Production</SelectItem>
+                              <SelectItem value="Deposition">Deposition</SelectItem>
+                              <SelectItem value="Inspection">Inspection</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Select value={trackerFilter.status} onValueChange={(val) => setTrackerFilter({...trackerFilter, status: val})}>
+                            <SelectTrigger className="w-32 h-8 text-xs bg-white">
+                              <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white z-50">
+                              <SelectItem value="all">All Status</SelectItem>
+                              <SelectItem value="Open">Open</SelectItem>
+                              <SelectItem value="Completed">Completed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Select value={trackerFilter.party} onValueChange={(val) => setTrackerFilter({...trackerFilter, party: val})}>
+                            <SelectTrigger className="w-40 h-8 text-xs bg-white">
+                              <SelectValue placeholder="Party" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white z-50">
+                              <SelectItem value="all">All Parties</SelectItem>
+                              <SelectItem value="Primary Party">Primary Party</SelectItem>
+                              <SelectItem value="Department">Department</SelectItem>
+                              <SelectItem value="3rd Party">3rd Party</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <label className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={trackerFilter.lateOnly}
+                              onChange={(e) => setTrackerFilter({...trackerFilter, lateOnly: e.target.checked})}
+                              className="h-4 w-4 text-[#0078d4] rounded"
+                            />
+                            <span className="text-xs text-[#323130]">Late Only</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Tracker Grid */}
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse">
+                          <thead>
+                            <tr className="border-b-2 border-[#edebe9] bg-[#f3f2f1]">
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Request ID</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Type</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Filed By</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Filed On</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Due/Target</th>
+                              <th className="text-center py-2 px-3 text-xs font-semibold text-[#323130]">Certificate Filed</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Certificate Date</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Status</th>
+                              <th className="text-center py-2 px-3 text-xs font-semibold text-[#323130]">Days Past Due</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filteredRequests.map((req) => (
+                              <tr key={req.id} className={`border-b border-[#edebe9] hover:opacity-80 ${getRowColor(req)}`}>
+                                <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                                  🔗 {req.id}
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{req.type}</td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{req.filedBy}</td>
+                                <td className="py-2 px-3 text-sm text-[#605e5c]">{req.filedOn}</td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{req.due}</td>
+                                <td className="py-2 px-3 text-center">
+                                  {req.certificateFiled ? (
+                                    <Badge className="bg-green-600 text-white">Yes</Badge>
+                                  ) : (
+                                    <Badge variant="secondary">No</Badge>
+                                  )}
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#605e5c]">{req.certificateDate || "—"}</td>
+                                <td className="py-2 px-3 text-sm">
+                                  <Badge variant={req.status === "Completed" ? "default" : "outline"}>
+                                    {req.status}
+                                  </Badge>
+                                </td>
+                                <td className="py-2 px-3 text-center">
+                                  {req.daysOverdue > 0 ? (
+                                    <span className="text-sm font-semibold text-red-600">{req.daysOverdue}</span>
+                                  ) : (
+                                    <span className="text-sm text-[#605e5c]">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* KPI Footer */}
+                      <div className="mt-4 grid grid-cols-4 gap-4">
+                        <div className="p-3 bg-blue-50 border border-blue-200 rounded text-center">
+                          <p className="text-2xl font-bold text-[#323130]">{kpis.total}</p>
+                          <p className="text-xs text-[#605e5c]">Total Requests</p>
+                        </div>
+                        <div className="p-3 bg-green-50 border border-green-200 rounded text-center">
+                          <p className="text-2xl font-bold text-green-700">{kpis.completed}</p>
+                          <p className="text-xs text-[#605e5c]">Completed</p>
+                        </div>
+                        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded text-center">
+                          <p className="text-2xl font-bold text-yellow-700">{kpis.open}</p>
+                          <p className="text-xs text-[#605e5c]">Open</p>
+                        </div>
+                        <div className="p-3 bg-red-50 border border-red-200 rounded text-center">
+                          <p className="text-2xl font-bold text-red-700">{kpis.openPastDue}</p>
+                          <p className="text-xs text-[#605e5c]">Open Past Due</p>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex items-center justify-between">
+                        <div className="flex items-center space-x-4 text-xs">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 bg-green-50 border border-green-200"></div>
+                            <span className="text-[#605e5c]">Completed</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 bg-yellow-50 border border-yellow-200"></div>
+                            <span className="text-[#605e5c]">Due ≤ 7 days</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-4 h-4 bg-red-50 border border-red-200"></div>
+                            <span className="text-[#605e5c]">Overdue</span>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" className="border-[#8a8886]">
+                          Export Tracker
+                        </Button>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+
               {/* Action Buttons */}
               <div className="flex items-center justify-between bg-white border border-[#edebe9] rounded p-4">
                 <div className="text-xs text-[#605e5c]">
-                  Phase 2 Complete: Discovery Summary + Expert Discovery + Discovery Types Grid
+                  Phase 3 Complete: Discovery Summary + Expert Discovery + Discovery Types + Conferences • Motions • Tracker
                 </div>
                 <div className="flex space-x-2">
                   <Button 
