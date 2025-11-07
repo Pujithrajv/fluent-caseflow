@@ -26,6 +26,7 @@ import DiscoveryWorkflow from "./pages/DiscoveryWorkflow";
 import DiscoveryComplianceWorkflow from "./pages/DiscoveryComplianceWorkflow";
 import RequestScreen from "./pages/RequestScreen";
 import DemoRequestWizard from "./pages/DemoRequestWizard";
+import CrmScreen from "./pages/CrmScreen";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
             <Route path="/discovery-compliance" element={<DiscoveryComplianceWorkflow />} />
             <Route path="/request" element={<RequestScreen />} />
             <Route path="/demo-request" element={<DemoRequestWizard />} />
+            <Route path="/crm" element={<CrmScreen />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
