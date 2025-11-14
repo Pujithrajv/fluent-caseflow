@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { User, HelpCircle, Settings, LogOut, Users } from "lucide-react";
+import { User, HelpCircle, Settings, LogOut, Users, ArrowLeft } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -45,6 +45,14 @@ export function Header({ showUserActions = true }: HeaderProps) {
       <div className="mx-auto max-w-7xl px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => navigate(-1)}
+              className="hover:bg-white/20"
+            >
+              <ArrowLeft className="h-6 w-6 text-white" />
+            </Button>
             <img 
               src="/lovable-uploads/cms-logo.png" 
               alt="Illinois Department of Central Management Services" 
