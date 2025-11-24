@@ -354,11 +354,154 @@ const MotionDetails = () => {
           </TabsContent>
 
           <TabsContent value="response" className="mt-6">
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Response content will be displayed here
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-[400px_1fr] gap-6">
+              {/* Left Sidebar - Response Details */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg flex items-center">
+                    <FileText className="mr-2 h-5 w-5 text-primary" />
+                    Response Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div>
+                    <p className="text-sm font-semibold mb-3">Responding Party</p>
+                    <div className="space-y-1 text-sm">
+                      <p className="text-muted-foreground">Tommy Welldorf</p>
+                      <p>Second Party: <span className="font-medium">Respondent</span></p>
+                      <p>Attorney: <span className="font-medium">Dell Spington</span></p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold mb-1">Responding Party Due Date</p>
+                    <p className="text-sm">November 13, 2025</p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold mb-1">ALJ Ruling Date</p>
+                    <p className="text-sm">November 24, 2025</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Right Content Area */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg flex items-center">
+                    <MessageSquare className="mr-2 h-5 w-5 text-primary" />
+                    Response
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Comments Section */}
+                  <div>
+                    <label className="text-sm font-semibold mb-2 block">Comments</label>
+                    <textarea 
+                      className="w-full min-h-[120px] px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                      placeholder="Enter notes"
+                    />
+                  </div>
+
+                  {/* Document Upload Section */}
+                  <div>
+                    <label className="text-sm font-semibold mb-2 block">Document Upload</label>
+                    <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
+                      <p className="text-base font-medium mb-2">Drag and drop files here, or click to browse</p>
+                      <p className="text-sm text-muted-foreground mb-4">Supported formats: PDF, JPG, PNG (Max 10MB per file)</p>
+                      <Button variant="outline" className="mt-2">Browse Files</Button>
+                    </div>
+                  </div>
+
+                  {/* Response Documents Table */}
+                  <div>
+                    <label className="text-sm font-semibold mb-2 block">Response Documents</label>
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-muted">
+                          <tr>
+                            <th className="text-left p-3 text-sm font-semibold">Document Name</th>
+                            <th className="text-left p-3 text-sm font-semibold">Type</th>
+                            <th className="text-left p-3 text-sm font-semibold">Uploaded By</th>
+                            <th className="text-left p-3 text-sm font-semibold">Upload Date</th>
+                            <th className="text-left p-3 text-sm font-semibold">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-t">
+                            <td className="p-3 text-sm">
+                              <a href="#" className="text-primary hover:underline">Attorney-Response.pdf</a>
+                            </td>
+                            <td className="p-3 text-sm">
+                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
+                                <option>Attorney Motion Request</option>
+                              </select>
+                            </td>
+                            <td className="p-3 text-sm">Dell Spington</td>
+                            <td className="p-3 text-sm">2025-10-21</td>
+                            <td className="p-3 text-sm">
+                              <div className="flex gap-2">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <FileText className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <FileText className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr className="border-t">
+                            <td className="p-3 text-sm">
+                              <a href="#" className="text-primary hover:underline">Support-Documentation.pdf</a>
+                            </td>
+                            <td className="p-3 text-sm">
+                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
+                                <option>Supporting Evidence</option>
+                              </select>
+                            </td>
+                            <td className="p-3 text-sm">Tommy Welldorf</td>
+                            <td className="p-3 text-sm">2025-10-25</td>
+                            <td className="p-3 text-sm">
+                              <div className="flex gap-2">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <FileText className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <FileText className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Response Complete Checkbox */}
+                  <div>
+                    <label className="text-sm font-semibold mb-2 block">Response Complete</label>
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="checkbox" 
+                        id="response-complete"
+                        className="h-4 w-4 rounded border-input"
+                      />
+                      <label htmlFor="response-complete" className="text-sm">Yes</label>
+                    </div>
+                  </div>
+
+                  {/* Response Completed On */}
+                  <div>
+                    <label className="text-sm font-semibold mb-2 block">Response Completed On</label>
+                    <input 
+                      type="text" 
+                      className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                      placeholder="mm/dd/yyyy"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
