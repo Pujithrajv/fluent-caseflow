@@ -73,14 +73,6 @@ const MotionDetails = () => {
               <HandMetal className="mr-2 h-5 w-5" />
               Response
             </TabsTrigger>
-            <TabsTrigger value="ruling" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
-              <Gavel className="mr-2 h-5 w-5" />
-              Ruling
-            </TabsTrigger>
-            <TabsTrigger value="process" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
-              <ExternalLink className="mr-2 h-5 w-5" />
-              Process
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="motion-details" className="mt-6">
@@ -188,22 +180,6 @@ const MotionDetails = () => {
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
                 Response content will be displayed here
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="ruling" className="mt-6">
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Ruling content will be displayed here
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="process" className="mt-6">
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Process content will be displayed here
               </CardContent>
             </Card>
           </TabsContent>
