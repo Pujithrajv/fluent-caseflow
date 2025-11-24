@@ -9,30 +9,31 @@ const MotionDetails = () => {
       <Header />
       
       <div className="mx-auto max-w-7xl px-6 py-6">
-        {/* Header Section */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-semibold text-foreground mb-2">
-            Motion: Motion to Compel Discovery
-          </h1>
-          
-          {/* Breadcrumb */}
-          <div className="flex items-center text-sm text-muted-foreground mb-3">
-            <a href="#" className="text-primary hover:underline">Cases</a>
-            <span className="mx-2">/</span>
-            <a href="#" className="text-primary hover:underline">DBE-EC-02025-004</a>
-            <span className="mx-2">/</span>
-            <a href="#" className="text-primary hover:underline">Motions</a>
-            <span className="mx-2">/</span>
-            <span>Response</span>
+        {/* Header Section with Party Information */}
+        <div className="mb-6 flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-semibold text-foreground mb-2">
+              Motion: Motion to Compel Discovery
+            </h1>
+            
+            {/* Breadcrumb */}
+            <div className="flex items-center text-sm text-muted-foreground mb-3">
+              <a href="#" className="text-primary hover:underline">Cases</a>
+              <span className="mx-2">/</span>
+              <a href="#" className="text-primary hover:underline">DBE-EC-02025-004</a>
+              <span className="mx-2">/</span>
+              <a href="#" className="text-primary hover:underline">Motions</a>
+              <span className="mx-2">/</span>
+              <span>Response</span>
+            </div>
+            
+            <Badge className="bg-blue-600 text-white hover:bg-blue-700">
+              Awaiting Response
+            </Badge>
           </div>
-          
-          <Badge className="bg-blue-600 text-white hover:bg-blue-700">
-            Awaiting Response
-          </Badge>
-        </div>
 
-        {/* Party Information */}
-        <div className="justify-end gap-4 mb-6 flex flex-row">
+          {/* Party Information */}
+          <div className="gap-4 flex flex-row">
           <Card className="w-64">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold">Requesting Party</CardTitle>
@@ -54,6 +55,7 @@ const MotionDetails = () => {
               <p>Attorney: <span className="font-medium">Dell Spington</span></p>
             </CardContent>
           </Card>
+          </div>
         </div>
 
         {/* Tabs Navigation */}
