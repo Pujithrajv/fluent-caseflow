@@ -22,7 +22,7 @@ const MotionDetails = () => {
               <span className="mx-2">/</span>
               <a href="#" className="text-primary hover:underline">DBE-EC-02025-004</a>
               <span className="mx-2">/</span>
-              <a href="#" className="text-primary hover:underline">Motions</a>
+              <a href="#" className="text-primary hover:underline">Discovery</a>
               <span className="mx-2">/</span>
               <span>Response</span>
             </div>
