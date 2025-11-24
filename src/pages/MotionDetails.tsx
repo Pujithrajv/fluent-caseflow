@@ -124,8 +124,7 @@ const MotionDetails = () => {
               {/* Right Card - Motion to Compel Discovery Questions */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center text-lg">
-                    <FileText className="mr-2 h-5 w-5 text-primary" />
+                  <CardTitle className="flex items-center text-lg">Deposition Questions<FileText className="mr-2 h-5 w-5 text-primary" />
                     Motion to Compel Discovery Questions
                   </CardTitle>
                 </CardHeader>
@@ -134,41 +133,42 @@ const MotionDetails = () => {
                     <p className="text-sm font-semibold text-muted-foreground mb-1">
                       What did you ask the other side to give you?
                     </p>
-                    <p className="text-base">Additional Documentation about the incident.</p>
+                    <p className="text-base">jane doe     7894561230     janedoe@gmail.com                               </p>
                   </div>
 
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      What was their response?
+                      why is their deposition necessary ?     
                     </p>
                     <p className="text-base">Other (please explain)</p>
                   </div>
 
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      When and how did you ask for this information?
+                      can testimony be gotten by interrogatories ?      
                     </p>
-                    <p className="text-base">Email on October 13th, 2025</p>
+                    <p className="text-base">Yes</p>
                   </div>
 
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      Why is this information important to your case?
+                      
+
                     </p>
                     <p className="text-base">
-                      Needed to validate the violation notice was received via signature.
+                      
+
                     </p>
                   </div>
 
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      Describe Other Information
+                      
+
                     </p>
                     <p className="text-base text-muted-foreground leading-relaxed">
-                      Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien 
-                      vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-                      leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus 
-                      bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut
+                      
+
                     </p>
                   </div>
                 </CardContent>
