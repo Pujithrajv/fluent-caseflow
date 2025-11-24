@@ -4,10 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, MessageSquare, HandMetal, Gavel, ExternalLink, HelpCircle } from "lucide-react";
-
 const MotionDetails = () => {
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       <div className="mx-auto max-w-7xl px-6 py-6">
@@ -34,7 +32,7 @@ const MotionDetails = () => {
         </div>
 
         {/* Party Information */}
-        <div className="flex justify-end gap-4 mb-6">
+        <div className="justify-end gap-4 mb-6 flex flex-row">
           <Card className="w-64">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold">Requesting Party</CardTitle>
@@ -61,38 +59,23 @@ const MotionDetails = () => {
         {/* Tabs Navigation */}
         <Tabs defaultValue="motion-details" className="w-full">
           <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0 w-full">
-            <TabsTrigger 
-              value="motion-details" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors"
-            >
+            <TabsTrigger value="motion-details" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
               <FileText className="mr-2 h-5 w-5" />
               Motion Details
             </TabsTrigger>
-            <TabsTrigger 
-              value="request" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors"
-            >
+            <TabsTrigger value="request" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
               <MessageSquare className="mr-2 h-5 w-5" />
               Request
             </TabsTrigger>
-            <TabsTrigger 
-              value="response" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors"
-            >
+            <TabsTrigger value="response" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
               <HandMetal className="mr-2 h-5 w-5" />
               Response
             </TabsTrigger>
-            <TabsTrigger 
-              value="ruling" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors"
-            >
+            <TabsTrigger value="ruling" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
               <Gavel className="mr-2 h-5 w-5" />
               Ruling
             </TabsTrigger>
-            <TabsTrigger 
-              value="process" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors"
-            >
+            <TabsTrigger value="process" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
               <ExternalLink className="mr-2 h-5 w-5" />
               Process
             </TabsTrigger>
@@ -224,8 +207,6 @@ const MotionDetails = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default MotionDetails;
