@@ -56,14 +56,6 @@ const MotionDetails = () => {
               <p>Attorney: <span className="font-medium">Dell Spington</span></p>
             </CardContent>
           </Card>
-
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-12 w-12 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white"
-          >
-            <HelpCircle className="h-6 w-6" />
-          </Button>
         </div>
 
         {/* Tabs Navigation */}
