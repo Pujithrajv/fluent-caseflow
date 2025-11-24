@@ -13,7 +13,7 @@ const MotionDetails = () => {
         <div className="mb-6 flex justify-between items-start">
           <div>
             <h1 className="text-3xl font-semibold text-foreground mb-2">
-              Motion: Motion to Compel Discovery
+              Discovery: Deposition  
             </h1>
             
             {/* Breadcrumb */}
