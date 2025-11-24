@@ -96,12 +96,12 @@ const MotionDetails = () => {
                 <CardContent className="space-y-4">
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Request Group</p>
-                    <p className="text-base">Motions</p>
+                    <p className="text-base">Discovery</p>
                   </div>
 
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Request Type</p>
-                    <p className="text-base">Motion to Compel Discovery</p>
+                    <p className="text-base">Deposition</p>
                   </div>
 
                   <div>
