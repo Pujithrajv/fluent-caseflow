@@ -215,10 +215,7 @@ const MotionDetails = () => {
                   {/* Comments Section */}
                   <div>
                     <label className="text-sm font-semibold mb-2 block">Comments</label>
-                    <textarea 
-                      className="w-full min-h-[120px] px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                      placeholder="Enter notes"
-                    />
+                    <textarea className="w-full min-h-[120px] px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="Enter notes" />
                   </div>
 
                   {/* Document Upload Section */}
@@ -342,11 +339,7 @@ const MotionDetails = () => {
                   {/* Request Completed On */}
                   <div>
                     <label className="text-sm font-semibold mb-2 block">Request Completed On</label>
-                    <input 
-                      type="text" 
-                      className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                      placeholder="mm/dd/yyyy"
-                    />
+                    <input type="text" className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="mm/dd/yyyy" />
                   </div>
                 </CardContent>
               </Card>
@@ -397,10 +390,7 @@ const MotionDetails = () => {
                   {/* Comments Section */}
                   <div>
                     <label className="text-sm font-semibold mb-2 block">Comments</label>
-                    <textarea 
-                      className="w-full min-h-[120px] px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                      placeholder="Enter notes"
-                    />
+                    <textarea className="w-full min-h-[120px] px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="Enter notes" />
                   </div>
 
                   {/* Document Upload Section */}
@@ -481,11 +471,7 @@ const MotionDetails = () => {
                   <div>
                     <label className="text-sm font-semibold mb-2 block">Response Complete</label>
                     <div className="flex items-center gap-2">
-                      <input 
-                        type="checkbox" 
-                        id="response-complete"
-                        className="h-4 w-4 rounded border-input"
-                      />
+                      <input type="checkbox" id="response-complete" className="h-4 w-4 rounded border-input" />
                       <label htmlFor="response-complete" className="text-sm">Yes</label>
                     </div>
                   </div>
@@ -493,11 +479,7 @@ const MotionDetails = () => {
                   {/* Response Completed On */}
                   <div>
                     <label className="text-sm font-semibold mb-2 block">Response Completed On</label>
-                    <input 
-                      type="text" 
-                      className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                      placeholder="mm/dd/yyyy"
-                    />
+                    <input type="text" className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="mm/dd/yyyy" />
                   </div>
                 </CardContent>
               </Card>
