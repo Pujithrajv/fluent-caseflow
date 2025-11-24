@@ -63,7 +63,7 @@ const MotionDetails = () => {
           <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0 w-full">
             <TabsTrigger value="motion-details" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
               <FileText className="mr-2 h-5 w-5" />
-              Motion Details
+              Discovery Details
             </TabsTrigger>
             <TabsTrigger value="request" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
               <MessageSquare className="mr-2 h-5 w-5" />
