@@ -29,7 +29,11 @@ export function RequestGroupStep({ requestGroup, data, onNext, onBack }: Request
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{requestGroup} Information</CardTitle>
+        <CardTitle>
+          {requestGroup === "Discovery" 
+            ? "Discovery Information ( this is only for CRM)" 
+            : `${requestGroup} Information`}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {requestGroup === "Discovery" && (
