@@ -1450,6 +1450,109 @@ const CrmScreen = () => {
                 </div>
               </div>
             </div>}
+
+          {activeTab === "Participants" && <div className="max-w-7xl mx-auto grid grid-cols-2 gap-6">
+            {/* Left Column - Participant Information */}
+            <div className="space-y-6">
+              {/* Participant Details */}
+              <div className="bg-white border border-[#edebe9] rounded">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">Participant Details</h3>
+                </div>
+                <div className="p-4 space-y-4">
+                  <div>
+                    <Label className="text-xs text-[#323130]">Party Name</Label>
+                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Enter party name" />
+                  </div>
+                  <div>
+                    <Label className="text-xs text-[#323130]">Party Type</Label>
+                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Select party type" />
+                  </div>
+                  <div>
+                    <Label className="text-xs text-[#323130]">Representative</Label>
+                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Enter representative name" />
+                  </div>
+                  <div>
+                    <Label className="text-xs text-[#323130]">Contact Information</Label>
+                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Enter contact details" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Events/Notices and Motion Requests */}
+            <div className="space-y-6">
+              {/* Events / Notices */}
+              <div className="bg-white border border-[#edebe9] rounded">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <div className="inline-block px-2 py-1 bg-[#0078d4] text-white text-xs font-semibold">
+                    EVENTS / NOTICES
+                  </div>
+                </div>
+                <div className="p-4">
+                  <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white mb-4">
+                    Schedule Administrative Hearing
+                  </Button>
+                  <div className="flex items-center justify-end mb-2">
+                    <span className="text-sm text-[#0078d4] cursor-pointer mr-2">+</span>
+                    <span className="text-sm text-[#0078d4] cursor-pointer hover:underline">New Notice</span>
+                    <span className="ml-2 text-[#605e5c]">⋮</span>
+                  </div>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-[#edebe9] bg-[#f3f2f1]">
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Subject ↑</th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Start Date ↕</th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">End Date ↕</th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Status Rea... ↕</th>
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Date Cre...</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                          Administrative Hearing Conference
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                        <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">11/26/20</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Motions Requests */}
+              <div className="bg-white border border-[#edebe9] rounded">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">MOTIONS REQUESTS</h3>
+                </div>
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-[#323130]">MOTION TO CORRECT</span>
+                    <input type="checkbox" className="h-4 w-4" />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-[#323130]">MOTION TO REOPEN</span>
+                    <input type="checkbox" className="h-4 w-4" />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-[#323130]">MOTION TO REHEARING</span>
+                    <input type="checkbox" className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>}
         </div>
       </div>
     </div>;
