@@ -1454,27 +1454,36 @@ const CrmScreen = () => {
           {activeTab === "Participants" && <div className="max-w-7xl mx-auto grid grid-cols-2 gap-6">
             {/* Left Column - Participant Information */}
             <div className="space-y-6">
-              {/* Participant Details */}
+              {/* Deadline Extension */}
               <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
-                  <h3 className="text-sm font-semibold text-[#323130]">Participant Details</h3>
+                  <h3 className="text-sm font-semibold text-[#323130]">Deadline Extension</h3>
                 </div>
                 <div className="p-4 space-y-4">
                   <div>
-                    <Label className="text-xs text-[#323130]">Party Name</Label>
-                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Enter party name" />
+                    <Label className="text-xs text-[#323130]">Extended Deadline</Label>
+                    <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
                   </div>
                   <div>
-                    <Label className="text-xs text-[#323130]">Party Type</Label>
-                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Select party type" />
+                    <Label className="text-xs text-[#323130]">Deadline Extension Reason</Label>
+                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Summary */}
+              <div className="bg-white border border-[#edebe9] rounded">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">Summary</h3>
+                </div>
+                <div className="p-4 space-y-4">
+                  <div>
+                    <Label className="text-xs text-[#323130]">Comments</Label>
+                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
                   </div>
                   <div>
-                    <Label className="text-xs text-[#323130]">Representative</Label>
-                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Enter representative name" />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-[#323130]">Contact Information</Label>
-                    <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Enter contact details" />
+                    <Label className="text-xs text-[#323130]">Summary Notes</Label>
+                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
                   </div>
                 </div>
               </div>
