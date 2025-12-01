@@ -1452,25 +1452,8 @@ const CrmScreen = () => {
             </div>}
 
           {activeTab === "Participants" && <div className="max-w-7xl mx-auto grid grid-cols-2 gap-6">
-            {/* Left Column - Participant Information */}
+            {/* Left Column - Summary and Transcript Review */}
             <div className="space-y-6">
-              {/* Deadline Extension */}
-              <div className="bg-white border border-[#edebe9] rounded">
-                <div className="px-4 py-3 border-b border-[#edebe9]">
-                  <h3 className="text-sm font-semibold text-[#323130]">Deadline Extension</h3>
-                </div>
-                <div className="p-4 space-y-4">
-                  <div>
-                    <Label className="text-xs text-[#323130]">Extended Deadline</Label>
-                    <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-[#323130]">Deadline Extension Reason</Label>
-                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
-                  </div>
-                </div>
-              </div>
-
               {/* Summary */}
               <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
@@ -1506,9 +1489,9 @@ const CrmScreen = () => {
               </div>
             </div>
 
-            {/* Right Column - Events/Notices and Motion Requests */}
+            {/* Right Column - Events/Notices and Deadline Extension */}
             <div className="space-y-6">
-              {/* Events / Notices */}
+              {/* Events / Notices - Expanded */}
               <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
                   <div className="inline-block px-2 py-1 bg-[#0078d4] text-white text-xs font-semibold">
@@ -1552,28 +1535,60 @@ const CrmScreen = () => {
                         <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]">11/26/20</td>
                       </tr>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                          Pre-Hearing Conference
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">12/01/25</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">12/01/25</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Scheduled</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">11/15/25</td>
+                      </tr>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                          Discovery Deadline Notice
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">11/30/25</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">11/30/25</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Active</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">11/10/25</td>
+                      </tr>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                          Final Hearing Scheduled
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">01/15/26</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">01/15/26</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">11/20/25</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
 
-              {/* Motions Requests */}
+              {/* Deadline Extension */}
               <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
-                  <h3 className="text-sm font-semibold text-[#323130]">MOTIONS REQUESTS</h3>
+                  <h3 className="text-sm font-semibold text-[#323130]">Deadline Extension</h3>
                 </div>
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#323130]">MOTION TO CORRECT</span>
-                    <input type="checkbox" className="h-4 w-4" />
+                <div className="p-4 space-y-4">
+                  <div>
+                    <Label className="text-xs text-[#323130]">Extended Deadline</Label>
+                    <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#323130]">MOTION TO REOPEN</span>
-                    <input type="checkbox" className="h-4 w-4" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#323130]">MOTION TO REHEARING</span>
-                    <input type="checkbox" className="h-4 w-4" />
+                  <div>
+                    <Label className="text-xs text-[#323130]">Deadline Extension Reason</Label>
+                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
                   </div>
                 </div>
               </div>
