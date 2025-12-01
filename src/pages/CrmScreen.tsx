@@ -1295,6 +1295,161 @@ const CrmScreen = () => {
                 </div>
               </div>
             </div>}
+
+          {/* Post Hearing Tab */}
+          {activeTab === "Post Hearing" && <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-2 gap-6">
+                {/* Left Column - Post Hearing Checklist */}
+                <div className="space-y-6">
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">POST-HEARING CHECKLIST</h3>
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">Pre-Hearing Conferences Complete?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">Is Discovery Complete?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">All Outstanding Motions Resolved?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">All Witnesses Identified?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">Are all Witnesses available?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">All Proposed Exhibits Uploaded?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">Hearing Scheduled?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">Venue Reserved?</Label>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <input type="checkbox" className="h-4 w-4 rounded border-[#8a8886]" />
+                        <Label className="text-sm text-[#323130]">Court Reporter Scheduled?</Label>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Deadline Extension */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">Deadline Extension</h3>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">Extended Deadline</Label>
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#323130]">Deadline Extension Reason</Label>
+                        <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="---" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Summary */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">Summary</h3>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">Comments</Label>
+                        <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="---" />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#323130]">Summary Notes</Label>
+                        <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="---" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column - Events/Notices and Transcript Review */}
+                <div className="space-y-6">
+                  {/* Events / Notices */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <div className="inline-block px-2 py-1 bg-[#0078d4] text-white text-xs font-semibold">
+                        EVENTS / NOTICES
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white mb-4">
+                        Schedule Administrative Hearing
+                      </Button>
+                      <div className="flex items-center justify-end mb-2">
+                        <span className="text-sm text-[#0078d4] cursor-pointer mr-2">+</span>
+                        <span className="text-sm text-[#0078d4] cursor-pointer hover:underline">New Notice</span>
+                        <span className="ml-2 text-[#605e5c]">⋮</span>
+                      </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-[#edebe9] bg-[#f3f2f1]">
+                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">
+                              <input type="checkbox" className="h-4 w-4" />
+                            </th>
+                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Subject ↑</th>
+                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Start Date ↕</th>
+                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">End Date ↕</th>
+                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Status Rea... ↕</th>
+                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Date Cre...</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            <td className="py-2 px-3">
+                              <input type="checkbox" className="h-4 w-4" />
+                            </td>
+                            <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                              Administrative Hearing Conference
+                            </td>
+                            <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                            <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                            <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
+                            <td className="py-2 px-3 text-sm text-[#605e5c]">11/26/20</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Transcript Review */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">Transcript Review</h3>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <div>
+                        <Label className="text-xs text-[#323130]">Transcript Reviewed</Label>
+                        <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="---" />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#323130]">Transcript Reviewed On</Label>
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>}
         </div>
       </div>
     </div>;
