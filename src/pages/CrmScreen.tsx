@@ -1562,19 +1562,49 @@ const CrmScreen = () => {
                 <div className="px-4 py-3 border-b border-[#edebe9]">
                   <h3 className="text-sm font-semibold text-[#323130]">MOTIONS REQUESTS</h3>
                 </div>
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#323130]">MOTION TO CORRECT</span>
-                    <input type="checkbox" className="h-4 w-4" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#323130]">MOTION TO REOPEN</span>
-                    <input type="checkbox" className="h-4 w-4" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#323130]">MOTION TO REHEARING</span>
-                    <input type="checkbox" className="h-4 w-4" />
-                  </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                      <tr>
+                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10"></th>
+                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Motion Type ↑</th>
+                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status ↕</th>
+                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Date Filed ↕</th>
+                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10">
+                          <span className="cursor-pointer">⋮</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">MOTION TO CORRECT</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
+                        <td className="py-2 px-3"></td>
+                      </tr>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">MOTION TO REOPEN</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
+                        <td className="py-2 px-3"></td>
+                      </tr>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">MOTION TO REHEARING</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
+                        <td className="py-2 px-3"></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
