@@ -1454,23 +1454,6 @@ const CrmScreen = () => {
           {activeTab === "Post Hearing1" && <div className="max-w-7xl mx-auto grid grid-cols-2 gap-6">
             {/* Left Column - Participant Information */}
             <div className="space-y-6">
-              {/* Deadline Extension */}
-              <div className="bg-white border border-[#edebe9] rounded">
-                <div className="px-4 py-3 border-b border-[#edebe9]">
-                  <h3 className="text-sm font-semibold text-[#323130]">Deadline Extension</h3>
-                </div>
-                <div className="p-4 space-y-4">
-                  <div>
-                    <Label className="text-xs text-[#323130]">Extended Deadline</Label>
-                    <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-[#323130]">Deadline Extension Reason</Label>
-                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
-                  </div>
-                </div>
-              </div>
-
               {/* Transcript Review */}
               <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
@@ -1484,6 +1467,23 @@ const CrmScreen = () => {
                   <div>
                     <Label className="text-xs text-[#323130]">Transcript Reviewed On</Label>
                     <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Deadline Extension */}
+              <div className="bg-white border border-[#edebe9] rounded">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">Deadline Extension</h3>
+                </div>
+                <div className="p-4 space-y-4">
+                  <div>
+                    <Label className="text-xs text-[#323130]">Extended Deadline</Label>
+                    <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
+                  </div>
+                  <div>
+                    <Label className="text-xs text-[#323130]">Deadline Extension Reason</Label>
+                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
                   </div>
                 </div>
               </div>
