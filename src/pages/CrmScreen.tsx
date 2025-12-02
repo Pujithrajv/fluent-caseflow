@@ -1609,6 +1609,82 @@ const CrmScreen = () => {
               </div>
             </div>
           </div>}
+
+          {activeTab === "Requests" && <div className="max-w-7xl mx-auto">
+            {/* Motions Requests Subgrid */}
+            <div className="bg-white border border-[#edebe9] rounded">
+              <div className="px-4 py-3 border-b border-[#edebe9] flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-[#323130]">Motions Requests</h3>
+                <div className="flex items-center space-x-2">
+                  <button className="flex items-center space-x-1 text-sm text-[#0078d4] hover:underline">
+                    <span>+</span>
+                    <span>New</span>
+                  </button>
+                </div>
+              </div>
+              <div className="px-4 py-2 text-xs text-[#605e5c] border-b border-[#edebe9]">
+                Administrative Hearing Motions
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                    <tr>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10"></th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Motion Type ↑</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Requested By ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Requested On ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Decision Date ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10">
+                        <span className="cursor-pointer">⋮</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8] cursor-pointer">
+                      <td className="py-2 px-3">
+                        <input type="checkbox" className="h-4 w-4" />
+                      </td>
+                      <td className="py-2 px-3 text-sm text-[#0078d4] hover:underline">Motion to Correct</td>
+                      <td className="py-2 px-3 text-sm text-[#323130]">John Smith (Claimant)</td>
+                      <td className="py-2 px-3 text-sm text-[#605e5c]">11/15/2024</td>
+                      <td className="py-2 px-3">
+                        <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded">Pending</span>
+                      </td>
+                      <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
+                      <td className="py-2 px-3"></td>
+                    </tr>
+                    <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8] cursor-pointer">
+                      <td className="py-2 px-3">
+                        <input type="checkbox" className="h-4 w-4" />
+                      </td>
+                      <td className="py-2 px-3 text-sm text-[#0078d4] hover:underline">Motion to Reopen</td>
+                      <td className="py-2 px-3 text-sm text-[#323130]">ABC Insurance Co.</td>
+                      <td className="py-2 px-3 text-sm text-[#605e5c]">11/20/2024</td>
+                      <td className="py-2 px-3">
+                        <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">Granted</span>
+                      </td>
+                      <td className="py-2 px-3 text-sm text-[#605e5c]">11/25/2024</td>
+                      <td className="py-2 px-3"></td>
+                    </tr>
+                    <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8] cursor-pointer">
+                      <td className="py-2 px-3">
+                        <input type="checkbox" className="h-4 w-4" />
+                      </td>
+                      <td className="py-2 px-3 text-sm text-[#0078d4] hover:underline">Motion to Rehearing</td>
+                      <td className="py-2 px-3 text-sm text-[#323130]">Jane Doe (Attorney)</td>
+                      <td className="py-2 px-3 text-sm text-[#605e5c]">11/22/2024</td>
+                      <td className="py-2 px-3">
+                        <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded">Denied</span>
+                      </td>
+                      <td className="py-2 px-3 text-sm text-[#605e5c]">11/28/2024</td>
+                      <td className="py-2 px-3"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>}
         </div>
       </div>
     </div>;
