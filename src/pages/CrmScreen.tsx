@@ -1465,7 +1465,7 @@ const CrmScreen = () => {
                     <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
                   </div>
                   <div>
-                    <Label className="text-xs text-[#323130]">Transcript Reviewed</Label>
+                    <Label className="text-xs text-[#323130]">Transcript Received</Label>
                     <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
                   </div>
                 </div>
