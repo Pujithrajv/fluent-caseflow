@@ -1530,7 +1530,7 @@ const CrmScreen = () => {
                         <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
                           Administrative Hearing Conference
                         </td>
-                        <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">12/02/2024</td>
                         <td className="py-2 px-3 text-sm text-[#323130]"></td>
                         <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]">11/26/20</td>
