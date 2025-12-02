@@ -1563,6 +1563,15 @@ const CrmScreen = () => {
                         <td className="py-2 px-3">
                           <input type="checkbox" className="h-4 w-4" />
                         </td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">MOTION TO REHEARING</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
+                        <td className="py-2 px-3"></td>
+                      </tr>
+                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3">
+                          <input type="checkbox" className="h-4 w-4" />
+                        </td>
                         <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">MOTION TO CORRECT</td>
                         <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
@@ -1573,15 +1582,6 @@ const CrmScreen = () => {
                           <input type="checkbox" className="h-4 w-4" />
                         </td>
                         <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">MOTION TO REOPEN</td>
-                        <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
-                        <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
-                        <td className="py-2 px-3"></td>
-                      </tr>
-                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
-                        <td className="py-2 px-3">
-                          <input type="checkbox" className="h-4 w-4" />
-                        </td>
-                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">MOTION TO REHEARING</td>
                         <td className="py-2 px-3 text-sm text-[#323130]">Pending</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]"></td>
                         <td className="py-2 px-3"></td>
