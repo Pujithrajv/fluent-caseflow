@@ -1451,27 +1451,26 @@ const CrmScreen = () => {
               </div>
             </div>}
 
-{activeTab === "Post Hearing1" && <div className="max-w-7xl mx-auto space-y-6">
-            {/* Transcript Review - Full Width */}
-            <div className="bg-white border border-[#edebe9] rounded">
-              <div className="px-4 py-3 border-b border-[#edebe9]">
-                <h3 className="text-sm font-semibold text-[#323130]">Transcript Review</h3>
-              </div>
-              <div className="p-4 grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-xs text-[#323130]">Transcript Reviewed On</Label>
-                  <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
-                </div>
-                <div>
-                  <Label className="text-xs text-[#323130]">Transcript Received</Label>
-                  <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-            {/* Left Column */}
+          {activeTab === "Post Hearing1" && <div className="max-w-7xl mx-auto grid grid-cols-2 gap-6">
+            {/* Left Column - Participant Information */}
             <div className="space-y-6">
+              {/* Transcript Review */}
+              <div className="bg-white border border-[#edebe9] rounded">
+                <div className="px-4 py-3 border-b border-[#edebe9]">
+                  <h3 className="text-sm font-semibold text-[#323130]">Transcript Review</h3>
+                </div>
+                <div className="p-4 space-y-4">
+                  <div>
+                    <Label className="text-xs text-[#323130]">Transcript Reviewed On</Label>
+                    <Input type="date" className="mt-1 bg-white border-[#8a8886]" placeholder="mm/dd/yyyy" />
+                  </div>
+                  <div>
+                    <Label className="text-xs text-[#323130]">Transcript Received</Label>
+                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
+                  </div>
+                </div>
+              </div>
+
               {/* Deadline Extension */}
               <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
@@ -1591,7 +1590,6 @@ const CrmScreen = () => {
                   </table>
                 </div>
               </div>
-            </div>
             </div>
           </div>}
 
