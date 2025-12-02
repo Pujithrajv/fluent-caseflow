@@ -1471,23 +1471,6 @@ const CrmScreen = () => {
                 </div>
               </div>
 
-              {/* Summary */}
-              <div className="bg-white border border-[#edebe9] rounded">
-                <div className="px-4 py-3 border-b border-[#edebe9]">
-                  <h3 className="text-sm font-semibold text-[#323130]">Summary</h3>
-                </div>
-                <div className="p-4 space-y-4">
-                  <div>
-                    <Label className="text-xs text-[#323130]">Comments</Label>
-                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-[#323130]">Summary Notes</Label>
-                    <Input className="mt-1 bg-white border-[#8a8886]" placeholder="---" />
-                  </div>
-                </div>
-              </div>
-
               {/* Transcript Review */}
               <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
