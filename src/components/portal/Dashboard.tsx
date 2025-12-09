@@ -544,23 +544,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             {/* Filter and Create Button Row */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
-                <Select defaultValue="active">
-                  <SelectTrigger className="w-[200px] h-11 border-gray-400 bg-gray-50 focus:ring-primary">
-                    <SelectValue placeholder="Filter cases" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active Cases</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="submitted">Submitted</SelectItem>
-                    <SelectItem value="accepted">Accepted</SelectItem>
-                    <SelectItem value="inactive">Inactive Cases</SelectItem>
-                    <SelectItem value="complete">Complete</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                    <SelectItem value="archived">Archived</SelectItem>
-                  </SelectContent>
-                </Select>
-                
-                <Button 
+                <Button
                   size="lg" 
                   className="font-fluent bg-blue-600 hover:bg-blue-700 text-white"
                   onClick={() => navigate('/demo-request')}
