@@ -575,6 +575,14 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 >
                   FDM
                 </Button>
+                
+                <Button 
+                  size="lg" 
+                  className="font-fluent bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => navigate('/fdm2')}
+                >
+                  FDM@
+                </Button>
               </div>
               
               <div className="flex items-center space-x-2">
