@@ -28,6 +28,8 @@ import RequestScreen from "./pages/RequestScreen";
 import DemoRequestWizard from "./pages/DemoRequestWizard";
 import CrmScreen from "./pages/CrmScreen";
 import MotionDetails from "./pages/MotionDetails";
+import FinalDecisionMaker from "./pages/FinalDecisionMaker";
+import FinalDecisionDetail from "./pages/FinalDecisionDetail";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +65,8 @@ const App = () => (
             <Route path="/demo-request" element={<DemoRequestWizard />} />
             <Route path="/crm" element={<CrmScreen />} />
             <Route path="/discoverys" element={<MotionDetails />} />
+            <Route path="/fdm" element={<FinalDecisionMaker />} />
+            <Route path="/fdm/:id" element={<FinalDecisionDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
