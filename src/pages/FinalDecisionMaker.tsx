@@ -13,64 +13,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Search, Calendar, FileText, ChevronRight, Edit } from 'lucide-react';
+import { Search, Calendar, ChevronRight, Edit, FileText, Users } from 'lucide-react';
 
 const recommendedDecisions = [
   {
     id: 1,
-    caseNumber: 'DBE-EC-02025-004',
-    caseName: 'Smith vs. Department of Transportation',
+    caseNumber: '2025-01101',
     caseType: 'Abandoned Well',
-    department: 'Transportation',
+    deptId: '123456',
+    department: 'Department of Natural Resources',
+    firstParty: 'Complainant',
+    attorney: 'Hailwic Giugovaz',
+    secondParties: 'Defendant',
+    represented: 'No',
     primaryParty: 'John Smith',
-    status: 'Recommended – FDM Pending',
-    statusColor: 'bg-yellow-100 text-yellow-800',
-    recommendedDate: '11/25/2024',
-    deadline: '12/15/2024',
+    status: 'Pre-Hearing',
+    statusColor: 'bg-[#0d6efd] text-white',
+    secondStatus: 'Draft',
+    secondStatusColor: 'bg-[#6c757d] text-white',
+    decisionDate: '2025-08-11',
+    acceptedDate: '2025-08-11',
+    submittedDate: '2025-08-11',
+    groupType: 'Abandoned Well',
   },
   {
     id: 2,
-    caseNumber: 'DBE-EC-02025-008',
-    caseName: 'Johnson Environmental Review',
+    caseNumber: '2025-01017',
     caseType: 'Abandoned Well',
-    department: 'Environmental Protection',
-    primaryParty: 'ABC Industries',
-    status: 'Due Soon',
-    statusColor: 'bg-orange-100 text-orange-800',
-    recommendedDate: '11/20/2024',
-    deadline: '12/10/2024',
+    deptId: '',
+    department: 'Department of Natural Resources',
+    firstParty: 'Complainant',
+    attorney: 'Department Attorney (DNR)',
+    secondParties: 'Defendant',
+    represented: 'No',
+    primaryParty: 'Rajaram Sheppard',
+    status: 'Intake',
+    statusColor: 'bg-[#28a745] text-white',
+    secondStatus: 'Draft',
+    secondStatusColor: 'bg-[#6c757d] text-white',
+    decisionDate: '2025-08-11',
+    acceptedDate: '2025-08-11',
+    submittedDate: '2025-08-11',
+    groupType: 'Abandoned Well',
   },
   {
     id: 3,
-    caseNumber: 'HRD-02025-012',
-    caseName: 'Williams Employment Dispute',
-    caseType: 'Human Resources',
-    department: 'Human Resources',
-    primaryParty: 'Mary Williams',
-    status: 'Overdue',
-    statusColor: 'bg-red-100 text-red-800',
-    recommendedDate: '11/01/2024',
-    deadline: '11/30/2024',
-  },
-  {
-    id: 4,
-    caseNumber: 'PRO-02025-015',
-    caseName: 'Davis Procurement Appeal',
-    caseType: 'Procurement',
-    department: 'Procurement',
-    primaryParty: 'Davis Corp',
-    status: 'Finalized',
-    statusColor: 'bg-green-100 text-green-800',
-    recommendedDate: '10/15/2024',
-    deadline: '11/15/2024',
+    caseNumber: '2025-01029',
+    caseType: 'Abandoned Well',
+    deptId: '',
+    department: 'Department of Natural Resources',
+    firstParty: 'Complainant',
+    attorney: 'Department Attorney (DNR)',
+    secondParties: 'Defendant',
+    represented: 'No',
+    primaryParty: 'Jeronimo Lovel',
+    status: 'Intake',
+    statusColor: 'bg-[#28a745] text-white',
+    secondStatus: 'Draft',
+    secondStatusColor: 'bg-[#6c757d] text-white',
+    decisionDate: '2025-08-11',
+    acceptedDate: '2025-08-11',
+    submittedDate: '2025-08-11',
+    groupType: 'Abandoned Well',
   },
 ];
 
@@ -81,10 +85,10 @@ const FinalDecisionMaker: React.FC = () => {
   const [filterValue, setFilterValue] = useState('active');
 
   const groupedDecisions = recommendedDecisions.reduce((acc, decision) => {
-    if (!acc[decision.caseType]) {
-      acc[decision.caseType] = [];
+    if (!acc[decision.groupType]) {
+      acc[decision.groupType] = [];
     }
-    acc[decision.caseType].push(decision);
+    acc[decision.groupType].push(decision);
     return acc;
   }, {} as Record<string, typeof recommendedDecisions>);
 
@@ -98,42 +102,45 @@ const FinalDecisionMaker: React.FC = () => {
       
       <main className="container mx-auto px-6 py-6">
         {/* Breadcrumb */}
-        <div className="flex items-center text-sm text-muted-foreground mb-4 font-fluent">
+        <div className="flex items-center text-sm text-[#0d6efd] mb-4 font-fluent">
           <span 
-            className="hover:text-primary cursor-pointer"
+            className="hover:underline cursor-pointer"
             onClick={() => navigate('/portal')}
           >
             Dashboard
           </span>
-          <ChevronRight className="h-4 w-4 mx-2" />
-          <span className="text-foreground font-medium">Final Decisions</span>
+          <span className="mx-2 text-muted-foreground">/</span>
+          <span className="text-muted-foreground">My Cases</span>
         </div>
 
         {/* Page Title */}
-        <h1 className="text-2xl font-semibold text-[#1a365d] mb-6 font-fluent">
-          Final Decisions – Recommended Cases
+        <h1 className="text-2xl font-semibold text-foreground mb-6 font-fluent">
+          My Cases
         </h1>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="bg-white border border-gray-200 mb-4">
+          <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0 mb-4">
             <TabsTrigger 
               value="recommended" 
-              className="font-fluent data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
             >
-              Recommended Decisions
+              <FileText className="h-4 w-4" />
+              Cases
             </TabsTrigger>
             <TabsTrigger 
               value="deadlines" 
-              className="font-fluent data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
             >
-              Upcoming Deadlines
+              <Calendar className="h-4 w-4" />
+              Upcoming Events
             </TabsTrigger>
             <TabsTrigger 
               value="history" 
-              className="font-fluent data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
             >
-              History
+              <Users className="h-4 w-4" />
+              Tasks and Alerts
             </TabsTrigger>
           </TabsList>
 
@@ -141,111 +148,140 @@ const FinalDecisionMaker: React.FC = () => {
             {/* Filter Row */}
             <div className="flex items-center justify-between mb-4">
               <Select value={filterValue} onValueChange={setFilterValue}>
-                <SelectTrigger className="w-[250px] h-11 border-gray-400 bg-white font-fluent">
-                  <SelectValue placeholder="Filter decisions" />
+                <SelectTrigger className="w-[180px] h-10 border-gray-300 bg-white font-fluent">
+                  <SelectValue placeholder="Filter cases" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="active">Active Recommended Decisions</SelectItem>
-                  <SelectItem value="all">All Decisions</SelectItem>
+                <SelectContent className="bg-white">
+                  <SelectItem value="active">Active Cases</SelectItem>
+                  <SelectItem value="all">All Cases</SelectItem>
                   <SelectItem value="pending">Pending Review</SelectItem>
-                  <SelectItem value="overdue">Overdue</SelectItem>
+                  <SelectItem value="closed">Closed</SelectItem>
                 </SelectContent>
               </Select>
 
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  placeholder="Search by Case ID, party, or department…"
-                  className="pl-10 w-80 h-11 font-fluent border-gray-400 bg-white"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search..."
+                    className="pl-10 w-64 h-10 font-fluent border-gray-300 bg-white"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Button className="bg-[#1a365d] hover:bg-[#1a365d]/90 text-white font-fluent h-10">
+                  + Create New Case
+                </Button>
               </div>
             </div>
 
             {/* Main Table */}
-            <Card className="border border-gray-200 shadow-sm">
-              <CardContent className="p-0">
-                {Object.entries(groupedDecisions).map(([caseType, decisions]) => (
-                  <div key={caseType}>
-                    {/* Group Header */}
-                    <div className="bg-gray-100 px-4 py-2 border-b border-gray-200">
-                      <span className="font-semibold text-[#1a365d] font-fluent">{caseType}</span>
-                    </div>
-                    
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-gray-50">
-                          <TableHead className="w-12"></TableHead>
-                          <TableHead className="font-fluent font-semibold text-[#1a365d]">Case</TableHead>
-                          <TableHead className="font-fluent font-semibold text-[#1a365d]">Department</TableHead>
-                          <TableHead className="font-fluent font-semibold text-[#1a365d]">Primary Party</TableHead>
-                          <TableHead className="font-fluent font-semibold text-[#1a365d]">Status</TableHead>
-                          <TableHead className="font-fluent font-semibold text-[#1a365d]">Dates</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {decisions.map((decision) => (
-                          <TableRow 
-                            key={decision.id} 
-                            className="hover:bg-gray-50 cursor-pointer"
-                            onClick={() => handleCaseClick(decision.id)}
-                          >
-                            <TableCell>
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleCaseClick(decision.id);
-                                }}
-                              >
-                                <Edit className="h-4 w-4 text-blue-600" />
-                              </Button>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex flex-col">
-                                <span className="font-semibold text-blue-600 font-fluent">{decision.caseNumber}</span>
-                                <span className="text-sm text-muted-foreground font-fluent">{decision.caseName}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="font-fluent">{decision.department}</TableCell>
-                            <TableCell className="font-fluent">{decision.primaryParty}</TableCell>
-                            <TableCell>
-                              <Badge className={`${decision.statusColor} font-fluent`}>
-                                {decision.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex flex-col text-sm font-fluent">
-                                <div className="flex items-center gap-1">
-                                  <Calendar className="h-3 w-3 text-muted-foreground" />
-                                  <span>Recommended: {decision.recommendedDate}</span>
-                                </div>
-                                <div className="flex items-center gap-1 text-muted-foreground">
-                                  <Calendar className="h-3 w-3" />
-                                  <span>Deadline: {decision.deadline}</span>
-                                </div>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+            <div className="bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm">
+              {/* Table Header */}
+              <div className="grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] bg-[#1a365d] text-white">
+                <div className="px-4 py-3 font-semibold font-fluent w-12"></div>
+                <div className="px-4 py-3 font-semibold font-fluent">Case</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Department</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Primary Party</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Status</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Dates</div>
+              </div>
+
+              {Object.entries(groupedDecisions).map(([groupType, decisions]) => (
+                <div key={groupType}>
+                  {/* Group Header */}
+                  <div className="bg-[#17a2b8]/20 px-4 py-2 border-b border-gray-200">
+                    <span className="font-semibold text-[#1a365d] font-fluent">{groupType}</span>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                  
+                  {/* Group Rows */}
+                  {decisions.map((decision, index) => (
+                    <div 
+                      key={decision.id}
+                      className={`grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${
+                        index % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'
+                      }`}
+                      onClick={() => handleCaseClick(decision.id)}
+                    >
+                      {/* Edit Icon */}
+                      <div className="px-4 py-3 flex items-start w-12">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCaseClick(decision.id);
+                          }}
+                        >
+                          <Edit className="h-4 w-4 text-[#0d6efd]" />
+                        </Button>
+                      </div>
+
+                      {/* Case */}
+                      <div className="px-4 py-3">
+                        <div className="text-[#0d6efd] font-semibold font-fluent">{decision.caseNumber}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">{decision.caseType}</div>
+                        {decision.deptId && (
+                          <div className="text-sm text-muted-foreground font-fluent">Dept. ID: {decision.deptId}</div>
+                        )}
+                      </div>
+
+                      {/* Department */}
+                      <div className="px-4 py-3">
+                        <div className="font-semibold font-fluent text-foreground">{decision.department}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">First Party: {decision.firstParty}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">Attorney: {decision.attorney}</div>
+                      </div>
+
+                      {/* Primary Party */}
+                      <div className="px-4 py-3">
+                        <div className="font-fluent text-foreground">{decision.primaryParty}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">Second Parties: {decision.secondParties}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">Represented: {decision.represented}</div>
+                      </div>
+
+                      {/* Status */}
+                      <div className="px-4 py-3">
+                        <div className="flex flex-col gap-1">
+                          <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
+                            {decision.status}
+                          </Badge>
+                          <Badge className={`${decision.secondStatusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
+                            {decision.secondStatus}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* Dates */}
+                      <div className="px-4 py-3">
+                        <div className="flex items-center gap-2 text-sm font-fluent text-[#dc3545]">
+                          <Calendar className="h-3 w-3" />
+                          <span>Decision: {decision.decisionDate}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm font-fluent text-muted-foreground">
+                          <Calendar className="h-3 w-3" />
+                          <span>Accepted: {decision.acceptedDate}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm font-fluent text-[#0d6efd]">
+                          <Calendar className="h-3 w-3" />
+                          <span>Submitted: {decision.submittedDate}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </TabsContent>
 
           <TabsContent value="deadlines">
             <Card className="border border-gray-200 shadow-sm">
               <CardHeader>
-                <CardTitle className="font-fluent text-[#1a365d]">Upcoming Deadlines</CardTitle>
+                <CardTitle className="font-fluent text-[#1a365d]">Upcoming Events</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground font-fluent">No upcoming deadlines to display.</p>
+                <p className="text-muted-foreground font-fluent">No upcoming events to display.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -253,10 +289,10 @@ const FinalDecisionMaker: React.FC = () => {
           <TabsContent value="history">
             <Card className="border border-gray-200 shadow-sm">
               <CardHeader>
-                <CardTitle className="font-fluent text-[#1a365d]">Decision History</CardTitle>
+                <CardTitle className="font-fluent text-[#1a365d]">Tasks and Alerts</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground font-fluent">No historical decisions to display.</p>
+                <p className="text-muted-foreground font-fluent">No tasks or alerts to display.</p>
               </CardContent>
             </Card>
           </TabsContent>
