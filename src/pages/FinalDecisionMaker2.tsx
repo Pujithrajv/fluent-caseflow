@@ -213,19 +213,12 @@ const FinalDecisionMaker2: React.FC = () => {
                   </div>
 
                   {/* Card Footer */}
-                  <div className="p-4 border-t border-gray-100 flex gap-2">
+                  <div className="p-4 border-t border-gray-100">
                     <Button 
-                      className="flex-1 bg-[#0d6efd] hover:bg-[#0d6efd]/90 text-white font-fluent"
+                      className="w-full bg-[#0d6efd] hover:bg-[#0d6efd]/90 text-white font-fluent"
                       onClick={() => handleCaseClick(decision.id)}
                     >
                       Open Case
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      className="font-fluent border-gray-300"
-                      onClick={() => handleCaseClick(decision.id)}
-                    >
-                      View Details
                     </Button>
                   </div>
                 </div>
