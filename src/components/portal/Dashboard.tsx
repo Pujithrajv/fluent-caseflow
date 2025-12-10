@@ -17,7 +17,7 @@ import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
 import { NewTaskView } from "./NewTaskView";
-import { NewPrimaryTab } from "./wizard/NewPrimaryTab";
+
 
 interface CaseItem {
   id: string;
@@ -519,24 +519,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               Subprocess
             </TabsTrigger>
-            <TabsTrigger 
-              value="testdemo" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Testdemo
-            </TabsTrigger>
-            <TabsTrigger 
-              value="demo2" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Demo2
-            </TabsTrigger>
-            <TabsTrigger 
-              value="primary" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Primary
-            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -981,67 +963,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                 </Card>
               </div>
             </div>
-          </TabsContent>
-
-          {/* Testdemo Tab Content */}
-          <TabsContent value="testdemo" className="mt-6">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-semibold text-foreground">Test Demo</h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Test demonstration area
-                  </p>
-                </div>
-                <Button size="lg" className="font-fluent" onClick={() => navigate("/discovery-workflow")}>
-                  Mockup
-                </Button>
-              </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Demo Content</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    This is a test demo tab. You can add your content here.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Demo2 Tab Content */}
-          <TabsContent value="demo2" className="mt-6">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-semibold text-foreground">Demo 2</h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Discovery & Compliance demonstration
-                  </p>
-                </div>
-                <Button size="lg" className="font-fluent" onClick={() => navigate("/discovery-compliance")}>
-                  Mockup2
-                </Button>
-              </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Content Area</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Click Mockup2 to view the Discovery & Compliance workflow.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          {/* Primary Tab Content */}
-          <TabsContent value="primary" className="mt-6">
-            <NewPrimaryTab />
           </TabsContent>
 
         </Tabs>
