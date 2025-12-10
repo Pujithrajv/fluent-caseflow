@@ -52,7 +52,6 @@ const FinalDecisionDetail2: React.FC = () => {
 
   const documents = [
     { name: 'Recommended Decision Report', type: 'System Generated', uploadedBy: 'System', date: '11/25/2024' },
-    { name: 'Recommended Notification', type: 'System Generated', uploadedBy: 'System', date: '11/25/2024' },
   ];
 
   const activityLog = [
