@@ -20,7 +20,7 @@ const recommendedDecisions = [
     secondParties: 'Defendant',
     represented: 'No',
     primaryParty: 'John Smith',
-    status: 'Pre-Hearing',
+    status: 'Ruling',
     statusColor: 'bg-[#0d6efd] text-white',
     secondStatus: 'Draft',
     secondStatusColor: 'bg-[#6c757d] text-white',
