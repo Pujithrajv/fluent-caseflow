@@ -33,7 +33,7 @@ const caseData = {
   recommendedDate: '11/25/2024',
   deadline: '12/15/2024',
   daysRemaining: 6,
-  status: 'On Time',
+  status: 'On Time (6 days remaining)',
   statusColor: 'bg-green-100 text-green-800',
   recommendationOutcome: 'Granted',
   summary: 'The Administrative Law Judge recommends granting the petitioner\'s request for remediation assistance based on the evidence presented during the hearing. The respondent failed to demonstrate compliance with environmental regulations as required under statute.',
