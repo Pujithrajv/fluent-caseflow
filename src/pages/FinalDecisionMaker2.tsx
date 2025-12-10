@@ -13,7 +13,7 @@ const recommendedDecisions = [
     id: 1,
     caseNumber: '2025-01101',
     caseType: 'Abandoned Well',
-    deptId: '123456',
+    deptId: 'AW-7896',
     department: 'Department of Natural Resources',
     firstParty: 'Complainant',
     attorney: 'Hailwic Giugovaz',
@@ -169,7 +169,7 @@ const FinalDecisionMaker2: React.FC = () => {
                         >
                           {decision.caseNumber}
                         </span>
-                        {decision.deptId && <div className="text-sm text-muted-foreground font-fluent">{decision.deptId}</div>}
+                        {decision.deptId && <div className="text-sm text-muted-foreground font-fluent">Dept number : {decision.deptId}</div>}
                       </div>
                       <div className="flex flex-col gap-1 items-end">
                         <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded`}>
