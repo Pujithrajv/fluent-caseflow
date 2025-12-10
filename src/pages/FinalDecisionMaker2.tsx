@@ -121,20 +121,6 @@ const FinalDecisionMaker2: React.FC = () => {
               <FileText className="h-4 w-4" />
               Cases
             </TabsTrigger>
-            <TabsTrigger 
-              value="deadlines" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
-            >
-              <Calendar className="h-4 w-4" />
-              Upcoming Events
-            </TabsTrigger>
-            <TabsTrigger 
-              value="history" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
-            >
-              <Users className="h-4 w-4" />
-              Tasks and Alerts
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="recommended">
@@ -224,28 +210,6 @@ const FinalDecisionMaker2: React.FC = () => {
                 </div>
               ))}
             </div>
-          </TabsContent>
-
-          <TabsContent value="deadlines">
-            <Card className="border border-gray-200 shadow-sm">
-              <CardHeader>
-                <CardTitle className="font-fluent text-[#1a365d]">Upcoming Events</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground font-fluent">No upcoming events to display.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="history">
-            <Card className="border border-gray-200 shadow-sm">
-              <CardHeader>
-                <CardTitle className="font-fluent text-[#1a365d]">Tasks and Alerts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground font-fluent">No tasks or alerts to display.</p>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
       </main>
