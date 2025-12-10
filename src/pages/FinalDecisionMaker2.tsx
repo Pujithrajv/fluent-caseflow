@@ -175,101 +175,85 @@ const FinalDecisionMaker2: React.FC = () => {
               </div>
             </div>
 
-            {/* Main Table */}
-            <div className="bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm">
-              {/* Table Header */}
-              <div className="grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] bg-[#1a365d] text-white">
-                <div className="px-4 py-3 font-semibold font-fluent w-12"></div>
-                <div className="px-4 py-3 font-semibold font-fluent">Case</div>
-                <div className="px-4 py-3 font-semibold font-fluent">Department</div>
-                <div className="px-4 py-3 font-semibold font-fluent">Primary Party</div>
-                <div className="px-4 py-3 font-semibold font-fluent">Status</div>
-                <div className="px-4 py-3 font-semibold font-fluent">Dates</div>
-              </div>
-
-              {Object.entries(groupedDecisions).map(([groupType, decisions]) => (
-                <div key={groupType}>
-                  {/* Group Header */}
-                  <div className="bg-[#17a2b8]/20 px-4 py-2 border-b border-gray-200">
-                    <span className="font-semibold text-[#1a365d] font-fluent">{groupType}</span>
-                  </div>
-                  
-                  {/* Group Rows */}
-                  {decisions.map((decision, index) => (
-                    <div 
-                      key={decision.id}
-                      className={`grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${
-                        index % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'
-                      }`}
-                      onClick={() => handleCaseClick(decision.id)}
-                    >
-                      {/* Edit Icon */}
-                      <div className="px-4 py-3 flex items-start w-12">
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          className="h-6 w-6 p-0"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCaseClick(decision.id);
-                          }}
+            {/* Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recommendedDecisions.map((decision) => (
+                <div 
+                  key={decision.id}
+                  className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                >
+                  {/* Card Header */}
+                  <div className="p-4 border-b border-gray-100">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-semibold text-foreground font-fluent">{decision.caseType}</h3>
+                        <span 
+                          className="text-[#0d6efd] font-semibold font-fluent cursor-pointer hover:underline"
+                          onClick={() => handleCaseClick(decision.id)}
                         >
-                          <Edit className="h-4 w-4 text-[#0d6efd]" />
-                        </Button>
+                          {decision.caseNumber}
+                        </span>
                       </div>
-
-                      {/* Case */}
-                      <div className="px-4 py-3">
-                        <div className="text-[#0d6efd] font-semibold font-fluent">{decision.caseNumber}</div>
-                        <div className="text-sm text-muted-foreground font-fluent">{decision.caseType}</div>
-                        {decision.deptId && (
-                          <div className="text-sm text-muted-foreground font-fluent">Dept. ID: {decision.deptId}</div>
-                        )}
-                      </div>
-
-                      {/* Department */}
-                      <div className="px-4 py-3">
-                        <div className="font-semibold font-fluent text-foreground">{decision.department}</div>
-                        <div className="text-sm text-muted-foreground font-fluent">First Party: {decision.firstParty}</div>
-                        <div className="text-sm text-muted-foreground font-fluent">Attorney: {decision.attorney}</div>
-                      </div>
-
-                      {/* Primary Party */}
-                      <div className="px-4 py-3">
-                        <div className="font-fluent text-foreground">{decision.primaryParty}</div>
-                        <div className="text-sm text-muted-foreground font-fluent">Second Parties: {decision.secondParties}</div>
-                        <div className="text-sm text-muted-foreground font-fluent">Represented: {decision.represented}</div>
-                      </div>
-
-                      {/* Status */}
-                      <div className="px-4 py-3">
-                        <div className="flex flex-col gap-1">
-                          <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
-                            {decision.status}
-                          </Badge>
-                          <Badge className={`${decision.secondStatusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
-                            {decision.secondStatus}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      {/* Dates */}
-                      <div className="px-4 py-3">
-                        <div className="flex items-center gap-2 text-sm font-fluent text-[#dc3545]">
-                          <Calendar className="h-3 w-3" />
-                          <span>Decision: {decision.decisionDate}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm font-fluent text-muted-foreground">
-                          <Calendar className="h-3 w-3" />
-                          <span>Accepted: {decision.acceptedDate}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm font-fluent text-[#0d6efd]">
-                          <Calendar className="h-3 w-3" />
-                          <span>Submitted: {decision.submittedDate}</span>
-                        </div>
+                      <div className="flex flex-col gap-1 items-end">
+                        <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded`}>
+                          {decision.status}
+                        </Badge>
+                        <Badge className={`${decision.secondStatusColor} font-fluent text-xs px-2 py-0.5 rounded`}>
+                          {decision.secondStatus}
+                        </Badge>
                       </div>
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="p-4 space-y-3">
+                    {/* Department Info */}
+                    <div>
+                      <div className="font-semibold text-foreground font-fluent">{decision.department}</div>
+                      <div className="text-sm text-muted-foreground font-fluent">First Party: {decision.firstParty}</div>
+                      <div className="text-sm text-muted-foreground font-fluent">Attorney: {decision.attorney}</div>
+                    </div>
+
+                    {/* Primary Party */}
+                    <div>
+                      <div className="font-fluent text-foreground">{decision.primaryParty} (Defendant)</div>
+                      <div className="text-sm text-muted-foreground font-fluent">Second Parties: {decision.secondParties}</div>
+                      <div className="text-sm text-muted-foreground font-fluent">Represented: {decision.represented}</div>
+                    </div>
+
+                    {/* Dates */}
+                    <div className="pt-2 border-t border-gray-100">
+                      <div className="flex items-center gap-2 text-sm font-fluent text-[#dc3545]">
+                        <Calendar className="h-3 w-3" />
+                        <span>Decision: {decision.decisionDate}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm font-fluent text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        <span>Accepted: {decision.acceptedDate}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm font-fluent text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        <span>Submitted: {decision.submittedDate}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card Footer */}
+                  <div className="p-4 border-t border-gray-100 flex gap-2">
+                    <Button 
+                      className="flex-1 bg-[#0d6efd] hover:bg-[#0d6efd]/90 text-white font-fluent"
+                      onClick={() => handleCaseClick(decision.id)}
+                    >
+                      Open Case
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="font-fluent border-gray-300"
+                      onClick={() => handleCaseClick(decision.id)}
+                    >
+                      View Details
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
