@@ -40,7 +40,7 @@ const FinalDecisionDetail2: React.FC = () => {
     caseName: 'Smith vs. Department of Natural Resources',
     caseType: 'Abandoned Well',
     department: 'Transportation',
-    parties: 'John Smith vs. Department of Transportation',
+    parties: 'John Smith vs. Department of Natural Resources',
     fdmDeadline: '12/15/2024',
     daysRemaining: 6,
     status: 'On Time',
