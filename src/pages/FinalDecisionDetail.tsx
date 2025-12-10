@@ -47,13 +47,6 @@ const recommendedDocuments = [
     uploadedBy: 'ALJ Patricia Martinez',
     date: '11/25/2024',
   },
-  {
-    id: 2,
-    name: 'Recommended Notification',
-    type: 'System Generated',
-    uploadedBy: 'System',
-    date: '11/25/2024',
-  },
 ];
 
 const activityLog = [
