@@ -37,7 +37,7 @@ const FinalDecisionDetail2: React.FC = () => {
   const caseData = {
     id: id,
     caseNumber: 'DBE-EC-02025-004',
-    caseName: 'Smith vs. Department of Transportation',
+    caseName: 'Smith vs. Department of Natural Resources',
     caseType: 'Abandoned Well',
     department: 'Transportation',
     parties: 'John Smith vs. Department of Transportation',
