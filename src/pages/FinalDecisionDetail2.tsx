@@ -39,7 +39,7 @@ const FinalDecisionDetail2: React.FC = () => {
     caseNumber: 'DBE-EC-02025-004',
     caseName: 'Smith vs. Department of Natural Resources',
     caseType: 'Abandoned Well',
-    department: 'Transportation',
+    department: 'Natural Resources',
     parties: 'John Smith vs. Department of Natural Resources',
     fdmDeadline: '12/15/2024',
     daysRemaining: 6,
