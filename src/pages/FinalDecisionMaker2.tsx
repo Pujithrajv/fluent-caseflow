@@ -6,13 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Search, Calendar, ChevronRight, Edit, FileText, Users } from 'lucide-react';
 
 const recommendedDecisions = [
@@ -82,7 +75,7 @@ const FinalDecisionMaker2: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('recommended');
-  const [filterValue, setFilterValue] = useState('active');
+  
 
   const groupedDecisions = recommendedDecisions.reduce((acc, decision) => {
     if (!acc[decision.groupType]) {
@@ -146,32 +139,15 @@ const FinalDecisionMaker2: React.FC = () => {
 
           <TabsContent value="recommended">
             {/* Filter Row */}
-            <div className="flex items-center justify-between mb-4">
-              <Select value={filterValue} onValueChange={setFilterValue}>
-                <SelectTrigger className="w-[180px] h-10 border-gray-300 bg-white font-fluent">
-                  <SelectValue placeholder="Filter cases" />
-                </SelectTrigger>
-                <SelectContent className="bg-white">
-                  <SelectItem value="active">Active Cases</SelectItem>
-                  <SelectItem value="all">All Cases</SelectItem>
-                  <SelectItem value="pending">Pending Review</SelectItem>
-                  <SelectItem value="closed">Closed</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search..."
-                    className="pl-10 w-64 h-10 font-fluent border-gray-300 bg-white"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <Button className="bg-[#1a365d] hover:bg-[#1a365d]/90 text-white font-fluent h-10">
-                  + Create New Case
-                </Button>
+            <div className="flex items-center justify-end mb-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by Case ID, party, or department..."
+                  className="pl-10 w-80 h-10 font-fluent border-gray-300 bg-white"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
             </div>
 
