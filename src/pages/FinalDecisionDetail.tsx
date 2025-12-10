@@ -320,7 +320,7 @@ const FinalDecisionDetail: React.FC = () => {
                         <div className="flex items-center gap-2 mt-1">
                           <Clock className="h-4 w-4 text-muted-foreground" />
                           <span className="font-fluent">{caseData.daysRemaining} days</span>
-                          <Badge className={caseData.statusColor}>{caseData.status}</Badge>
+                          
                         </div>
                       </div>
                     </div>
