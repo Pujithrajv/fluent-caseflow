@@ -7,76 +7,68 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search, Calendar, ChevronRight, Edit, FileText, Users } from 'lucide-react';
-
-const recommendedDecisions = [
-  {
-    id: 1,
-    caseNumber: '2025-01101',
-    caseType: 'Abandoned Well',
-    deptId: 'AW-7896',
-    department: 'Department of Natural Resources',
-    firstParty: 'Complainant',
-    attorney: 'Hailwic Giugovaz',
-    secondParties: 'Defendant',
-    represented: 'No',
-    primaryParty: 'John Smith',
-    status: 'Recommended Decision',
-    statusColor: 'bg-[#0d6efd] text-white',
-    secondStatus: 'Draft',
-    secondStatusColor: 'bg-[#6c757d] text-white',
-    decisionDate: '2025-08-11',
-    acceptedDate: '2025-08-11',
-    submittedDate: '2025-08-11',
-    groupType: 'Abandoned Well',
-  },
-  {
-    id: 2,
-    caseNumber: '2025-01017',
-    caseType: 'Abandoned Well',
-    deptId: 'AW-1489',
-    department: 'Department of Natural Resources',
-    firstParty: 'Complainant',
-    attorney: 'Department Attorney (DNR)',
-    secondParties: 'Defendant',
-    represented: 'No',
-    primaryParty: 'Rajaram Sheppard',
-    status: 'Recommended Decision',
-    statusColor: 'bg-[#28a745] text-white',
-    secondStatus: 'Draft',
-    secondStatusColor: 'bg-[#6c757d] text-white',
-    decisionDate: '2025-08-11',
-    acceptedDate: '2025-08-11',
-    submittedDate: '2025-08-11',
-    groupType: 'Abandoned Well',
-  },
-  {
-    id: 3,
-    caseNumber: '2025-01029',
-    caseType: 'Abandoned Well',
-    deptId: 'AW-875',
-    department: 'Department of Natural Resources',
-    firstParty: 'Complainant',
-    attorney: 'Department Attorney (DNR)',
-    secondParties: 'Defendant',
-    represented: 'No',
-    primaryParty: 'Jeronimo Lovel',
-    status: 'Recommended Decision',
-    statusColor: 'bg-[#28a745] text-white',
-    secondStatus: 'Draft',
-    secondStatusColor: 'bg-[#6c757d] text-white',
-    decisionDate: '2025-08-11',
-    acceptedDate: '2025-08-11',
-    submittedDate: '2025-08-11',
-    groupType: 'Abandoned Well',
-  },
-];
-
+const recommendedDecisions = [{
+  id: 1,
+  caseNumber: '2025-01101',
+  caseType: 'Abandoned Well',
+  deptId: 'AW-7896',
+  department: 'Department of Natural Resources',
+  firstParty: 'Complainant',
+  attorney: 'Hailwic Giugovaz',
+  secondParties: 'Defendant',
+  represented: 'No',
+  primaryParty: 'John Smith',
+  status: 'Recommended Decision',
+  statusColor: 'bg-[#0d6efd] text-white',
+  secondStatus: 'Draft',
+  secondStatusColor: 'bg-[#6c757d] text-white',
+  decisionDate: '2025-08-11',
+  acceptedDate: '2025-08-11',
+  submittedDate: '2025-08-11',
+  groupType: 'Abandoned Well'
+}, {
+  id: 2,
+  caseNumber: '2025-01017',
+  caseType: 'Abandoned Well',
+  deptId: 'AW-1489',
+  department: 'Department of Natural Resources',
+  firstParty: 'Complainant',
+  attorney: 'Department Attorney (DNR)',
+  secondParties: 'Defendant',
+  represented: 'No',
+  primaryParty: 'Rajaram Sheppard',
+  status: 'Recommended Decision',
+  statusColor: 'bg-[#28a745] text-white',
+  secondStatus: 'Draft',
+  secondStatusColor: 'bg-[#6c757d] text-white',
+  decisionDate: '2025-08-11',
+  acceptedDate: '2025-08-11',
+  submittedDate: '2025-08-11',
+  groupType: 'Abandoned Well'
+}, {
+  id: 3,
+  caseNumber: '2025-01029',
+  caseType: 'Abandoned Well',
+  deptId: 'AW-875',
+  department: 'Department of Natural Resources',
+  firstParty: 'Complainant',
+  attorney: 'Department Attorney (DNR)',
+  secondParties: 'Defendant',
+  represented: 'No',
+  primaryParty: 'Jeronimo Lovel',
+  status: 'Recommended Decision',
+  statusColor: 'bg-[#28a745] text-white',
+  secondStatus: 'Draft',
+  secondStatusColor: 'bg-[#6c757d] text-white',
+  decisionDate: '2025-08-11',
+  acceptedDate: '2025-08-11',
+  submittedDate: '2025-08-11',
+  groupType: 'Abandoned Well'
+}];
 const FinalDecisionMaker2: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('recommended');
-  
-
   const groupedDecisions = recommendedDecisions.reduce((acc, decision) => {
     if (!acc[decision.groupType]) {
       acc[decision.groupType] = [];
@@ -84,22 +76,16 @@ const FinalDecisionMaker2: React.FC = () => {
     acc[decision.groupType].push(decision);
     return acc;
   }, {} as Record<string, typeof recommendedDecisions>);
-
   const handleCaseClick = (caseId: number) => {
     navigate(`/fdm2/${caseId}`);
   };
-
-  return (
-    <div className="min-h-screen bg-gray-100">
+  return <div className="min-h-screen bg-gray-100">
       <Header />
       
       <main className="container mx-auto px-6 py-6">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-[#0d6efd] mb-4 font-fluent">
-          <span 
-            className="hover:underline cursor-pointer"
-            onClick={() => navigate('/portal')}
-          >
+          <span className="hover:underline cursor-pointer" onClick={() => navigate('/portal')}>
             Dashboard
           </span>
           <span className="mx-2 text-muted-foreground">/</span>
@@ -107,17 +93,12 @@ const FinalDecisionMaker2: React.FC = () => {
         </div>
 
         {/* Page Title */}
-        <h1 className="text-2xl font-semibold text-foreground mb-6 font-fluent">
-          My Cases
-        </h1>
+        <h1 className="text-2xl font-semibold text-foreground mb-6 font-fluent">Final Decision Maker </h1>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0 mb-4">
-            <TabsTrigger 
-              value="recommended" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
-            >
+            <TabsTrigger value="recommended" className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Cases
             </TabsTrigger>
@@ -128,31 +109,19 @@ const FinalDecisionMaker2: React.FC = () => {
             <div className="flex items-center justify-end mb-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search by Case ID, party, or department..."
-                  className="pl-10 w-80 h-10 font-fluent border-gray-300 bg-white"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                <Input placeholder="Search by Case ID, party, or department..." className="pl-10 w-80 h-10 font-fluent border-gray-300 bg-white" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
               </div>
             </div>
 
             {/* Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedDecisions.map((decision) => (
-                <div 
-                  key={decision.id}
-                  className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
-                >
+              {recommendedDecisions.map(decision => <div key={decision.id} className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                   {/* Card Header */}
                   <div className="p-4 border-b border-gray-100">
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-semibold text-foreground font-fluent">{decision.caseType}</h3>
-                        <span 
-                          className="text-[#0d6efd] font-semibold font-fluent cursor-pointer hover:underline"
-                          onClick={() => handleCaseClick(decision.id)}
-                        >
+                        <span className="text-[#0d6efd] font-semibold font-fluent cursor-pointer hover:underline" onClick={() => handleCaseClick(decision.id)}>
                           {decision.caseNumber}
                         </span>
                         {decision.deptId && <div className="text-sm text-muted-foreground font-fluent">Dept number : {decision.deptId}</div>}
@@ -200,21 +169,15 @@ const FinalDecisionMaker2: React.FC = () => {
 
                   {/* Card Footer */}
                   <div className="p-4 border-t border-gray-100">
-                    <Button 
-                      className="w-full bg-[#0d6efd] hover:bg-[#0d6efd]/90 text-white font-fluent"
-                      onClick={() => handleCaseClick(decision.id)}
-                    >
+                    <Button className="w-full bg-[#0d6efd] hover:bg-[#0d6efd]/90 text-white font-fluent" onClick={() => handleCaseClick(decision.id)}>
                       Open Case
                     </Button>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </TabsContent>
         </Tabs>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default FinalDecisionMaker2;
