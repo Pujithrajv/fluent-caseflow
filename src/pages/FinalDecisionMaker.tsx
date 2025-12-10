@@ -168,14 +168,9 @@ const FinalDecisionMaker: React.FC = () => {
 
                       {/* Status */}
                       <div className="px-4 py-3">
-                        <div className="flex flex-col gap-1">
-                          <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
-                            {decision.status}
-                          </Badge>
-                          <Badge className={`${decision.secondStatusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
-                            {decision.secondStatus}
-                          </Badge>
-                        </div>
+                        <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
+                          {decision.status}
+                        </Badge>
                       </div>
 
                       {/* Dates */}
