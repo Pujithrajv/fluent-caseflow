@@ -513,12 +513,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
             >
               New Task
             </TabsTrigger>
-            <TabsTrigger 
-              value="subprocess" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Subprocess
-            </TabsTrigger>
           </TabsList>
 
           {/* Cases Tab Content */}
@@ -875,94 +869,6 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
               tasks={tasks} 
               onViewTask={(taskId) => console.log('View task:', taskId)}
             />
-          </TabsContent>
-
-          {/* Subprocess Tab Content */}
-          <TabsContent value="subprocess" className="mt-6">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-semibold text-foreground">Subprocesses</h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Manage and track case subprocesses
-                  </p>
-                </div>
-                <Button size="lg" className="font-fluent">
-                  <Plus className="mr-2 h-5 w-5" />
-                  Create Subprocess
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>Discovery</span>
-                      <Badge variant="outline">Active</Badge>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Discovery process for case documentation and evidence gathering
-                    </p>
-                    <Button variant="outline" className="w-full">
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>Motions</span>
-                      <Badge variant="outline">Pending</Badge>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Track and manage filed motions and responses
-                    </p>
-                    <Button variant="outline" className="w-full">
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>Pleadings</span>
-                      <Badge variant="outline">In Progress</Badge>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Manage pleadings and case documentation
-                    </p>
-                    <Button variant="outline" className="w-full">
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>Hearings</span>
-                      <Badge variant="outline">Scheduled</Badge>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Schedule and manage hearing proceedings
-                    </p>
-                    <Button variant="outline" className="w-full">
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
           </TabsContent>
 
         </Tabs>
