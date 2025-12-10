@@ -13,56 +13,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, Calendar, Clock, MapPin, FileText, Users, Building, User, Briefcase } from 'lucide-react';
+import { Search, Calendar, ChevronRight, Edit, FileText, Users } from 'lucide-react';
 
 const recommendedDecisions = [
   {
     id: 1,
-    caseNumber: 'DNR-OLE-HFSS-25-00001',
-    caseName: 'Summary Suspension',
-    caseType: 'Initial Case Management Conference',
-    eventType: 'Conference',
-    eventTypeColor: 'bg-[#0d6efd] text-white',
+    caseNumber: '2025-01101',
+    caseType: 'Abandoned Well',
+    deptId: '123456',
     department: 'Department of Natural Resources',
-    partyRole: 'Complainant',
+    firstParty: 'Complainant',
+    attorney: 'Hailwic Giugovaz',
+    secondParties: 'Defendant',
+    represented: 'No',
     primaryParty: 'John Smith',
-    secondPartyRole: 'Defendant',
-    eventDate: 'September 22, 2025',
-    eventTime: '11:30 AM CST',
-    locationType: 'Microsoft Teams Meeting',
-    meetingId: '222 647 995 075',
+    status: 'Pre-Hearing',
+    statusColor: 'bg-[#0d6efd] text-white',
+    secondStatus: 'Draft',
+    secondStatusColor: 'bg-[#6c757d] text-white',
+    decisionDate: '2025-08-11',
+    acceptedDate: '2025-08-11',
+    submittedDate: '2025-08-11',
+    groupType: 'Abandoned Well',
   },
   {
     id: 2,
-    caseNumber: 'DNR-OLE-HFSS-25-00001',
-    caseName: 'Summary Suspension',
-    caseType: 'Hearing',
-    eventType: 'Hearing',
-    eventTypeColor: 'bg-[#dc3545] text-white',
+    caseNumber: '2025-01017',
+    caseType: 'Abandoned Well',
+    deptId: '',
     department: 'Department of Natural Resources',
-    partyRole: 'Complainant',
+    firstParty: 'Complainant',
+    attorney: 'Department Attorney (DNR)',
+    secondParties: 'Defendant',
+    represented: 'No',
     primaryParty: 'Rajaram Sheppard',
-    secondPartyRole: 'Defendant',
-    eventDate: 'September 30, 2025',
-    eventTime: '2:00 PM CST',
-    locationType: 'In-Person Meeting',
-    locationAddress: 'William G. Stratton Building\nConference Room A\n401 South Spring Street\nSpringfield, IL 62706-4000',
+    status: 'Intake',
+    statusColor: 'bg-[#28a745] text-white',
+    secondStatus: 'Draft',
+    secondStatusColor: 'bg-[#6c757d] text-white',
+    decisionDate: '2025-08-11',
+    acceptedDate: '2025-08-11',
+    submittedDate: '2025-08-11',
+    groupType: 'Abandoned Well',
   },
   {
     id: 3,
-    caseNumber: 'DNR-OLE-HFSS-25-00001',
-    caseName: 'Summary Suspension',
-    caseType: 'Case Management Conference Continuance',
-    eventType: 'Conference',
-    eventTypeColor: 'bg-[#0d6efd] text-white',
+    caseNumber: '2025-01029',
+    caseType: 'Abandoned Well',
+    deptId: '',
     department: 'Department of Natural Resources',
-    partyRole: 'Complainant',
+    firstParty: 'Complainant',
+    attorney: 'Department Attorney (DNR)',
+    secondParties: 'Defendant',
+    represented: 'No',
     primaryParty: 'Jeronimo Lovel',
-    secondPartyRole: 'Defendant',
-    eventDate: 'September 23, 2025',
-    eventTime: '1:30 PM CST',
-    locationType: 'Microsoft Teams Meeting',
-    meetingId: '222 647 995 074',
+    status: 'Intake',
+    statusColor: 'bg-[#28a745] text-white',
+    secondStatus: 'Draft',
+    secondStatusColor: 'bg-[#6c757d] text-white',
+    decisionDate: '2025-08-11',
+    acceptedDate: '2025-08-11',
+    submittedDate: '2025-08-11',
+    groupType: 'Abandoned Well',
   },
 ];
 
@@ -70,7 +82,15 @@ const FinalDecisionMaker2: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('recommended');
-  const [filterValue, setFilterValue] = useState('all');
+  const [filterValue, setFilterValue] = useState('active');
+
+  const groupedDecisions = recommendedDecisions.reduce((acc, decision) => {
+    if (!acc[decision.groupType]) {
+      acc[decision.groupType] = [];
+    }
+    acc[decision.groupType].push(decision);
+    return acc;
+  }, {} as Record<string, typeof recommendedDecisions>);
 
   const handleCaseClick = (caseId: number) => {
     navigate(`/fdm2/${caseId}`);
@@ -81,11 +101,6 @@ const FinalDecisionMaker2: React.FC = () => {
       <Header />
       
       <main className="container mx-auto px-6 py-6">
-        {/* Page Title */}
-        <h1 className="text-2xl font-semibold text-foreground mb-1 font-fluent">
-          Upcoming Events
-        </h1>
-
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-[#0d6efd] mb-4 font-fluent">
           <span 
@@ -95,28 +110,33 @@ const FinalDecisionMaker2: React.FC = () => {
             Dashboard
           </span>
           <span className="mx-2 text-muted-foreground">/</span>
-          <span className="text-muted-foreground">Upcoming Events</span>
+          <span className="text-muted-foreground">My Cases</span>
         </div>
+
+        {/* Page Title */}
+        <h1 className="text-2xl font-semibold text-foreground mb-6 font-fluent">
+          My Cases
+        </h1>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0 mb-4">
             <TabsTrigger 
-              value="cases" 
+              value="recommended" 
               className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
             >
-              <Briefcase className="h-4 w-4" />
+              <FileText className="h-4 w-4" />
               Cases
             </TabsTrigger>
             <TabsTrigger 
-              value="recommended" 
+              value="deadlines" 
               className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
             >
               <Calendar className="h-4 w-4" />
               Upcoming Events
             </TabsTrigger>
             <TabsTrigger 
-              value="tasks" 
+              value="history" 
               className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
             >
               <Users className="h-4 w-4" />
@@ -126,117 +146,147 @@ const FinalDecisionMaker2: React.FC = () => {
 
           <TabsContent value="recommended">
             {/* Filter Row */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4">
               <Select value={filterValue} onValueChange={setFilterValue}>
                 <SelectTrigger className="w-[180px] h-10 border-gray-300 bg-white font-fluent">
-                  <SelectValue placeholder="Filter events" />
+                  <SelectValue placeholder="Filter cases" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
-                  <SelectItem value="all">All Events</SelectItem>
-                  <SelectItem value="conference">Conferences</SelectItem>
-                  <SelectItem value="hearing">Hearings</SelectItem>
+                  <SelectItem value="active">Active Cases</SelectItem>
+                  <SelectItem value="all">All Cases</SelectItem>
+                  <SelectItem value="pending">Pending Review</SelectItem>
+                  <SelectItem value="closed">Closed</SelectItem>
                 </SelectContent>
               </Select>
 
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search..."
-                  className="pl-10 w-64 h-10 font-fluent border-gray-300 bg-white"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search..."
+                    className="pl-10 w-64 h-10 font-fluent border-gray-300 bg-white"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Button className="bg-[#1a365d] hover:bg-[#1a365d]/90 text-white font-fluent h-10">
+                  + Create New Case
+                </Button>
               </div>
             </div>
 
-            {/* Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedDecisions.map((decision) => (
-                <Card 
-                  key={decision.id} 
-                  className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <CardContent className="p-5">
-                    {/* Card Header */}
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-[#1a365d] font-fluent leading-tight pr-2">
-                        {decision.caseType}
-                      </h3>
-                      <Badge className={`${decision.eventTypeColor} font-fluent text-xs px-2 py-0.5 rounded shrink-0`}>
-                        {decision.eventType}
-                      </Badge>
-                    </div>
+            {/* Main Table */}
+            <div className="bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm">
+              {/* Table Header */}
+              <div className="grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] bg-[#1a365d] text-white">
+                <div className="px-4 py-3 font-semibold font-fluent w-12"></div>
+                <div className="px-4 py-3 font-semibold font-fluent">Case</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Department</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Primary Party</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Status</div>
+                <div className="px-4 py-3 font-semibold font-fluent">Dates</div>
+              </div>
 
-                    {/* Case Info */}
-                    <div className="space-y-2 mb-4 text-[#0d6efd]">
-                      <div className="flex items-start gap-2">
-                        <FileText className="h-4 w-4 mt-0.5 shrink-0" />
-                        <span className="text-sm font-fluent">{decision.caseNumber}: {decision.caseName}</span>
+              {Object.entries(groupedDecisions).map(([groupType, decisions]) => (
+                <div key={groupType}>
+                  {/* Group Header */}
+                  <div className="bg-[#17a2b8]/20 px-4 py-2 border-b border-gray-200">
+                    <span className="font-semibold text-[#1a365d] font-fluent">{groupType}</span>
+                  </div>
+                  
+                  {/* Group Rows */}
+                  {decisions.map((decision, index) => (
+                    <div 
+                      key={decision.id}
+                      className={`grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${
+                        index % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'
+                      }`}
+                      onClick={() => handleCaseClick(decision.id)}
+                    >
+                      {/* Edit Icon */}
+                      <div className="px-4 py-3 flex items-start w-12">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCaseClick(decision.id);
+                          }}
+                        >
+                          <Edit className="h-4 w-4 text-[#0d6efd]" />
+                        </Button>
                       </div>
-                      <div className="flex items-start gap-2">
-                        <Building className="h-4 w-4 mt-0.5 shrink-0" />
-                        <span className="text-sm font-fluent">{decision.department} ({decision.partyRole})</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <User className="h-4 w-4 mt-0.5 shrink-0" />
-                        <span className="text-sm font-fluent">{decision.primaryParty} ({decision.secondPartyRole})</span>
-                      </div>
-                    </div>
 
-                    {/* Date/Time/Location */}
-                    <div className="space-y-2 mb-6 text-gray-700">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-[#1a365d] shrink-0" />
-                        <span className="text-sm font-fluent">{decision.eventDate}</span>
+                      {/* Case */}
+                      <div className="px-4 py-3">
+                        <div className="text-[#0d6efd] font-semibold font-fluent">{decision.caseNumber}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">{decision.caseType}</div>
+                        {decision.deptId && (
+                          <div className="text-sm text-muted-foreground font-fluent">Dept. ID: {decision.deptId}</div>
+                        )}
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-[#1a365d] shrink-0" />
-                        <span className="text-sm font-fluent">{decision.eventTime}</span>
+
+                      {/* Department */}
+                      <div className="px-4 py-3">
+                        <div className="font-semibold font-fluent text-foreground">{decision.department}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">First Party: {decision.firstParty}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">Attorney: {decision.attorney}</div>
                       </div>
-                      <div className="flex items-start gap-2">
-                        <MapPin className="h-4 w-4 text-[#1a365d] mt-0.5 shrink-0" />
-                        <div className="text-sm font-fluent">
-                          <div>{decision.locationType}</div>
-                          {decision.meetingId && (
-                            <div className="text-gray-500">Meeting ID: {decision.meetingId}</div>
-                          )}
-                          {decision.locationAddress && (
-                            <div className="text-gray-500 whitespace-pre-line">{decision.locationAddress}</div>
-                          )}
+
+                      {/* Primary Party */}
+                      <div className="px-4 py-3">
+                        <div className="font-fluent text-foreground">{decision.primaryParty}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">Second Parties: {decision.secondParties}</div>
+                        <div className="text-sm text-muted-foreground font-fluent">Represented: {decision.represented}</div>
+                      </div>
+
+                      {/* Status */}
+                      <div className="px-4 py-3">
+                        <div className="flex flex-col gap-1">
+                          <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
+                            {decision.status}
+                          </Badge>
+                          <Badge className={`${decision.secondStatusColor} font-fluent text-xs px-2 py-0.5 rounded w-fit`}>
+                            {decision.secondStatus}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* Dates */}
+                      <div className="px-4 py-3">
+                        <div className="flex items-center gap-2 text-sm font-fluent text-[#dc3545]">
+                          <Calendar className="h-3 w-3" />
+                          <span>Decision: {decision.decisionDate}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm font-fluent text-muted-foreground">
+                          <Calendar className="h-3 w-3" />
+                          <span>Accepted: {decision.acceptedDate}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm font-fluent text-[#0d6efd]">
+                          <Calendar className="h-3 w-3" />
+                          <span>Submitted: {decision.submittedDate}</span>
                         </div>
                       </div>
                     </div>
-
-                    {/* Divider */}
-                    <div className="border-t border-[#0d6efd] mb-4"></div>
-
-                    {/* Open Case Button */}
-                    <Button 
-                      variant="outline"
-                      className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 font-fluent flex items-center justify-center gap-2"
-                      onClick={() => handleCaseClick(decision.id)}
-                    >
-                      <Briefcase className="h-4 w-4" />
-                      Open Case
-                    </Button>
-                  </CardContent>
-                </Card>
+                  ))}
+                </div>
               ))}
             </div>
           </TabsContent>
 
-          <TabsContent value="cases">
+          <TabsContent value="deadlines">
             <Card className="border border-gray-200 shadow-sm">
               <CardHeader>
-                <CardTitle className="font-fluent text-[#1a365d]">Cases</CardTitle>
+                <CardTitle className="font-fluent text-[#1a365d]">Upcoming Events</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground font-fluent">No cases to display.</p>
+                <p className="text-muted-foreground font-fluent">No upcoming events to display.</p>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="tasks">
+          <TabsContent value="history">
             <Card className="border border-gray-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="font-fluent text-[#1a365d]">Tasks and Alerts</CardTitle>
