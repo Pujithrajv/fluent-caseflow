@@ -25,7 +25,7 @@ import { toast } from 'sonner';
 const caseData = {
   id: 1,
   caseNumber: 'DBE-EC-02025-004',
-  caseName: 'Smith vs. Department of Transportation',
+  caseName: 'Smith vs. Department of Natural Resources',
   caseType: 'Abandoned Well',
   department: 'Abandoned well',
   parties: 'John Smith, Department of Transportation',
