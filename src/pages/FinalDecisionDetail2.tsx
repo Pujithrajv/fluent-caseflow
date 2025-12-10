@@ -298,9 +298,6 @@ const FinalDecisionDetail2: React.FC = () => {
                           <label className="text-sm text-muted-foreground font-fluent">Days Remaining</label>
                           <p className="font-fluent font-medium">{caseData.daysRemaining} days</p>
                         </div>
-                        <Badge className={`${caseData.daysRemaining > 5 ? 'bg-green-100 text-green-800' : caseData.daysRemaining > 2 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
-                          {caseData.status}
-                        </Badge>
                       </div>
                     </div>
                   </CardContent>
