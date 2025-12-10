@@ -154,15 +154,17 @@ const FinalDecisionDetail: React.FC = () => {
                 <div className="text-sm opacity-80">Case: {caseData.caseNumber}</div>
                 <div className="text-sm opacity-80">{caseData.caseType}</div>
               </div>
-              <div className="border-l border-white/30 pl-4 flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-white/80" />
-                <div className="text-white font-fluent text-sm">
-                  <div>Deadline: {caseData.deadline}</div>
+              <div className="border-l border-white/30 pl-4 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-white/80" />
+                  <div className="text-white font-fluent text-sm">
+                    <div>Deadline: {caseData.deadline}</div>
+                  </div>
                 </div>
+                <Badge className={`${caseData.statusColor} font-fluent w-fit`}>
+                  {caseData.status}
+                </Badge>
               </div>
-              <Badge className={`${caseData.statusColor} font-fluent`}>
-                {caseData.status}
-              </Badge>
             </CardContent>
           </Card>
         </div>
