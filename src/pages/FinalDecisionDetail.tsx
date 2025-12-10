@@ -218,12 +218,6 @@ const FinalDecisionDetail: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground font-fluent">Recommendation Outcome</label>
-                    <div className="mt-1">
-                      <Badge className="bg-green-100 text-green-800 font-fluent">{caseData.recommendationOutcome}</Badge>
-                    </div>
-                  </div>
-                  <div>
                     <label className="text-sm font-medium text-muted-foreground font-fluent">Summary</label>
                     <p className="mt-1 text-sm font-fluent text-gray-700">{caseData.summary}</p>
                   </div>
