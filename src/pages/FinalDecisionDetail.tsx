@@ -298,9 +298,6 @@ const FinalDecisionDetail: React.FC = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 space-y-4">
-                    <div className="mb-4">
-                      {getStatusBadge()}
-                    </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="text-sm font-medium text-muted-foreground font-fluent">Case ID</label>
@@ -344,9 +341,12 @@ const FinalDecisionDetail: React.FC = () => {
                 {/* Right Card */}
                 <Card className="border border-gray-200 shadow-sm">
                   <CardHeader className="border-b border-gray-200 bg-gray-50">
-                    <CardTitle className="text-lg font-fluent text-[#1a365d]">
-                      Final Decision Maker Action
-                    </CardTitle>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg font-fluent text-[#1a365d]">
+                        Final Decision Maker Action
+                      </CardTitle>
+                      {getStatusBadge()}
+                    </div>
                   </CardHeader>
                   <CardContent className="p-4 space-y-6">
                     {/* Action Choice */}
