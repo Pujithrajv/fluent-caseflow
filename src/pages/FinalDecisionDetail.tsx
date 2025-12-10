@@ -27,7 +27,7 @@ const caseData = {
   caseNumber: 'DBE-EC-02025-004',
   caseName: 'Smith vs. Department of Transportation',
   caseType: 'Abandoned Well',
-  department: 'Transportation',
+  department: 'Abandoned well',
   parties: 'John Smith, Department of Transportation',
   aljName: 'Hon. Patricia Martinez',
   recommendedDate: '11/25/2024',
