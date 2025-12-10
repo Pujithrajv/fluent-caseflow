@@ -175,9 +175,6 @@ const FinalDecisionMaker2: React.FC = () => {
                         <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded`}>
                           {decision.status}
                         </Badge>
-                        <Badge className={`${decision.secondStatusColor} font-fluent text-xs px-2 py-0.5 rounded`}>
-                          {decision.secondStatus}
-                        </Badge>
                       </div>
                     </div>
                   </div>
