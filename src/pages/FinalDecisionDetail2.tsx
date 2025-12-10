@@ -312,17 +312,15 @@ const FinalDecisionDetail2: React.FC = () => {
                         </Badge>
                       </div>
                     </div>
-                    <div className="pt-4 border-t">
-                      <Badge className="bg-yellow-100 text-yellow-800 font-fluent">
-                        FDM Pending
-                      </Badge>
-                    </div>
                   </CardContent>
                 </Card>
 
                 <Card className="border border-gray-200 shadow-sm">
-                  <CardHeader>
+                  <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="font-fluent text-[#1a365d]">Final Decision Maker Action</CardTitle>
+                    <Badge className="bg-yellow-100 text-yellow-800 font-fluent">
+                      FDM Pending
+                    </Badge>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {/* Action Choice */}
