@@ -169,6 +169,7 @@ const FinalDecisionMaker2: React.FC = () => {
                         >
                           {decision.caseNumber}
                         </span>
+                        {decision.deptId && <div className="text-sm text-muted-foreground font-fluent">{decision.deptId}</div>}
                       </div>
                       <div className="flex flex-col gap-1 items-end">
                         <Badge className={`${decision.statusColor} font-fluent text-xs px-2 py-0.5 rounded`}>
@@ -186,7 +187,6 @@ const FinalDecisionMaker2: React.FC = () => {
                     {/* Department Info */}
                     <div>
                       <div className="font-semibold text-foreground font-fluent">{decision.department}</div>
-                      {decision.deptId && <div className="text-sm text-muted-foreground font-fluent">Dept ID: {decision.deptId}</div>}
                       <div className="text-sm text-muted-foreground font-fluent">First Party: {decision.firstParty}</div>
                       <div className="text-sm text-muted-foreground font-fluent">Attorney: {decision.attorney}</div>
                     </div>
