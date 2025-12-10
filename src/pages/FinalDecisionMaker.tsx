@@ -118,8 +118,8 @@ const FinalDecisionMaker: React.FC = () => {
             {/* Main Table */}
             <div className="bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm">
               {/* Table Header */}
-              <div className="grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] bg-[#1a365d] text-white">
-                <div className="px-4 py-3 font-semibold font-fluent w-12"></div>
+              <div className="grid grid-cols-6 bg-[#1a365d] text-white">
+                <div className="px-4 py-3 font-semibold font-fluent"></div>
                 <div className="px-4 py-3 font-semibold font-fluent">Case</div>
                 <div className="px-4 py-3 font-semibold font-fluent">Department</div>
                 <div className="px-4 py-3 font-semibold font-fluent">Primary Party</div>
@@ -134,9 +134,9 @@ const FinalDecisionMaker: React.FC = () => {
                   </div>
                   
                   {/* Group Rows */}
-                  {decisions.map((decision, index) => <div key={decision.id} className={`grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${index % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'}`} onClick={() => handleCaseClick(decision.id)}>
+                  {decisions.map((decision, index) => <div key={decision.id} className={`grid grid-cols-6 border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${index % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'}`} onClick={() => handleCaseClick(decision.id)}>
                       {/* Edit Icon */}
-                      <div className="px-4 py-3 flex items-start w-12">
+                      <div className="px-4 py-3 flex items-start">
                         <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={e => {
                     e.stopPropagation();
                     handleCaseClick(decision.id);
