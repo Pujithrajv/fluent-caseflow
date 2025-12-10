@@ -28,7 +28,7 @@ const caseData = {
   caseName: 'Smith vs. Department of Natural Resources',
   caseType: 'Abandoned Well',
   department: 'Abandoned well',
-  parties: 'John Smith, Department of Transportation',
+  parties: 'John Smith, Department of Natural Resources',
   aljName: 'Hon. Patricia Martinez',
   recommendedDate: '11/25/2024',
   deadline: '12/15/2024',
