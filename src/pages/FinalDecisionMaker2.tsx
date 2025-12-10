@@ -53,7 +53,7 @@ const recommendedDecisions = [
     id: 3,
     caseNumber: '2025-01029',
     caseType: 'Abandoned Well',
-    deptId: '123458',
+    deptId: 'AW-875',
     department: 'Department of Natural Resources',
     firstParty: 'Complainant',
     attorney: 'Department Attorney (DNR)',
