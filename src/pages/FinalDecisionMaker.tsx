@@ -6,84 +6,71 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Calendar, ChevronRight, Edit, FileText, Users } from 'lucide-react';
-
-const recommendedDecisions = [
-  {
-    id: 1,
-    caseNumber: '2025-01101',
-    caseType: 'Abandoned Well',
-    deptId: '123456',
-    department: 'Department of Natural Resources',
-    firstParty: 'Complainant',
-    attorney: 'Hailwic Giugovaz',
-    secondParties: 'Defendant',
-    represented: 'No',
-    primaryParty: 'John Smith',
-    status: 'Pre-Hearing',
-    statusColor: 'bg-[#0d6efd] text-white',
-    secondStatus: 'Draft',
-    secondStatusColor: 'bg-[#6c757d] text-white',
-    decisionDate: '2025-08-11',
-    acceptedDate: '2025-08-11',
-    submittedDate: '2025-08-11',
-    groupType: 'Abandoned Well',
-  },
-  {
-    id: 2,
-    caseNumber: '2025-01017',
-    caseType: 'Abandoned Well',
-    deptId: '',
-    department: 'Department of Natural Resources',
-    firstParty: 'Complainant',
-    attorney: 'Department Attorney (DNR)',
-    secondParties: 'Defendant',
-    represented: 'No',
-    primaryParty: 'Rajaram Sheppard',
-    status: 'Intake',
-    statusColor: 'bg-[#28a745] text-white',
-    secondStatus: 'Draft',
-    secondStatusColor: 'bg-[#6c757d] text-white',
-    decisionDate: '2025-08-11',
-    acceptedDate: '2025-08-11',
-    submittedDate: '2025-08-11',
-    groupType: 'Abandoned Well',
-  },
-  {
-    id: 3,
-    caseNumber: '2025-01029',
-    caseType: 'Abandoned Well',
-    deptId: '',
-    department: 'Department of Natural Resources',
-    firstParty: 'Complainant',
-    attorney: 'Department Attorney (DNR)',
-    secondParties: 'Defendant',
-    represented: 'No',
-    primaryParty: 'Jeronimo Lovel',
-    status: 'Intake',
-    statusColor: 'bg-[#28a745] text-white',
-    secondStatus: 'Draft',
-    secondStatusColor: 'bg-[#6c757d] text-white',
-    decisionDate: '2025-08-11',
-    acceptedDate: '2025-08-11',
-    submittedDate: '2025-08-11',
-    groupType: 'Abandoned Well',
-  },
-];
-
+const recommendedDecisions = [{
+  id: 1,
+  caseNumber: '2025-01101',
+  caseType: 'Abandoned Well',
+  deptId: '123456',
+  department: 'Department of Natural Resources',
+  firstParty: 'Complainant',
+  attorney: 'Hailwic Giugovaz',
+  secondParties: 'Defendant',
+  represented: 'No',
+  primaryParty: 'John Smith',
+  status: 'Pre-Hearing',
+  statusColor: 'bg-[#0d6efd] text-white',
+  secondStatus: 'Draft',
+  secondStatusColor: 'bg-[#6c757d] text-white',
+  decisionDate: '2025-08-11',
+  acceptedDate: '2025-08-11',
+  submittedDate: '2025-08-11',
+  groupType: 'Abandoned Well'
+}, {
+  id: 2,
+  caseNumber: '2025-01017',
+  caseType: 'Abandoned Well',
+  deptId: '',
+  department: 'Department of Natural Resources',
+  firstParty: 'Complainant',
+  attorney: 'Department Attorney (DNR)',
+  secondParties: 'Defendant',
+  represented: 'No',
+  primaryParty: 'Rajaram Sheppard',
+  status: 'Intake',
+  statusColor: 'bg-[#28a745] text-white',
+  secondStatus: 'Draft',
+  secondStatusColor: 'bg-[#6c757d] text-white',
+  decisionDate: '2025-08-11',
+  acceptedDate: '2025-08-11',
+  submittedDate: '2025-08-11',
+  groupType: 'Abandoned Well'
+}, {
+  id: 3,
+  caseNumber: '2025-01029',
+  caseType: 'Abandoned Well',
+  deptId: '',
+  department: 'Department of Natural Resources',
+  firstParty: 'Complainant',
+  attorney: 'Department Attorney (DNR)',
+  secondParties: 'Defendant',
+  represented: 'No',
+  primaryParty: 'Jeronimo Lovel',
+  status: 'Intake',
+  statusColor: 'bg-[#28a745] text-white',
+  secondStatus: 'Draft',
+  secondStatusColor: 'bg-[#6c757d] text-white',
+  decisionDate: '2025-08-11',
+  acceptedDate: '2025-08-11',
+  submittedDate: '2025-08-11',
+  groupType: 'Abandoned Well'
+}];
 const FinalDecisionMaker: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('recommended');
   const [filterValue, setFilterValue] = useState('active');
-
   const groupedDecisions = recommendedDecisions.reduce((acc, decision) => {
     if (!acc[decision.groupType]) {
       acc[decision.groupType] = [];
@@ -91,22 +78,16 @@ const FinalDecisionMaker: React.FC = () => {
     acc[decision.groupType].push(decision);
     return acc;
   }, {} as Record<string, typeof recommendedDecisions>);
-
   const handleCaseClick = (caseId: number) => {
     navigate(`/fdm/${caseId}`);
   };
-
-  return (
-    <div className="min-h-screen bg-gray-100">
+  return <div className="min-h-screen bg-gray-100">
       <Header />
       
       <main className="container mx-auto px-6 py-6">
         {/* Breadcrumb */}
         <div className="flex items-center text-sm text-[#0d6efd] mb-4 font-fluent">
-          <span 
-            className="hover:underline cursor-pointer"
-            onClick={() => navigate('/portal')}
-          >
+          <span className="hover:underline cursor-pointer" onClick={() => navigate('/portal')}>
             Dashboard
           </span>
           <span className="mx-2 text-muted-foreground">/</span>
@@ -114,31 +95,20 @@ const FinalDecisionMaker: React.FC = () => {
         </div>
 
         {/* Page Title */}
-        <h1 className="text-2xl font-semibold text-foreground mb-6 font-fluent">
-          My Cases
-        </h1>
+        <h1 className="text-2xl font-semibold text-foreground mb-6 font-fluent">Final Decision Maker</h1>
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0 mb-4">
-            <TabsTrigger 
-              value="recommended" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
-            >
+            <TabsTrigger value="recommended" className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Cases
             </TabsTrigger>
-            <TabsTrigger 
-              value="deadlines" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
-            >
+            <TabsTrigger value="deadlines" className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Upcoming Events
             </TabsTrigger>
-            <TabsTrigger 
-              value="history" 
-              className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2"
-            >
+            <TabsTrigger value="history" className="font-fluent rounded-none border-b-2 border-transparent data-[state=active]:border-[#0d6efd] data-[state=active]:bg-transparent data-[state=active]:text-[#0d6efd] data-[state=active]:shadow-none px-4 py-2 flex items-center gap-2">
               <Users className="h-4 w-4" />
               Tasks and Alerts
             </TabsTrigger>
@@ -162,12 +132,7 @@ const FinalDecisionMaker: React.FC = () => {
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search..."
-                    className="pl-10 w-64 h-10 font-fluent border-gray-300 bg-white"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                  <Input placeholder="Search..." className="pl-10 w-64 h-10 font-fluent border-gray-300 bg-white" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
                 </div>
                 <Button className="bg-[#1a365d] hover:bg-[#1a365d]/90 text-white font-fluent h-10">
                   + Create New Case
@@ -187,33 +152,20 @@ const FinalDecisionMaker: React.FC = () => {
                 <div className="px-4 py-3 font-semibold font-fluent">Dates</div>
               </div>
 
-              {Object.entries(groupedDecisions).map(([groupType, decisions]) => (
-                <div key={groupType}>
+              {Object.entries(groupedDecisions).map(([groupType, decisions]) => <div key={groupType}>
                   {/* Group Header */}
                   <div className="bg-[#17a2b8]/20 px-4 py-2 border-b border-gray-200">
                     <span className="font-semibold text-[#1a365d] font-fluent">{groupType}</span>
                   </div>
                   
                   {/* Group Rows */}
-                  {decisions.map((decision, index) => (
-                    <div 
-                      key={decision.id}
-                      className={`grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${
-                        index % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'
-                      }`}
-                      onClick={() => handleCaseClick(decision.id)}
-                    >
+                  {decisions.map((decision, index) => <div key={decision.id} className={`grid grid-cols-[auto_1fr_1fr_1fr_140px_1fr] border-b border-gray-200 hover:bg-gray-50 cursor-pointer ${index % 2 === 1 ? 'bg-gray-50/50' : 'bg-white'}`} onClick={() => handleCaseClick(decision.id)}>
                       {/* Edit Icon */}
                       <div className="px-4 py-3 flex items-start w-12">
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          className="h-6 w-6 p-0"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCaseClick(decision.id);
-                          }}
-                        >
+                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={e => {
+                    e.stopPropagation();
+                    handleCaseClick(decision.id);
+                  }}>
                           <Edit className="h-4 w-4 text-[#0d6efd]" />
                         </Button>
                       </div>
@@ -222,9 +174,7 @@ const FinalDecisionMaker: React.FC = () => {
                       <div className="px-4 py-3">
                         <div className="text-[#0d6efd] font-semibold font-fluent">{decision.caseNumber}</div>
                         <div className="text-sm text-muted-foreground font-fluent">{decision.caseType}</div>
-                        {decision.deptId && (
-                          <div className="text-sm text-muted-foreground font-fluent">Dept. ID: {decision.deptId}</div>
-                        )}
+                        {decision.deptId && <div className="text-sm text-muted-foreground font-fluent">Dept. ID: {decision.deptId}</div>}
                       </div>
 
                       {/* Department */}
@@ -268,10 +218,8 @@ const FinalDecisionMaker: React.FC = () => {
                           <span>Submitted: {decision.submittedDate}</span>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+                    </div>)}
+                </div>)}
             </div>
           </TabsContent>
 
@@ -298,8 +246,6 @@ const FinalDecisionMaker: React.FC = () => {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default FinalDecisionMaker;
