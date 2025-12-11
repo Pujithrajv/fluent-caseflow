@@ -151,7 +151,7 @@ const TesScreen = () => {
               value="ruling" 
               className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3"
             >
-              ⚖️ Ruling
+              ⚖️ FDM
             </TabsTrigger>
           </TabsList>
 
