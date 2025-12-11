@@ -32,7 +32,6 @@ import FinalDecisionMaker from "./pages/FinalDecisionMaker";
 import FinalDecisionDetail from "./pages/FinalDecisionDetail";
 import FinalDecisionMaker2 from "./pages/FinalDecisionMaker2";
 import FinalDecisionDetail2 from "./pages/FinalDecisionDetail2";
-import FinalDecisionTest from "./pages/FinalDecisionTest";
 
 const queryClient = new QueryClient();
 
@@ -72,7 +71,6 @@ const App = () => (
             <Route path="/fdm/:id" element={<FinalDecisionDetail />} />
             <Route path="/fdm2" element={<FinalDecisionMaker2 />} />
             <Route path="/fdm2/:id" element={<FinalDecisionDetail2 />} />
-            <Route path="/tes" element={<FinalDecisionTest />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
