@@ -240,33 +240,52 @@ const TesScreen = () => {
                       <div className="grid grid-cols-2 gap-4 mb-6">
                         <button
                           onClick={() => setSelectedAction('approve')}
-                          className={`p-6 border-2 rounded-lg text-center transition-all ${
+                          className={`p-4 border-2 rounded-lg text-center transition-all ${
                             selectedAction === 'approve' 
-                              ? 'border-blue-600 bg-blue-50' 
+                              ? 'border-green-600 bg-green-600 text-white' 
                               : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          <div className="text-2xl mb-2">✓</div>
+                          <div className="text-xl mb-1">⊙</div>
                           <p className="font-medium">Approve Recommended Decision</p>
                         </button>
                         <button
                           onClick={() => setSelectedAction('disagree')}
-                          className={`p-6 border-2 rounded-lg text-center transition-all ${
+                          className={`p-4 border-2 rounded-lg text-center transition-all ${
                             selectedAction === 'disagree' 
                               ? 'border-blue-600 bg-blue-50' 
                               : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          <div className="text-2xl mb-2">⊗</div>
+                          <div className="text-xl mb-1">⊗</div>
                           <p className="font-medium">Disagree / Upload Own Ruling</p>
                         </button>
                       </div>
+
+                      {selectedAction === 'approve' && (
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
+                          <p className="text-sm text-gray-700 mb-4">
+                            Approving will automatically generate a Final Ruling Report based on the ALJ's recommendation.
+                          </p>
+                          <p className="text-sm font-medium text-gray-700 mb-2">
+                            Optional comments to accompany your approval
+                          </p>
+                          <textarea 
+                            className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            rows={4}
+                            placeholder="Enter any additional comments..."
+                          />
+                          <Button className="mt-4 bg-green-600 hover:bg-green-700 text-white">
+                            Generate Final Ruling Report
+                          </Button>
+                        </div>
+                      )}
 
                       <div className="flex justify-end gap-3">
                         <Button variant="outline" onClick={() => navigate('/portal')}>
                           Cancel
                         </Button>
-                        <Button className="bg-blue-600 hover:bg-blue-700">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                           Submit Final Decision
                         </Button>
                       </div>
