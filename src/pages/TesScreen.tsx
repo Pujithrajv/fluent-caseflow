@@ -253,7 +253,7 @@ const TesScreen = () => {
                           onClick={() => setSelectedAction('disagree')}
                           className={`p-4 border-2 rounded-lg text-center transition-all ${
                             selectedAction === 'disagree' 
-                              ? 'border-blue-600 bg-blue-50' 
+                              ? 'border-orange-500 bg-orange-500 text-white' 
                               : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
@@ -277,6 +277,35 @@ const TesScreen = () => {
                           />
                           <Button className="mt-4 bg-green-600 hover:bg-green-700 text-white">
                             Generate Final Ruling Report
+                          </Button>
+                        </div>
+                      )}
+
+                      {selectedAction === 'disagree' && (
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
+                          <div className="flex items-start gap-2 mb-4">
+                            <span className="text-orange-500 text-lg">⚠</span>
+                            <p className="text-sm text-gray-700">
+                              Upload your own final ruling PDF. This will replace the ALJ's recommendation as the Final Administrative Decision.
+                            </p>
+                          </div>
+                          
+                          <div className="border-2 border-dashed border-orange-300 rounded-lg p-8 text-center mb-5 bg-white cursor-pointer hover:border-orange-400 transition-colors">
+                            <div className="text-orange-400 text-3xl mb-2">↑</div>
+                            <p className="text-gray-600 mb-1">Drag and drop files here, or click to browse</p>
+                            <p className="text-sm text-gray-400">PDF only, max 10 MB</p>
+                          </div>
+
+                          <p className="text-sm font-medium text-gray-700 mb-2">
+                            Required justification for rejecting the recommendation <span className="text-red-500">*</span>
+                          </p>
+                          <textarea 
+                            className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            rows={4}
+                            placeholder="Explain why you are disagreeing with the ALJ's recommendation..."
+                          />
+                          <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white">
+                            Upload Final Ruling & Mark as Final
                           </Button>
                         </div>
                       )}
