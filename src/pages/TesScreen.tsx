@@ -39,7 +39,7 @@ const TesScreen = () => {
       id: 1,
       name: "Order-To-Compel-Discovery.pdf",
       type: "Motion Order",
-      uploadedBy: "Daniel Schuering",
+      uploadedBy: "Patricia Martinez",
       uploadDate: "2025-11-11"
     },
     {
