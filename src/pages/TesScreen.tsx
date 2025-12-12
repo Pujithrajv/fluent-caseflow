@@ -37,7 +37,7 @@ const TesScreen = () => {
   const rulingDocuments = [
     {
       id: 1,
-      name: "Order-To-Compel-Discovery.pdf",
+      name: "final ruling.pdf",
       type: "Motion Order",
       uploadedBy: "Patricia Martinez",
       uploadDate: "2025-11-11"
