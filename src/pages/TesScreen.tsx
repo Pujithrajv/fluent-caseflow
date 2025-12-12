@@ -158,7 +158,7 @@ const TesScreen = () => {
           <TabsContent value="ruling" className="mt-0">
             <div className="grid grid-cols-12 gap-6">
               {/* Left Sidebar */}
-              <div className="col-span-4 space-y-6">
+              <div className="col-span-3 space-y-6">
                 <Card className="border shadow-sm">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg flex items-center gap-2">
