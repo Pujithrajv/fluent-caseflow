@@ -38,7 +38,7 @@ const TesScreen = () => {
     {
       id: 1,
       name: "final ruling.pdf",
-      type: "Motion Order",
+      type: "Recommended Decision",
       uploadedBy: "Patricia Martinez",
       uploadDate: "2025-11-11"
     },
@@ -353,7 +353,7 @@ const TesScreen = () => {
                                     <SelectValue>{doc.type}</SelectValue>
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="motion-order">Motion Order</SelectItem>
+                                    <SelectItem value="recommended-decision">Recommended Decision</SelectItem>
                                     <SelectItem value="briefing-schedule">Briefing Schedule</SelectItem>
                                     <SelectItem value="ruling">Ruling</SelectItem>
                                   </SelectContent>
