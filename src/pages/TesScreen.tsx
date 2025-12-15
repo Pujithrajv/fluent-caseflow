@@ -7,12 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import logo from "@/assets/logo.png";
-
 const TesScreen = () => {
   const navigate = useNavigate();
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("ruling");
-
   const caseData = {
     caseNumber: "DBE-EC-02025-004",
     title: "Abandoned Well",
@@ -33,26 +31,20 @@ const TesScreen = () => {
       summary: "The Administrative Law Judge recommends granting the petitioner's request for remediation assistance based on the evidence presented during the hearing. The respondent failed to demonstrate compliance with environmental regulations as required under statute."
     }
   };
-
-  const rulingDocuments = [
-    {
-      id: 1,
-      name: "final ruling.pdf",
-      type: "Recommended Decision",
-      uploadedBy: "Patricia Martinez",
-      uploadDate: "2025-11-11"
-    },
-    {
-      id: 2,
-      name: "Briefing-Schedule-Sequential.pdf",
-      type: "Briefing Schedule",
-      uploadedBy: "CMS System",
-      uploadDate: "2025-11-11"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50">
+  const rulingDocuments = [{
+    id: 1,
+    name: "final ruling.pdf",
+    type: "Recommended Decision",
+    uploadedBy: "Patricia Martinez",
+    uploadDate: "2025-11-11"
+  }, {
+    id: 2,
+    name: "Briefing-Schedule-Sequential.pdf",
+    type: "Briefing Schedule",
+    uploadedBy: "CMS System",
+    uploadDate: "2025-11-11"
+  }];
+  return <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-[#0f2a4e] text-white">
         <div className="flex items-center justify-between px-6 py-3">
@@ -75,11 +67,7 @@ const TesScreen = () => {
       <main className="p-6">
         {/* Back Button and Breadcrumb */}
         <div className="mb-4">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/portal')}
-            className="text-blue-600 hover:text-blue-800 p-0 h-auto"
-          >
+          <Button variant="ghost" onClick={() => navigate('/portal')} className="text-blue-600 hover:text-blue-800 p-0 h-auto">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back
           </Button>
@@ -123,34 +111,19 @@ const TesScreen = () => {
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-transparent border-b border-gray-200 w-full justify-start rounded-none h-auto p-0 mb-6">
-            <TabsTrigger 
-              value="case-details" 
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3"
-            >
+            <TabsTrigger value="case-details" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
               Case Details
             </TabsTrigger>
-            <TabsTrigger 
-              value="participants" 
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3"
-            >
+            <TabsTrigger value="participants" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
               👥 Participants
             </TabsTrigger>
-            <TabsTrigger 
-              value="submissions" 
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3"
-            >
+            <TabsTrigger value="submissions" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
               📄 Submissions and Requests
             </TabsTrigger>
-            <TabsTrigger 
-              value="docket" 
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3"
-            >
+            <TabsTrigger value="docket" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
               📋 Docket
             </TabsTrigger>
-            <TabsTrigger 
-              value="ruling" 
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3"
-            >
+            <TabsTrigger value="ruling" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
               ⚖️ FDM
             </TabsTrigger>
           </TabsList>
@@ -238,32 +211,17 @@ const TesScreen = () => {
                       <p className="text-sm text-gray-600 mb-4">Choose Your Action</p>
                       
                       <div className="grid grid-cols-2 gap-4 mb-6">
-                        <button
-                          onClick={() => setSelectedAction('approve')}
-                          className={`p-4 border-2 rounded-lg text-center transition-all ${
-                            selectedAction === 'approve' 
-                              ? 'border-green-600 bg-green-600 text-white' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
+                        <button onClick={() => setSelectedAction('approve')} className={`p-4 border-2 rounded-lg text-center transition-all ${selectedAction === 'approve' ? 'border-green-600 bg-green-600 text-white' : 'border-gray-200 hover:border-gray-300'}`}>
                           <div className="text-xl mb-1">⊙</div>
                           <p className="font-medium">Approve Recommended Decision</p>
                         </button>
-                        <button
-                          onClick={() => setSelectedAction('disagree')}
-                          className={`p-4 border-2 rounded-lg text-center transition-all ${
-                            selectedAction === 'disagree' 
-                              ? 'border-orange-500 bg-orange-500 text-white' 
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
+                        <button onClick={() => setSelectedAction('disagree')} className={`p-4 border-2 rounded-lg text-center transition-all ${selectedAction === 'disagree' ? 'border-orange-500 bg-orange-500 text-white' : 'border-gray-200 hover:border-gray-300'}`}>
                           <div className="text-xl mb-1">⊗</div>
                           <p className="font-medium">Disagree / Upload Own Ruling</p>
                         </button>
                       </div>
 
-                      {selectedAction === 'approve' && (
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
+                      {selectedAction === 'approve' && <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
                           <p className="text-sm text-gray-700 mb-4">
                             Approving will automatically generate a Final Ruling Report based on the ALJ's recommendation.
                           </p>
@@ -275,26 +233,20 @@ const TesScreen = () => {
                             <div className="border-2 border-dashed border-green-300 rounded-lg p-6 text-center bg-white cursor-pointer hover:border-green-400 transition-colors">
                               <div className="text-green-500 text-3xl mb-2">↑</div>
                               <p className="text-gray-600 mb-1">Drag and drop files here, or click to browse</p>
-                              <p className="text-sm text-gray-400">PDF, DOC, DOCX - max 10 MB</p>
+                              <p className="text-sm text-gray-400">PDF- max 10 MB</p>
                             </div>
                           </div>
 
                           <p className="text-sm font-medium text-gray-700 mb-2">
                             Optional comments to accompany your approval
                           </p>
-                          <textarea 
-                            className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            rows={4}
-                            placeholder="Enter any additional comments..."
-                          />
+                          <textarea className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows={4} placeholder="Enter any additional comments..." />
                           <Button className="mt-4 bg-green-600 hover:bg-green-700 text-white">
                             Generate Final Ruling Report
                           </Button>
-                        </div>
-                      )}
+                        </div>}
 
-                      {selectedAction === 'disagree' && (
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
+                      {selectedAction === 'disagree' && <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
                           <div className="flex items-start gap-2 mb-4">
                             <span className="text-orange-500 text-lg">⚠</span>
                             <p className="text-sm text-gray-700">
@@ -311,16 +263,11 @@ const TesScreen = () => {
                           <p className="text-sm font-medium text-gray-700 mb-2">
                             Required justification for rejecting the recommendation <span className="text-red-500">*</span>
                           </p>
-                          <textarea 
-                            className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            rows={4}
-                            placeholder="Explain why you are disagreeing with the ALJ's recommendation..."
-                          />
+                          <textarea className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" rows={4} placeholder="Explain why you are disagreeing with the ALJ's recommendation..." />
                           <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white">
                             Upload Final Ruling & Mark as Final
                           </Button>
-                        </div>
-                      )}
+                        </div>}
 
                       <div className="flex justify-end gap-3">
                         <Button variant="outline" onClick={() => navigate('/portal')}>
@@ -383,8 +330,6 @@ const TesScreen = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default TesScreen;
