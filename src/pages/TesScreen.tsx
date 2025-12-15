@@ -322,57 +322,6 @@ const TesScreen = () => {
                   </CardContent>
                 </Card>
 
-                {/* Ruling Documents Table */}
-                <Card className="border shadow-sm">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg">Ruling Documents</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b">
-                            <th className="text-left py-3 px-4 font-semibold text-gray-700">Document Name</th>
-                            <th className="text-left py-3 px-4 font-semibold text-gray-700">Type</th>
-                            <th className="text-left py-3 px-4 font-semibold text-gray-700">Uploaded By</th>
-                            <th className="text-left py-3 px-4 font-semibold text-gray-700">Upload Date</th>
-                            <th className="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {rulingDocuments.map((doc) => (
-                            <tr key={doc.id} className="border-b">
-                              <td className="py-3 px-4">
-                                <a href="#" className="text-blue-600 hover:underline">
-                                  {doc.name}
-                                </a>
-                              </td>
-                              <td className="py-3 px-4">
-                                <Select defaultValue={doc.type.toLowerCase().replace(' ', '-')}>
-                                  <SelectTrigger className="w-40">
-                                    <SelectValue>{doc.type}</SelectValue>
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="recommended-decision">Recommended Decision</SelectItem>
-                                    <SelectItem value="briefing-schedule">Briefing Schedule</SelectItem>
-                                    <SelectItem value="ruling">Ruling</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </td>
-                              <td className="py-3 px-4 text-gray-600">{doc.uploadedBy}</td>
-                              <td className="py-3 px-4 text-gray-600">{doc.uploadDate}</td>
-                              <td className="py-3 px-4">
-                                <Button variant="ghost" size="icon">
-                                  <Download className="h-4 w-4 text-gray-600" />
-                                </Button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             </div>
 
