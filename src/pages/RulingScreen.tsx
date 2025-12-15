@@ -332,28 +332,6 @@ const RulingScreen = () => {
 
             {/* Ruling Draft Tab */}
             <TabsContent value="ruling-draft" className="mt-0 bg-white border border-t-0 border-gray-200 p-6">
-              <Card className="border border-gray-200 shadow-none mb-6">
-                <CardHeader className="bg-gray-50 py-3 px-4">
-                  <CardTitle className="text-sm font-medium text-gray-700">Draft Metadata</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <Label className="text-xs text-gray-500">Template Used</Label>
-                      <Input value="Standard Ruling Template v2.1" readOnly className="mt-1 bg-gray-50" />
-                    </div>
-                    <div>
-                      <Label className="text-xs text-gray-500">Last Edited By</Label>
-                      <Input value="Hon. James Rivera" readOnly className="mt-1 bg-gray-50" />
-                    </div>
-                    <div>
-                      <Label className="text-xs text-gray-500">Last Edited Date</Label>
-                      <Input value="Dec 12, 2024 2:15 PM" readOnly className="mt-1 bg-gray-50" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
               <Card className="border border-gray-200 shadow-none">
                 <CardHeader className="bg-gray-50 py-3 px-4 flex flex-row items-center justify-between">
                   <CardTitle className="text-sm font-medium text-gray-700">Ruling Documents</CardTitle>
