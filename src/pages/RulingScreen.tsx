@@ -95,7 +95,7 @@ const RulingScreen = () => {
   }];
   const issuedDocuments = [{
     id: 1,
-    name: "Recommended_Decision_Report.docx",
+    name: "Decision_Report.docx",
     type: "System Generated",
     generatedOn: "2024-12-14",
     status: "Ready"
