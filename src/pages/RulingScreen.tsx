@@ -220,7 +220,7 @@ const RulingScreen = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="bg-white border border-gray-200 rounded-none p-0 h-auto">
               <TabsTrigger value="summary" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
-                Summary
+                Writing
               </TabsTrigger>
               <TabsTrigger value="proofing" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
                 Proofing
