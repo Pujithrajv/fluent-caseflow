@@ -72,7 +72,7 @@ const RulingScreen = () => {
   }];
   const proofingTasks = [{
     id: 1,
-    name: "Initial Proofreading",
+    name: "Report by ALJ",
     owner: "Hon. James Rivera",
     dueDate: "2024-12-18",
     status: "In Progress"
