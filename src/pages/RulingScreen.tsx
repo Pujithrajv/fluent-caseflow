@@ -240,32 +240,6 @@ const RulingScreen = () => {
             {/* Summary Tab */}
             <TabsContent value="summary" className="mt-0 bg-white border border-t-0 border-gray-200 p-6">
               <div className="grid grid-cols-2 gap-8">
-                {/* Case Information */}
-                <Card className="border border-gray-200 shadow-none">
-                  <CardHeader className="bg-gray-50 py-3 px-4">
-                    <CardTitle className="text-sm font-medium text-gray-700">Case Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-xs text-gray-500">Case Number</Label>
-                        <Input value={caseData.caseNumber} readOnly className="mt-1 bg-gray-50" />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-gray-500">Case Type</Label>
-                        <Input value={caseData.caseType} readOnly className="mt-1 bg-gray-50" />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-gray-500">Department</Label>
-                        <Input value={caseData.department} readOnly className="mt-1 bg-gray-50" />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-gray-500">Primary Party</Label>
-                        <Input value={caseData.primaryParty} readOnly className="mt-1 bg-gray-50" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
 
                 {/* Assignments */}
                 <Card className="border border-gray-200 shadow-none">
