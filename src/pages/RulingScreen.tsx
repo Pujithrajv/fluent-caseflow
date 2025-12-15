@@ -88,8 +88,7 @@ const RulingScreen = () => {
   };
 
   const rulingDocuments = [
-    { id: 1, name: "Ruling_Draft_v1.docx", type: "Word Document", version: "1.0", uploadedBy: "Hon. Sarah Mitchell", uploadedOn: "2024-12-10" },
-    { id: 2, name: "Ruling_Draft_v2.docx", type: "Word Document", version: "2.0", uploadedBy: "Hon. James Rivera", uploadedOn: "2024-12-12" }
+    { id: 1, name: "Ruling_Draft_v1.docx", type: "Word Document", version: "1.0", uploadedBy: "Hon. Sarah Mitchell", uploadedOn: "2024-12-10" }
   ];
 
   const proofingTasks = [
