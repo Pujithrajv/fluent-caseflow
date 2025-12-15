@@ -222,9 +222,6 @@ const RulingScreen = () => {
               <TabsTrigger value="summary" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
                 Summary
               </TabsTrigger>
-              <TabsTrigger value="ruling-draft" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
-                Ruling Draft
-              </TabsTrigger>
               <TabsTrigger value="proofing" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
                 Proofing
               </TabsTrigger>
@@ -366,48 +363,6 @@ const RulingScreen = () => {
               </Card>
             </TabsContent>
 
-            {/* Ruling Draft Tab */}
-            <TabsContent value="ruling-draft" className="mt-0 bg-white border border-t-0 border-gray-200 p-6">
-              <Card className="border border-gray-200 shadow-none">
-                <CardHeader className="bg-gray-50 py-3 px-4 flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-medium text-gray-700">Ruling Documents</CardTitle>
-                  <Button size="sm" variant="outline">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Upload Document
-                  </Button>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-gray-50">
-                        <TableHead className="text-xs">Document Name</TableHead>
-                        <TableHead className="text-xs">Type</TableHead>
-                        <TableHead className="text-xs">Version</TableHead>
-                        <TableHead className="text-xs">Uploaded By</TableHead>
-                        <TableHead className="text-xs">Uploaded On</TableHead>
-                        <TableHead className="text-xs">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {rulingDocuments.map((doc) => (
-                        <TableRow key={doc.id}>
-                          <TableCell className="text-sm font-medium text-blue-600">{doc.name}</TableCell>
-                          <TableCell className="text-sm">{doc.type}</TableCell>
-                          <TableCell className="text-sm">{doc.version}</TableCell>
-                          <TableCell className="text-sm">{doc.uploadedBy}</TableCell>
-                          <TableCell className="text-sm">{doc.uploadedOn}</TableCell>
-                          <TableCell>
-                            <Button size="sm" variant="ghost">
-                              <Download className="w-4 h-4" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             {/* Proofing Tab */}
             <TabsContent value="proofing" className="mt-0 bg-white border border-t-0 border-gray-200 p-6">
