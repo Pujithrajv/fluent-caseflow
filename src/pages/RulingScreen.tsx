@@ -327,6 +327,43 @@ const RulingScreen = () => {
                 </Card>
 
               </div>
+
+              {/* Issued Documents */}
+              <Card className="border border-gray-200 shadow-none mt-6">
+                <CardHeader className="bg-gray-50 py-3 px-4">
+                  <CardTitle className="text-sm font-medium text-gray-700">Issued Documents</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50">
+                        <TableHead className="text-xs">Document Name</TableHead>
+                        <TableHead className="text-xs">Type</TableHead>
+                        <TableHead className="text-xs">Generated On</TableHead>
+                        <TableHead className="text-xs">Status</TableHead>
+                        <TableHead className="text-xs">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {issuedDocuments.map((doc) => (
+                        <TableRow key={doc.id}>
+                          <TableCell className="text-sm font-medium text-blue-600">{doc.name}</TableCell>
+                          <TableCell className="text-sm">{doc.type}</TableCell>
+                          <TableCell className="text-sm">{doc.generatedOn}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="bg-green-50 text-green-700">{doc.status}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Button size="sm" variant="ghost">
+                              <Download className="w-4 h-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             {/* Ruling Draft Tab */}
