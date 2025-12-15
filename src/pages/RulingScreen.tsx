@@ -353,30 +353,6 @@ const RulingScreen = () => {
                   </CardContent>
                 </Card>
 
-                {/* Ruling Flags */}
-                <Card className="border border-gray-200 shadow-none">
-                  <CardHeader className="bg-gray-50 py-3 px-4">
-                    <CardTitle className="text-sm font-medium text-gray-700">Ruling Flags</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 space-y-4">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <Label className="text-sm">Needs Extension?</Label>
-                        <Switch checked={needsExtension} onCheckedChange={setNeedsExtension} />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <Label className="text-sm">Meets Statutory Requirements?</Label>
-                        <Switch checked={meetsStatutory} onCheckedChange={setMeetsStatutory} />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <Label className="text-sm">Overdue Indicator</Label>
-                        <Badge variant="outline" className={caseData.daysRemaining <= 0 ? "bg-red-50 text-red-700" : "bg-gray-50 text-gray-500"}>
-                          {caseData.daysRemaining <= 0 ? "OVERDUE" : "On Track"}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             </TabsContent>
 
