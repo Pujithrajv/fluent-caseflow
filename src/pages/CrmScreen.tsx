@@ -256,7 +256,7 @@ const CrmScreen = () => {
     if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
     return "";
   };
-  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Post Hearing", "Post Hearing1", "Requests", "Schedule", "Timeline / Docket", "Case Type", "Related"];
+  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Requests", "Timeline / Docket", "Case Type", "Related"];
   return <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
       <div className="w-48 bg-[#f3f2f1] border-r border-[#edebe9] flex flex-col">
