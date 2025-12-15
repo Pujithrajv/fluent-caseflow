@@ -78,7 +78,7 @@ const RulingScreen = () => {
     status: "In Progress"
   }, {
     id: 2,
-    name: "Citation Verification",
+    name: "Ruling report changes by backup ALJ",
     owner: "Hon. James Rivera",
     dueDate: "2024-12-19",
     status: "Pending"
