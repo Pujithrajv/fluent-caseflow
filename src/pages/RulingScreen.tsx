@@ -11,42 +11,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  ArrowLeft,
-  Save,
-  FileText,
-  Send,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  FileUp,
-  Download,
-  Plus,
-  User,
-  Calendar,
-  Edit,
-  XCircle,
-  RefreshCw,
-  ChevronRight,
-  Eye
-} from "lucide-react";
+import { ArrowLeft, Save, FileText, Send, Clock, CheckCircle, AlertCircle, FileUp, Download, Plus, User, Calendar, Edit, XCircle, RefreshCw, ChevronRight, Eye } from "lucide-react";
 
 // BPF Stage Component
-const BPFStage = ({ 
-  label, 
-  isActive, 
+const BPFStage = ({
+  label,
+  isActive,
   isCompleted,
-  onClick 
-}: { 
-  label: string; 
-  isActive: boolean; 
+  onClick
+}: {
+  label: string;
+  isActive: boolean;
   isCompleted: boolean;
   onClick?: () => void;
-}) => (
-  <div 
-    className={`flex-1 flex items-center cursor-pointer ${onClick ? 'hover:opacity-80' : ''}`}
-    onClick={onClick}
-  >
+}) => <div className={`flex-1 flex items-center cursor-pointer ${onClick ? 'hover:opacity-80' : ''}`} onClick={onClick}>
     <div className={`
       flex items-center justify-center w-full py-2 px-4 text-sm font-medium relative
       ${isActive ? 'bg-blue-600 text-white' : isCompleted ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}
@@ -59,9 +37,7 @@ const BPFStage = ({
       border-t-transparent border-b-transparent
       ${isActive ? 'border-l-blue-600' : isCompleted ? 'border-l-green-600' : 'border-l-gray-200'}
     `} />
-  </div>
-);
-
+  </div>;
 const RulingScreen = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("summary");
@@ -86,51 +62,101 @@ const RulingScreen = () => {
     rulingStage: "Writing",
     statusReason: "In Progress"
   };
-
-  const rulingDocuments = [
-    { id: 1, name: "Ruling_Draft_v1.docx", type: "Word Document", version: "1.0", uploadedBy: "Hon. Sarah Mitchell", uploadedOn: "2024-12-10" }
-  ];
-
-  const proofingTasks = [
-    { id: 1, name: "Initial Proofreading", owner: "Hon. James Rivera", dueDate: "2024-12-18", status: "In Progress" },
-    { id: 2, name: "Citation Verification", owner: "Hon. James Rivera", dueDate: "2024-12-19", status: "Pending" }
-  ];
-
-  const extensionRequests = [
-    { id: 1, requestedBy: "Hon. Sarah Mitchell", requestedOn: "2024-12-05", reason: "Additional evidence review required", meetsStatutory: "Yes", decision: "Approved", decisionBy: "Dr. Patricia Williams", decisionDate: "2024-12-06" }
-  ];
-
-  const issuedDocuments = [
-    { id: 1, name: "Recommended_Decision_Report.pdf", type: "System Generated", generatedOn: "2024-12-14", status: "Ready" }
-  ];
-
-  const timelineEvents = [
-    { id: 1, type: "notification", text: "5-day deadline reminder sent to ALJ", date: "Dec 10, 2024 9:00 AM", icon: AlertCircle, color: "text-yellow-500" },
-    { id: 2, type: "task", text: "Proofing task created for Backup ALJ", date: "Dec 11, 2024 10:30 AM", icon: FileText, color: "text-blue-500" },
-    { id: 3, type: "document", text: "Draft v2 uploaded by Backup ALJ", date: "Dec 12, 2024 2:15 PM", icon: FileUp, color: "text-green-500" },
-    { id: 4, type: "status", text: "Stage advanced to Proofing", date: "Dec 12, 2024 3:00 PM", icon: RefreshCw, color: "text-purple-500" },
-    { id: 5, type: "notification", text: "2-day proofing deadline reminder", date: "Dec 16, 2024 9:00 AM", icon: Clock, color: "text-orange-500" }
-  ];
-
-  const bpfStages = [
-    { label: "Writing", stage: 1 },
-    { label: "Proofing", stage: 2 },
-    { label: "ALJ Review", stage: 3 },
-    { label: "Issuance", stage: 4 },
-    { label: "Completed", stage: 5 }
-  ];
-
-  return (
-    <div className="min-h-screen bg-[#f3f2f1] flex flex-col">
+  const rulingDocuments = [{
+    id: 1,
+    name: "Ruling_Draft_v1.docx",
+    type: "Word Document",
+    version: "1.0",
+    uploadedBy: "Hon. Sarah Mitchell",
+    uploadedOn: "2024-12-10"
+  }];
+  const proofingTasks = [{
+    id: 1,
+    name: "Initial Proofreading",
+    owner: "Hon. James Rivera",
+    dueDate: "2024-12-18",
+    status: "In Progress"
+  }, {
+    id: 2,
+    name: "Citation Verification",
+    owner: "Hon. James Rivera",
+    dueDate: "2024-12-19",
+    status: "Pending"
+  }];
+  const extensionRequests = [{
+    id: 1,
+    requestedBy: "Hon. Sarah Mitchell",
+    requestedOn: "2024-12-05",
+    reason: "Additional evidence review required",
+    meetsStatutory: "Yes",
+    decision: "Approved",
+    decisionBy: "Dr. Patricia Williams",
+    decisionDate: "2024-12-06"
+  }];
+  const issuedDocuments = [{
+    id: 1,
+    name: "Recommended_Decision_Report.pdf",
+    type: "System Generated",
+    generatedOn: "2024-12-14",
+    status: "Ready"
+  }];
+  const timelineEvents = [{
+    id: 1,
+    type: "notification",
+    text: "5-day deadline reminder sent to ALJ",
+    date: "Dec 10, 2024 9:00 AM",
+    icon: AlertCircle,
+    color: "text-yellow-500"
+  }, {
+    id: 2,
+    type: "task",
+    text: "Proofing task created for Backup ALJ",
+    date: "Dec 11, 2024 10:30 AM",
+    icon: FileText,
+    color: "text-blue-500"
+  }, {
+    id: 3,
+    type: "document",
+    text: "Draft v2 uploaded by Backup ALJ",
+    date: "Dec 12, 2024 2:15 PM",
+    icon: FileUp,
+    color: "text-green-500"
+  }, {
+    id: 4,
+    type: "status",
+    text: "Stage advanced to Proofing",
+    date: "Dec 12, 2024 3:00 PM",
+    icon: RefreshCw,
+    color: "text-purple-500"
+  }, {
+    id: 5,
+    type: "notification",
+    text: "2-day proofing deadline reminder",
+    date: "Dec 16, 2024 9:00 AM",
+    icon: Clock,
+    color: "text-orange-500"
+  }];
+  const bpfStages = [{
+    label: "Writing",
+    stage: 1
+  }, {
+    label: "Proofing",
+    stage: 2
+  }, {
+    label: "ALJ Review",
+    stage: 3
+  }, {
+    label: "Issuance",
+    stage: 4
+  }, {
+    label: "Completed",
+    stage: 5
+  }];
+  return <div className="min-h-screen bg-[#f3f2f1] flex flex-col">
       {/* Dynamics 365 Style Header */}
       <header className="bg-[#002050] text-white px-4 py-2 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-white hover:bg-white/10"
-            onClick={() => navigate('/portal')}
-          >
+          <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={() => navigate('/portal')}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
@@ -182,15 +208,7 @@ const RulingScreen = () => {
       {/* Business Process Flow */}
       <div className="bg-white border-b border-gray-200 px-4 py-3">
         <div className="flex items-center max-w-4xl">
-          {bpfStages.map((stage, index) => (
-            <BPFStage
-              key={stage.stage}
-              label={stage.label}
-              isActive={bpfStage === stage.stage}
-              isCompleted={bpfStage > stage.stage}
-              onClick={() => setBpfStage(stage.stage)}
-            />
-          ))}
+          {bpfStages.map((stage, index) => <BPFStage key={stage.stage} label={stage.label} isActive={bpfStage === stage.stage} isCompleted={bpfStage > stage.stage} onClick={() => setBpfStage(stage.stage)} />)}
         </div>
       </div>
 
@@ -240,7 +258,7 @@ const RulingScreen = () => {
                 {/* Assignments */}
                 <Card className="border border-gray-200 shadow-none">
                   <CardHeader className="bg-gray-50 py-3 px-4">
-                    <CardTitle className="text-sm font-medium text-gray-700">Assignments</CardTitle>
+                    <CardTitle className="text-sm font-medium text-gray-700">Assinged </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -342,8 +360,7 @@ const RulingScreen = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {issuedDocuments.map((doc) => (
-                        <TableRow key={doc.id}>
+                      {issuedDocuments.map(doc => <TableRow key={doc.id}>
                           <TableCell className="text-sm font-medium text-blue-600">{doc.name}</TableCell>
                           <TableCell className="text-sm">{doc.type}</TableCell>
                           <TableCell className="text-sm">{doc.generatedOn}</TableCell>
@@ -355,8 +372,7 @@ const RulingScreen = () => {
                               <Download className="w-4 h-4" />
                             </Button>
                           </TableCell>
-                        </TableRow>
-                      ))}
+                        </TableRow>)}
                     </TableBody>
                   </Table>
                 </CardContent>
@@ -416,17 +432,12 @@ const RulingScreen = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {proofingTasks.map((task) => (
-                        <TableRow key={task.id}>
+                      {proofingTasks.map(task => <TableRow key={task.id}>
                           <TableCell className="text-sm font-medium text-blue-600">{task.name}</TableCell>
                           <TableCell className="text-sm">{task.owner}</TableCell>
                           <TableCell className="text-sm">{task.dueDate}</TableCell>
                           <TableCell>
-                            <Badge variant="outline" className={
-                              task.status === "In Progress" ? "bg-blue-50 text-blue-700" :
-                              task.status === "Completed" ? "bg-green-50 text-green-700" :
-                              "bg-gray-50 text-gray-700"
-                            }>
+                            <Badge variant="outline" className={task.status === "In Progress" ? "bg-blue-50 text-blue-700" : task.status === "Completed" ? "bg-green-50 text-green-700" : "bg-gray-50 text-gray-700"}>
                               {task.status}
                             </Badge>
                           </TableCell>
@@ -435,8 +446,7 @@ const RulingScreen = () => {
                               <Edit className="w-4 h-4" />
                             </Button>
                           </TableCell>
-                        </TableRow>
-                      ))}
+                        </TableRow>)}
                     </TableBody>
                   </Table>
                 </CardContent>
@@ -455,16 +465,10 @@ const RulingScreen = () => {
                       <Label className="text-sm">Needs Extension?</Label>
                       <Switch checked={needsExtension} onCheckedChange={setNeedsExtension} />
                     </div>
-                    {needsExtension && (
-                      <div>
+                    {needsExtension && <div>
                         <Label className="text-xs text-gray-500">Extension Justification</Label>
-                        <Textarea 
-                          className="mt-1" 
-                          placeholder="Provide justification for extension request..."
-                          rows={4}
-                        />
-                      </div>
-                    )}
+                        <Textarea className="mt-1" placeholder="Provide justification for extension request..." rows={4} />
+                      </div>}
                     <div>
                       <Label className="text-xs text-gray-500">New Ruling Due Date</Label>
                       <Input type="date" className="mt-1" />
@@ -481,15 +485,13 @@ const RulingScreen = () => {
                       <Label className="text-sm">Meets Statutory Requirements?</Label>
                       <Switch checked={meetsStatutory} onCheckedChange={setMeetsStatutory} />
                     </div>
-                    {!meetsStatutory && (
-                      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                    {!meetsStatutory && <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
                         <div className="flex items-center text-yellow-700">
                           <AlertCircle className="w-4 h-4 mr-2" />
                           <span className="text-sm font-medium">Escalation Required</span>
                         </div>
                         <p className="text-xs text-yellow-600 mt-1">This case requires Deputy Director override for deadline modification.</p>
-                      </div>
-                    )}
+                      </div>}
                   </CardContent>
                 </Card>
               </div>
@@ -512,8 +514,7 @@ const RulingScreen = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {extensionRequests.map((req) => (
-                        <TableRow key={req.id}>
+                      {extensionRequests.map(req => <TableRow key={req.id}>
                           <TableCell className="text-sm">{req.requestedBy}</TableCell>
                           <TableCell className="text-sm">{req.requestedOn}</TableCell>
                           <TableCell className="text-sm">{req.reason}</TableCell>
@@ -523,8 +524,7 @@ const RulingScreen = () => {
                           </TableCell>
                           <TableCell className="text-sm">{req.decisionBy}</TableCell>
                           <TableCell className="text-sm">{req.decisionDate}</TableCell>
-                        </TableRow>
-                      ))}
+                        </TableRow>)}
                     </TableBody>
                   </Table>
                 </CardContent>
@@ -593,18 +593,14 @@ const RulingScreen = () => {
                       </Select>
                     </div>
                     <div className="flex items-end space-x-2">
-                      {recommendedVsFinal === "recommended" && (
-                        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                      {recommendedVsFinal === "recommended" && <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                           <FileText className="w-4 h-4 mr-2" />
                           Generate Recommended Docs
-                        </Button>
-                      )}
-                      {recommendedVsFinal === "final" && (
-                        <Button className="bg-green-600 hover:bg-green-700 text-white">
+                        </Button>}
+                      {recommendedVsFinal === "final" && <Button className="bg-green-600 hover:bg-green-700 text-white">
                           <FileText className="w-4 h-4 mr-2" />
                           Generate Final Ruling
-                        </Button>
-                      )}
+                        </Button>}
                     </div>
                   </div>
                 </CardContent>
@@ -626,8 +622,7 @@ const RulingScreen = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {issuedDocuments.map((doc) => (
-                        <TableRow key={doc.id}>
+                      {issuedDocuments.map(doc => <TableRow key={doc.id}>
                           <TableCell className="text-sm font-medium text-blue-600">{doc.name}</TableCell>
                           <TableCell className="text-sm">{doc.type}</TableCell>
                           <TableCell className="text-sm">{doc.generatedOn}</TableCell>
@@ -639,8 +634,7 @@ const RulingScreen = () => {
                               <Download className="w-4 h-4" />
                             </Button>
                           </TableCell>
-                        </TableRow>
-                      ))}
+                        </TableRow>)}
                     </TableBody>
                   </Table>
                 </CardContent>
@@ -650,8 +644,6 @@ const RulingScreen = () => {
         </div>
 
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default RulingScreen;
