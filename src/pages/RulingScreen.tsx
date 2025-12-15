@@ -680,27 +680,6 @@ const RulingScreen = () => {
           </Tabs>
         </div>
 
-        {/* Right: Timeline */}
-        <div className="w-80 bg-white border-l border-gray-200 flex flex-col">
-          <div className="p-4 border-b border-gray-200 bg-gray-50">
-            <h3 className="text-sm font-semibold text-gray-700">Timeline</h3>
-          </div>
-          <ScrollArea className="flex-1">
-            <div className="p-4 space-y-4">
-              {timelineEvents.map((event) => (
-                <div key={event.id} className="flex items-start space-x-3">
-                  <div className={`mt-0.5 ${event.color}`}>
-                    <event.icon className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-gray-700">{event.text}</p>
-                    <p className="text-xs text-gray-400 mt-1">{event.date}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
       </div>
     </div>
   );
