@@ -58,8 +58,55 @@ const CrmScreen = () => {
   }, {
     type: "Inspection",
     allowed: true,
-    daysToRespond: 7
+    daysToRespond: 14
   }]);
+
+  // Ruling/Decision state
+  const [rulingData, setRulingData] = useState({
+    status: "Writing",
+    rulingType: "Final Ruling",
+    decisionDueDate: "2024-12-15",
+    warningDate: "2024-12-10",
+    proofingDueDate: "2024-12-12",
+    needsExtension: false,
+    meetsStatutory: true,
+    extensionJustification: "",
+    recommendedVsFinal: "Final",
+    rulingCompletedOn: "",
+    alj: "Pujith Raj (Available)",
+    backupAlj: "Sarah Mitchell (Available)",
+    deputyDirector: "Patricia Williams"
+  });
+
+  // Ruling documents
+  const [rulingDocuments] = useState([
+    { id: 1, name: "Ruling_Draft_v1.docx", type: "Word Draft", version: "1.0", uploadedBy: "Hon. Sarah Mitchell", uploadDate: "12/08/2024" },
+    { id: 2, name: "Proofed_Draft_v2.docx", type: "Word Draft", version: "2.0", uploadedBy: "Hon. James Rivera", uploadDate: "12/10/2024" }
+  ]);
+
+  // Proofing tasks
+  const [proofingTasks] = useState([
+    { id: 1, name: "Initial Proofreading", owner: "Hon. James Rivera", dueDate: "12/12/2024", status: "In Progress", draftVersion: "v2.0" },
+    { id: 2, name: "Citation Verification", owner: "Hon. James Rivera", dueDate: "12/13/2024", status: "Pending", draftVersion: "v2.0" }
+  ]);
+
+  // Alerts & notifications
+  const [rulingAlerts] = useState([
+    { id: 1, alertType: "5-day warning", recipient: "ALJ", triggerDate: "12/10/2024", sentDate: "12/10/2024", status: "Sent" },
+    { id: 2, alertType: "2-day warning", recipient: "Backup ALJ", triggerDate: "12/13/2024", sentDate: "", status: "Scheduled" }
+  ]);
+
+  // Calculate ruling days remaining
+  const calculateRulingDaysRemaining = () => {
+    if (!rulingData.decisionDueDate) return "—";
+    const today = new Date();
+    const dueDate = new Date(rulingData.decisionDueDate);
+    const diffTime = dueDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) return `Overdue by ${Math.abs(diffDays)} days`;
+    return `Due in ${diffDays} days`;
+  };
+
 
   // Mock data for Card D tabs
   const [conferences] = useState([{
@@ -256,7 +303,7 @@ const CrmScreen = () => {
     if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
     return "";
   };
-  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Requests", "Timeline / Docket", "Case Type", "Related"];
+  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Ruling", "Requests", "Timeline / Docket", "Case Type", "Related"];
   return <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
       <div className="w-48 bg-[#f3f2f1] border-r border-[#edebe9] flex flex-col">
@@ -1450,6 +1497,398 @@ const CrmScreen = () => {
                 </div>
               </div>
             </div>}
+
+          {/* Ruling / Decision Tab */}
+          {activeTab === "Ruling" && <div className="max-w-7xl mx-auto">
+            {/* Command Bar */}
+            <div className="bg-white border border-[#edebe9] rounded mb-4 px-4 py-2 flex items-center space-x-2">
+              <span className="text-xs text-[#605e5c] mr-2">ALJ Actions:</span>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Writing"}>
+                <FileText className="w-3 h-3 mr-1" />
+                Create Ruling Report
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Writing"}>
+                Submit for Proofing
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "ALJ Review"}>
+                Mark Ready for Issuance
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Ready for Issuance"}>
+                Issue Final Ruling
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Ready for Issuance"}>
+                Mark as Recommended
+              </Button>
+              <div className="h-6 w-px bg-[#edebe9] mx-2" />
+              <span className="text-xs text-[#605e5c] mr-2">Backup ALJ:</span>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Proofing"}>
+                Open Draft
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Proofing"}>
+                Submit Proofing Completed
+              </Button>
+              <div className="h-6 w-px bg-[#edebe9] mx-2" />
+              <span className="text-xs text-[#605e5c] mr-2">Director:</span>
+              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.meetsStatutory && rulingData.status !== "Escalated to Director"}>
+                Modify Deadline
+              </Button>
+            </div>
+
+            {/* Main Form Section */}
+            <div className="bg-white border border-[#edebe9] rounded mb-6">
+              <div className="px-4 py-3 border-b border-[#edebe9]">
+                <h3 className="text-sm font-semibold text-[#323130]">RULING / DECISION SUMMARY</h3>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-3 gap-6">
+                  {/* Left Column - Ruling Setup */}
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-xs text-[#323130]">Ruling Status <span className="text-red-600">*</span></Label>
+                      <Select value={rulingData.status} onValueChange={value => setRulingData({...rulingData, status: value})}>
+                        <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Inactive"><Badge variant="secondary" className="bg-gray-200 text-gray-700">Inactive</Badge></SelectItem>
+                          <SelectItem value="Writing"><Badge className="bg-blue-600 text-white">Writing</Badge></SelectItem>
+                          <SelectItem value="Proofing"><Badge className="bg-purple-600 text-white">Proofing</Badge></SelectItem>
+                          <SelectItem value="ALJ Review"><Badge className="bg-orange-600 text-white">ALJ Review</Badge></SelectItem>
+                          <SelectItem value="Ready for Issuance"><Badge className="bg-teal-600 text-white">Ready for Issuance</Badge></SelectItem>
+                          <SelectItem value="Issued (Final)"><Badge className="bg-green-600 text-white">Issued (Final)</Badge></SelectItem>
+                          <SelectItem value="Issued (Recommended)"><Badge className="bg-green-500 text-white">Issued (Recommended)</Badge></SelectItem>
+                          <SelectItem value="Overdue"><Badge className="bg-red-600 text-white">Overdue</Badge></SelectItem>
+                          <SelectItem value="Escalated to Director"><Badge className="bg-red-700 text-white">Escalated to Director</Badge></SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Ruling Type</Label>
+                      <Select value={rulingData.rulingType} onValueChange={value => setRulingData({...rulingData, rulingType: value})}>
+                        <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Final Ruling">Final Ruling</SelectItem>
+                          <SelectItem value="Recommended Decision">Recommended Decision</SelectItem>
+                          <SelectItem value="Interim Order">Interim Order</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Decision Due Date <span className="text-red-600">*</span></Label>
+                      <Input 
+                        type="date" 
+                        value={rulingData.decisionDueDate} 
+                        onChange={e => setRulingData({...rulingData, decisionDueDate: e.target.value})}
+                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
+                      />
+                      <p className="text-xs text-[#605e5c] mt-1">Used for statutory compliance tracking and alerts.</p>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Warning / Monitor Date</Label>
+                      <Input 
+                        type="date" 
+                        value={rulingData.warningDate} 
+                        onChange={e => setRulingData({...rulingData, warningDate: e.target.value})}
+                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
+                      />
+                      <p className="text-xs text-[#605e5c] mt-1">Optional checkpoint (e.g., 5-day warning trigger).</p>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Proofing Due Date</Label>
+                      <Input 
+                        type="date" 
+                        value={rulingData.proofingDueDate} 
+                        onChange={e => setRulingData({...rulingData, proofingDueDate: e.target.value})}
+                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
+                      />
+                      <p className="text-xs text-[#605e5c] mt-1">Used when assigned to Backup ALJ for proofing.</p>
+                    </div>
+                  </div>
+
+                  {/* Middle Column - Extension & Compliance */}
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-xs text-[#323130]">Needs Extension?</Label>
+                      <div className="flex items-center mt-2 space-x-2">
+                        <Switch 
+                          checked={rulingData.needsExtension} 
+                          onCheckedChange={checked => setRulingData({...rulingData, needsExtension: checked})}
+                          className="data-[state=checked]:bg-[#0078d4]" 
+                        />
+                        <span className="text-sm text-[#323130]">{rulingData.needsExtension ? "Yes" : "No"}</span>
+                      </div>
+                    </div>
+
+                    {rulingData.needsExtension && (
+                      <>
+                        <div>
+                          <Label className="text-xs text-[#323130]">Meets Statutory Requirements for Extension?</Label>
+                          <div className="flex items-center mt-2 space-x-2">
+                            <Switch 
+                              checked={rulingData.meetsStatutory} 
+                              onCheckedChange={checked => setRulingData({...rulingData, meetsStatutory: checked})}
+                              className="data-[state=checked]:bg-[#0078d4]" 
+                            />
+                            <span className="text-sm text-[#323130]">{rulingData.meetsStatutory ? "Yes" : "No"}</span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <Label className="text-xs text-[#323130]">Extension Justification <span className="text-red-600">*</span></Label>
+                          <textarea 
+                            value={rulingData.extensionJustification}
+                            onChange={e => setRulingData({...rulingData, extensionJustification: e.target.value})}
+                            className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none"
+                            placeholder="Provide justification for extension..."
+                          />
+                        </div>
+
+                        {!rulingData.meetsStatutory && (
+                          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                            <p className="text-xs text-yellow-800 font-medium">⚠️ Escalation Required</p>
+                            <p className="text-xs text-yellow-700 mt-1">Does not meet statutory requirements. Deputy Director must approve extension.</p>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Recommended vs Final (Decision Output)</Label>
+                      <Select 
+                        value={rulingData.recommendedVsFinal} 
+                        onValueChange={value => setRulingData({...rulingData, recommendedVsFinal: value})}
+                        disabled={rulingData.status !== "Ready for Issuance" && !rulingData.status.startsWith("Issued")}
+                      >
+                        <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Recommended">Recommended</SelectItem>
+                          <SelectItem value="Final">Final</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-[#605e5c] mt-1">Editable only when status is "Ready for Issuance" or later</p>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Ruling Completed On</Label>
+                      <Input 
+                        type="date" 
+                        value={rulingData.rulingCompletedOn} 
+                        onChange={e => setRulingData({...rulingData, rulingCompletedOn: e.target.value})}
+                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
+                        disabled={rulingData.status.startsWith("Issued")}
+                      />
+                      <p className="text-xs text-[#605e5c] mt-1">Read-only once set</p>
+                    </div>
+                  </div>
+
+                  {/* Right Column - Assignments + Days Remaining + Quick Info */}
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-xs text-[#323130]">ALJ</Label>
+                      <div className="flex items-center mt-1 space-x-2 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                        <Avatar className="h-6 w-6">
+                          <AvatarFallback className="bg-[#d13438] text-white text-xs">PR</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm text-[#0078d4]">{rulingData.alj}</span>
+                      </div>
+                      <p className="text-xs text-[#605e5c] mt-1">Read-only from case</p>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Backup ALJ</Label>
+                      <div className="flex items-center mt-1 space-x-2 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                        <Avatar className="h-6 w-6">
+                          <AvatarFallback className="bg-[#107c10] text-white text-xs">SM</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm text-[#0078d4]">{rulingData.backupAlj}</span>
+                      </div>
+                      <p className="text-xs text-[#605e5c] mt-1">Read-only from case unless manually updated</p>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-[#323130]">Deputy Director / Bureau Chief</Label>
+                      <div className="flex items-center mt-1 space-x-2 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                        <Avatar className="h-6 w-6">
+                          <AvatarFallback className="bg-[#8764b8] text-white text-xs">PW</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm text-[#0078d4]">{rulingData.deputyDirector}</span>
+                      </div>
+                      <p className="text-xs text-[#605e5c] mt-1">Read-only from case (or editable by Admin)</p>
+                    </div>
+
+                    {/* Days Remaining Highlight Box */}
+                    <div>
+                      <Label className="text-xs text-[#323130]">Days Remaining</Label>
+                      <div className="mt-1 p-4 bg-[#fff4ce] border-2 border-[#ffb900] rounded">
+                        <p className="text-2xl font-bold text-[#323130]">{calculateRulingDaysRemaining()}</p>
+                        <p className="text-xs text-[#605e5c] mt-1">Until decision due date</p>
+                      </div>
+                    </div>
+
+                    {/* Quick Info Panel */}
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded">
+                      <h4 className="text-sm font-semibold text-[#323130] mb-3">📋 Quick Info</h4>
+                      <ul className="text-xs text-[#605e5c] space-y-2">
+                        <li>• Status: <strong className="text-[#323130]">{rulingData.status}</strong></li>
+                        <li>• Due Date: <strong className="text-[#323130]">{rulingData.decisionDueDate || "Not set"}</strong></li>
+                        <li>• Needs Extension: <strong className="text-[#323130]">{rulingData.needsExtension ? "Yes" : "No"}</strong></li>
+                        <li>• Statutory Compliance: <strong className="text-[#323130]">{rulingData.needsExtension ? (rulingData.meetsStatutory ? "Meets" : "Does Not Meet") : "N/A"}</strong></li>
+                        <li>• Assigned To: <strong className="text-[#323130]">{rulingData.alj.split(" (")[0]}</strong></li>
+                        <li>• Proofing Owner: <strong className="text-[#323130]">{rulingData.backupAlj.split(" (")[0]}</strong></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Subgrid A: Ruling Documents */}
+            <div className="bg-white border border-[#edebe9] rounded mb-6">
+              <div className="px-4 py-3 border-b border-[#edebe9] flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-[#323130]">RULING DOCUMENTS</h3>
+                <div className="flex items-center space-x-2">
+                  <button className="flex items-center space-x-1 text-sm text-[#0078d4] hover:underline">
+                    <span>+</span>
+                    <span>Upload Document</span>
+                  </button>
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                    <tr>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10"></th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Document Name ↑</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Type ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Version ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Uploaded By ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Upload Date ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rulingDocuments.map(doc => (
+                      <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3"><input type="checkbox" className="h-4 w-4" /></td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">{doc.name}</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">{doc.type}</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">{doc.version}</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">{doc.uploadedBy}</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">{doc.uploadDate}</td>
+                        <td className="py-2 px-3"><span className="cursor-pointer text-[#0078d4]">⬇️</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-4 py-2 border-t border-[#edebe9] text-xs text-[#605e5c]">
+                Rows: {rulingDocuments.length}
+              </div>
+            </div>
+
+            {/* Subgrid B: Proofing Tasks */}
+            <div className="bg-white border border-[#edebe9] rounded mb-6">
+              <div className="px-4 py-3 border-b border-[#edebe9] flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-[#323130]">PROOFING TASKS</h3>
+                <div className="flex items-center space-x-2">
+                  <button className="flex items-center space-x-1 text-sm text-[#0078d4] hover:underline">
+                    <span>+</span>
+                    <span>New Task</span>
+                  </button>
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                    <tr>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10"></th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Task Name ↑</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Owner (Backup ALJ) ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Due Date ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Related Draft Version ↕</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {proofingTasks.map(task => (
+                      <tr key={task.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3"><input type="checkbox" className="h-4 w-4" /></td>
+                        <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">{task.name}</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">{task.owner}</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">{task.dueDate}</td>
+                        <td className="py-2 px-3">
+                          <Badge variant="outline" className={
+                            task.status === "In Progress" ? "bg-blue-100 text-blue-700 border-blue-200" :
+                            task.status === "Completed" ? "bg-green-100 text-green-700 border-green-200" :
+                            task.status === "Overdue" ? "bg-red-100 text-red-700 border-red-200" :
+                            "bg-gray-100 text-gray-700 border-gray-200"
+                          }>
+                            {task.status}
+                          </Badge>
+                        </td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">{task.draftVersion}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-4 py-2 border-t border-[#edebe9] text-xs text-[#605e5c]">
+                Rows: {proofingTasks.length}
+              </div>
+            </div>
+
+            {/* Subgrid C: Alerts & Notifications */}
+            <div className="bg-white border border-[#edebe9] rounded">
+              <div className="px-4 py-3 border-b border-[#edebe9]">
+                <h3 className="text-sm font-semibold text-[#323130]">ALERTS & NOTIFICATIONS</h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                    <tr>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c] w-10"></th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Alert Type ↑</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Recipient Role ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Trigger Date ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Sent Date ↕</th>
+                      <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status ↕</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rulingAlerts.map(alert => (
+                      <tr key={alert.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        <td className="py-2 px-3"><input type="checkbox" className="h-4 w-4" /></td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">{alert.alertType}</td>
+                        <td className="py-2 px-3 text-sm text-[#323130]">{alert.recipient}</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">{alert.triggerDate}</td>
+                        <td className="py-2 px-3 text-sm text-[#605e5c]">{alert.sentDate || "—"}</td>
+                        <td className="py-2 px-3">
+                          <Badge variant="outline" className={
+                            alert.status === "Sent" ? "bg-green-100 text-green-700 border-green-200" :
+                            alert.status === "Scheduled" ? "bg-blue-100 text-blue-700 border-blue-200" :
+                            "bg-gray-100 text-gray-700 border-gray-200"
+                          }>
+                            {alert.status}
+                          </Badge>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-4 py-2 border-t border-[#edebe9] text-xs text-[#605e5c]">
+                Rows: {rulingAlerts.length}
+              </div>
+            </div>
+          </div>}
 
           {activeTab === "Post Hearing1" && <div className="max-w-7xl mx-auto space-y-6">
             {/* Row 1: Transcript Review + Events/Notices */}
