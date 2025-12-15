@@ -267,6 +267,18 @@ const TesScreen = () => {
                           <p className="text-sm text-gray-700 mb-4">
                             Approving will automatically generate a Final Ruling Report based on the ALJ's recommendation.
                           </p>
+                          
+                          <div className="mb-5">
+                            <p className="text-sm font-medium text-gray-700 mb-2">
+                              Upload Supporting Documents (Optional)
+                            </p>
+                            <div className="border-2 border-dashed border-green-300 rounded-lg p-6 text-center bg-white cursor-pointer hover:border-green-400 transition-colors">
+                              <div className="text-green-500 text-3xl mb-2">↑</div>
+                              <p className="text-gray-600 mb-1">Drag and drop files here, or click to browse</p>
+                              <p className="text-sm text-gray-400">PDF, DOC, DOCX - max 10 MB</p>
+                            </div>
+                          </div>
+
                           <p className="text-sm font-medium text-gray-700 mb-2">
                             Optional comments to accompany your approval
                           </p>
