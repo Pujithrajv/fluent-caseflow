@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload, Calendar, FileText, ClipboardList, Filter, FileCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload, Calendar, FileText, ClipboardList, Filter, FileCheck, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -303,7 +303,46 @@ const CrmScreen = () => {
     if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
     return "";
   };
-  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Ruling", "Requests", "Timeline / Docket", "Case Type", "Related"];
+  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Ruling", "Test Decision", "Requests", "Timeline / Docket", "Case Type", "Related"];
+  
+  // Test Decision sub-tab state
+  const [testDecisionSubTab, setTestDecisionSubTab] = useState("writing");
+  
+  // Test Decision state (replicated from RulingScreen)
+  const [testDecisionNeedsExtension, setTestDecisionNeedsExtension] = useState(false);
+  const [testDecisionMeetsStatutory, setTestDecisionMeetsStatutory] = useState(true);
+  const [testDecisionReadyForIssuance, setTestDecisionReadyForIssuance] = useState(false);
+  const [testDecisionRecommendedVsFinal, setTestDecisionRecommendedVsFinal] = useState("");
+  
+  // Mock data for Test Decision (same as RulingScreen)
+  const testDecisionCaseData = {
+    caseNumber: "CMS-BEP-SCD--25-00001",
+    caseName: "Sub-Contract Dispute",
+    assignedALJ: "Pujith Raj",
+    backupALJ: "Sarah Mitchell",
+    deputyDirector: "Patricia Williams",
+    decisionDueDate: "2025-01-15",
+    daysRemaining: 12,
+    rulingStage: "Writing",
+    statusReason: "In Progress"
+  };
+  
+  const testDecisionDocuments = [
+    { id: 1, name: "Ruling_Draft_v1.docx", type: "Word Document", version: "1.0", uploadedBy: "Pujith Raj", uploadedOn: "2024-12-10" }
+  ];
+  
+  const testDecisionProofingTasks = [
+    { id: 1, name: "Ruling report by ALJ", owner: "Sarah Mitchell", dueDate: "2024-12-18", status: "In Progress" },
+    { id: 2, name: "Ruling report changes by backup ALJ", owner: "Sarah Mitchell", dueDate: "2024-12-19", status: "Pending" }
+  ];
+  
+  const testDecisionExtensionRequests = [
+    { id: 1, requestedBy: "Pujith Raj", requestedOn: "2024-12-05", reason: "Additional evidence review required", meetsStatutory: "Yes", decision: "Approved", decisionBy: "Patricia Williams", decisionDate: "2024-12-06" }
+  ];
+  
+  const testDecisionIssuedDocuments = [
+    { id: 1, name: "Decision_Report.docx", type: "System Generated", generatedOn: "2024-12-14", status: "Ready" }
+  ];
   return <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
       <div className="w-48 bg-[#f3f2f1] border-r border-[#edebe9] flex flex-col">
@@ -1996,6 +2035,453 @@ const CrmScreen = () => {
                 </div>
               </div>
             </div>
+          </div>}
+
+          {/* Test Decision Tab */}
+          {activeTab === "Test Decision" && <div className="max-w-7xl mx-auto">
+            {/* Sub-Tabs for Test Decision */}
+            <div className="bg-white border border-[#edebe9] rounded mb-4">
+              <div className="flex items-center space-x-4 px-4 border-b border-[#edebe9]">
+                {[
+                  { id: "writing", label: "Writing" },
+                  { id: "proofing", label: "Proofing" },
+                  { id: "extensions", label: "Extensions & Compliance" },
+                  { id: "issuance", label: "Issuance / Recommendation" }
+                ].map(subTab => (
+                  <button
+                    key={subTab.id}
+                    onClick={() => setTestDecisionSubTab(subTab.id)}
+                    className={`py-3 text-sm font-medium border-b-2 ${
+                      testDecisionSubTab === subTab.id
+                        ? 'border-[#0078d4] text-[#0078d4]'
+                        : 'border-transparent text-[#605e5c] hover:text-[#323130]'
+                    }`}
+                  >
+                    {subTab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Writing Sub-Tab */}
+            {testDecisionSubTab === "writing" && (
+              <div className="space-y-6">
+                {/* Assignments Section */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">ASSIGNMENTS</h3>
+                  </div>
+                  <div className="p-4">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Assigned ALJ</Label>
+                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Avatar className="h-5 w-5 mr-2">
+                            <AvatarFallback className="bg-[#d13438] text-white text-xs">PR</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm">{testDecisionCaseData.assignedALJ}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Backup ALJ</Label>
+                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Avatar className="h-5 w-5 mr-2">
+                            <AvatarFallback className="bg-[#107c10] text-white text-xs">SM</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm">{testDecisionCaseData.backupALJ}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Deputy Director / Bureau Chief</Label>
+                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Avatar className="h-5 w-5 mr-2">
+                            <AvatarFallback className="bg-[#8764b8] text-white text-xs">PW</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm">{testDecisionCaseData.deputyDirector}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Deadlines Section */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">DEADLINES</h3>
+                  </div>
+                  <div className="p-4">
+                    <div className="grid grid-cols-4 gap-4">
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Decision Due Date</Label>
+                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                          <Calendar className="w-4 h-4 text-[#605e5c] mr-2" />
+                          <span className="text-sm">{testDecisionCaseData.decisionDueDate}</span>
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Days Remaining</Label>
+                        <div className={`flex items-center mt-1 p-2 rounded border ${testDecisionCaseData.daysRemaining <= 5 ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
+                          <Clock className={`w-4 h-4 mr-2 ${testDecisionCaseData.daysRemaining <= 5 ? 'text-red-500' : 'text-green-500'}`} />
+                          <span className={`text-sm font-medium ${testDecisionCaseData.daysRemaining <= 5 ? 'text-red-700' : 'text-green-700'}`}>{testDecisionCaseData.daysRemaining} days</span>
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Ruling Stage</Label>
+                        <Select defaultValue={testDecisionCaseData.rulingStage}>
+                          <SelectTrigger className="mt-1 bg-[#f3f2f1] border-[#8a8886]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Writing">Writing</SelectItem>
+                            <SelectItem value="Proofing">Proofing</SelectItem>
+                            <SelectItem value="ALJ Review">ALJ Review</SelectItem>
+                            <SelectItem value="Issuance">Issuance</SelectItem>
+                            <SelectItem value="Completed">Completed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Status Reason</Label>
+                        <Select defaultValue={testDecisionCaseData.statusReason}>
+                          <SelectTrigger className="mt-1 bg-[#f3f2f1] border-[#8a8886]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="In Progress">In Progress</SelectItem>
+                            <SelectItem value="On Hold">On Hold</SelectItem>
+                            <SelectItem value="Pending Review">Pending Review</SelectItem>
+                            <SelectItem value="Completed">Completed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Issued Documents Subgrid */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">ISSUED DOCUMENTS</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                        <tr>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Document Name</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Type</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Generated On</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {testDecisionIssuedDocuments.map(doc => (
+                          <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            <td className="py-2 px-3 text-sm font-medium text-[#0078d4]">{doc.name}</td>
+                            <td className="py-2 px-3 text-sm text-[#323130]">{doc.type}</td>
+                            <td className="py-2 px-3 text-sm text-[#605e5c]">{doc.generatedOn}</td>
+                            <td className="py-2 px-3">
+                              <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">{doc.status}</Badge>
+                            </td>
+                            <td className="py-2 px-3">
+                              <span className="cursor-pointer text-[#0078d4]">⬇️</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Proofing Sub-Tab */}
+            {testDecisionSubTab === "proofing" && (
+              <div className="space-y-6">
+                {/* Proofing Status Section */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">PROOFING STATUS</h3>
+                  </div>
+                  <div className="p-4">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Proofing Due Date</Label>
+                        <Input value="Dec 18, 2024" readOnly className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Proofing Status</Label>
+                        <Select defaultValue="in-progress">
+                          <SelectTrigger className="mt-1 bg-[#f3f2f1] border-[#8a8886]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="draft">Draft</SelectItem>
+                            <SelectItem value="in-progress">In Progress</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="overdue">Overdue</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-end">
+                        <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                          <FileCheck className="w-4 h-4 mr-2" />
+                          Submit Proofing Completed
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Proofing Tasks Subgrid */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">PROOFING TASKS</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                        <tr>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Task Name</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Owner (Backup ALJ)</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Due Date</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {testDecisionProofingTasks.map(task => (
+                          <tr key={task.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            <td className="py-2 px-3 text-sm font-medium text-[#0078d4]">{task.name}</td>
+                            <td className="py-2 px-3 text-sm text-[#323130]">{task.owner}</td>
+                            <td className="py-2 px-3 text-sm text-[#605e5c]">{task.dueDate}</td>
+                            <td className="py-2 px-3">
+                              <Badge variant="outline" className={
+                                task.status === "In Progress" ? "bg-blue-100 text-blue-700 border-blue-200" :
+                                task.status === "Completed" ? "bg-green-100 text-green-700 border-green-200" :
+                                "bg-gray-100 text-gray-700 border-gray-200"
+                              }>
+                                {task.status}
+                              </Badge>
+                            </td>
+                            <td className="py-2 px-3">
+                              <span className="cursor-pointer text-[#0078d4]">✏️</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Extensions & Compliance Sub-Tab */}
+            {testDecisionSubTab === "extensions" && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-6">
+                  {/* Extension Request Details */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">EXTENSION REQUEST DETAILS</h3>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm text-[#323130]">Needs Extension?</Label>
+                        <Switch checked={testDecisionNeedsExtension} onCheckedChange={setTestDecisionNeedsExtension} className="data-[state=checked]:bg-[#0078d4]" />
+                      </div>
+                      {testDecisionNeedsExtension && (
+                        <div>
+                          <Label className="text-xs text-[#605e5c]">Extension Justification</Label>
+                          <textarea className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" placeholder="Provide justification for extension request..." />
+                        </div>
+                      )}
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">New Ruling Due Date</Label>
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Statutory Compliance */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">STATUTORY COMPLIANCE</h3>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm text-[#323130]">Meets Statutory Requirements?</Label>
+                        <Switch checked={testDecisionMeetsStatutory} onCheckedChange={setTestDecisionMeetsStatutory} className="data-[state=checked]:bg-[#0078d4]" />
+                      </div>
+                      {!testDecisionMeetsStatutory && (
+                        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                          <div className="flex items-center text-yellow-700">
+                            <span className="text-sm font-medium">⚠️ Escalation Required</span>
+                          </div>
+                          <p className="text-xs text-yellow-600 mt-1">This case requires Deputy Director override for deadline modification.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Extension Requests History Subgrid */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">EXTENSION REQUESTS HISTORY</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                        <tr>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Requested By</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Requested On</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Reason</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Meets Statutory</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Decision</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Decision By</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Decision Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {testDecisionExtensionRequests.map(req => (
+                          <tr key={req.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            <td className="py-2 px-3 text-sm text-[#323130]">{req.requestedBy}</td>
+                            <td className="py-2 px-3 text-sm text-[#605e5c]">{req.requestedOn}</td>
+                            <td className="py-2 px-3 text-sm text-[#323130]">{req.reason}</td>
+                            <td className="py-2 px-3 text-sm text-[#323130]">{req.meetsStatutory}</td>
+                            <td className="py-2 px-3">
+                              <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">{req.decision}</Badge>
+                            </td>
+                            <td className="py-2 px-3 text-sm text-[#323130]">{req.decisionBy}</td>
+                            <td className="py-2 px-3 text-sm text-[#605e5c]">{req.decisionDate}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Director Override */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">DIRECTOR OVERRIDE</h3>
+                  </div>
+                  <div className="p-4">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Modify Ruling Deadline</Label>
+                        <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Reason</Label>
+                        <Select>
+                          <SelectTrigger className="mt-1 bg-[#f3f2f1] border-[#8a8886]">
+                            <SelectValue placeholder="Select reason..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="complexity">Case Complexity</SelectItem>
+                            <SelectItem value="evidence">Additional Evidence Required</SelectItem>
+                            <SelectItem value="parties">Party Request</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Additional Notes</Label>
+                        <Input className="mt-1 bg-[#f3f2f1] border-[#8a8886]" placeholder="Optional notes..." />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <Button className="bg-[#8764b8] hover:bg-[#6b4fa0] text-white">
+                        Apply Override
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Issuance / Recommendation Sub-Tab */}
+            {testDecisionSubTab === "issuance" && (
+              <div className="space-y-6">
+                {/* Issuance Settings */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">ISSUANCE SETTINGS</h3>
+                  </div>
+                  <div className="p-4">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="flex items-center justify-between p-3 border border-[#8a8886] rounded bg-[#f3f2f1]">
+                        <Label className="text-sm text-[#323130]">Ready for Issuance</Label>
+                        <Switch checked={testDecisionReadyForIssuance} onCheckedChange={setTestDecisionReadyForIssuance} className="data-[state=checked]:bg-[#0078d4]" />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-[#605e5c]">Recommended vs Final</Label>
+                        <Select value={testDecisionRecommendedVsFinal} onValueChange={setTestDecisionRecommendedVsFinal}>
+                          <SelectTrigger className="mt-1 bg-[#f3f2f1] border-[#8a8886]">
+                            <SelectValue placeholder="Select type..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="recommended">Recommended Decision</SelectItem>
+                            <SelectItem value="final">Final Ruling</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-end space-x-2">
+                        {testDecisionRecommendedVsFinal === "recommended" && (
+                          <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                            <FileText className="w-4 h-4 mr-2" />
+                            Generate Recommended Docs
+                          </Button>
+                        )}
+                        {testDecisionRecommendedVsFinal === "final" && (
+                          <Button className="bg-[#107c10] hover:bg-[#0e6b0e] text-white">
+                            <FileText className="w-4 h-4 mr-2" />
+                            Generate Final Ruling
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Issued Documents Subgrid */}
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">ISSUED DOCUMENTS</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
+                        <tr>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Document Name</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Type</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Generated On</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status</th>
+                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {testDecisionIssuedDocuments.map(doc => (
+                          <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                            <td className="py-2 px-3 text-sm font-medium text-[#0078d4]">{doc.name}</td>
+                            <td className="py-2 px-3 text-sm text-[#323130]">{doc.type}</td>
+                            <td className="py-2 px-3 text-sm text-[#605e5c]">{doc.generatedOn}</td>
+                            <td className="py-2 px-3">
+                              <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">{doc.status}</Badge>
+                            </td>
+                            <td className="py-2 px-3">
+                              <span className="cursor-pointer text-[#0078d4]">⬇️</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>}
 
           {activeTab === "Requests" && <div className="max-w-7xl mx-auto">
