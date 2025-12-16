@@ -368,7 +368,7 @@ const CrmScreen = () => {
   }];
   const testDecisionProofingTasks = [{
     id: 1,
-    name: "Ruling report by ALJ",
+    name: "Decision_Report.docx",
     owner: "Sarah Mitchell",
     dueDate: "2024-12-18",
     status: "In Progress"
