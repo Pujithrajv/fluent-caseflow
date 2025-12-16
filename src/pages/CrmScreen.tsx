@@ -79,22 +79,55 @@ const CrmScreen = () => {
   });
 
   // Ruling documents
-  const [rulingDocuments] = useState([
-    { id: 1, name: "Ruling_Draft_v1.docx", type: "Word Draft", version: "1.0", uploadedBy: "Hon. Sarah Mitchell", uploadDate: "12/08/2024" },
-    { id: 2, name: "Proofed_Draft_v2.docx", type: "Word Draft", version: "2.0", uploadedBy: "Hon. James Rivera", uploadDate: "12/10/2024" }
-  ]);
+  const [rulingDocuments] = useState([{
+    id: 1,
+    name: "Ruling_Draft_v1.docx",
+    type: "Word Draft",
+    version: "1.0",
+    uploadedBy: "Hon. Sarah Mitchell",
+    uploadDate: "12/08/2024"
+  }, {
+    id: 2,
+    name: "Proofed_Draft_v2.docx",
+    type: "Word Draft",
+    version: "2.0",
+    uploadedBy: "Hon. James Rivera",
+    uploadDate: "12/10/2024"
+  }]);
 
   // Proofing tasks
-  const [proofingTasks] = useState([
-    { id: 1, name: "Initial Proofreading", owner: "Hon. James Rivera", dueDate: "12/12/2024", status: "In Progress", draftVersion: "v2.0" },
-    { id: 2, name: "Citation Verification", owner: "Hon. James Rivera", dueDate: "12/13/2024", status: "Pending", draftVersion: "v2.0" }
-  ]);
+  const [proofingTasks] = useState([{
+    id: 1,
+    name: "Initial Proofreading",
+    owner: "Hon. James Rivera",
+    dueDate: "12/12/2024",
+    status: "In Progress",
+    draftVersion: "v2.0"
+  }, {
+    id: 2,
+    name: "Citation Verification",
+    owner: "Hon. James Rivera",
+    dueDate: "12/13/2024",
+    status: "Pending",
+    draftVersion: "v2.0"
+  }]);
 
   // Alerts & notifications
-  const [rulingAlerts] = useState([
-    { id: 1, alertType: "5-day warning", recipient: "ALJ", triggerDate: "12/10/2024", sentDate: "12/10/2024", status: "Sent" },
-    { id: 2, alertType: "2-day warning", recipient: "Backup ALJ", triggerDate: "12/13/2024", sentDate: "", status: "Scheduled" }
-  ]);
+  const [rulingAlerts] = useState([{
+    id: 1,
+    alertType: "5-day warning",
+    recipient: "ALJ",
+    triggerDate: "12/10/2024",
+    sentDate: "12/10/2024",
+    status: "Sent"
+  }, {
+    id: 2,
+    alertType: "2-day warning",
+    recipient: "Backup ALJ",
+    triggerDate: "12/13/2024",
+    sentDate: "",
+    status: "Scheduled"
+  }]);
 
   // Calculate ruling days remaining
   const calculateRulingDaysRemaining = () => {
@@ -106,7 +139,6 @@ const CrmScreen = () => {
     if (diffDays < 0) return `Overdue by ${Math.abs(diffDays)} days`;
     return `Due in ${diffDays} days`;
   };
-
 
   // Mock data for Card D tabs
   const [conferences] = useState([{
@@ -304,16 +336,16 @@ const CrmScreen = () => {
     return "";
   };
   const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "Ruling", "Test Decision", "Requests", "Timeline / Docket", "Case Type", "Related"];
-  
+
   // Test Decision sub-tab state
   const [testDecisionSubTab, setTestDecisionSubTab] = useState("writing");
-  
+
   // Test Decision state (replicated from RulingScreen)
   const [testDecisionNeedsExtension, setTestDecisionNeedsExtension] = useState(false);
   const [testDecisionMeetsStatutory, setTestDecisionMeetsStatutory] = useState(true);
   const [testDecisionReadyForIssuance, setTestDecisionReadyForIssuance] = useState(false);
   const [testDecisionRecommendedVsFinal, setTestDecisionRecommendedVsFinal] = useState("");
-  
+
   // Mock data for Test Decision (same as RulingScreen)
   const testDecisionCaseData = {
     caseNumber: "CMS-BEP-SCD--25-00001",
@@ -326,23 +358,44 @@ const CrmScreen = () => {
     rulingStage: "Writing",
     statusReason: "In Progress"
   };
-  
-  const testDecisionDocuments = [
-    { id: 1, name: "Ruling_Draft_v1.docx", type: "Word Document", version: "1.0", uploadedBy: "Pujith Raj", uploadedOn: "2024-12-10" }
-  ];
-  
-  const testDecisionProofingTasks = [
-    { id: 1, name: "Ruling report by ALJ", owner: "Sarah Mitchell", dueDate: "2024-12-18", status: "In Progress" },
-    { id: 2, name: "Ruling report changes by backup ALJ", owner: "Sarah Mitchell", dueDate: "2024-12-19", status: "Pending" }
-  ];
-  
-  const testDecisionExtensionRequests = [
-    { id: 1, requestedBy: "Pujith Raj", requestedOn: "2024-12-05", reason: "Additional evidence review required", meetsStatutory: "Yes", decision: "Approved", decisionBy: "Patricia Williams", decisionDate: "2024-12-06" }
-  ];
-  
-  const testDecisionIssuedDocuments = [
-    { id: 1, name: "Decision_Report.docx", type: "ALJ Report", generatedOn: "2024-12-14", status: "Ready" }
-  ];
+  const testDecisionDocuments = [{
+    id: 1,
+    name: "Ruling_Draft_v1.docx",
+    type: "Word Document",
+    version: "1.0",
+    uploadedBy: "Pujith Raj",
+    uploadedOn: "2024-12-10"
+  }];
+  const testDecisionProofingTasks = [{
+    id: 1,
+    name: "Ruling report by ALJ",
+    owner: "Sarah Mitchell",
+    dueDate: "2024-12-18",
+    status: "In Progress"
+  }, {
+    id: 2,
+    name: "Ruling report changes by backup ALJ",
+    owner: "Sarah Mitchell",
+    dueDate: "2024-12-19",
+    status: "Pending"
+  }];
+  const testDecisionExtensionRequests = [{
+    id: 1,
+    requestedBy: "Pujith Raj",
+    requestedOn: "2024-12-05",
+    reason: "Additional evidence review required",
+    meetsStatutory: "Yes",
+    decision: "Approved",
+    decisionBy: "Patricia Williams",
+    decisionDate: "2024-12-06"
+  }];
+  const testDecisionIssuedDocuments = [{
+    id: 1,
+    name: "Decision_Report.docx",
+    type: "ALJ Report",
+    generatedOn: "2024-12-14",
+    status: "Ready"
+  }];
   return <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
       <div className="w-48 bg-[#f3f2f1] border-r border-[#edebe9] flex flex-col">
@@ -1550,7 +1603,10 @@ const CrmScreen = () => {
                   <div className="space-y-4">
                     <div>
                       <Label className="text-xs text-[#323130]">Ruling Status <span className="text-red-600">*</span></Label>
-                      <Select value={rulingData.status} onValueChange={value => setRulingData({...rulingData, status: value})}>
+                      <Select value={rulingData.status} onValueChange={value => setRulingData({
+                      ...rulingData,
+                      status: value
+                    })}>
                         <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
                           <SelectValue />
                         </SelectTrigger>
@@ -1570,7 +1626,10 @@ const CrmScreen = () => {
 
                     <div>
                       <Label className="text-xs text-[#323130]">Ruling Type</Label>
-                      <Select value={rulingData.rulingType} onValueChange={value => setRulingData({...rulingData, rulingType: value})}>
+                      <Select value={rulingData.rulingType} onValueChange={value => setRulingData({
+                      ...rulingData,
+                      rulingType: value
+                    })}>
                         <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
                           <SelectValue />
                         </SelectTrigger>
@@ -1584,34 +1643,28 @@ const CrmScreen = () => {
 
                     <div>
                       <Label className="text-xs text-[#323130]">Decision Due Date <span className="text-red-600">*</span></Label>
-                      <Input 
-                        type="date" 
-                        value={rulingData.decisionDueDate} 
-                        onChange={e => setRulingData({...rulingData, decisionDueDate: e.target.value})}
-                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                      />
+                      <Input type="date" value={rulingData.decisionDueDate} onChange={e => setRulingData({
+                      ...rulingData,
+                      decisionDueDate: e.target.value
+                    })} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       <p className="text-xs text-[#605e5c] mt-1">Used for statutory compliance tracking and alerts.</p>
                     </div>
 
                     <div>
                       <Label className="text-xs text-[#323130]">Warning / Monitor Date</Label>
-                      <Input 
-                        type="date" 
-                        value={rulingData.warningDate} 
-                        onChange={e => setRulingData({...rulingData, warningDate: e.target.value})}
-                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                      />
+                      <Input type="date" value={rulingData.warningDate} onChange={e => setRulingData({
+                      ...rulingData,
+                      warningDate: e.target.value
+                    })} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       <p className="text-xs text-[#605e5c] mt-1">Optional checkpoint (e.g., 5-day warning trigger).</p>
                     </div>
 
                     <div>
                       <Label className="text-xs text-[#323130]">Proofing Due Date</Label>
-                      <Input 
-                        type="date" 
-                        value={rulingData.proofingDueDate} 
-                        onChange={e => setRulingData({...rulingData, proofingDueDate: e.target.value})}
-                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                      />
+                      <Input type="date" value={rulingData.proofingDueDate} onChange={e => setRulingData({
+                      ...rulingData,
+                      proofingDueDate: e.target.value
+                    })} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
                       <p className="text-xs text-[#605e5c] mt-1">Used when assigned to Backup ALJ for proofing.</p>
                     </div>
                   </div>
@@ -1621,55 +1674,46 @@ const CrmScreen = () => {
                     <div>
                       <Label className="text-xs text-[#323130]">Needs Extension?</Label>
                       <div className="flex items-center mt-2 space-x-2">
-                        <Switch 
-                          checked={rulingData.needsExtension} 
-                          onCheckedChange={checked => setRulingData({...rulingData, needsExtension: checked})}
-                          className="data-[state=checked]:bg-[#0078d4]" 
-                        />
+                        <Switch checked={rulingData.needsExtension} onCheckedChange={checked => setRulingData({
+                        ...rulingData,
+                        needsExtension: checked
+                      })} className="data-[state=checked]:bg-[#0078d4]" />
                         <span className="text-sm text-[#323130]">{rulingData.needsExtension ? "Yes" : "No"}</span>
                       </div>
                     </div>
 
-                    {rulingData.needsExtension && (
-                      <>
+                    {rulingData.needsExtension && <>
                         <div>
                           <Label className="text-xs text-[#323130]">Meets Statutory Requirements for Extension?</Label>
                           <div className="flex items-center mt-2 space-x-2">
-                            <Switch 
-                              checked={rulingData.meetsStatutory} 
-                              onCheckedChange={checked => setRulingData({...rulingData, meetsStatutory: checked})}
-                              className="data-[state=checked]:bg-[#0078d4]" 
-                            />
+                            <Switch checked={rulingData.meetsStatutory} onCheckedChange={checked => setRulingData({
+                          ...rulingData,
+                          meetsStatutory: checked
+                        })} className="data-[state=checked]:bg-[#0078d4]" />
                             <span className="text-sm text-[#323130]">{rulingData.meetsStatutory ? "Yes" : "No"}</span>
                           </div>
                         </div>
 
                         <div>
                           <Label className="text-xs text-[#323130]">Extension Justification <span className="text-red-600">*</span></Label>
-                          <textarea 
-                            value={rulingData.extensionJustification}
-                            onChange={e => setRulingData({...rulingData, extensionJustification: e.target.value})}
-                            className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none"
-                            placeholder="Provide justification for extension..."
-                          />
+                          <textarea value={rulingData.extensionJustification} onChange={e => setRulingData({
+                        ...rulingData,
+                        extensionJustification: e.target.value
+                      })} className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" placeholder="Provide justification for extension..." />
                         </div>
 
-                        {!rulingData.meetsStatutory && (
-                          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                        {!rulingData.meetsStatutory && <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
                             <p className="text-xs text-yellow-800 font-medium">⚠️ Escalation Required</p>
                             <p className="text-xs text-yellow-700 mt-1">Does not meet statutory requirements. Deputy Director must approve extension.</p>
-                          </div>
-                        )}
-                      </>
-                    )}
+                          </div>}
+                      </>}
 
                     <div>
                       <Label className="text-xs text-[#323130]">Recommended vs Final (Decision Output)</Label>
-                      <Select 
-                        value={rulingData.recommendedVsFinal} 
-                        onValueChange={value => setRulingData({...rulingData, recommendedVsFinal: value})}
-                        disabled={rulingData.status !== "Ready for Issuance" && !rulingData.status.startsWith("Issued")}
-                      >
+                      <Select value={rulingData.recommendedVsFinal} onValueChange={value => setRulingData({
+                      ...rulingData,
+                      recommendedVsFinal: value
+                    })} disabled={rulingData.status !== "Ready for Issuance" && !rulingData.status.startsWith("Issued")}>
                         <SelectTrigger className="w-full bg-[#f3f2f1] border-[#8a8886] mt-1">
                           <SelectValue />
                         </SelectTrigger>
@@ -1683,13 +1727,10 @@ const CrmScreen = () => {
 
                     <div>
                       <Label className="text-xs text-[#323130]">Ruling Completed On</Label>
-                      <Input 
-                        type="date" 
-                        value={rulingData.rulingCompletedOn} 
-                        onChange={e => setRulingData({...rulingData, rulingCompletedOn: e.target.value})}
-                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]"
-                        disabled={rulingData.status.startsWith("Issued")}
-                      />
+                      <Input type="date" value={rulingData.rulingCompletedOn} onChange={e => setRulingData({
+                      ...rulingData,
+                      rulingCompletedOn: e.target.value
+                    })} className="mt-1 bg-[#f3f2f1] border-[#8a8886]" disabled={rulingData.status.startsWith("Issued")} />
                       <p className="text-xs text-[#605e5c] mt-1">Read-only once set</p>
                     </div>
                   </div>
@@ -1745,7 +1786,7 @@ const CrmScreen = () => {
                         <li>• Status: <strong className="text-[#323130]">{rulingData.status}</strong></li>
                         <li>• Due Date: <strong className="text-[#323130]">{rulingData.decisionDueDate || "Not set"}</strong></li>
                         <li>• Needs Extension: <strong className="text-[#323130]">{rulingData.needsExtension ? "Yes" : "No"}</strong></li>
-                        <li>• Statutory Compliance: <strong className="text-[#323130]">{rulingData.needsExtension ? (rulingData.meetsStatutory ? "Meets" : "Does Not Meet") : "N/A"}</strong></li>
+                        <li>• Statutory Compliance: <strong className="text-[#323130]">{rulingData.needsExtension ? rulingData.meetsStatutory ? "Meets" : "Does Not Meet" : "N/A"}</strong></li>
                         <li>• Assigned To: <strong className="text-[#323130]">{rulingData.alj.split(" (")[0]}</strong></li>
                         <li>• Proofing Owner: <strong className="text-[#323130]">{rulingData.backupAlj.split(" (")[0]}</strong></li>
                       </ul>
@@ -1780,8 +1821,7 @@ const CrmScreen = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {rulingDocuments.map(doc => (
-                      <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                    {rulingDocuments.map(doc => <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                         <td className="py-2 px-3"><input type="checkbox" className="h-4 w-4" /></td>
                         <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">{doc.name}</td>
                         <td className="py-2 px-3 text-sm text-[#323130]">{doc.type}</td>
@@ -1789,8 +1829,7 @@ const CrmScreen = () => {
                         <td className="py-2 px-3 text-sm text-[#323130]">{doc.uploadedBy}</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]">{doc.uploadDate}</td>
                         <td className="py-2 px-3"><span className="cursor-pointer text-[#0078d4]">⬇️</span></td>
-                      </tr>
-                    ))}
+                      </tr>)}
                   </tbody>
                 </table>
               </div>
@@ -1823,25 +1862,18 @@ const CrmScreen = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {proofingTasks.map(task => (
-                      <tr key={task.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                    {proofingTasks.map(task => <tr key={task.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                         <td className="py-2 px-3"><input type="checkbox" className="h-4 w-4" /></td>
                         <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">{task.name}</td>
                         <td className="py-2 px-3 text-sm text-[#323130]">{task.owner}</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]">{task.dueDate}</td>
                         <td className="py-2 px-3">
-                          <Badge variant="outline" className={
-                            task.status === "In Progress" ? "bg-blue-100 text-blue-700 border-blue-200" :
-                            task.status === "Completed" ? "bg-green-100 text-green-700 border-green-200" :
-                            task.status === "Overdue" ? "bg-red-100 text-red-700 border-red-200" :
-                            "bg-gray-100 text-gray-700 border-gray-200"
-                          }>
+                          <Badge variant="outline" className={task.status === "In Progress" ? "bg-blue-100 text-blue-700 border-blue-200" : task.status === "Completed" ? "bg-green-100 text-green-700 border-green-200" : task.status === "Overdue" ? "bg-red-100 text-red-700 border-red-200" : "bg-gray-100 text-gray-700 border-gray-200"}>
                             {task.status}
                           </Badge>
                         </td>
                         <td className="py-2 px-3 text-sm text-[#323130]">{task.draftVersion}</td>
-                      </tr>
-                    ))}
+                      </tr>)}
                   </tbody>
                 </table>
               </div>
@@ -1868,24 +1900,18 @@ const CrmScreen = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {rulingAlerts.map(alert => (
-                      <tr key={alert.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                    {rulingAlerts.map(alert => <tr key={alert.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                         <td className="py-2 px-3"><input type="checkbox" className="h-4 w-4" /></td>
                         <td className="py-2 px-3 text-sm text-[#323130]">{alert.alertType}</td>
                         <td className="py-2 px-3 text-sm text-[#323130]">{alert.recipient}</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]">{alert.triggerDate}</td>
                         <td className="py-2 px-3 text-sm text-[#605e5c]">{alert.sentDate || "—"}</td>
                         <td className="py-2 px-3">
-                          <Badge variant="outline" className={
-                            alert.status === "Sent" ? "bg-green-100 text-green-700 border-green-200" :
-                            alert.status === "Scheduled" ? "bg-blue-100 text-blue-700 border-blue-200" :
-                            "bg-gray-100 text-gray-700 border-gray-200"
-                          }>
+                          <Badge variant="outline" className={alert.status === "Sent" ? "bg-green-100 text-green-700 border-green-200" : alert.status === "Scheduled" ? "bg-blue-100 text-blue-700 border-blue-200" : "bg-gray-100 text-gray-700 border-gray-200"}>
                             {alert.status}
                           </Badge>
                         </td>
-                      </tr>
-                    ))}
+                      </tr>)}
                   </tbody>
                 </table>
               </div>
@@ -2042,30 +2068,26 @@ const CrmScreen = () => {
             {/* Sub-Tabs for Test Decision */}
             <div className="bg-white border border-[#edebe9] rounded mb-4">
               <div className="flex items-center space-x-4 px-4 border-b border-[#edebe9]">
-                {[
-                  { id: "writing", label: "Writing" },
-                  { id: "extensions", label: "Extensions & Compliance" },
-                  { id: "proofing", label: "Proofing" },
-                  { id: "issuance", label: "Issuance / Recommendation" }
-                ].map(subTab => (
-                  <button
-                    key={subTab.id}
-                    onClick={() => setTestDecisionSubTab(subTab.id)}
-                    className={`py-3 text-sm font-medium border-b-2 ${
-                      testDecisionSubTab === subTab.id
-                        ? 'border-[#0078d4] text-[#0078d4]'
-                        : 'border-transparent text-[#605e5c] hover:text-[#323130]'
-                    }`}
-                  >
+                {[{
+                id: "writing",
+                label: "Writing"
+              }, {
+                id: "extensions",
+                label: "Extensions & Compliance"
+              }, {
+                id: "proofing",
+                label: "Proofing"
+              }, {
+                id: "issuance",
+                label: "Issuance / Recommendation"
+              }].map(subTab => <button key={subTab.id} onClick={() => setTestDecisionSubTab(subTab.id)} className={`py-3 text-sm font-medium border-b-2 ${testDecisionSubTab === subTab.id ? 'border-[#0078d4] text-[#0078d4]' : 'border-transparent text-[#605e5c] hover:text-[#323130]'}`}>
                     {subTab.label}
-                  </button>
-                ))}
+                  </button>)}
               </div>
             </div>
 
             {/* Writing Sub-Tab */}
-            {testDecisionSubTab === "writing" && (
-              <div className="space-y-6">
+            {testDecisionSubTab === "writing" && <div className="space-y-6">
                 {/* Internal Staff & Deadlines Side by Side */}
                 <div className="grid grid-cols-2 gap-4">
                   {/* Internal Staff Section */}
@@ -2219,7 +2241,7 @@ const CrmScreen = () => {
                         <ChevronDown className="w-3 h-3 text-[#605e5c]" />
                       </div>
                       <div className="py-2 px-4 flex items-center gap-1 cursor-pointer hover:bg-[#f3f2f1]">
-                        <span className="text-sm text-[#323130]">Generated On</span>
+                        <span className="text-sm text-[#323130]">Uploaded On</span>
                         <ChevronDown className="w-3 h-3 text-[#605e5c]" />
                       </div>
                       <div className="py-2 px-4 flex items-center gap-1 cursor-pointer hover:bg-[#f3f2f1]">
@@ -2235,9 +2257,7 @@ const CrmScreen = () => {
 
                   {/* Table Body */}
                   <div className="min-h-[120px]">
-                    {testDecisionIssuedDocuments.length > 0 ? (
-                      testDecisionIssuedDocuments.map(doc => (
-                        <div key={doc.id} className="grid grid-cols-5 border-b border-[#edebe9] hover:bg-[#f3f2f1]">
+                    {testDecisionIssuedDocuments.length > 0 ? testDecisionIssuedDocuments.map(doc => <div key={doc.id} className="grid grid-cols-5 border-b border-[#edebe9] hover:bg-[#f3f2f1]">
                           <div className="py-2 px-4 text-sm text-[#0078d4] hover:underline cursor-pointer">{doc.name}</div>
                           <div className="py-2 px-4 text-sm text-[#323130]">{doc.type}</div>
                           <div className="py-2 px-4 text-sm text-[#605e5c]">{doc.generatedOn}</div>
@@ -2247,16 +2267,12 @@ const CrmScreen = () => {
                           <div className="py-2 px-4">
                             <span className="cursor-pointer text-[#0078d4]">⬇️</span>
                           </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="flex flex-col items-center justify-center py-8 text-[#605e5c]">
+                        </div>) : <div className="flex flex-col items-center justify-center py-8 text-[#605e5c]">
                         <div className="w-12 h-12 rounded-full bg-[#edebe9] flex items-center justify-center mb-3">
                           <Grid3X3 className="w-6 h-6 text-[#a19f9d]" />
                         </div>
                         <span className="text-sm">We didn't find anything to show here</span>
-                      </div>
-                    )}
+                      </div>}
                   </div>
 
                   {/* Footer Row Count */}
@@ -2267,12 +2283,10 @@ const CrmScreen = () => {
                     </Button>
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
 
             {/* Proofing Sub-Tab */}
-            {testDecisionSubTab === "proofing" && (
-              <div className="space-y-6">
+            {testDecisionSubTab === "proofing" && <div className="space-y-6">
                 {/* Proofing Status Section */}
                 <div className="bg-white border border-[#edebe9] rounded">
                   <div className="px-4 py-3 border-b border-[#edebe9]">
@@ -2325,35 +2339,27 @@ const CrmScreen = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {testDecisionProofingTasks.map(task => (
-                          <tr key={task.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        {testDecisionProofingTasks.map(task => <tr key={task.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                             <td className="py-2 px-3 text-sm font-medium text-[#0078d4]">{task.name}</td>
                             <td className="py-2 px-3 text-sm text-[#323130]">{task.owner}</td>
                             <td className="py-2 px-3 text-sm text-[#605e5c]">{task.dueDate}</td>
                             <td className="py-2 px-3">
-                              <Badge variant="outline" className={
-                                task.status === "In Progress" ? "bg-blue-100 text-blue-700 border-blue-200" :
-                                task.status === "Completed" ? "bg-green-100 text-green-700 border-green-200" :
-                                "bg-gray-100 text-gray-700 border-gray-200"
-                              }>
+                              <Badge variant="outline" className={task.status === "In Progress" ? "bg-blue-100 text-blue-700 border-blue-200" : task.status === "Completed" ? "bg-green-100 text-green-700 border-green-200" : "bg-gray-100 text-gray-700 border-gray-200"}>
                                 {task.status}
                               </Badge>
                             </td>
                             <td className="py-2 px-3">
                               <span className="cursor-pointer text-[#0078d4]">✏️</span>
                             </td>
-                          </tr>
-                        ))}
+                          </tr>)}
                       </tbody>
                     </table>
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
 
             {/* Extensions & Compliance Sub-Tab */}
-            {testDecisionSubTab === "extensions" && (
-              <div className="space-y-6">
+            {testDecisionSubTab === "extensions" && <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-6">
                   {/* Extension Request Details */}
                   <div className="bg-white border border-[#edebe9] rounded">
@@ -2365,12 +2371,10 @@ const CrmScreen = () => {
                         <Label className="text-sm text-[#323130]">Needs Extension?</Label>
                         <Switch checked={testDecisionNeedsExtension} onCheckedChange={setTestDecisionNeedsExtension} className="data-[state=checked]:bg-[#0078d4]" />
                       </div>
-                      {testDecisionNeedsExtension && (
-                        <div>
+                      {testDecisionNeedsExtension && <div>
                           <Label className="text-xs text-[#605e5c]">Extension Justification</Label>
                           <textarea className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" placeholder="Provide justification for extension request..." />
-                        </div>
-                      )}
+                        </div>}
                       <div>
                         <Label className="text-xs text-[#605e5c]">New Ruling Due Date</Label>
                         <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" />
@@ -2388,14 +2392,12 @@ const CrmScreen = () => {
                         <Label className="text-sm text-[#323130]">Meets Statutory Requirements?</Label>
                         <Switch checked={testDecisionMeetsStatutory} onCheckedChange={setTestDecisionMeetsStatutory} className="data-[state=checked]:bg-[#0078d4]" />
                       </div>
-                      {!testDecisionMeetsStatutory && (
-                        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                      {!testDecisionMeetsStatutory && <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
                           <div className="flex items-center text-yellow-700">
                             <span className="text-sm font-medium">⚠️ Escalation Required</span>
                           </div>
                           <p className="text-xs text-yellow-600 mt-1">This case requires Deputy Director override for deadline modification.</p>
-                        </div>
-                      )}
+                        </div>}
                     </div>
                   </div>
                 </div>
@@ -2419,8 +2421,7 @@ const CrmScreen = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {testDecisionExtensionRequests.map(req => (
-                          <tr key={req.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        {testDecisionExtensionRequests.map(req => <tr key={req.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                             <td className="py-2 px-3 text-sm text-[#323130]">{req.requestedBy}</td>
                             <td className="py-2 px-3 text-sm text-[#605e5c]">{req.requestedOn}</td>
                             <td className="py-2 px-3 text-sm text-[#323130]">{req.reason}</td>
@@ -2430,8 +2431,7 @@ const CrmScreen = () => {
                             </td>
                             <td className="py-2 px-3 text-sm text-[#323130]">{req.decisionBy}</td>
                             <td className="py-2 px-3 text-sm text-[#605e5c]">{req.decisionDate}</td>
-                          </tr>
-                        ))}
+                          </tr>)}
                       </tbody>
                     </table>
                   </div>
@@ -2474,12 +2474,10 @@ const CrmScreen = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
 
             {/* Issuance / Recommendation Sub-Tab */}
-            {testDecisionSubTab === "issuance" && (
-              <div className="space-y-6">
+            {testDecisionSubTab === "issuance" && <div className="space-y-6">
                 {/* Issuance Settings */}
                 <div className="bg-white border border-[#edebe9] rounded">
                   <div className="px-4 py-3 border-b border-[#edebe9]">
@@ -2504,18 +2502,14 @@ const CrmScreen = () => {
                         </Select>
                       </div>
                       <div className="flex items-end space-x-2">
-                        {testDecisionRecommendedVsFinal === "recommended" && (
-                          <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        {testDecisionRecommendedVsFinal === "recommended" && <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
                             <FileText className="w-4 h-4 mr-2" />
                             Generate Recommended Docs
-                          </Button>
-                        )}
-                        {testDecisionRecommendedVsFinal === "final" && (
-                          <Button className="bg-[#107c10] hover:bg-[#0e6b0e] text-white">
+                          </Button>}
+                        {testDecisionRecommendedVsFinal === "final" && <Button className="bg-[#107c10] hover:bg-[#0e6b0e] text-white">
                             <FileText className="w-4 h-4 mr-2" />
                             Generate Final Ruling
-                          </Button>
-                        )}
+                          </Button>}
                       </div>
                     </div>
                   </div>
@@ -2538,8 +2532,7 @@ const CrmScreen = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {testDecisionIssuedDocuments.map(doc => (
-                          <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                        {testDecisionIssuedDocuments.map(doc => <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                             <td className="py-2 px-3 text-sm font-medium text-[#0078d4]">{doc.name}</td>
                             <td className="py-2 px-3 text-sm text-[#323130]">{doc.type}</td>
                             <td className="py-2 px-3 text-sm text-[#605e5c]">{doc.generatedOn}</td>
@@ -2549,14 +2542,12 @@ const CrmScreen = () => {
                             <td className="py-2 px-3">
                               <span className="cursor-pointer text-[#0078d4]">⬇️</span>
                             </td>
-                          </tr>
-                        ))}
+                          </tr>)}
                       </tbody>
                     </table>
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
           </div>}
 
           {activeTab === "Requests" && <div className="max-w-7xl mx-auto">
