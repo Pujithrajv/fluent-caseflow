@@ -2044,8 +2044,8 @@ const CrmScreen = () => {
               <div className="flex items-center space-x-4 px-4 border-b border-[#edebe9]">
                 {[
                   { id: "writing", label: "Writing" },
-                  { id: "proofing", label: "Proofing" },
                   { id: "extensions", label: "Extensions & Compliance" },
+                  { id: "proofing", label: "Proofing" },
                   { id: "issuance", label: "Issuance / Recommendation" }
                 ].map(subTab => (
                   <button
