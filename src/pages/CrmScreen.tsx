@@ -341,7 +341,7 @@ const CrmScreen = () => {
   ];
   
   const testDecisionIssuedDocuments = [
-    { id: 1, name: "Decision_Report.docx", type: "System Generated", generatedOn: "2024-12-14", status: "Ready" }
+    { id: 1, name: "Decision_Report.docx", type: "ALJ Report", generatedOn: "2024-12-14", status: "Ready" }
   ];
   return <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
