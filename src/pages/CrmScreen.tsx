@@ -2312,12 +2312,6 @@ const CrmScreen = () => {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="flex items-end">
-                        <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
-                          <FileCheck className="w-4 h-4 mr-2" />
-                          Submit Proofing Completed
-                        </Button>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -2379,6 +2373,14 @@ const CrmScreen = () => {
                             <span className="cursor-pointer text-[#0078d4]">✏️</span>
                           </div>
                         </div>)}
+                  </div>
+                  
+                  {/* Submit Button */}
+                  <div className="flex justify-end px-4 py-3 border-t border-[#edebe9]">
+                    <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                      <FileCheck className="w-4 h-4 mr-2" />
+                      Submit Proofing Completed
+                    </Button>
                   </div>
                 </div>
               </div>}
