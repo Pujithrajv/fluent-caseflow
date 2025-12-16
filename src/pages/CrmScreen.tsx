@@ -2069,35 +2069,58 @@ const CrmScreen = () => {
                 {/* Assignments Section */}
                 <div className="bg-white border border-[#edebe9] rounded">
                   <div className="px-4 py-3 border-b border-[#edebe9]">
-                    <h3 className="text-sm font-semibold text-[#323130]">ASSIGNMENTS</h3>
+                    <h3 className="text-sm font-semibold text-[#323130]">INTERNAL STAFF</h3>
                   </div>
-                  <div className="p-4">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label className="text-xs text-[#605e5c]">Assigned ALJ</Label>
-                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
-                          <Avatar className="h-5 w-5 mr-2">
-                            <AvatarFallback className="bg-[#d13438] text-white text-xs">PR</AvatarFallback>
-                          </Avatar>
-                          <span className="text-sm">{testDecisionCaseData.assignedALJ}</span>
+                  <div className="p-4 space-y-4">
+                    {/* Clerk */}
+                    <div className="flex items-center">
+                      <div className="w-48 flex items-center">
+                        <span className="text-sm text-[#323130]">Clerk</span>
+                        <span className="text-[#a4262c] ml-1">*</span>
+                      </div>
+                      <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
+                        <Avatar className="h-6 w-6 mr-2">
+                          <AvatarFallback className="bg-[#8764b8] text-white text-xs font-semibold">PP</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm text-[#0078d4] hover:underline cursor-pointer"># Portals-ECMS Portal</span>
+                        <button className="ml-2 text-[#605e5c] hover:text-[#323130]">
+                          <X className="w-4 h-4" />
+                        </button>
+                        <div className="ml-auto">
+                          <Search className="w-4 h-4 text-[#605e5c]" />
                         </div>
                       </div>
-                      <div>
-                        <Label className="text-xs text-[#605e5c]">Backup ALJ</Label>
-                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
-                          <Avatar className="h-5 w-5 mr-2">
-                            <AvatarFallback className="bg-[#107c10] text-white text-xs">SM</AvatarFallback>
-                          </Avatar>
-                          <span className="text-sm">{testDecisionCaseData.backupALJ}</span>
+                    </div>
+
+                    {/* Primary ALJ */}
+                    <div className="flex items-center">
+                      <div className="w-48 flex items-center">
+                        <span className="text-sm text-[#323130]">Primary ALJ</span>
+                        <span className="text-[#a4262c] ml-1">*</span>
+                      </div>
+                      <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
+                        <Avatar className="h-6 w-6 mr-2">
+                          <AvatarFallback className="bg-[#d13438] text-white text-xs font-semibold">PR</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm text-[#0078d4] hover:underline cursor-pointer">{testDecisionCaseData.assignedALJ} (Available)</span>
+                        <button className="ml-2 text-[#605e5c] hover:text-[#323130]">
+                          <X className="w-4 h-4" />
+                        </button>
+                        <div className="ml-auto">
+                          <Search className="w-4 h-4 text-[#605e5c]" />
                         </div>
                       </div>
-                      <div>
-                        <Label className="text-xs text-[#605e5c]">Deputy Director / Bureau Chief</Label>
-                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
-                          <Avatar className="h-5 w-5 mr-2">
-                            <AvatarFallback className="bg-[#8764b8] text-white text-xs">PW</AvatarFallback>
-                          </Avatar>
-                          <span className="text-sm">{testDecisionCaseData.deputyDirector}</span>
+                    </div>
+
+                    {/* Backup ALJ */}
+                    <div className="flex items-center">
+                      <div className="w-48 flex items-center">
+                        <span className="text-sm text-[#323130]">Backup ALJ</span>
+                      </div>
+                      <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white min-h-[36px]">
+                        <span className="text-sm text-[#605e5c]">---</span>
+                        <div className="ml-auto">
+                          <Search className="w-4 h-4 text-[#605e5c]" />
                         </div>
                       </div>
                     </div>
