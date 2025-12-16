@@ -2066,116 +2066,120 @@ const CrmScreen = () => {
             {/* Writing Sub-Tab */}
             {testDecisionSubTab === "writing" && (
               <div className="space-y-6">
-                {/* Assignments Section */}
-                <div className="bg-white border border-[#edebe9] rounded">
-                  <div className="px-4 py-3 border-b border-[#edebe9]">
-                    <h3 className="text-sm font-semibold text-[#323130]">INTERNAL STAFF</h3>
-                  </div>
-                  <div className="p-4 space-y-4">
-                    {/* Clerk */}
-                    <div className="flex items-center">
-                      <div className="w-48 flex items-center">
-                        <span className="text-sm text-[#323130]">Clerk</span>
-                        <span className="text-[#a4262c] ml-1">*</span>
+                {/* Internal Staff & Deadlines Side by Side */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Internal Staff Section */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">INTERNAL STAFF</h3>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      {/* Clerk */}
+                      <div className="flex items-center">
+                        <div className="w-32 flex items-center">
+                          <span className="text-sm text-[#323130]">Clerk</span>
+                          <span className="text-[#a4262c] ml-1">*</span>
+                        </div>
+                        <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
+                          <Avatar className="h-6 w-6 mr-2">
+                            <AvatarFallback className="bg-[#8764b8] text-white text-xs font-semibold">PP</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-[#0078d4] hover:underline cursor-pointer"># Portals-ECMS Portal</span>
+                          <button className="ml-2 text-[#605e5c] hover:text-[#323130]">
+                            <X className="w-4 h-4" />
+                          </button>
+                          <div className="ml-auto">
+                            <Search className="w-4 h-4 text-[#605e5c]" />
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
-                        <Avatar className="h-6 w-6 mr-2">
-                          <AvatarFallback className="bg-[#8764b8] text-white text-xs font-semibold">PP</AvatarFallback>
-                        </Avatar>
-                        <span className="text-sm text-[#0078d4] hover:underline cursor-pointer"># Portals-ECMS Portal</span>
-                        <button className="ml-2 text-[#605e5c] hover:text-[#323130]">
-                          <X className="w-4 h-4" />
-                        </button>
-                        <div className="ml-auto">
-                          <Search className="w-4 h-4 text-[#605e5c]" />
+
+                      {/* Primary ALJ */}
+                      <div className="flex items-center">
+                        <div className="w-32 flex items-center">
+                          <span className="text-sm text-[#323130]">Primary ALJ</span>
+                          <span className="text-[#a4262c] ml-1">*</span>
+                        </div>
+                        <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
+                          <Avatar className="h-6 w-6 mr-2">
+                            <AvatarFallback className="bg-[#d13438] text-white text-xs font-semibold">PR</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-[#0078d4] hover:underline cursor-pointer">{testDecisionCaseData.assignedALJ} (Available)</span>
+                          <button className="ml-2 text-[#605e5c] hover:text-[#323130]">
+                            <X className="w-4 h-4" />
+                          </button>
+                          <div className="ml-auto">
+                            <Search className="w-4 h-4 text-[#605e5c]" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Backup ALJ */}
+                      <div className="flex items-center">
+                        <div className="w-32 flex items-center">
+                          <span className="text-sm text-[#323130]">Backup ALJ</span>
+                        </div>
+                        <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white min-h-[36px]">
+                          <span className="text-sm text-[#605e5c]">---</span>
+                          <div className="ml-auto">
+                            <Search className="w-4 h-4 text-[#605e5c]" />
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    {/* Primary ALJ */}
-                    <div className="flex items-center">
-                      <div className="w-48 flex items-center">
-                        <span className="text-sm text-[#323130]">Primary ALJ</span>
-                        <span className="text-[#a4262c] ml-1">*</span>
-                      </div>
-                      <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
-                        <Avatar className="h-6 w-6 mr-2">
-                          <AvatarFallback className="bg-[#d13438] text-white text-xs font-semibold">PR</AvatarFallback>
-                        </Avatar>
-                        <span className="text-sm text-[#0078d4] hover:underline cursor-pointer">{testDecisionCaseData.assignedALJ} (Available)</span>
-                        <button className="ml-2 text-[#605e5c] hover:text-[#323130]">
-                          <X className="w-4 h-4" />
-                        </button>
-                        <div className="ml-auto">
-                          <Search className="w-4 h-4 text-[#605e5c]" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Backup ALJ */}
-                    <div className="flex items-center">
-                      <div className="w-48 flex items-center">
-                        <span className="text-sm text-[#323130]">Backup ALJ</span>
-                      </div>
-                      <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white min-h-[36px]">
-                        <span className="text-sm text-[#605e5c]">---</span>
-                        <div className="ml-auto">
-                          <Search className="w-4 h-4 text-[#605e5c]" />
-                        </div>
-                      </div>
-                    </div>
                   </div>
-                </div>
 
-                {/* Deadlines Section */}
-                <div className="bg-white border border-[#edebe9] rounded">
-                  <div className="px-4 py-3 border-b border-[#edebe9]">
-                    <h3 className="text-sm font-semibold text-[#323130]">DEADLINES</h3>
-                  </div>
-                  <div className="p-4">
-                    <div className="grid grid-cols-4 gap-4">
-                      <div>
-                        <Label className="text-xs text-[#605e5c]">Decision Due Date</Label>
-                        <div className="flex items-center mt-1 p-2 bg-[#f3f2f1] border border-[#8a8886] rounded">
+                  {/* Deadlines Section */}
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">DEADLINES</h3>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      {/* Decision Due Date */}
+                      <div className="flex items-center">
+                        <div className="w-32 flex items-center">
+                          <span className="text-sm text-[#323130]">Due Date</span>
+                          <span className="text-[#a4262c] ml-1">*</span>
+                        </div>
+                        <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
                           <Calendar className="w-4 h-4 text-[#605e5c] mr-2" />
-                          <span className="text-sm">{testDecisionCaseData.decisionDueDate}</span>
+                          <span className="text-sm text-[#323130]">{testDecisionCaseData.decisionDueDate}</span>
+                          <div className="ml-auto">
+                            <Search className="w-4 h-4 text-[#605e5c]" />
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <Label className="text-xs text-[#605e5c]">Days Remaining</Label>
-                        <div className={`flex items-center mt-1 p-2 rounded border ${testDecisionCaseData.daysRemaining <= 5 ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
+
+                      {/* Days Remaining */}
+                      <div className="flex items-center">
+                        <div className="w-32 flex items-center">
+                          <span className="text-sm text-[#323130]">Days Left</span>
+                        </div>
+                        <div className={`flex-1 flex items-center border rounded px-2 py-1.5 ${testDecisionCaseData.daysRemaining <= 5 ? 'bg-red-50 border-red-300' : 'bg-green-50 border-green-300'}`}>
                           <Clock className={`w-4 h-4 mr-2 ${testDecisionCaseData.daysRemaining <= 5 ? 'text-red-500' : 'text-green-500'}`} />
                           <span className={`text-sm font-medium ${testDecisionCaseData.daysRemaining <= 5 ? 'text-red-700' : 'text-green-700'}`}>{testDecisionCaseData.daysRemaining} days</span>
                         </div>
                       </div>
-                      <div>
-                        <Label className="text-xs text-[#605e5c]">Ruling Stage</Label>
-                        <Select defaultValue={testDecisionCaseData.rulingStage}>
-                          <SelectTrigger className="mt-1 bg-[#f3f2f1] border-[#8a8886]">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Writing">Writing</SelectItem>
-                            <SelectItem value="Proofing">Proofing</SelectItem>
-                            <SelectItem value="ALJ Review">ALJ Review</SelectItem>
-                            <SelectItem value="Issuance">Issuance</SelectItem>
-                            <SelectItem value="Completed">Completed</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label className="text-xs text-[#605e5c]">Status Reason</Label>
-                        <Select defaultValue={testDecisionCaseData.statusReason}>
-                          <SelectTrigger className="mt-1 bg-[#f3f2f1] border-[#8a8886]">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="In Progress">In Progress</SelectItem>
-                            <SelectItem value="On Hold">On Hold</SelectItem>
-                            <SelectItem value="Pending Review">Pending Review</SelectItem>
-                            <SelectItem value="Completed">Completed</SelectItem>
-                          </SelectContent>
-                        </Select>
+
+                      {/* Ruling Stage */}
+                      <div className="flex items-center">
+                        <div className="w-32 flex items-center">
+                          <span className="text-sm text-[#323130]">Ruling Stage</span>
+                        </div>
+                        <div className="flex-1">
+                          <Select defaultValue={testDecisionCaseData.rulingStage}>
+                            <SelectTrigger className="bg-white border-[#8a8886] h-9">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Writing">Writing</SelectItem>
+                              <SelectItem value="Proofing">Proofing</SelectItem>
+                              <SelectItem value="ALJ Review">ALJ Review</SelectItem>
+                              <SelectItem value="Issuance">Issuance</SelectItem>
+                              <SelectItem value="Completed">Completed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
                     </div>
                   </div>
