@@ -335,7 +335,7 @@ const CrmScreen = () => {
     if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
     return "";
   };
-  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "test", "Test Decision", "Requests", "Timeline / Docket", "Case Type", "Related"];
+  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "test", "Ruling", "Requests", "Timeline / Docket", "Case Type", "Related"];
 
   // Test Decision sub-tab state
   const [testDecisionSubTab, setTestDecisionSubTab] = useState("writing");
@@ -2095,7 +2095,7 @@ const CrmScreen = () => {
           </div>}
 
           {/* Test Decision Tab */}
-          {activeTab === "Test Decision" && <div className="max-w-7xl mx-auto">
+          {activeTab === "Ruling" && <div className="max-w-7xl mx-auto">
             {/* Sub-Tabs for Test Decision */}
             <div className="bg-white border border-[#edebe9] rounded mb-4">
               <div className="flex items-center space-x-4 px-4 border-b border-[#edebe9]">
