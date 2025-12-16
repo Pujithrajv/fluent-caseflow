@@ -2330,7 +2330,7 @@ const CrmScreen = () => {
                     <div className="flex items-center gap-2">
                       <button className="flex items-center gap-1 text-sm text-[#323130] hover:text-[#0078d4]">
                         <Plus className="w-4 h-4" />
-                        <span>New Task</span>
+                        <span>Upload New </span>
                       </button>
                       <button className="p-1 text-[#605e5c] hover:text-[#323130]">
                         <MoreVertical className="w-4 h-4" />
