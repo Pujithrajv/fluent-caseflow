@@ -2326,7 +2326,7 @@ const CrmScreen = () => {
                 <div className="bg-white border border-[#edebe9] rounded">
                   {/* Subgrid Toolbar */}
                   <div className="flex items-center justify-between px-4 py-2 border-b border-[#edebe9]">
-                    <h3 className="text-sm font-semibold text-[#323130]">PROOFING TASKS</h3>
+                    <h3 className="text-sm font-semibold text-[#323130]">PROOFING TABLE</h3>
                     <div className="flex items-center gap-2">
                       <button className="flex items-center gap-1 text-sm text-[#323130] hover:text-[#0078d4]">
                         <Plus className="w-4 h-4" />
