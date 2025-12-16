@@ -2119,8 +2119,14 @@ const CrmScreen = () => {
                         <div className="w-32 flex items-center">
                           <span className="text-sm text-[#323130]">Backup ALJ</span>
                         </div>
-                        <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white min-h-[36px]">
-                          <span className="text-sm text-[#605e5c]">---</span>
+                        <div className="flex-1 flex items-center border border-[#8a8886] rounded px-2 py-1.5 bg-white">
+                          <Avatar className="h-6 w-6 mr-2">
+                            <AvatarFallback className="bg-[#107c10] text-white text-xs font-semibold">PR</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-[#0078d4] hover:underline cursor-pointer">{testDecisionCaseData.assignedALJ} (Available)</span>
+                          <button className="ml-2 text-[#605e5c] hover:text-[#323130]">
+                            <X className="w-4 h-4" />
+                          </button>
                           <div className="ml-auto">
                             <Search className="w-4 h-4 text-[#605e5c]" />
                           </div>
