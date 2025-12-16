@@ -389,13 +389,32 @@ const CrmScreen = () => {
     decisionBy: "Patricia Williams",
     decisionDate: "2024-12-06"
   }];
-  const testDecisionIssuedDocuments = [{
+  const [testDecisionIssuedDocuments, setTestDecisionIssuedDocuments] = useState([{
     id: 1,
     name: "Decision_Report.docx",
     type: "ALJ Report",
     generatedOn: "2024-12-14",
     status: "Ready"
-  }];
+  }]);
+
+  // Handler for Submit Proofing Completed - copies 2nd row from proofing tasks to issued documents
+  const handleSubmitProofingCompleted = () => {
+    const secondProofingTask = testDecisionProofingTasks[1]; // 2nd row (index 1)
+    if (secondProofingTask) {
+      const newDocument = {
+        id: testDecisionIssuedDocuments.length + 1,
+        name: secondProofingTask.name,
+        type: "Backup ALJ Report",
+        generatedOn: new Date().toISOString().split('T')[0],
+        status: "Ready"
+      };
+      setTestDecisionIssuedDocuments(prev => [...prev, newDocument]);
+      toast({
+        title: "Proofing Completed",
+        description: `"${secondProofingTask.name}" has been added to Documents.`
+      });
+    }
+  };
   return <div className="min-h-screen bg-[#f0f0f0] flex">
       {/* Left Sidebar */}
       <div className="w-48 bg-[#f3f2f1] border-r border-[#edebe9] flex flex-col">
@@ -2377,7 +2396,7 @@ const CrmScreen = () => {
                   
                   {/* Submit Button */}
                   <div className="flex justify-end px-4 py-3 border-t border-[#edebe9]">
-                    <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                    <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white" onClick={handleSubmitProofingCompleted}>
                       <FileCheck className="w-4 h-4 mr-2" />
                       Submit Proofing Completed
                     </Button>
