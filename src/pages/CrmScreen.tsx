@@ -1500,40 +1500,6 @@ const CrmScreen = () => {
 
           {/* Ruling / Decision Tab */}
           {activeTab === "Ruling" && <div className="max-w-7xl mx-auto">
-            {/* Command Bar */}
-            <div className="bg-white border border-[#edebe9] rounded mb-4 px-4 py-2 flex items-center space-x-2">
-              <span className="text-xs text-[#605e5c] mr-2">ALJ Actions:</span>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Writing"}>
-                <FileText className="w-3 h-3 mr-1" />
-                Create Ruling Report
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Writing"}>
-                Submit for Proofing
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "ALJ Review"}>
-                Mark Ready for Issuance
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Ready for Issuance"}>
-                Issue Final Ruling
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Ready for Issuance"}>
-                Mark as Recommended
-              </Button>
-              <div className="h-6 w-px bg-[#edebe9] mx-2" />
-              <span className="text-xs text-[#605e5c] mr-2">Backup ALJ:</span>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Proofing"}>
-                Open Draft
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.status !== "Proofing"}>
-                Submit Proofing Completed
-              </Button>
-              <div className="h-6 w-px bg-[#edebe9] mx-2" />
-              <span className="text-xs text-[#605e5c] mr-2">Director:</span>
-              <Button size="sm" variant="outline" className="text-xs h-8 border-[#8a8886] hover:bg-[#f3f2f1]" disabled={rulingData.meetsStatutory && rulingData.status !== "Escalated to Director"}>
-                Modify Deadline
-              </Button>
-            </div>
-
             {/* Main Form Section */}
             <div className="bg-white border border-[#edebe9] rounded mb-6">
               <div className="px-4 py-3 border-b border-[#edebe9]">
