@@ -2547,16 +2547,6 @@ const CrmScreen = () => {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div className="flex items-end space-x-2">
-                        {testDecisionRecommendedVsFinal === "recommended" && <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
-                            <FileText className="w-4 h-4 mr-2" />
-                            Generate Recommended Docs
-                          </Button>}
-                        {testDecisionRecommendedVsFinal === "final" && <Button className="bg-[#107c10] hover:bg-[#0e6b0e] text-white">
-                            <FileText className="w-4 h-4 mr-2" />
-                            Generate Final Ruling
-                          </Button>}
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -2616,6 +2606,18 @@ const CrmScreen = () => {
                             <span className="cursor-pointer text-[#0078d4]">⬇️</span>
                           </div>
                         </div>)}
+                  </div>
+                  
+                  {/* Generate Button */}
+                  <div className="flex justify-end px-4 py-3 border-t border-[#edebe9]">
+                    {testDecisionRecommendedVsFinal === "recommended" && <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        <FileText className="w-4 h-4 mr-2" />
+                        Generate Recommended Docs
+                      </Button>}
+                    {testDecisionRecommendedVsFinal === "final" && <Button className="bg-[#107c10] hover:bg-[#0e6b0e] text-white">
+                        <FileText className="w-4 h-4 mr-2" />
+                        Generate Final Ruling
+                      </Button>}
                   </div>
                 </div>
               </div>}
