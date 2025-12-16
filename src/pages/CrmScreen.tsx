@@ -2254,8 +2254,11 @@ const CrmScreen = () => {
                   </div>
 
                   {/* Footer Row Count */}
-                  <div className="px-4 py-2 border-t border-[#edebe9] bg-[#faf9f8]">
+                  <div className="px-4 py-2 border-t border-[#edebe9] bg-[#faf9f8] flex items-center justify-between">
                     <span className="text-xs text-[#0078d4]">Rows: {testDecisionIssuedDocuments.length}</span>
+                    <Button size="sm" className="bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                      Submit
+                    </Button>
                   </div>
                 </div>
               </div>
