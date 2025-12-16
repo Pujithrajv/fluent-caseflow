@@ -2563,34 +2563,59 @@ const CrmScreen = () => {
 
                 {/* Issued Documents Subgrid */}
                 <div className="bg-white border border-[#edebe9] rounded">
-                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                  {/* Subgrid Toolbar */}
+                  <div className="flex items-center justify-between px-4 py-2 border-b border-[#edebe9]">
                     <h3 className="text-sm font-semibold text-[#323130]">ISSUED DOCUMENTS</h3>
+                    <div className="flex items-center gap-2">
+                      <button className="flex items-center gap-1 text-sm text-[#323130] hover:text-[#0078d4]">
+                        <Plus className="w-4 h-4" />
+                        <span>Upload New</span>
+                      </button>
+                      <button className="p-1 text-[#605e5c] hover:text-[#323130]">
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                      <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
-                        <tr>
-                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Document Name</th>
-                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Type</th>
-                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Generated On</th>
-                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Status</th>
-                          <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {testDecisionIssuedDocuments.map(doc => <tr key={doc.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
-                            <td className="py-2 px-3 text-sm font-medium text-[#0078d4]">{doc.name}</td>
-                            <td className="py-2 px-3 text-sm text-[#323130]">{doc.type}</td>
-                            <td className="py-2 px-3 text-sm text-[#605e5c]">{doc.generatedOn}</td>
-                            <td className="py-2 px-3">
-                              <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">{doc.status}</Badge>
-                            </td>
-                            <td className="py-2 px-3">
-                              <span className="cursor-pointer text-[#0078d4]">⬇️</span>
-                            </td>
-                          </tr>)}
-                      </tbody>
-                    </table>
+                  
+                  {/* Column Headers */}
+                  <div className="border-b border-[#edebe9]">
+                    <div className="grid grid-cols-5 bg-white">
+                      <div className="py-2 px-4 flex items-center gap-1 cursor-pointer hover:bg-[#f3f2f1]">
+                        <span className="text-sm text-[#323130]">Document Name</span>
+                        <ChevronDown className="w-3 h-3 text-[#605e5c]" />
+                      </div>
+                      <div className="py-2 px-4 flex items-center gap-1 cursor-pointer hover:bg-[#f3f2f1]">
+                        <span className="text-sm text-[#323130]">Type</span>
+                        <ChevronDown className="w-3 h-3 text-[#605e5c]" />
+                      </div>
+                      <div className="py-2 px-4 flex items-center gap-1 cursor-pointer hover:bg-[#f3f2f1]">
+                        <span className="text-sm text-[#323130]">Generated On</span>
+                        <ChevronDown className="w-3 h-3 text-[#605e5c]" />
+                      </div>
+                      <div className="py-2 px-4 flex items-center gap-1 cursor-pointer hover:bg-[#f3f2f1]">
+                        <span className="text-sm text-[#323130]">Status</span>
+                        <ChevronDown className="w-3 h-3 text-[#605e5c]" />
+                      </div>
+                      <div className="py-2 px-4 flex items-center gap-1 cursor-pointer hover:bg-[#f3f2f1]">
+                        <span className="text-sm text-[#323130]">Actions</span>
+                        <ChevronDown className="w-3 h-3 text-[#605e5c]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Table Body */}
+                  <div className="min-h-[120px]">
+                    {testDecisionIssuedDocuments.map(doc => <div key={doc.id} className="grid grid-cols-5 border-b border-[#edebe9] hover:bg-[#f3f2f1]">
+                          <div className="py-2 px-4 text-sm text-[#0078d4] hover:underline cursor-pointer">{doc.name}</div>
+                          <div className="py-2 px-4 text-sm text-[#323130]">{doc.type}</div>
+                          <div className="py-2 px-4 text-sm text-[#605e5c]">{doc.generatedOn}</div>
+                          <div className="py-2 px-4">
+                            <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">{doc.status}</Badge>
+                          </div>
+                          <div className="py-2 px-4">
+                            <span className="cursor-pointer text-[#0078d4]">⬇️</span>
+                          </div>
+                        </div>)}
                   </div>
                 </div>
               </div>}
