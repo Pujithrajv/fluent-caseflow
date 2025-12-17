@@ -2792,14 +2792,6 @@ const CrmScreen = () => {
                       <span className="text-xs text-[#605e5c]">Yes</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-3 border border-[#8a8886] rounded bg-[#f3f2f1]">
-                    <Label className="text-sm text-[#323130] font-semibold">Proofing Completed – Good to Go</Label>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-[#605e5c]">No</span>
-                      <Switch className="data-[state=checked]:bg-[#0078d4]" />
-                      <span className="text-xs text-[#605e5c]">Yes</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
