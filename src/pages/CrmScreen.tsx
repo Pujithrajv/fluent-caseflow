@@ -335,7 +335,7 @@ const CrmScreen = () => {
     if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
     return "";
   };
-  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "test", "Ruling", "Requests", "Timeline / Docket", "Case Type", "Related"];
+  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "test", "Ruling", "Requests", "Timeline / Docket", "NEW RULING", "Related"];
 
   // Test Decision sub-tab state
   const [testDecisionSubTab, setTestDecisionSubTab] = useState("writing");
@@ -2791,8 +2791,8 @@ const CrmScreen = () => {
             </div>
           </div>}
 
-          {/* Case Type Tab - Dynamics 365 Ruling / Decision Form */}
-          {activeTab === "Case Type" && <div className="max-w-7xl mx-auto space-y-6">
+          {/* NEW RULING Tab - Dynamics 365 Ruling / Decision Form */}
+          {activeTab === "NEW RULING" && <div className="max-w-7xl mx-auto space-y-6">
             
             {/* SECTION 1: DATE CAPTURE CHECKLIST */}
             <div className="bg-white border border-[#edebe9] rounded">
