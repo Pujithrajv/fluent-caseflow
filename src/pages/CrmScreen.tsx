@@ -2427,100 +2427,65 @@ const CrmScreen = () => {
                     <div className="p-4 space-y-4">
                       <div className="flex items-center justify-between">
                         <Label className="text-sm text-[#323130]">Needs Extension?</Label>
-                        <Switch 
-                          checked={testDecisionNeedsExtension} 
-                          onCheckedChange={(checked) => {
-                            setTestDecisionNeedsExtension(checked);
-                            if (!checked) {
-                              setTestDecisionMeetsStatutory(true);
-                              setExtensionSubmitted(false);
-                            }
-                          }} 
-                          className="data-[state=checked]:bg-[#0078d4]" 
-                        />
+                        <Switch checked={testDecisionNeedsExtension} onCheckedChange={checked => {
+                      setTestDecisionNeedsExtension(checked);
+                      if (!checked) {
+                        setTestDecisionMeetsStatutory(true);
+                        setExtensionSubmitted(false);
+                      }
+                    }} className="data-[state=checked]:bg-[#0078d4]" />
                       </div>
-                      {testDecisionNeedsExtension && (
-                        <>
+                      {testDecisionNeedsExtension && <>
                           <div>
                             <Label className="text-xs text-[#605e5c]">Extension Justification</Label>
-                            <textarea 
-                              className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" 
-                              placeholder="Provide justification for extension request..." 
-                              value={extensionJustification}
-                              onChange={(e) => setExtensionJustification(e.target.value)}
-                            />
+                            <textarea className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" placeholder="Provide justification for extension request..." value={extensionJustification} onChange={e => setExtensionJustification(e.target.value)} />
                           </div>
                           <div>
                             <Label className="text-xs text-[#605e5c]">New Ruling Due Date</Label>
-                            <Input 
-                              type="date" 
-                              className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                              value={extensionNewDueDate}
-                              onChange={(e) => setExtensionNewDueDate(e.target.value)}
-                            />
+                            <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" value={extensionNewDueDate} onChange={e => setExtensionNewDueDate(e.target.value)} />
                           </div>
-                        </>
-                      )}
+                        </>}
                     </div>
                   </div>
 
                   {/* Statutory Compliance - Only show when Needs Extension = Yes */}
-                  {testDecisionNeedsExtension && (
-                    <div className="bg-white border border-[#edebe9] rounded">
+                  {testDecisionNeedsExtension && <div className="bg-white border border-[#edebe9] rounded">
                       <div className="px-4 py-3 border-b border-[#edebe9]">
                         <h3 className="text-sm font-semibold text-[#323130]">STATUTORY COMPLIANCE</h3>
                       </div>
                       <div className="p-4 space-y-4">
                         <div className="flex items-center justify-between">
                           <Label className="text-sm text-[#323130]">Meets Statutory Requirements?</Label>
-                          <Switch 
-                            checked={testDecisionMeetsStatutory} 
-                            onCheckedChange={setTestDecisionMeetsStatutory} 
-                            className="data-[state=checked]:bg-[#0078d4]" 
-                          />
+                          <Switch checked={testDecisionMeetsStatutory} onCheckedChange={setTestDecisionMeetsStatutory} className="data-[state=checked]:bg-[#0078d4]" />
                         </div>
-                        {!testDecisionMeetsStatutory && (
-                          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                        {!testDecisionMeetsStatutory && <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
                             <div className="flex items-center text-yellow-700">
                               <span className="text-sm font-medium">⚠️ Escalation Required</span>
                             </div>
                             <p className="text-xs text-yellow-600 mt-1">This case requires Deputy Director override for deadline modification.</p>
-                          </div>
-                        )}
+                          </div>}
                         
                         {/* Submit Extension Request Button - Only show when Meets Statutory = No and not yet submitted */}
-                        {!testDecisionMeetsStatutory && !extensionSubmitted && (
-                          <div className="pt-2">
-                            <Button 
-                              className="bg-[#0078d4] hover:bg-[#106ebe] text-white w-full"
-                              onClick={handleSubmitExtensionRequest}
-                              disabled={!extensionJustification.trim()}
-                            >
+                        {!testDecisionMeetsStatutory && !extensionSubmitted && <div className="pt-2">
+                            <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white w-full" onClick={handleSubmitExtensionRequest} disabled={!extensionJustification.trim()}>
                               <FileCheck className="w-4 h-4 mr-2" />
                               Submit Extension Request
                             </Button>
-                            {!extensionJustification.trim() && (
-                              <p className="text-xs text-[#a4262c] mt-1">Please provide justification before submitting.</p>
-                            )}
-                          </div>
-                        )}
+                            {!extensionJustification.trim() && <p className="text-xs text-[#a4262c] mt-1">Please provide justification before submitting.</p>}
+                          </div>}
 
                         {/* Status Badge after submission */}
-                        {extensionSubmitted && (
-                          <div className="p-3 bg-orange-50 border border-orange-200 rounded">
+                        {extensionSubmitted && <div className="p-3 bg-orange-50 border border-orange-200 rounded">
                             <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300">
                               Statutory Exception – Pending Director Review
                             </Badge>
-                          </div>
-                        )}
+                          </div>}
                       </div>
-                    </div>
-                  )}
+                    </div>}
                 </div>
 
                 {/* Extension Requests History Subgrid - Only show after submission */}
-                {extensionSubmitted && (
-                  <div className="bg-white border border-[#edebe9] rounded">
+                {extensionSubmitted && <div className="bg-white border border-[#edebe9] rounded">
                     <div className="px-4 py-3 border-b border-[#edebe9]">
                       <h3 className="text-sm font-semibold text-[#323130]">EXTENSION REQUESTS HISTORY</h3>
                     </div>
@@ -2539,8 +2504,7 @@ const CrmScreen = () => {
                         </thead>
                         <tbody>
                           {/* Historical requests */}
-                          {testDecisionExtensionRequests.map(req => (
-                            <tr key={req.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                          {testDecisionExtensionRequests.map(req => <tr key={req.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
                               <td className="py-2 px-3 text-sm text-[#605e5c]">{req.requestedOn}</td>
                               <td className="py-2 px-3 text-sm text-[#323130]">{req.requestedBy}</td>
                               <td className="py-2 px-3 text-sm text-[#323130]">{req.reason}</td>
@@ -2550,8 +2514,7 @@ const CrmScreen = () => {
                               </td>
                               <td className="py-2 px-3 text-sm text-[#605e5c]">{req.decisionDate}</td>
                               <td className="py-2 px-3 text-sm text-[#323130]">{req.decisionBy}</td>
-                            </tr>
-                          ))}
+                            </tr>)}
                           {/* Current pending request */}
                           <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8] bg-orange-50">
                             <td className="py-2 px-3 text-sm text-[#605e5c]">{new Date().toISOString().split('T')[0]}</td>
@@ -2567,12 +2530,10 @@ const CrmScreen = () => {
                         </tbody>
                       </table>
                     </div>
-                  </div>
-                )}
+                  </div>}
 
                 {/* Director Override - Only show after submission */}
-                {extensionSubmitted && (
-                  <div className="bg-white border border-[#edebe9] rounded">
+                {extensionSubmitted && <div className="bg-white border border-[#edebe9] rounded">
                     <div className="px-4 py-3 border-b border-[#edebe9] bg-purple-50">
                       <h3 className="text-sm font-semibold text-[#323130]">DIRECTOR OVERRIDE</h3>
                       <p className="text-xs text-[#605e5c] mt-1">Editable only by Deputy Director / Bureau Chief</p>
@@ -2610,8 +2571,7 @@ const CrmScreen = () => {
                         </Button>
                       </div>
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>}
 
             {/* Issuance / Recommendation Sub-Tab */}
@@ -2803,27 +2763,15 @@ const CrmScreen = () => {
                 <div className="grid grid-cols-3 gap-6">
                   <div>
                     <Label className="text-xs text-[#605e5c] font-semibold">Record Closed Deadline</Label>
-                    <Input 
-                      type="date" 
-                      className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                      defaultValue="2025-12-20"
-                    />
+                    <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" defaultValue="2025-12-20" />
                   </div>
                   <div>
                     <Label className="text-xs text-[#605e5c] font-semibold">Recommended Decision Deadline</Label>
-                    <Input 
-                      type="date" 
-                      className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                      defaultValue="2025-12-28"
-                    />
+                    <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" defaultValue="2025-12-28" />
                   </div>
                   <div>
                     <Label className="text-xs text-[#605e5c] font-semibold">Decision Deadline</Label>
-                    <Input 
-                      type="date" 
-                      className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                      defaultValue="2026-01-06"
-                    />
+                    <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" defaultValue="2026-01-06" />
                   </div>
                 </div>
               </div>
@@ -2832,7 +2780,7 @@ const CrmScreen = () => {
             {/* SECTION 2: RULING WORKFLOW STATUS */}
             <div className="bg-white border border-[#edebe9] rounded">
               <div className="px-4 py-3 border-b border-[#edebe9]">
-                <h3 className="text-sm font-semibold text-[#323130] uppercase tracking-wide">Ruling Workflow</h3>
+                <h3 className="text-sm font-semibold text-[#323130] uppercase tracking-wide">BACKUP ALJ RULING WORKFLOW</h3>
               </div>
               <div className="p-4">
                 <div className="grid grid-cols-2 gap-6">
@@ -2866,50 +2814,32 @@ const CrmScreen = () => {
                   <Label className="text-sm text-[#323130] font-semibold">Needs Extension?</Label>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-[#605e5c]">No</span>
-                    <Switch 
-                      checked={testDecisionNeedsExtension} 
-                      onCheckedChange={(checked) => {
-                        setTestDecisionNeedsExtension(checked);
-                        if (!checked) {
-                          setTestDecisionMeetsStatutory(true);
-                          setExtensionSubmitted(false);
-                        }
-                      }} 
-                      className="data-[state=checked]:bg-[#0078d4]" 
-                    />
+                    <Switch checked={testDecisionNeedsExtension} onCheckedChange={checked => {
+                    setTestDecisionNeedsExtension(checked);
+                    if (!checked) {
+                      setTestDecisionMeetsStatutory(true);
+                      setExtensionSubmitted(false);
+                    }
+                  }} className="data-[state=checked]:bg-[#0078d4]" />
                     <span className="text-xs text-[#605e5c]">Yes</span>
                   </div>
                 </div>
                 
-                {testDecisionNeedsExtension && (
-                  <div className="grid grid-cols-2 gap-4">
+                {testDecisionNeedsExtension && <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label className="text-xs text-[#605e5c] font-semibold">Extension Justification <span className="text-[#a4262c]">*</span></Label>
-                      <textarea 
-                        className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" 
-                        placeholder="Provide justification for extension request..." 
-                        value={extensionJustification}
-                        onChange={(e) => setExtensionJustification(e.target.value)}
-                      />
+                      <textarea className="mt-1 w-full h-24 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" placeholder="Provide justification for extension request..." value={extensionJustification} onChange={e => setExtensionJustification(e.target.value)} />
                     </div>
                     <div>
                       <Label className="text-xs text-[#605e5c] font-semibold">New Ruling Due Date</Label>
-                      <Input 
-                        type="date" 
-                        className="mt-1 bg-[#f3f2f1] border-[#8a8886]" 
-                        value={extensionNewDueDate}
-                        onChange={(e) => setExtensionNewDueDate(e.target.value)}
-                        defaultValue="2026-01-06"
-                      />
+                      <Input type="date" className="mt-1 bg-[#f3f2f1] border-[#8a8886]" value={extensionNewDueDate} onChange={e => setExtensionNewDueDate(e.target.value)} defaultValue="2026-01-06" />
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
             </div>
 
             {/* SECTION 4: STATUTORY COMPLIANCE */}
-            {testDecisionNeedsExtension && (
-              <div className="bg-white border border-[#edebe9] rounded">
+            {testDecisionNeedsExtension && <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9]">
                   <h3 className="text-sm font-semibold text-[#323130] uppercase tracking-wide">Statutory Compliance</h3>
                 </div>
@@ -2918,17 +2848,12 @@ const CrmScreen = () => {
                     <Label className="text-sm text-[#323130] font-semibold">Meets Statutory Requirements?</Label>
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-[#605e5c]">No</span>
-                      <Switch 
-                        checked={testDecisionMeetsStatutory} 
-                        onCheckedChange={setTestDecisionMeetsStatutory} 
-                        className="data-[state=checked]:bg-[#0078d4]" 
-                      />
+                      <Switch checked={testDecisionMeetsStatutory} onCheckedChange={setTestDecisionMeetsStatutory} className="data-[state=checked]:bg-[#0078d4]" />
                       <span className="text-xs text-[#605e5c]">Yes</span>
                     </div>
                   </div>
                   
-                  {!testDecisionMeetsStatutory && (
-                    <>
+                  {!testDecisionMeetsStatutory && <>
                       {/* Warning Notification Banner */}
                       <div className="p-3 bg-[#fff4ce] border border-[#ffb900] rounded flex items-start gap-2">
                         <span className="text-[#ffb900] text-lg">⚠️</span>
@@ -2945,26 +2870,16 @@ const CrmScreen = () => {
                       </div>
                       
                       {/* Submit Extension Request Button */}
-                      {!extensionSubmitted && (
-                        <div className="pt-2">
-                          <Button 
-                            className="bg-[#0078d4] hover:bg-[#106ebe] text-white"
-                            onClick={handleSubmitExtensionRequest}
-                            disabled={!extensionJustification.trim()}
-                          >
+                      {!extensionSubmitted && <div className="pt-2">
+                          <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white" onClick={handleSubmitExtensionRequest} disabled={!extensionJustification.trim()}>
                             <FileCheck className="w-4 h-4 mr-2" />
                             Submit Extension Request
                           </Button>
-                          {!extensionJustification.trim() && (
-                            <p className="text-xs text-[#a4262c] mt-1">Please provide justification before submitting.</p>
-                          )}
-                        </div>
-                      )}
-                    </>
-                  )}
+                          {!extensionJustification.trim() && <p className="text-xs text-[#a4262c] mt-1">Please provide justification before submitting.</p>}
+                        </div>}
+                    </>}
                 </div>
-              </div>
-            )}
+              </div>}
 
             {/* SECTION 5: ISSUANCE SETTINGS */}
             <div className="bg-white border border-[#edebe9] rounded">
@@ -2989,11 +2904,7 @@ const CrmScreen = () => {
                     <Label className="text-sm text-[#323130] font-semibold">Ready for Issuance</Label>
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-[#605e5c]">No</span>
-                      <Switch 
-                        checked={testDecisionReadyForIssuance} 
-                        onCheckedChange={setTestDecisionReadyForIssuance} 
-                        className="data-[state=checked]:bg-[#0078d4]" 
-                      />
+                      <Switch checked={testDecisionReadyForIssuance} onCheckedChange={setTestDecisionReadyForIssuance} className="data-[state=checked]:bg-[#0078d4]" />
                       <span className="text-xs text-[#605e5c]">Yes</span>
                     </div>
                   </div>
@@ -3002,8 +2913,7 @@ const CrmScreen = () => {
             </div>
 
             {/* SECTION 6: DIRECTOR OVERRIDE (Role-Restricted) - Only show after submission */}
-            {extensionSubmitted && (
-              <div className="bg-white border border-[#edebe9] rounded">
+            {extensionSubmitted && <div className="bg-white border border-[#edebe9] rounded">
                 <div className="px-4 py-3 border-b border-[#edebe9] bg-[#f3f2f1]">
                   <h3 className="text-sm font-semibold text-[#323130] uppercase tracking-wide">Director Override</h3>
                   <p className="text-xs text-[#605e5c] mt-1">Editable only by Deputy Director / Bureau Chief</p>
@@ -3031,10 +2941,7 @@ const CrmScreen = () => {
                     </div>
                     <div>
                       <Label className="text-xs text-[#605e5c] font-semibold">Additional Notes</Label>
-                      <textarea 
-                        className="mt-1 w-full h-20 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" 
-                        placeholder="Enter additional notes..." 
-                      />
+                      <textarea className="mt-1 w-full h-20 px-3 py-2 bg-[#f3f2f1] border border-[#8a8886] rounded text-sm resize-none" placeholder="Enter additional notes..." />
                     </div>
                   </div>
                   <div className="mt-4 flex justify-end">
@@ -3044,8 +2951,7 @@ const CrmScreen = () => {
                     </Button>
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
 
           </div>}
         </div>
