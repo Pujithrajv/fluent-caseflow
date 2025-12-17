@@ -2810,22 +2810,12 @@ const CrmScreen = () => {
                 <h3 className="text-sm font-semibold text-[#323130] uppercase tracking-wide">BACKUP ALJ RULING WORKFLOW</h3>
               </div>
               <div className="p-4">
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="flex items-center justify-between p-3 border border-[#8a8886] rounded bg-[#f3f2f1]">
-                    <Label className="text-sm text-[#323130] font-semibold">Proofing Assigned</Label>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-[#605e5c]">No</span>
-                      <Switch className="data-[state=checked]:bg-[#0078d4]" />
-                      <span className="text-xs text-[#605e5c]">Yes</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 border border-[#8a8886] rounded bg-[#f3f2f1]">
-                    <Label className="text-sm text-[#323130] font-semibold">Proofing Completed – Good to Go</Label>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-[#605e5c]">No</span>
-                      <Switch className="data-[state=checked]:bg-[#0078d4]" />
-                      <span className="text-xs text-[#605e5c]">Yes</span>
-                    </div>
+                <div className="flex items-center justify-between p-3 border border-[#8a8886] rounded bg-[#f3f2f1]">
+                  <Label className="text-sm text-[#323130] font-semibold">Proofing Assigned</Label>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-[#605e5c]">No</span>
+                    <Switch className="data-[state=checked]:bg-[#0078d4]" />
+                    <span className="text-xs text-[#605e5c]">Yes</span>
                   </div>
                 </div>
               </div>
