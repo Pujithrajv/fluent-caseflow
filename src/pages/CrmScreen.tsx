@@ -3047,56 +3047,6 @@ const CrmScreen = () => {
               </div>
             )}
 
-            {/* Extension Requests History - Only show after submission */}
-            {extensionSubmitted && (
-              <div className="bg-white border border-[#edebe9] rounded">
-                <div className="px-4 py-3 border-b border-[#edebe9]">
-                  <h3 className="text-sm font-semibold text-[#323130] uppercase tracking-wide">Extension Requests History</h3>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead className="bg-[#faf9f8] border-b border-[#edebe9]">
-                      <tr>
-                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Request Date</th>
-                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Requested By</th>
-                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Reason / Justification</th>
-                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Meets Statutory</th>
-                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Current Status</th>
-                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Decision Date</th>
-                        <th className="py-2 px-3 text-xs font-semibold text-[#605e5c]">Decision By</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {testDecisionExtensionRequests.map(req => (
-                        <tr key={req.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
-                          <td className="py-2 px-3 text-sm text-[#605e5c]">{req.requestedOn}</td>
-                          <td className="py-2 px-3 text-sm text-[#323130]">{req.requestedBy}</td>
-                          <td className="py-2 px-3 text-sm text-[#323130]">{req.reason}</td>
-                          <td className="py-2 px-3 text-sm text-[#323130]">{req.meetsStatutory}</td>
-                          <td className="py-2 px-3">
-                            <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">{req.decision}</Badge>
-                          </td>
-                          <td className="py-2 px-3 text-sm text-[#605e5c]">{req.decisionDate}</td>
-                          <td className="py-2 px-3 text-sm text-[#323130]">{req.decisionBy}</td>
-                        </tr>
-                      ))}
-                      {/* Current pending request */}
-                      <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8] bg-[#fff4ce]">
-                        <td className="py-2 px-3 text-sm text-[#605e5c]">{new Date().toISOString().split('T')[0]}</td>
-                        <td className="py-2 px-3 text-sm text-[#323130]">{testDecisionCaseData.assignedALJ}</td>
-                        <td className="py-2 px-3 text-sm text-[#323130]">{extensionJustification}</td>
-                        <td className="py-2 px-3 text-sm text-[#323130]">No</td>
-                        <td className="py-2 px-3">
-                          <Badge variant="outline" className="bg-[#fff4ce] text-[#8a6914] border-[#ffb900]">Pending Director Review</Badge>
-                        </td>
-                        <td className="py-2 px-3 text-sm text-[#605e5c]">—</td>
-                        <td className="py-2 px-3 text-sm text-[#323130]">—</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
           </div>}
         </div>
       </div>
