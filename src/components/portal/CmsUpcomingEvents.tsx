@@ -699,6 +699,62 @@ function AppointmentDetails({
 export default function CmsUpcomingEvents() {
   const events: EventItem[] = useMemo(
     () => [
+      // --- Post-Ruling (Appeal Filed)
+      {
+        id: "appeal-filed-1",
+        title: "Appeal Filed",
+        category: "Appeal Filed",
+        caseNumber: "DNR-OLE-HFSS-25-00001",
+        caseName: "Summary Suspension",
+        department: "Department of Natural Resources (Complainant)",
+        party: "Rajaram Sheppard (Defendant)",
+        dateText: "September 1, 2025",
+        meetingMode: "N/A",
+        status: "Action Required",
+        appealFiledDate: "September 1, 2025",
+        appealResponseDue: "October 1, 2025",
+        requiredActionLabel: "Prepare / transfer Final Administrative Record",
+        instructions:
+          "Agency (Case Manager) must respond within 30 days and transfer the Final Administrative Record to the appellate court as required.",
+      },
+
+      // --- Post-Ruling (Decision Upheld)
+      {
+        id: "appeal-upheld-1",
+        title: "Appeal Decision Upheld",
+        category: "Appeal Decision Upheld",
+        caseNumber: "DNR-OLE-HFSS-25-00001",
+        caseName: "Summary Suspension",
+        department: "Department of Natural Resources (Complainant)",
+        party: "Rajaram Sheppard (Defendant)",
+        dateText: "October 15, 2025",
+        meetingMode: "N/A",
+        status: "Action Required",
+        appealFiledDate: "September 1, 2025",
+        requiredActionLabel: "Upload Circuit Court / Appellate Decision document",
+        instructions:
+          "Upload the upheld decision document and (if applicable) confirm the Final Administrative Record is attached. No case reopening required for upheld outcomes.",
+      },
+
+      // --- Post-Ruling (Decision Remanded)
+      {
+        id: "appeal-remanded-1",
+        title: "Appeal Decision Remanded",
+        category: "Appeal Decision Remanded",
+        caseNumber: "DNR-OLE-HFSS-25-00001",
+        caseName: "Summary Suspension",
+        department: "Department of Natural Resources (Complainant)",
+        party: "Rajaram Sheppard (Defendant)",
+        dateText: "September 22, 2025",
+        meetingMode: "N/A",
+        status: "Action Required",
+        appealFiledDate: "September 12, 2025",
+        appealResponseDue: "October 22, 2025",
+        requiredActionLabel: "Upload remand decision + Final Administrative Record",
+        instructions:
+          "Upload remand decision documents. After upload/save, Clerk task should be generated for routing. ALJ will be notified only if remand requires judicial action.",
+      },
+
       // --- Normal event (Conference)
       {
         id: "conf-1",
