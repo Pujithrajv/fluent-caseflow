@@ -408,7 +408,7 @@ function UpcomingEventCard({
           </PrimaryButton>
         )}
 
-        <div className={`grid gap-3 ${showUpload ? "grid-cols-3" : "grid-cols-2"}`}>
+        <div className="grid gap-3 grid-cols-2">
           <SecondaryButton onClick={onOpenCase}>
             <Icon name="doc" />
             Open Case
@@ -417,13 +417,6 @@ function UpcomingEventCard({
             <Icon name="calendar" />
             Open Appointment
           </SecondaryButton>
-
-          {showUpload ? (
-            <SecondaryButton onClick={onUpload}>
-              <Icon name="upload" />
-              Upload
-            </SecondaryButton>
-          ) : null}
         </div>
       </div>
     </div>
@@ -606,22 +599,11 @@ function AppointmentDetails({
                 </div>
               </div>
 
-              <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="mt-5">
                 <SecondaryButton onClick={onOpenCase}>
                   <Icon name="doc" />
                   Open Case
                 </SecondaryButton>
-                {showUpload ? (
-                  <SecondaryButton onClick={onUpload}>
-                    <Icon name="upload" />
-                    Upload
-                  </SecondaryButton>
-                ) : (
-                  <SecondaryButton onClick={() => {}}>
-                    <Icon name="upload" />
-                    Upload
-                  </SecondaryButton>
-                )}
               </div>
             </div>
 
