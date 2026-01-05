@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown, Video, ExternalLink, FolderOpen, X, Users, User, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Plus, Search, Filter, FileText, Calendar, Shield, Car, Eye, Clock, MapPin, ArrowUpDown, Video, ExternalLink, FolderOpen, X, Users, User, AlertCircle, ChevronDown, ChevronUp, Building2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -765,106 +765,111 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
                   const getBadgeColor = (type: string) => {
                     switch (type.toLowerCase()) {
                       case 'conference':
-                        return 'bg-cyan-500 text-white';
+                        return 'bg-blue-600 text-white';
                       case 'hearing':
-                        return 'bg-red-500 text-white';
+                        return 'bg-red-600 text-white';
+                      case 'meeting':
+                        return 'bg-blue-600 text-white';
                       default:
-                        return 'bg-blue-500 text-white';
+                        return 'bg-gray-600 text-white';
                     }
                   };
 
                   return (
-                    <Card key={event.id} className="shadow-sm hover:shadow-md transition-shadow duration-200 bg-white rounded-lg border border-gray-200">
-                      <CardContent className="p-5">
-                        {/* Header with title and badge */}
-                        <div className="flex items-start justify-between mb-4">
-                          <h3 className="text-base font-semibold text-gray-900 leading-tight pr-2">
-                            {event.title}
-                          </h3>
-                          <Badge 
-                            className={`text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap ${getBadgeColor(event.type)}`}
-                          >
-                            {event.type}
-                          </Badge>
-                        </div>
+                    <Card key={event.id} className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                      <CardContent className="p-0">
+                        {/* Card Header with Badge */}
+                        <div className="p-5 pb-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <h3 className="text-base font-bold text-gray-900 leading-tight pr-3">
+                              {event.title}
+                            </h3>
+                            <Badge 
+                              className={`text-xs px-3 py-1 rounded-full font-semibold whitespace-nowrap ${getBadgeColor(event.type)}`}
+                            >
+                              {event.type}
+                            </Badge>
+                          </div>
 
-                        {/* Case & Party Information */}
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-start space-x-2">
-                            <FileText className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-gray-700">
-                              {event.caseNumber}: {event.caseType}
-                            </span>
+                          {/* Case Information */}
+                          <div className="bg-gray-50 rounded-lg p-3 mb-3">
+                            <div className="flex items-start space-x-2 mb-2">
+                              <FileText className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-sm font-semibold text-gray-900">
+                                {event.caseNumber}: {event.caseType}
+                              </span>
+                            </div>
+                            <div className="flex items-start space-x-2 mb-2">
+                              <Shield className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-sm text-gray-700">
+                                {event.department} ({event.departmentRole})
+                              </span>
+                            </div>
+                            <div className="flex items-start space-x-2">
+                              <User className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-sm text-gray-700">
+                                {event.primaryParty} ({event.primaryPartyRole})
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-start space-x-2">
-                            <Shield className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-gray-600">
-                              {event.department} ({event.departmentRole})
-                            </span>
-                          </div>
-                          <div className="flex items-start space-x-2">
-                            <User className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-gray-600">
-                              {event.primaryParty} ({event.primaryPartyRole})
-                            </span>
-                          </div>
-                        </div>
 
-                        {/* Date and Time */}
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center space-x-2">
-                            <Calendar className="h-4 w-4 text-gray-500" />
-                            <span className="text-sm text-gray-700">
-                              {formatDate(event.date)}
-                            </span>
+                          {/* Date and Time */}
+                          <div className="space-y-2 mb-3">
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="h-4 w-4 text-gray-500" />
+                              <span className="text-sm font-medium text-gray-900">
+                                {formatDate(event.date)}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Clock className="h-4 w-4 text-gray-500" />
+                              <span className="text-sm text-gray-700">
+                                {event.time} {event.timezone}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <Clock className="h-4 w-4 text-gray-500" />
-                            <span className="text-sm text-gray-700">
-                              {event.time} {event.timezone}
-                            </span>
-                          </div>
-                        </div>
 
-                        {/* Location Information */}
-                        <div className="mb-4">
+                          {/* Location Information */}
                           <div className="flex items-start space-x-2">
                             <MapPin className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
                             <div className="text-sm text-gray-700">
                               {event.isTeamsEvent ? (
                                 <div>
-                                  <div>{event.location}</div>
-                                  <div className="text-gray-600 mt-1">
+                                  <div className="font-medium text-gray-900">{event.location}</div>
+                                  <div className="text-gray-600 text-xs mt-0.5">
                                     Meeting ID: {event.meetingId}
                                   </div>
                                 </div>
                               ) : (
-                                <div className="whitespace-pre-line">{event.location}</div>
+                                <div className="whitespace-pre-line text-gray-900">{event.location}</div>
                               )}
                             </div>
                           </div>
                         </div>
 
-                        {/* Action Buttons */}
-                        <div className="space-y-3">
+                        {/* Action Buttons - Footer Style */}
+                        <div className="border-t border-gray-100 p-4 bg-gray-50/50">
                           {event.isTeamsEvent && (
-                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium">
-                              <Users className="h-4 w-4 mr-2" />
+                            <Button className="w-full bg-[#1a2744] hover:bg-[#2a3754] text-white font-semibold mb-3">
+                              <Video className="h-4 w-4 mr-2" />
                               Join Teams
                             </Button>
                           )}
                           
                           <div className="grid grid-cols-2 gap-2">
-                            <Button variant="outline" className="text-sm font-medium">
-                              <FileText className="h-4 w-4 mr-1" />
+                            <Button 
+                              variant="outline" 
+                              className="text-sm font-medium border-gray-300 hover:bg-gray-100"
+                            >
+                              <FolderOpen className="h-4 w-4 mr-1.5" />
                               Open Case
                             </Button>
                             <Button 
                               variant="outline" 
-                              className="text-sm font-medium"
-                              onClick={() => navigate(`/appointment/${event.id}`)}
+                              className="text-sm font-medium border-gray-300 hover:bg-gray-100"
+                              onClick={() => navigate(`/event/${event.id}`)}
                             >
-                              <Calendar className="h-4 w-4 mr-1" />
+                              <Calendar className="h-4 w-4 mr-1.5" />
                               Open Appointment
                             </Button>
                           </div>
