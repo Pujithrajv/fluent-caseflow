@@ -17,7 +17,7 @@ import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
 import { NewTaskView } from "./NewTaskView";
-import { CmsUpcomingEvents } from "./CmsUpcomingEvents";
+import CmsUpcomingEvents from "./CmsUpcomingEvents";
 
 
 interface CaseItem {
