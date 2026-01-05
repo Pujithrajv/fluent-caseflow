@@ -268,28 +268,6 @@ function SecondaryButton({
 function PageShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-white">
-      {/* Top header */}
-      <div className={`${NAVY} text-white`}>
-        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center font-bold">CMS</div>
-            <div className="leading-tight">
-              <div className="text-sm font-semibold">Illinois Department of</div>
-              <div className="text-sm font-semibold">Central Management Services</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="rounded-md p-2 hover:bg-white/10" type="button" aria-label="Apps">
-              <Icon name="grid" className="w-5 h-5 text-white" />
-            </button>
-            <div className="h-7 w-px bg-white/25" />
-            <button className="rounded-md p-2 hover:bg-white/10" type="button" aria-label="User">
-              <Icon name="user" className="w-5 h-5 text-white" />
-            </button>
-          </div>
-        </div>
-      </div>
-
       {children}
     </div>
   );
