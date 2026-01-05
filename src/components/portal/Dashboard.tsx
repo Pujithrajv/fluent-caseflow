@@ -17,6 +17,7 @@ import { TasksKanbanView } from "./TasksKanbanView";
 import { TasksNewApproach2View } from "./TasksNewApproach2View";
 import { Tasks2View } from "./Tasks2View";
 import { NewTaskView } from "./NewTaskView";
+import { CmsUpcomingEvents } from "./CmsUpcomingEvents";
 
 
 interface CaseItem {
@@ -750,136 +751,7 @@ export function Dashboard({ onCreateCase, onViewCase, onEditCase }: DashboardPro
 
           {/* Upcoming Events Tab Content */}
           <TabsContent value="events" className="mt-6">
-            {/* Events Grid or Empty State */}
-            {filteredAndSortedEvents.length === 0 ? (
-              <div className="text-center py-12">
-                <AlertCircle className="mx-auto h-12 w-12 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-semibold">No events found</h3>
-                <p className="text-muted-foreground mt-2">
-                  No upcoming events scheduled.
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
-                {filteredAndSortedEvents.map((event) => {
-                  const getBadgeColor = (type: string) => {
-                    switch (type.toLowerCase()) {
-                      case 'conference':
-                        return 'bg-blue-600 text-white';
-                      case 'hearing':
-                        return 'bg-red-600 text-white';
-                      case 'meeting':
-                        return 'bg-blue-600 text-white';
-                      default:
-                        return 'bg-gray-600 text-white';
-                    }
-                  };
-
-                  return (
-                    <Card key={event.id} className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
-                      <CardContent className="p-0">
-                        {/* Card Header with Badge */}
-                        <div className="p-5 pb-4">
-                          <div className="flex items-start justify-between mb-3">
-                            <h3 className="text-base font-bold text-gray-900 leading-tight pr-3">
-                              {event.title}
-                            </h3>
-                            <Badge 
-                              className={`text-xs px-3 py-1 rounded-full font-semibold whitespace-nowrap ${getBadgeColor(event.type)}`}
-                            >
-                              {event.type}
-                            </Badge>
-                          </div>
-
-                          {/* Case Information */}
-                          <div className="bg-gray-50 rounded-lg p-3 mb-3">
-                            <div className="flex items-start space-x-2 mb-2">
-                              <FileText className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                              <span className="text-sm font-semibold text-gray-900">
-                                {event.caseNumber}: {event.caseType}
-                              </span>
-                            </div>
-                            <div className="flex items-start space-x-2 mb-2">
-                              <Shield className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">
-                                {event.department} ({event.departmentRole})
-                              </span>
-                            </div>
-                            <div className="flex items-start space-x-2">
-                              <User className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">
-                                {event.primaryParty} ({event.primaryPartyRole})
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Date and Time */}
-                          <div className="space-y-2 mb-3">
-                            <div className="flex items-center space-x-2">
-                              <Calendar className="h-4 w-4 text-gray-500" />
-                              <span className="text-sm font-medium text-gray-900">
-                                {formatDate(event.date)}
-                              </span>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <Clock className="h-4 w-4 text-gray-500" />
-                              <span className="text-sm text-gray-700">
-                                {event.time} {event.timezone}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Location Information */}
-                          <div className="flex items-start space-x-2">
-                            <MapPin className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                            <div className="text-sm text-gray-700">
-                              {event.isTeamsEvent ? (
-                                <div>
-                                  <div className="font-medium text-gray-900">{event.location}</div>
-                                  <div className="text-gray-600 text-xs mt-0.5">
-                                    Meeting ID: {event.meetingId}
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="whitespace-pre-line text-gray-900">{event.location}</div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Action Buttons - Footer Style */}
-                        <div className="border-t border-gray-100 p-4 bg-gray-50/50">
-                          {event.isTeamsEvent && (
-                            <Button className="w-full bg-[#1a2744] hover:bg-[#2a3754] text-white font-semibold mb-3">
-                              <Video className="h-4 w-4 mr-2" />
-                              Join Teams
-                            </Button>
-                          )}
-                          
-                          <div className="grid grid-cols-2 gap-2">
-                            <Button 
-                              variant="outline" 
-                              className="text-sm font-medium border-gray-300 hover:bg-gray-100"
-                            >
-                              <FolderOpen className="h-4 w-4 mr-1.5" />
-                              Open Case
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              className="text-sm font-medium border-gray-300 hover:bg-gray-100"
-                              onClick={() => navigate(`/event/${event.id}`)}
-                            >
-                              <Calendar className="h-4 w-4 mr-1.5" />
-                              Open Appointment
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            )}
+            <CmsUpcomingEvents />
           </TabsContent>
 
 
