@@ -34,6 +34,7 @@ import FinalDecisionMaker2 from "./pages/FinalDecisionMaker2";
 import FinalDecisionDetail2 from "./pages/FinalDecisionDetail2";
 import TesScreen from "./pages/TesScreen";
 import RulingScreen from "./pages/RulingScreen";
+import EventDetails from "./pages/EventDetails";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const App = () => (
             <Route path="/attorney/case/:caseId" element={<AttorneyCaseView />} />
             <Route path="/attorney/case/:caseId/add-request" element={<RequestWizard />} />
             <Route path="/appointment/:appointmentId" element={<AppointmentDetails />} />
+            <Route path="/event/:eventId" element={<EventDetails />} />
             <Route path="/task-detail/:taskId" element={<TaskDetail />} />
             <Route path="/alert-detail/:alertId" element={<AlertDetail />} />
             <Route path="/decision-detail/:decisionId" element={<DecisionDetail />} />
