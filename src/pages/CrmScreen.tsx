@@ -3095,6 +3095,19 @@ const CrmScreen = () => {
                   </div>
                 </div>
                 
+              </div>
+              
+              {(upholdChecked || overturnChecked || remandChecked) && <div className="bg-white border border-[#edebe9] rounded flex-1">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">
+                      {upholdChecked ? "UPHOLD NOTES" : overturnChecked ? "OVERTURN NOTES" : "REMAND NOTES"}
+                    </h3>
+                  </div>
+                  <div className="p-4">
+                    <Textarea placeholder="Enter notes or rationale for your decision..." value={postRulingNotes} onChange={e => setPostRulingNotes(e.target.value)} className="min-h-[120px]" />
+                  </div>
+                </div>}
+
                 {remandChecked && <div className="bg-white border border-[#edebe9] rounded">
                     <div className="px-4 py-3 border-b border-[#edebe9]">
                       <h3 className="text-sm font-semibold text-[#323130]">COURT ORDERED HEARING?</h3>
@@ -3216,18 +3229,6 @@ const CrmScreen = () => {
                       </div>
                     </div>
                   </div>}
-              </div>
-              
-              {(upholdChecked || overturnChecked || remandChecked) && <div className="bg-white border border-[#edebe9] rounded flex-1">
-                  <div className="px-4 py-3 border-b border-[#edebe9]">
-                    <h3 className="text-sm font-semibold text-[#323130]">
-                      {upholdChecked ? "UPHOLD NOTES" : overturnChecked ? "OVERTURN NOTES" : "REMAND NOTES"}
-                    </h3>
-                  </div>
-                  <div className="p-4">
-                    <Textarea placeholder="Enter notes or rationale for your decision..." value={postRulingNotes} onChange={e => setPostRulingNotes(e.target.value)} className="min-h-[120px]" />
-                  </div>
-                </div>}
             </div>
           </div>}
         </div>
