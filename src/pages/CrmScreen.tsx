@@ -335,7 +335,7 @@ const CrmScreen = () => {
     if (daysUntilDue <= 7 && daysUntilDue >= 0) return "bg-yellow-50";
     return "";
   };
-  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "test", "Ruling", "Requests", "Timeline / Docket", "NEW RULING", "Related"];
+  const tabs = ["General", "Intake", "Pre-Hearing", "Discovery", "test", "Ruling", "Requests", "Timeline / Docket", "NEW RULING", "Post Ruling"];
 
   // Test Decision sub-tab state
   const [testDecisionSubTab, setTestDecisionSubTab] = useState("writing");
