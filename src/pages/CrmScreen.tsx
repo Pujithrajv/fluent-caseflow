@@ -3076,67 +3076,59 @@ const CrmScreen = () => {
                   </div>
                   <div className="p-4 space-y-4">
                     <div className="flex items-center space-x-3">
-                      <Checkbox id="uphold" checked={upholdChecked} onCheckedChange={(checked) => setUpholdChecked(checked === true)} />
+                      <Checkbox id="uphold" checked={upholdChecked} onCheckedChange={checked => setUpholdChecked(checked === true)} />
                       <Label htmlFor="uphold" className="text-sm text-[#323130]">Uphold Decision</Label>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Checkbox id="overturn" checked={overturnChecked} onCheckedChange={(checked) => setOverturnChecked(checked === true)} />
+                      <Checkbox id="overturn" checked={overturnChecked} onCheckedChange={checked => setOverturnChecked(checked === true)} />
                       <Label htmlFor="overturn" className="text-sm text-[#323130]">Overturn Decision</Label>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Checkbox id="remand" checked={remandChecked} onCheckedChange={(checked) => {
-                        setRemandChecked(checked === true);
-                        if (checked !== true) setCourtOrderedHearing(null);
-                      }} />
+                      <Checkbox id="remand" checked={remandChecked} onCheckedChange={checked => {
+                      setRemandChecked(checked === true);
+                      if (checked !== true) setCourtOrderedHearing(null);
+                    }} />
                       <Label htmlFor="remand" className="text-sm text-[#323130]">Remand Decision</Label>
                     </div>
                   </div>
                 </div>
                 
-                {remandChecked && (
-                  <div className="bg-white border border-[#edebe9] rounded">
+                {remandChecked && <div className="bg-white border border-[#edebe9] rounded">
                     <div className="px-4 py-3 border-b border-[#edebe9]">
                       <h3 className="text-sm font-semibold text-[#323130]">COURT ORDERED HEARING?</h3>
                     </div>
                     <div className="p-4">
                       <div className="flex gap-4">
                         <div className="flex items-center space-x-2">
-                          <Checkbox 
-                            id="courtHearingYes" 
-                            checked={courtOrderedHearing === "yes"} 
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                setCourtOrderedHearing("yes");
-                                toast({ title: "Notification Sent", description: "Case remand letter has been sent to all participants." });
-                              } else {
-                                setCourtOrderedHearing(null);
-                              }
-                            }} 
-                          />
+                          <Checkbox id="courtHearingYes" checked={courtOrderedHearing === "yes"} onCheckedChange={checked => {
+                        if (checked) {
+                          setCourtOrderedHearing("yes");
+                          toast({
+                            title: "Notification Sent",
+                            description: "Case remand letter has been sent to all participants."
+                          });
+                        } else {
+                          setCourtOrderedHearing(null);
+                        }
+                      }} />
                           <Label htmlFor="courtHearingYes" className="text-sm text-[#323130]">Yes</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Checkbox 
-                            id="courtHearingNo" 
-                            checked={courtOrderedHearing === "no"} 
-                            onCheckedChange={(checked) => {
-                              setCourtOrderedHearing(checked ? "no" : null);
-                            }} 
-                          />
+                          <Checkbox id="courtHearingNo" checked={courtOrderedHearing === "no"} onCheckedChange={checked => {
+                        setCourtOrderedHearing(checked ? "no" : null);
+                      }} />
                           <Label htmlFor="courtHearingNo" className="text-sm text-[#323130]">No</Label>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  </div>}
                 
                 {/* Show PRE-HEARING CHECKLIST and EVENTS/NOTICES when Court Ordered Hearing is Yes */}
-                {courtOrderedHearing === "yes" && (
-                  <div className="grid grid-cols-2 gap-6 mt-4">
+                {courtOrderedHearing === "yes" && <div className="grid grid-cols-2 gap-6 mt-4">
                     {/* Left Column - Pre-Hearing Checklist */}
                     <div className="bg-white border border-[#edebe9] rounded">
                       <div className="px-4 py-3 border-b border-[#edebe9]">
-                        <h3 className="text-sm font-semibold text-[#323130]">PRE-HEARING CHECKLIST</h3>
+                        <h3 className="text-sm font-semibold text-[#323130]">REMAND HEARING CHECKLIST</h3>
                       </div>
                       <div className="p-6 space-y-4">
                         <div className="flex items-center space-x-3">
@@ -3243,27 +3235,19 @@ const CrmScreen = () => {
                         Rows: <span className="text-[#0078d4]">1</span>
                       </div>
                     </div>
-                  </div>
-                )}
+                  </div>}
               </div>
               
-              {(upholdChecked || overturnChecked || remandChecked) && (
-                <div className="bg-white border border-[#edebe9] rounded flex-1">
+              {(upholdChecked || overturnChecked || remandChecked) && <div className="bg-white border border-[#edebe9] rounded flex-1">
                   <div className="px-4 py-3 border-b border-[#edebe9]">
                     <h3 className="text-sm font-semibold text-[#323130]">
                       {upholdChecked ? "UPHOLD NOTES" : overturnChecked ? "OVERTURN NOTES" : "REMAND NOTES"}
                     </h3>
                   </div>
                   <div className="p-4">
-                    <Textarea
-                      placeholder="Enter notes or rationale for your decision..."
-                      value={postRulingNotes}
-                      onChange={(e) => setPostRulingNotes(e.target.value)}
-                      className="min-h-[120px]"
-                    />
+                    <Textarea placeholder="Enter notes or rationale for your decision..." value={postRulingNotes} onChange={e => setPostRulingNotes(e.target.value)} className="min-h-[120px]" />
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </div>}
         </div>
