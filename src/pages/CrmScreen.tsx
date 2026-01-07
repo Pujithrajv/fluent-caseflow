@@ -2987,6 +2987,58 @@ const CrmScreen = () => {
               <div className="flex flex-col gap-4 flex-shrink-0">
                 <div className="bg-white border border-[#edebe9] rounded">
                   <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">PRE-HEARING CHECKLIST</h3>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="preHearingComplete" />
+                      <Label htmlFor="preHearingComplete" className="text-sm text-[#323130]">Pre-Hearing Conferences Complete?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="discoveryComplete" />
+                      <Label htmlFor="discoveryComplete" className="text-sm text-[#323130]">Is Discovery Complete?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="motionsResolved" />
+                      <Label htmlFor="motionsResolved" className="text-sm text-[#323130]">All Outstanding Motions Resolved?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="witnessesIdentified" />
+                      <Label htmlFor="witnessesIdentified" className="text-sm text-[#323130]">All Witnesses Identified?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="witnessesAvailable" />
+                      <Label htmlFor="witnessesAvailable" className="text-sm text-[#323130]">Are all Witnesses available?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="exhibitsUploaded" />
+                      <Label htmlFor="exhibitsUploaded" className="text-sm text-[#323130]">All Proposed Exhibits Uploaded?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="hearingScheduled" />
+                      <Label htmlFor="hearingScheduled" className="text-sm text-[#323130]">Hearing Scheduled?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="venueReserved" />
+                      <Label htmlFor="venueReserved" className="text-sm text-[#323130]">Venue Reserved?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="courtReporterScheduled" />
+                      <Label htmlFor="courtReporterScheduled" className="text-sm text-[#323130]">Court Reporter Scheduled?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="accommodationsProvided" />
+                      <Label htmlFor="accommodationsProvided" className="text-sm text-[#323130]">Accommodations provided for?</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="specialEquipment" />
+                      <Label htmlFor="specialEquipment" className="text-sm text-[#323130]">Special equipment provided for?</Label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
                     <h3 className="text-sm font-semibold text-[#323130]">APPEAL DECISION CHECKLIST</h3>
                   </div>
                   <div className="p-4 space-y-4">
