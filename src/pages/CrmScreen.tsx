@@ -3005,10 +3005,14 @@ const CrmScreen = () => {
                     <Label htmlFor="remand" className="text-sm text-[#323130]">Remand Decision</Label>
                   </div>
                 </div>
-                
-                {remandChecked && (
-                  <div className="px-4 py-3 border-t border-[#edebe9]">
-                    <h4 className="text-sm font-semibold text-[#323130] mb-3">COURT ORDERED HEARING?</h4>
+              </div>
+              
+              {remandChecked && (
+                <div className="bg-white border border-[#edebe9] rounded flex-shrink-0">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">COURT ORDERED HEARING?</h3>
+                  </div>
+                  <div className="p-4">
                     <div className="flex gap-4">
                       <div className="flex items-center space-x-2">
                         <Checkbox 
@@ -3037,8 +3041,8 @@ const CrmScreen = () => {
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
               
               {(upholdChecked || overturnChecked || remandChecked) && (
                 <div className="bg-white border border-[#edebe9] rounded flex-1">
