@@ -3132,48 +3132,16 @@ const CrmScreen = () => {
                       </div>
                       <div className="p-6 space-y-4">
                         <div className="flex items-center space-x-3">
-                          <Checkbox id="prPreHearingConf" />
-                          <label htmlFor="prPreHearingConf" className="text-sm text-[#323130]">Pre-Hearing Conferences Complete?</label>
+                          <Checkbox id="prNeedPreHearing" />
+                          <label htmlFor="prNeedPreHearing" className="text-sm text-[#323130]">Need Pre-Hearing?</label>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <Checkbox id="prDiscoveryComplete" />
-                          <label htmlFor="prDiscoveryComplete" className="text-sm text-[#323130]">Is Discovery Complete?</label>
+                          <Checkbox id="prNeedCaseManagement" />
+                          <label htmlFor="prNeedCaseManagement" className="text-sm text-[#323130]">Need Additional Case Management Conference?</label>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <Checkbox id="prMotionsResolved" />
-                          <label htmlFor="prMotionsResolved" className="text-sm text-[#323130]">All Outstanding Motions Resolved?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prWitnessesIdentified" />
-                          <label htmlFor="prWitnessesIdentified" className="text-sm text-[#323130]">All Witnesses Identified?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prWitnessesAvailable" />
-                          <label htmlFor="prWitnessesAvailable" className="text-sm text-[#323130]">Are all Witnesses available?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prExhibitsUploaded" />
-                          <label htmlFor="prExhibitsUploaded" className="text-sm text-[#323130]">All Proposed Exhibits Uploaded?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prHearingScheduled" />
-                          <label htmlFor="prHearingScheduled" className="text-sm text-[#323130]">Hearing Scheduled?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prVenueReserved" />
-                          <label htmlFor="prVenueReserved" className="text-sm text-[#323130]">Venue Reserved?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prCourtReporter" />
-                          <label htmlFor="prCourtReporter" className="text-sm text-[#323130]">Court Reporter Scheduled?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prAccommodations" />
-                          <label htmlFor="prAccommodations" className="text-sm text-[#323130]">Accommodations provided for?</label>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox id="prSpecialEquipment" />
-                          <label htmlFor="prSpecialEquipment" className="text-sm text-[#323130]">Special equipment provided for?</label>
+                          <Checkbox id="prRemandHearingCompleted" />
+                          <label htmlFor="prRemandHearingCompleted" className="text-sm text-[#323130]">Remand Hearing Completed?</label>
                         </div>
                       </div>
                     </div>
