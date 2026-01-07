@@ -3129,6 +3129,125 @@ const CrmScreen = () => {
                     </div>
                   </div>
                 )}
+                
+                {/* Show PRE-HEARING CHECKLIST and EVENTS/NOTICES when Court Ordered Hearing is Yes */}
+                {courtOrderedHearing === "yes" && (
+                  <div className="grid grid-cols-2 gap-6 mt-4">
+                    {/* Left Column - Pre-Hearing Checklist */}
+                    <div className="bg-white border border-[#edebe9] rounded">
+                      <div className="px-4 py-3 border-b border-[#edebe9]">
+                        <h3 className="text-sm font-semibold text-[#323130]">PRE-HEARING CHECKLIST</h3>
+                      </div>
+                      <div className="p-6 space-y-4">
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prPreHearingConf" />
+                          <label htmlFor="prPreHearingConf" className="text-sm text-[#323130]">Pre-Hearing Conferences Complete?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prDiscoveryComplete" />
+                          <label htmlFor="prDiscoveryComplete" className="text-sm text-[#323130]">Is Discovery Complete?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prMotionsResolved" />
+                          <label htmlFor="prMotionsResolved" className="text-sm text-[#323130]">All Outstanding Motions Resolved?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prWitnessesIdentified" />
+                          <label htmlFor="prWitnessesIdentified" className="text-sm text-[#323130]">All Witnesses Identified?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prWitnessesAvailable" />
+                          <label htmlFor="prWitnessesAvailable" className="text-sm text-[#323130]">Are all Witnesses available?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prExhibitsUploaded" />
+                          <label htmlFor="prExhibitsUploaded" className="text-sm text-[#323130]">All Proposed Exhibits Uploaded?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prHearingScheduled" />
+                          <label htmlFor="prHearingScheduled" className="text-sm text-[#323130]">Hearing Scheduled?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prVenueReserved" />
+                          <label htmlFor="prVenueReserved" className="text-sm text-[#323130]">Venue Reserved?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prCourtReporter" />
+                          <label htmlFor="prCourtReporter" className="text-sm text-[#323130]">Court Reporter Scheduled?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prAccommodations" />
+                          <label htmlFor="prAccommodations" className="text-sm text-[#323130]">Accommodations provided for?</label>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prSpecialEquipment" />
+                          <label htmlFor="prSpecialEquipment" className="text-sm text-[#323130]">Special equipment provided for?</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Column - Events/Notices */}
+                    <div className="bg-white border border-[#edebe9] rounded">
+                      <div className="px-4 py-3 border-b border-[#edebe9]">
+                        <h3 className="text-sm font-semibold text-[#323130]">EVENTS / NOTICES</h3>
+                      </div>
+                      <div className="p-4 space-y-3">
+                        <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                          Schedule Pre-Hearing Conference
+                        </Button>
+                        <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                          Schedule Administrative Hearing
+                        </Button>
+                      </div>
+                      <div className="px-4 py-2 flex items-center justify-end space-x-4 border-b border-[#edebe9]">
+                        <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
+                          <Plus className="h-4 w-4 mr-1" />
+                          New Notice
+                        </Button>
+                        <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
+                          <FileText className="h-4 w-4 mr-1" />
+                          Add Existing Notice
+                        </Button>
+                        <Button size="sm" variant="ghost" className="text-[#323130] p-1">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b border-[#edebe9]">
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">
+                                <input type="checkbox" className="h-4 w-4" />
+                              </th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Subject ↑ ↕</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Start Date ↕</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">End Date ↕</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Status Reason ↕</th>
+                              <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Date Created ↕</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                              <td className="py-2 px-3">
+                                <input type="checkbox" className="h-4 w-4" />
+                              </td>
+                              <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                                Initial Case Management Conference
+                              </td>
+                              <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                              <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                              <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
+                              <td className="py-2 px-3 text-sm text-[#605e5c]">1/7/2026 3:46 PM</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className="px-4 py-2 text-sm text-[#605e5c]">
+                        Rows: <span className="text-[#0078d4]">1</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               
               {(upholdChecked || overturnChecked || remandChecked) && (
