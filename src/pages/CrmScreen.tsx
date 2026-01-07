@@ -999,65 +999,50 @@ const CrmScreen = () => {
                     <div className="px-4 py-3 border-b border-[#edebe9]">
                       <h3 className="text-sm font-semibold text-[#323130]">PRE-HEARING CHECKLIST</h3>
                     </div>
-                    <div className="p-6 space-y-3">
-                      <div>
-                        <p className="text-sm text-[#323130]">Pre-Hearing Conferences Complete?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                    <div className="p-6 space-y-4">
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="preHearingConf" />
+                        <label htmlFor="preHearingConf" className="text-sm text-[#323130]">Pre-Hearing Conferences Complete?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Is Discovery Complete?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="discoveryComplete" />
+                        <label htmlFor="discoveryComplete" className="text-sm text-[#323130]">Is Discovery Complete?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">All Outstanding Motions Resolved?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="motionsResolved" />
+                        <label htmlFor="motionsResolved" className="text-sm text-[#323130]">All Outstanding Motions Resolved?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Dispositive Motion Expected?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="witnessesIdentified" />
+                        <label htmlFor="witnessesIdentified" className="text-sm text-[#323130]">All Witnesses Identified?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">All Witnesses Identified?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="witnessesAvailable" />
+                        <label htmlFor="witnessesAvailable" className="text-sm text-[#323130]">Are all Witnesses available?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Are all Witnesses available?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="exhibitsUploaded" />
+                        <label htmlFor="exhibitsUploaded" className="text-sm text-[#323130]">All Proposed Exhibits Uploaded?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">All Proposed Exhibits Uploaded?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="hearingScheduled" />
+                        <label htmlFor="hearingScheduled" className="text-sm text-[#323130]">Hearing Scheduled?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Discussions Regarding Settlement?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="venueReserved" />
+                        <label htmlFor="venueReserved" className="text-sm text-[#323130]">Venue Reserved?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Schedule Hearing</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="courtReporter" />
+                        <label htmlFor="courtReporter" className="text-sm text-[#323130]">Court Reporter Scheduled?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Venue Reserved?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="accommodations" />
+                        <label htmlFor="accommodations" className="text-sm text-[#323130]">Accommodations provided for?</label>
                       </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Court Reporter Scheduled?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
-                      </div>
-
-                      <div>
-                        <p className="text-sm text-[#323130]">Accommodations provided for?</p>
-                        <p className="text-sm text-[#605e5c]">---</p>
+                      <div className="flex items-center space-x-3">
+                        <Checkbox id="specialEquipment" />
+                        <label htmlFor="specialEquipment" className="text-sm text-[#323130]">Special equipment provided for?</label>
                       </div>
                     </div>
                   </div>
@@ -1066,25 +1051,38 @@ const CrmScreen = () => {
                 {/* Right Column - Events/Notices */}
                 <div className="space-y-6">
                   <div className="bg-white border border-[#edebe9] rounded">
-                    <div className="px-4 py-3 border-b border-[#edebe9] flex items-center justify-between">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
                       <h3 className="text-sm font-semibold text-[#323130]">EVENTS / NOTICES</h3>
-                      <div className="flex items-center space-x-2">
-                        <Button size="sm" variant="ghost" className="text-[#0078d4] hover:text-[#106ebe] text-xs">
-                          + New Notice
-                        </Button>
-                        <Button size="sm" variant="ghost" className="text-[#0078d4] hover:text-[#106ebe] text-xs">
-                          📝 Add Existing Notice
-                        </Button>
-                      </div>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        Schedule Pre-Hearing Conference
+                      </Button>
+                      <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        Schedule Administrative Hearing
+                      </Button>
+                    </div>
+                    <div className="px-4 py-2 flex items-center justify-end space-x-4 border-b border-[#edebe9]">
+                      <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
+                        <Plus className="h-4 w-4 mr-1" />
+                        New Notice
+                      </Button>
+                      <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
+                        <FileText className="h-4 w-4 mr-1" />
+                        Add Existing Notice
+                      </Button>
+                      <Button size="sm" variant="ghost" className="text-[#323130] p-1">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
                     </div>
                     <div className="overflow-x-auto">
                       <table className="w-full">
                         <thead>
-                          <tr className="border-b border-[#edebe9] bg-[#f3f2f1]">
+                          <tr className="border-b border-[#edebe9]">
                             <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">
                               <input type="checkbox" className="h-4 w-4" />
                             </th>
-                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Subject ↑</th>
+                            <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Subject ↑ ↕</th>
                             <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Start Date ↕</th>
                             <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">End Date ↕</th>
                             <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Status Reason ↕</th>
@@ -1097,54 +1095,18 @@ const CrmScreen = () => {
                               <input type="checkbox" className="h-4 w-4" />
                             </td>
                             <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
-                              Case Management Conference Continuance
-                            </td>
-                            <td className="py-2 px-3 text-sm text-[#323130]"></td>
-                            <td className="py-2 px-3 text-sm text-[#323130]"></td>
-                            <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
-                            <td className="py-2 px-3 text-sm text-[#605e5c]">11/7/2025 4:53 PM</td>
-                          </tr>
-                          <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
-                            <td className="py-2 px-3">
-                              <input type="checkbox" className="h-4 w-4" />
-                            </td>
-                            <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
-                              Case Management Conference Continuance
-                            </td>
-                            <td className="py-2 px-3 text-sm text-[#323130]"></td>
-                            <td className="py-2 px-3 text-sm text-[#323130]"></td>
-                            <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
-                            <td className="py-2 px-3 text-sm text-[#605e5c]">11/7/2025 4:54 PM</td>
-                          </tr>
-                          <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
-                            <td className="py-2 px-3">
-                              <input type="checkbox" className="h-4 w-4" />
-                            </td>
-                            <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
                               Initial Case Management Conference
                             </td>
-                            <td className="py-2 px-3 text-sm text-[#323130]">10/29/2025 1:00 ...</td>
-                            <td className="py-2 px-3 text-sm text-[#323130]">10/29/2025 1:30 ...</td>
-                            <td className="py-2 px-3 text-sm text-[#323130]">Scheduled</td>
-                            <td className="py-2 px-3 text-sm text-[#605e5c]">10/28/2025 4:18 PM</td>
-                          </tr>
-                          <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
-                            <td className="py-2 px-3">
-                              <input type="checkbox" className="h-4 w-4" />
-                            </td>
-                            <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
-                              Pre-Hearing Conference
-                            </td>
                             <td className="py-2 px-3 text-sm text-[#323130]"></td>
                             <td className="py-2 px-3 text-sm text-[#323130]"></td>
                             <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
-                            <td className="py-2 px-3 text-sm text-[#605e5c]">11/7/2025 4:50 PM</td>
+                            <td className="py-2 px-3 text-sm text-[#605e5c]">1/7/2026 3:46 PM</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <div className="px-4 py-2 border-t border-[#edebe9] text-xs text-[#605e5c]">
-                      Rows: 4
+                    <div className="px-4 py-2 text-sm text-[#605e5c]">
+                      Rows: <span className="text-[#0078d4]">1</span>
                     </div>
                   </div>
                 </div>
