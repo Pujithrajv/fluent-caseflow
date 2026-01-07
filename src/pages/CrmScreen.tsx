@@ -2720,6 +2720,129 @@ const CrmScreen = () => {
             </div>
           </div>}
 
+          {/* Timeline / Docket Tab */}
+          {activeTab === "Timeline / Docket" && <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 gap-6">
+              {/* Left Column - Pre-Hearing Checklist */}
+              <div className="space-y-6">
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">PRE-HEARING CHECKLIST</h3>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlPreHearingConf" />
+                      <label htmlFor="tlPreHearingConf" className="text-sm text-[#323130]">Pre-Hearing Conferences Complete?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlDiscoveryComplete" />
+                      <label htmlFor="tlDiscoveryComplete" className="text-sm text-[#323130]">Is Discovery Complete?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlMotionsResolved" />
+                      <label htmlFor="tlMotionsResolved" className="text-sm text-[#323130]">All Outstanding Motions Resolved?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlWitnessesIdentified" />
+                      <label htmlFor="tlWitnessesIdentified" className="text-sm text-[#323130]">All Witnesses Identified?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlWitnessesAvailable" />
+                      <label htmlFor="tlWitnessesAvailable" className="text-sm text-[#323130]">Are all Witnesses available?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlExhibitsUploaded" />
+                      <label htmlFor="tlExhibitsUploaded" className="text-sm text-[#323130]">All Proposed Exhibits Uploaded?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlHearingScheduled" />
+                      <label htmlFor="tlHearingScheduled" className="text-sm text-[#323130]">Hearing Scheduled?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlVenueReserved" />
+                      <label htmlFor="tlVenueReserved" className="text-sm text-[#323130]">Venue Reserved?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlCourtReporter" />
+                      <label htmlFor="tlCourtReporter" className="text-sm text-[#323130]">Court Reporter Scheduled?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlAccommodations" />
+                      <label htmlFor="tlAccommodations" className="text-sm text-[#323130]">Accommodations provided for?</label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="tlSpecialEquipment" />
+                      <label htmlFor="tlSpecialEquipment" className="text-sm text-[#323130]">Special equipment provided for?</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column - Events/Notices */}
+              <div className="space-y-6">
+                <div className="bg-white border border-[#edebe9] rounded">
+                  <div className="px-4 py-3 border-b border-[#edebe9]">
+                    <h3 className="text-sm font-semibold text-[#323130]">EVENTS / NOTICES</h3>
+                  </div>
+                  <div className="p-4 space-y-3">
+                    <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                      Schedule Pre-Hearing Conference
+                    </Button>
+                    <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                      Schedule Administrative Hearing
+                    </Button>
+                  </div>
+                  <div className="px-4 py-2 flex items-center justify-end space-x-4 border-b border-[#edebe9]">
+                    <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
+                      <Plus className="h-4 w-4 mr-1" />
+                      New Notice
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
+                      <FileText className="h-4 w-4 mr-1" />
+                      Add Existing Notice
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-[#323130] p-1">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-[#edebe9]">
+                          <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">
+                            <input type="checkbox" className="h-4 w-4" />
+                          </th>
+                          <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Subject ↑ ↕</th>
+                          <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Start Date ↕</th>
+                          <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">End Date ↕</th>
+                          <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Status Reason ↕</th>
+                          <th className="text-left py-2 px-3 text-xs font-semibold text-[#323130]">Date Created ↕</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                          <td className="py-2 px-3">
+                            <input type="checkbox" className="h-4 w-4" />
+                          </td>
+                          <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                            Initial Case Management Conference
+                          </td>
+                          <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                          <td className="py-2 px-3 text-sm text-[#323130]"></td>
+                          <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
+                          <td className="py-2 px-3 text-sm text-[#605e5c]">1/7/2026 3:46 PM</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="px-4 py-2 text-sm text-[#605e5c]">
+                    Rows: <span className="text-[#0078d4]">1</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>}
+
           {/* NEW RULING Tab - Dynamics 365 Ruling / Decision Form */}
           {activeTab === "NEW RULING" && <div className="max-w-7xl mx-auto space-y-6">
             
