@@ -3193,7 +3193,7 @@ const CrmScreen = () => {
                       </div>
                       <div className="p-4 space-y-3">
                         <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
-                          Schedule Administrative Hearing
+                          Schedule Remand Hearing
                         </Button>
                       </div>
                       <div className="px-4 py-2 flex items-center justify-end space-x-4 border-b border-[#edebe9]">
