@@ -3044,63 +3044,6 @@ const CrmScreen = () => {
                     </div>
                   </div>
                 )}
-
-                {/* Events / Notices Section */}
-                <div className="bg-white border border-[#edebe9] rounded">
-                  <div className="px-4 py-3 border-b border-[#edebe9]">
-                    <h3 className="text-sm font-semibold text-[#323130]">EVENTS / NOTICES</h3>
-                  </div>
-                  <div className="p-4 space-y-4">
-                    <div className="flex flex-wrap gap-2">
-                      <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white text-sm">
-                        Schedule Case Management Conference
-                      </Button>
-                      <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white text-sm">
-                        Schedule Pre-Hearing Conference
-                      </Button>
-                      <Button className="bg-[#0078d4] hover:bg-[#106ebe] text-white text-sm">
-                        Schedule Administrative Hearing
-                      </Button>
-                    </div>
-                    <div className="flex justify-end gap-4 text-sm">
-                      <button className="flex items-center gap-1 text-[#323130] hover:text-[#0078d4]">
-                        <Plus className="w-4 h-4" />
-                        New Notice
-                      </button>
-                      <button className="flex items-center gap-1 text-[#323130] hover:text-[#0078d4]">
-                        <FileText className="w-4 h-4" />
-                        Add Existing Notice
-                      </button>
-                    </div>
-                    <div className="border border-[#edebe9] rounded">
-                      <table className="w-full text-sm">
-                        <thead className="bg-[#f3f2f1]">
-                          <tr>
-                            <th className="p-2 text-left w-8"></th>
-                            <th className="p-2 text-left text-[#323130] font-medium">Subject ↑</th>
-                            <th className="p-2 text-left text-[#323130] font-medium">Start Date</th>
-                            <th className="p-2 text-left text-[#323130] font-medium">End Date</th>
-                            <th className="p-2 text-left text-[#323130] font-medium">Status Reason</th>
-                            <th className="p-2 text-left text-[#323130] font-medium">Date Created</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="border-t border-[#edebe9]">
-                            <td className="p-2">
-                              <Checkbox />
-                            </td>
-                            <td className="p-2 text-[#0078d4]">Initial Case Management Conference</td>
-                            <td className="p-2 text-[#323130]"></td>
-                            <td className="p-2 text-[#323130]"></td>
-                            <td className="p-2 text-[#323130]">Open</td>
-                            <td className="p-2 text-[#323130]">1/7/2026 3:46 PM</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="text-xs text-[#605e5c]">Rows: 1</div>
-                  </div>
-                </div>
               </div>
               
               {(upholdChecked || overturnChecked || remandChecked) && (
