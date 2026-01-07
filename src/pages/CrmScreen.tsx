@@ -2984,65 +2984,67 @@ const CrmScreen = () => {
           {/* Post Ruling Tab */}
           {activeTab === "Post Ruling" && <div className="max-w-7xl mx-auto">
             <div className="flex gap-6">
-              <div className="bg-white border border-[#edebe9] rounded flex-shrink-0">
-                <div className="px-4 py-3 border-b border-[#edebe9]">
-                  <h3 className="text-sm font-semibold text-[#323130]">APPEAL DECISION CHECKLIST</h3>
-                </div>
-                <div className="p-4 space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <Checkbox id="uphold" checked={upholdChecked} onCheckedChange={(checked) => setUpholdChecked(checked === true)} />
-                    <Label htmlFor="uphold" className="text-sm text-[#323130]">Uphold Decision</Label>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Checkbox id="overturn" checked={overturnChecked} onCheckedChange={(checked) => setOverturnChecked(checked === true)} />
-                    <Label htmlFor="overturn" className="text-sm text-[#323130]">Overturn Decision</Label>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Checkbox id="remand" checked={remandChecked} onCheckedChange={(checked) => {
-                      setRemandChecked(checked === true);
-                      if (checked !== true) setCourtOrderedHearing(null);
-                    }} />
-                    <Label htmlFor="remand" className="text-sm text-[#323130]">Remand Decision</Label>
-                  </div>
-                </div>
-              </div>
-              
-              {remandChecked && (
-                <div className="bg-white border border-[#edebe9] rounded flex-shrink-0">
+              <div className="flex flex-col gap-4 flex-shrink-0">
+                <div className="bg-white border border-[#edebe9] rounded">
                   <div className="px-4 py-3 border-b border-[#edebe9]">
-                    <h3 className="text-sm font-semibold text-[#323130]">COURT ORDERED HEARING?</h3>
+                    <h3 className="text-sm font-semibold text-[#323130]">APPEAL DECISION CHECKLIST</h3>
                   </div>
-                  <div className="p-4">
-                    <div className="flex gap-4">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox 
-                          id="courtHearingYes" 
-                          checked={courtOrderedHearing === "yes"} 
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setCourtOrderedHearing("yes");
-                              toast({ title: "Notification Sent", description: "Case remand letter has been sent to all participants." });
-                            } else {
-                              setCourtOrderedHearing(null);
-                            }
-                          }} 
-                        />
-                        <Label htmlFor="courtHearingYes" className="text-sm text-[#323130]">Yes</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox 
-                          id="courtHearingNo" 
-                          checked={courtOrderedHearing === "no"} 
-                          onCheckedChange={(checked) => {
-                            setCourtOrderedHearing(checked ? "no" : null);
-                          }} 
-                        />
-                        <Label htmlFor="courtHearingNo" className="text-sm text-[#323130]">No</Label>
-                      </div>
+                  <div className="p-4 space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="uphold" checked={upholdChecked} onCheckedChange={(checked) => setUpholdChecked(checked === true)} />
+                      <Label htmlFor="uphold" className="text-sm text-[#323130]">Uphold Decision</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="overturn" checked={overturnChecked} onCheckedChange={(checked) => setOverturnChecked(checked === true)} />
+                      <Label htmlFor="overturn" className="text-sm text-[#323130]">Overturn Decision</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Checkbox id="remand" checked={remandChecked} onCheckedChange={(checked) => {
+                        setRemandChecked(checked === true);
+                        if (checked !== true) setCourtOrderedHearing(null);
+                      }} />
+                      <Label htmlFor="remand" className="text-sm text-[#323130]">Remand Decision</Label>
                     </div>
                   </div>
                 </div>
-              )}
+                
+                {remandChecked && (
+                  <div className="bg-white border border-[#edebe9] rounded">
+                    <div className="px-4 py-3 border-b border-[#edebe9]">
+                      <h3 className="text-sm font-semibold text-[#323130]">COURT ORDERED HEARING?</h3>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex gap-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="courtHearingYes" 
+                            checked={courtOrderedHearing === "yes"} 
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setCourtOrderedHearing("yes");
+                                toast({ title: "Notification Sent", description: "Case remand letter has been sent to all participants." });
+                              } else {
+                                setCourtOrderedHearing(null);
+                              }
+                            }} 
+                          />
+                          <Label htmlFor="courtHearingYes" className="text-sm text-[#323130]">Yes</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="courtHearingNo" 
+                            checked={courtOrderedHearing === "no"} 
+                            onCheckedChange={(checked) => {
+                              setCourtOrderedHearing(checked ? "no" : null);
+                            }} 
+                          />
+                          <Label htmlFor="courtHearingNo" className="text-sm text-[#323130]">No</Label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               
               {(upholdChecked || overturnChecked || remandChecked) && (
                 <div className="bg-white border border-[#edebe9] rounded flex-1">
