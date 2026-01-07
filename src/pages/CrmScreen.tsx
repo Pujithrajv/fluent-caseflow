@@ -24,6 +24,8 @@ const CrmScreen = () => {
   const [remandChecked, setRemandChecked] = useState(false);
   const [courtOrderedHearing, setCourtOrderedHearing] = useState<string | null>(null);
   const [postRulingNotes, setPostRulingNotes] = useState("");
+  const [needPreHearing, setNeedPreHearing] = useState(false);
+  const [needCaseManagement, setNeedCaseManagement] = useState(false);
 
   // Discovery form state
   const [discoveryData, setDiscoveryData] = useState({
@@ -3132,11 +3134,11 @@ const CrmScreen = () => {
                       </div>
                       <div className="p-6 space-y-4">
                         <div className="flex items-center space-x-3">
-                          <Checkbox id="prNeedPreHearing" />
+                          <Checkbox id="prNeedPreHearing" checked={needPreHearing} onCheckedChange={(checked) => setNeedPreHearing(checked === true)} />
                           <label htmlFor="prNeedPreHearing" className="text-sm text-[#323130]">Need Pre-Hearing?</label>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <Checkbox id="prNeedCaseManagement" />
+                          <Checkbox id="prNeedCaseManagement" checked={needCaseManagement} onCheckedChange={(checked) => setNeedCaseManagement(checked === true)} />
                           <label htmlFor="prNeedCaseManagement" className="text-sm text-[#323130]">Need Additional Case Management Conference?</label>
                         </div>
                         <div className="flex items-center space-x-3">
@@ -3155,6 +3157,16 @@ const CrmScreen = () => {
                         <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
                           Schedule Remand Hearing
                         </Button>
+                        {needPreHearing && (
+                          <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                            Schedule Remand Pre-Hearing
+                          </Button>
+                        )}
+                        {needCaseManagement && (
+                          <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                            Schedule Additional Hearing
+                          </Button>
+                        )}
                       </div>
                       <div className="px-4 py-2 flex items-center justify-end space-x-4 border-b border-[#edebe9]">
                         <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
