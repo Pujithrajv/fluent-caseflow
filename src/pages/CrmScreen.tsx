@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 const CrmScreen = () => {
   const navigate = useNavigate();
@@ -2972,6 +2973,29 @@ const CrmScreen = () => {
                 </div>
               </div>}
 
+          </div>}
+
+          {/* Post Ruling Tab */}
+          {activeTab === "Post Ruling" && <div className="max-w-7xl mx-auto">
+            <div className="bg-white border border-[#edebe9] rounded">
+              <div className="px-4 py-3 border-b border-[#edebe9]">
+                <h3 className="text-sm font-semibold text-[#323130]">APPEAL DECISION CHECKLIST</h3>
+              </div>
+              <div className="p-4 space-y-4">
+                <div className="flex items-center space-x-3">
+                  <Checkbox id="uphold" />
+                  <Label htmlFor="uphold" className="text-sm text-[#323130]">Uphold Decision</Label>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Checkbox id="overturn" />
+                  <Label htmlFor="overturn" className="text-sm text-[#323130]">Overturn Decision</Label>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Checkbox id="remand" />
+                  <Label htmlFor="remand" className="text-sm text-[#323130]">Remand Decision</Label>
+                </div>
+              </div>
+            </div>
           </div>}
         </div>
       </div>
