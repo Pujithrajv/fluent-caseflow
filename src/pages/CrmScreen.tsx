@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload, Calendar, FileText, ClipboardList, Filter, FileCheck, Clock, Plus, MoreVertical, Grid3X3 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, ArrowLeft, ChevronDown, ChevronUp, Upload, Calendar, FileText, ClipboardList, Filter, FileCheck, Clock, Plus, MoreVertical, Grid3X3, LayoutGrid, ExternalLink, Save, FileX, Trash2, RotateCw, KeyRound, Workflow, UserPlus, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -519,6 +519,71 @@ const CrmScreen = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Action Toolbar */}
+        <div className="bg-white border-b border-[#edebe9] px-4 py-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-1">
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-[#605e5c] hover:bg-[#f3f2f1]" onClick={() => navigate('/portal')}>
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <div className="w-px h-5 bg-[#edebe9] mx-1"></div>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-[#605e5c] hover:bg-[#f3f2f1]">
+                <LayoutGrid className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-[#605e5c] hover:bg-[#f3f2f1]">
+                <ExternalLink className="h-4 w-4" />
+              </Button>
+              <div className="w-px h-5 bg-[#edebe9] mx-1"></div>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <Save className="h-4 w-4 mr-1" />
+                Save
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <FileCheck className="h-4 w-4 mr-1" />
+                Save & Close
+              </Button>
+              <div className="w-px h-5 bg-[#edebe9] mx-1"></div>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <Plus className="h-4 w-4 mr-1" />
+                New
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <FileX className="h-4 w-4 mr-1" />
+                Deactivate
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <Trash2 className="h-4 w-4 mr-1" />
+                Delete
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <RotateCw className="h-4 w-4 mr-1" />
+                Refresh
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <KeyRound className="h-4 w-4 mr-1" />
+                Check Access
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <Workflow className="h-4 w-4 mr-1" />
+                Process
+                <ChevronDown className="h-3 w-3 ml-1" />
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 px-3 text-[#605e5c] hover:bg-[#f3f2f1] text-xs font-normal">
+                <UserPlus className="h-4 w-4 mr-1" />
+                Assign
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-[#605e5c] hover:bg-[#f3f2f1]">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </div>
+            <Button variant="outline" size="sm" className="h-8 px-3 text-[#605e5c] border-[#8a8886] text-xs font-normal">
+              <Share2 className="h-4 w-4 mr-1" />
+              Share
+              <ChevronDown className="h-3 w-3 ml-1" />
+            </Button>
+          </div>
+        </div>
+
         {/* Top Header */}
         <div className="bg-white border-b border-[#edebe9] px-4 py-3">
           <div className="flex items-center justify-between">
