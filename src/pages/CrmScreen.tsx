@@ -650,40 +650,33 @@ const CrmScreen = () => {
             <div className="flex items-center flex-1 relative">
               {/* Progress Line */}
               <div className="absolute top-5 left-0 right-0 h-0.5 bg-[#edebe9]" style={{
-                width: 'calc(100% - 2rem)',
-                marginLeft: '1rem'
-              }}></div>
+              width: 'calc(100% - 2rem)',
+              marginLeft: '1rem'
+            }}></div>
               
               {[{
-                label: "Intake",
-                completed: true,
-                current: false
-              }, {
-                label: "Pre-Hearing",
-                completed: true,
-                current: false
-              }, {
-                label: "Hearing",
-                sublabel: "(21 Hrs)",
-                completed: false,
-                current: true
-              }, {
-                label: "Ruling",
-                completed: false,
-                current: false
-              }, {
-                label: "Post Decision",
-                completed: false,
-                current: false
-              }].map((stage, idx) => (
-                <div key={idx} className="flex flex-col items-center relative z-10 flex-1">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    stage.current 
-                      ? 'bg-white border-[3px] border-[#0078d4]' 
-                      : stage.completed 
-                        ? 'bg-[#0078d4] border-2 border-[#0078d4]' 
-                        : 'bg-white border-2 border-[#d2d0ce]'
-                  }`}>
+              label: "Intake",
+              completed: true,
+              current: false
+            }, {
+              label: "Pre-Hearing",
+              completed: true,
+              current: false
+            }, {
+              label: "Hearing",
+              sublabel: "(21 Hrs)",
+              completed: false,
+              current: true
+            }, {
+              label: "Ruling",
+              completed: false,
+              current: false
+            }, {
+              label: "Post Decision",
+              completed: false,
+              current: false
+            }].map((stage, idx) => <div key={idx} className="flex flex-col items-center relative z-10 flex-1">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${stage.current ? 'bg-white border-[3px] border-[#0078d4]' : stage.completed ? 'bg-[#0078d4] border-2 border-[#0078d4]' : 'bg-white border-2 border-[#d2d0ce]'}`}>
                     {stage.completed && <span className="text-white text-lg">✓</span>}
                     {stage.current && <div className="w-3 h-3 rounded-full bg-[#0078d4]"></div>}
                   </div>
@@ -692,8 +685,7 @@ const CrmScreen = () => {
                       {stage.label} {stage.sublabel && <span>{stage.sublabel}</span>}
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
             
             {/* Right Arrow */}
@@ -3156,7 +3148,7 @@ const CrmScreen = () => {
                 <div className="flex flex-col gap-4 flex-shrink-0">
                   <div className="bg-white border border-[#edebe9] rounded">
                     <div className="px-4 py-3 border-b border-[#edebe9]">
-                      <h3 className="text-sm font-semibold text-[#323130]">APPEAL DECISION CHECKLIST</h3>
+                      <h3 className="text-sm font-semibold text-[#323130]">JUDICAL REVIEW OUTCOME</h3>
                     </div>
                     <div className="p-4 space-y-4">
                       <div className="flex items-center space-x-3">
@@ -3230,11 +3222,11 @@ const CrmScreen = () => {
                       </div>
                       <div className="p-6 space-y-4">
                         <div className="flex items-center space-x-3">
-                          <Checkbox id="prNeedPreHearing" checked={needPreHearing} onCheckedChange={(checked) => setNeedPreHearing(checked === true)} />
+                          <Checkbox id="prNeedPreHearing" checked={needPreHearing} onCheckedChange={checked => setNeedPreHearing(checked === true)} />
                           <label htmlFor="prNeedPreHearing" className="text-sm text-[#323130]">Need Pre-Hearing?</label>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <Checkbox id="prNeedCaseManagement" checked={needCaseManagement} onCheckedChange={(checked) => setNeedCaseManagement(checked === true)} />
+                          <Checkbox id="prNeedCaseManagement" checked={needCaseManagement} onCheckedChange={checked => setNeedCaseManagement(checked === true)} />
                           <label htmlFor="prNeedCaseManagement" className="text-sm text-[#323130]">Need Additional Case Management Conference?</label>
                         </div>
                         <div className="flex items-center space-x-3">
@@ -3253,16 +3245,12 @@ const CrmScreen = () => {
                         <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
                           Schedule Remand Hearing
                         </Button>
-                        {needPreHearing && (
-                          <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        {needPreHearing && <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
                             Schedule Remand Pre-Hearing
-                          </Button>
-                        )}
-                        {needCaseManagement && (
-                          <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                          </Button>}
+                        {needCaseManagement && <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
                             Schedule Additional Hearing
-                          </Button>
-                        )}
+                          </Button>}
                       </div>
                       <div className="px-4 py-2 flex items-center justify-end space-x-4 border-b border-[#edebe9]">
                         <Button size="sm" variant="ghost" className="text-[#323130] hover:text-[#106ebe] text-xs">
