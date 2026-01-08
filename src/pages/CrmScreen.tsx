@@ -3233,6 +3233,10 @@ const CrmScreen = () => {
                           <Checkbox id="prRemandHearingCompleted" />
                           <label htmlFor="prRemandHearingCompleted" className="text-sm text-[#323130]">Remand Hearing Completed?</label>
                         </div>
+                        <div className="flex items-center space-x-3">
+                          <Checkbox id="prModifyPriorDecision" />
+                          <label htmlFor="prModifyPriorDecision" className="text-sm text-[#323130]">Modify the Prior Decision and Issue a new One</label>
+                        </div>
                       </div>
                     </div>
 
