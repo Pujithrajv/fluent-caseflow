@@ -561,65 +561,72 @@ const CrmScreen = () => {
 
         {/* Progress Bar */}
         <div className="bg-white border-b border-[#edebe9] px-4 py-4">
-          <div className="flex items-center justify-between relative">
-            <div className="absolute top-5 left-0 right-0 h-0.5 bg-[#edebe9]" style={{
-            width: 'calc(100% - 4rem)',
-            marginLeft: '2rem'
-          }}></div>
+          <div className="flex items-center">
+            {/* Case Processing Box */}
+            <div className="bg-[#107c10] text-white px-4 py-2 rounded mr-4 min-w-[140px]">
+              <div className="text-sm font-semibold">Case Processing</div>
+              <div className="text-xs opacity-90">Active for 6 days</div>
+            </div>
             
-            {[{
-            label: "Case Processing",
-            sublabel: "Active for 3 months",
-            active: true,
-            filled: true
-          }, {
-            label: "Intake",
-            sublabel: "",
-            active: false,
-            filled: true
-          }, {
-            label: "Pre-Hearing (10 D)",
-            sublabel: "",
-            active: false,
-            filled: false
-          }, {
-            label: "Hearing",
-            sublabel: "",
-            active: false,
-            filled: false
-          }, {
-            label: "Post Hearing",
-            sublabel: "",
-            active: false,
-            filled: false
-          }, {
-            label: "Decision",
-            sublabel: "",
-            active: false,
-            filled: false
-          }, {
-            label: "Post Decision",
-            sublabel: "",
-            active: false,
-            filled: false
-          }, {
-            label: "Close",
-            sublabel: "",
-            active: false,
-            filled: false
-          }].map((stage, idx) => <div key={idx} className="flex flex-col items-center relative z-10">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${stage.active ? 'bg-[#0078d4] border-2 border-[#0078d4]' : stage.filled ? 'bg-[#107c10] border-2 border-[#107c10]' : 'bg-white border-2 border-[#d2d0ce]'}`}>
-                  {stage.filled && <span className="text-white text-xl">✓</span>}
-                </div>
-                <div className="mt-2 text-center">
-                  <div className={`text-xs font-semibold ${stage.active ? 'text-[#323130]' : 'text-[#605e5c]'}`}>
-                    {stage.label}
+            {/* Left Arrow */}
+            <button className="text-[#605e5c] hover:text-[#323130] mr-4">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            
+            {/* Stepper */}
+            <div className="flex items-center flex-1 relative">
+              {/* Progress Line */}
+              <div className="absolute top-5 left-0 right-0 h-0.5 bg-[#edebe9]" style={{
+                width: 'calc(100% - 2rem)',
+                marginLeft: '1rem'
+              }}></div>
+              
+              {[{
+                label: "Intake",
+                completed: true,
+                current: false
+              }, {
+                label: "Pre-Hearing",
+                completed: true,
+                current: false
+              }, {
+                label: "Hearing",
+                sublabel: "(21 Hrs)",
+                completed: false,
+                current: true
+              }, {
+                label: "Ruling",
+                completed: false,
+                current: false
+              }, {
+                label: "Post Decision",
+                completed: false,
+                current: false
+              }].map((stage, idx) => (
+                <div key={idx} className="flex flex-col items-center relative z-10 flex-1">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    stage.current 
+                      ? 'bg-white border-[3px] border-[#0078d4]' 
+                      : stage.completed 
+                        ? 'bg-[#0078d4] border-2 border-[#0078d4]' 
+                        : 'bg-white border-2 border-[#d2d0ce]'
+                  }`}>
+                    {stage.completed && <span className="text-white text-lg">✓</span>}
+                    {stage.current && <div className="w-3 h-3 rounded-full bg-[#0078d4]"></div>}
                   </div>
-                  {stage.sublabel && <div className="text-xs text-[#605e5c] bg-[#0078d4] text-white px-2 py-0.5 rounded mt-1">
-                      {stage.sublabel}
-                    </div>}
+                  <div className="mt-2 text-center">
+                    <div className={`text-xs font-semibold ${stage.current ? 'text-[#323130]' : 'text-[#605e5c]'}`}>
+                      {stage.label} {stage.sublabel && <span>{stage.sublabel}</span>}
+                    </div>
+                  </div>
                 </div>
-              </div>)}
+              ))}
+            </div>
+            
+            {/* Right Arrow */}
+            <button className="text-[#605e5c] hover:text-[#323130] ml-4">
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
