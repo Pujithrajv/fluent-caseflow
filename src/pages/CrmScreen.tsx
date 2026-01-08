@@ -26,6 +26,7 @@ const CrmScreen = () => {
   const [postRulingNotes, setPostRulingNotes] = useState("");
   const [needPreHearing, setNeedPreHearing] = useState(false);
   const [needCaseManagement, setNeedCaseManagement] = useState(false);
+  const [statusReason, setStatusReason] = useState("Discovery");
 
   // Discovery form state
   const [discoveryData, setDiscoveryData] = useState({
@@ -611,7 +612,17 @@ const CrmScreen = () => {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-sm font-semibold text-[#323130]">Discovery</div>
+                <Select value={statusReason} onValueChange={setStatusReason}>
+                  <SelectTrigger className="h-auto p-0 border-0 bg-transparent shadow-none text-sm font-semibold text-[#323130] hover:text-[#0078d4] cursor-pointer">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white z-50">
+                    <SelectItem value="Discovery">Discovery</SelectItem>
+                    <SelectItem value="Post Decisions">Post Decisions</SelectItem>
+                    <SelectItem value="Update Uphold, Overturn, Remand">Update Uphold, Overturn, Remand</SelectItem>
+                    <SelectItem value="Remand Hearing">Remand Hearing</SelectItem>
+                  </SelectContent>
+                </Select>
                 <div className="text-xs text-[#605e5c]">Status Reason</div>
               </div>
               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
