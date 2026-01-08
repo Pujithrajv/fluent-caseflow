@@ -27,6 +27,22 @@ const CrmScreen = () => {
   const [needPreHearing, setNeedPreHearing] = useState(false);
   const [needCaseManagement, setNeedCaseManagement] = useState(false);
   const [statusReason, setStatusReason] = useState("Discovery");
+  const [remandNotices, setRemandNotices] = useState([
+    { id: 1, subject: "Initial Case Management Conference", startDate: "", endDate: "", status: "Open", dateCreated: "1/7/2026 3:46 PM" }
+  ]);
+
+  const addRemandNotice = (subject: string) => {
+    const now = new Date();
+    const formattedDate = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()} ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+    setRemandNotices(prev => [...prev, {
+      id: prev.length + 1,
+      subject,
+      startDate: "",
+      endDate: "",
+      status: "Open",
+      dateCreated: formattedDate
+    }]);
+  };
 
   // Discovery form state
   const [discoveryData, setDiscoveryData] = useState({
@@ -3246,13 +3262,13 @@ const CrmScreen = () => {
                         <h3 className="text-sm font-semibold text-[#323130]">EVENTS / NOTICES</h3>
                       </div>
                       <div className="p-4 space-y-3">
-                        <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white" onClick={() => addRemandNotice("Remand Hearing")}>
                           Schedule Remand Hearing
                         </Button>
-                        {needPreHearing && <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        {needPreHearing && <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white" onClick={() => addRemandNotice("Remand Pre-Hearing")}>
                             Schedule Remand Pre-Hearing
                           </Button>}
-                        {needCaseManagement && <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white">
+                        {needCaseManagement && <Button className="w-full bg-[#0078d4] hover:bg-[#106ebe] text-white" onClick={() => addRemandNotice("Additional Hearing")}>
                             Schedule Additional Hearing
                           </Button>}
                       </div>
@@ -3284,23 +3300,25 @@ const CrmScreen = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
-                              <td className="py-2 px-3">
-                                <input type="checkbox" className="h-4 w-4" />
-                              </td>
-                              <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
-                                Initial Case Management Conference
-                              </td>
-                              <td className="py-2 px-3 text-sm text-[#323130]"></td>
-                              <td className="py-2 px-3 text-sm text-[#323130]"></td>
-                              <td className="py-2 px-3 text-sm text-[#323130]">Open</td>
-                              <td className="py-2 px-3 text-sm text-[#605e5c]">1/7/2026 3:46 PM</td>
-                            </tr>
+                            {remandNotices.map((notice) => (
+                              <tr key={notice.id} className="border-b border-[#edebe9] hover:bg-[#faf9f8]">
+                                <td className="py-2 px-3">
+                                  <input type="checkbox" className="h-4 w-4" />
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#0078d4] cursor-pointer hover:underline">
+                                  {notice.subject}
+                                </td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{notice.startDate}</td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{notice.endDate}</td>
+                                <td className="py-2 px-3 text-sm text-[#323130]">{notice.status}</td>
+                                <td className="py-2 px-3 text-sm text-[#605e5c]">{notice.dateCreated}</td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
                       <div className="px-4 py-2 text-sm text-[#605e5c]">
-                        Rows: <span className="text-[#0078d4]">1</span>
+                        Rows: <span className="text-[#0078d4]">{remandNotices.length}</span>
                       </div>
                     </div>
                   </div>}
