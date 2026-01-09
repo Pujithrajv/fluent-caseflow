@@ -3226,6 +3226,15 @@ const CrmScreen = () => {
                         <Label htmlFor="courtHearingNo" className="text-sm text-[#323130]">No</Label>
                       </div>
                     </div>
+                    {courtOrderedHearing === "no" && (
+                      <div className="mt-4">
+                        <Label className="text-sm font-medium text-[#323130] mb-2 block">COMMENTS</Label>
+                        <Textarea 
+                          placeholder="Enter comments or notes..." 
+                          className="min-h-[100px]" 
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>}
                 
