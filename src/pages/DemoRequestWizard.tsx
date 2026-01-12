@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Header } from "@/components/shared/Header";
 import { RequestStep } from "@/components/request/RequestStep";
-import { RequestGroupStep } from "@/components/request/RequestGroupStep";
+
 import { InterrogatoriesStep } from "@/components/request/InterrogatoriesStep";
 import { DocumentProductionStep } from "@/components/request/DocumentProductionStep";
 import { DepositionStep } from "@/components/request/DepositionStep";
@@ -53,12 +53,8 @@ export default function DemoRequestWizard() {
   const generateSteps = () => {
     const steps = ["Request"];
     
-    if (requestData.requestGroup) {
-      steps.push(requestData.requestGroup);
-      
-      if (requestData.requestGroup === "Discovery" && requestData.selectedRequestTypes.length > 0) {
-        steps.push(...requestData.selectedRequestTypes);
-      }
+    if (requestData.requestGroup === "Discovery" && requestData.selectedRequestTypes.length > 0) {
+      steps.push(...requestData.selectedRequestTypes);
     }
     
     steps.push("Documents");
@@ -87,17 +83,6 @@ export default function DemoRequestWizard() {
           <RequestStep
             data={requestData}
             onNext={handleNext}
-          />
-        );
-      case "Motion":
-      case "Exhibit":
-      case "Discovery":
-        return (
-          <RequestGroupStep
-            requestGroup={requestData.requestGroup}
-            data={requestData.discoveryData}
-            onNext={handleNext}
-            onBack={handleBack}
           />
         );
       case "Interrogatories":
