@@ -4,9 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Info, AlertCircle } from "lucide-react";
 import { RequestData } from "@/pages/DemoRequestWizard";
 
 interface RequestStepProps {
@@ -14,44 +11,17 @@ interface RequestStepProps {
   onNext: (data: Partial<RequestData>) => void;
 }
 
-const discoveryTypes = [
-  { id: "Interrogatories", label: "Interrogatories" },
-  { id: "Document Production", label: "Document Production" },
-  { id: "Deposition", label: "Deposition" },
-  { id: "Inspection", label: "Inspection" }
-];
-
 export function RequestStep({ data, onNext }: RequestStepProps) {
   const [requestGroup, setRequestGroup] = useState<RequestData["requestGroup"]>(data.requestGroup);
   const [selectedTypes, setSelectedTypes] = useState<string[]>(data.selectedRequestTypes);
   const [summary, setSummary] = useState(data.summary);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const discoveryEnabled = true; // Would come from CRM
-
-  const handleTypeToggle = (typeId: string) => {
-    setSelectedTypes(prev =>
-      prev.includes(typeId)
-        ? prev.filter(id => id !== typeId)
-        : [...prev, typeId]
-    );
-  };
-
   const handleNext = () => {
     const newErrors: Record<string, string> = {};
 
     if (!requestGroup) {
       newErrors.requestGroup = "Please select a Request Group";
-    }
-
-    if (requestGroup === "Discovery" && !discoveryEnabled) {
-      newErrors.discovery = "Discovery has not been authorized for this case";
-      setErrors(newErrors);
-      return;
-    }
-
-    if (requestGroup === "Discovery" && selectedTypes.length === 0) {
-      newErrors.requestTypes = "Select at least one Discovery Type";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -81,9 +51,6 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
             value={requestGroup}
             onValueChange={(value: any) => {
               setRequestGroup(value);
-              if (value !== "Discovery") {
-                setSelectedTypes([]);
-              }
               setErrors({});
             }}
           >
@@ -93,7 +60,6 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
             <SelectContent>
               <SelectItem value="Motion">Motion</SelectItem>
               <SelectItem value="Exhibit">Exhibit</SelectItem>
-              <SelectItem value="Discovery">Discovery</SelectItem>
             </SelectContent>
           </Select>
           {errors.requestGroup && (
@@ -101,51 +67,6 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
           )}
         </div>
 
-        {/* Discovery Type Multi-Select */}
-        {requestGroup === "Discovery" && (
-          <>
-            {!discoveryEnabled && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Discovery has not been authorized for this case.
-                </AlertDescription>
-              </Alert>
-            )}
-
-            <div className="space-y-2">
-              <Label>
-                Request Type <span className="text-red-500">*</span>
-              </Label>
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertDescription className="text-sm">
-                  Only the Discovery types authorized by the ALJ for this case are selectable.
-                </AlertDescription>
-              </Alert>
-              <div className="space-y-3 mt-3">
-                {discoveryTypes.map((type) => (
-                  <div key={type.id} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={type.id}
-                      checked={selectedTypes.includes(type.id)}
-                      onCheckedChange={() => handleTypeToggle(type.id)}
-                    />
-                    <Label
-                      htmlFor={type.id}
-                      className="text-sm font-normal cursor-pointer"
-                    >
-                      {type.label}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-              {errors.requestTypes && (
-                <p className="text-sm text-red-600">{errors.requestTypes}</p>
-              )}
-            </div>
-          </>
-        )}
 
         {/* Summary */}
         <div className="space-y-2">
