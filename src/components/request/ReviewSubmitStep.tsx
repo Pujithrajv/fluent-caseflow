@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
+import { ShieldCheck, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { RequestData } from "@/pages/DemoRequestWizard";
@@ -16,32 +16,31 @@ interface ReviewSubmitStepProps {
 }
 
 export function ReviewSubmitStep({ data, onBack }: ReviewSubmitStepProps) {
+  const [complianceStatus, setComplianceStatus] = useState<string>("");
+  const [explanation, setExplanation] = useState("");
   const [confirmed, setConfirmed] = useState(false);
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    general: true,
-    discovery: true
-  });
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const toggleSection = (section: string) => {
-    setOpenSections({ ...openSections, [section]: !openSections[section] });
-  };
+  const CHARACTER_LIMIT = 1000;
+
+  const needsExplanation = complianceStatus === "partial" || complianceStatus === "not-complied";
+  
+  const canSubmit = complianceStatus !== "" && confirmed;
 
   const handleSubmit = () => {
-    if (!confirmed) {
+    if (!canSubmit) {
       toast({
-        title: "Confirmation Required",
-        description: "Please confirm that the information provided is true and correct.",
+        title: "Incomplete Form",
+        description: "Please complete all required fields before submitting.",
         variant: "destructive"
       });
       return;
     }
 
-    // Simulate submission
     toast({
-      title: "Request Submitted",
-      description: "Your discovery request has been submitted successfully. Request ID: REQ-2024-001",
+      title: "Certification Submitted",
+      description: "Your discovery compliance certification has been submitted successfully.",
     });
 
     setTimeout(() => {
@@ -50,119 +49,109 @@ export function ReviewSubmitStep({ data, onBack }: ReviewSubmitStepProps) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Review & Submit</CardTitle>
+    <Card className="border-0 shadow-sm">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl font-semibold text-foreground">Review & Submit</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {/* General Information */}
-        <Collapsible open={openSections.general}>
-          <CollapsibleTrigger
-            onClick={() => toggleSection("general")}
-            className="flex items-center justify-between w-full p-4 bg-muted rounded-lg"
-          >
-            <h3 className="font-semibold">General Information</h3>
-            {openSections.general ? (
-              <ChevronUp className="h-5 w-5" />
-            ) : (
-              <ChevronDown className="h-5 w-5" />
-            )}
-          </CollapsibleTrigger>
-          <CollapsibleContent className="mt-4 space-y-3 pl-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Request Group</p>
-                <p className="font-medium">{data.requestGroup}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Case ID</p>
-                <p className="font-medium">{data.discoveryData.caseId}</p>
-              </div>
+      <CardContent className="space-y-8">
+        {/* Discovery Compliance Certification Section */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <ShieldCheck className="h-5 w-5 text-primary" />
             </div>
-            {data.summary && (
-              <div>
-                <p className="text-sm text-muted-foreground">Summary</p>
-                <p className="font-medium">{data.summary}</p>
-              </div>
-            )}
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Selected Request Types</p>
-              <div className="flex flex-wrap gap-2">
-                {data.selectedRequestTypes.map((type) => (
-                  <Badge key={type}>{type}</Badge>
-                ))}
-              </div>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-
-        {/* Discovery Information */}
-        <Collapsible open={openSections.discovery}>
-          <CollapsibleTrigger
-            onClick={() => toggleSection("discovery")}
-            className="flex items-center justify-between w-full p-4 bg-muted rounded-lg"
-          >
-            <h3 className="font-semibold">Discovery Information</h3>
-            {openSections.discovery ? (
-              <ChevronUp className="h-5 w-5" />
-            ) : (
-              <ChevronDown className="h-5 w-5" />
-            )}
-          </CollapsibleTrigger>
-          <CollapsibleContent className="mt-4 space-y-3 pl-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Discovery Start Date</p>
-                <p className="font-medium">{data.discoveryData.startDate}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Discovery Cutoff Date</p>
-                <p className="font-medium">{data.discoveryData.cutoffDate}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Conference Date</p>
-                <p className="font-medium">{data.discoveryData.conferenceDate}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Process Stage</p>
-                <p className="font-medium">{data.discoveryData.processStage}</p>
-              </div>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-
-        {/* Documents */}
-        {data.documents.length > 0 && (
-          <div className="p-4 bg-muted rounded-lg">
-            <h3 className="font-semibold mb-3">Attached Documents</h3>
-            <p className="text-sm text-muted-foreground">{data.documents.length} file(s) attached</p>
+            <h3 className="text-lg font-semibold text-foreground">Discovery Compliance Certification</h3>
           </div>
-        )}
 
-        {/* Confirmation */}
-        <div className="flex items-start space-x-2 p-4 border border-border rounded-lg">
+          {/* Certification Statement */}
+          <div className="p-4 bg-muted/50 rounded-lg border border-border">
+            <p className="text-sm text-foreground leading-relaxed">
+              "I certify that, to the best of my knowledge, discovery for this case has been addressed in accordance with applicable orders and deadlines."
+            </p>
+          </div>
+
+          {/* Compliance Status Radio Buttons */}
+          <div className="space-y-3">
+            <Label className="text-sm font-medium text-foreground">
+              Discovery Compliance Status <span className="text-destructive">*</span>
+            </Label>
+            <RadioGroup
+              value={complianceStatus}
+              onValueChange={setComplianceStatus}
+              className="space-y-3"
+            >
+              <div className="flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors">
+                <RadioGroupItem value="fully-complied" id="fully-complied" />
+                <Label htmlFor="fully-complied" className="cursor-pointer text-sm font-normal flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  Discovery fully complied with
+                </Label>
+              </div>
+              <div className="flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors">
+                <RadioGroupItem value="partial" id="partial" />
+                <Label htmlFor="partial" className="cursor-pointer text-sm font-normal">
+                  Discovery partially complied with
+                </Label>
+              </div>
+              <div className="flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors">
+                <RadioGroupItem value="not-complied" id="not-complied" />
+                <Label htmlFor="not-complied" className="cursor-pointer text-sm font-normal">
+                  Discovery not complied with
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          {/* Conditional Explanation Field */}
+          {needsExplanation && (
+            <div className="space-y-2 animate-in fade-in-0 slide-in-from-top-2 duration-200">
+              <Label htmlFor="explanation" className="text-sm font-medium text-foreground">
+                Please briefly explain the current status of discovery compliance.
+              </Label>
+              <Textarea
+                id="explanation"
+                value={explanation}
+                onChange={(e) => setExplanation(e.target.value.slice(0, CHARACTER_LIMIT))}
+                placeholder="Enter your explanation here..."
+                className="min-h-[120px] resize-none"
+                maxLength={CHARACTER_LIMIT}
+              />
+              <p className="text-xs text-muted-foreground text-right">
+                {explanation.length} / {CHARACTER_LIMIT} characters
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-border" />
+
+        {/* Confirmation Checkbox */}
+        <div className="flex items-start space-x-3 p-4 bg-muted/30 rounded-lg border border-border">
           <Checkbox
             id="confirm"
             checked={confirmed}
             onCheckedChange={(checked) => setConfirmed(checked as boolean)}
+            className="mt-0.5"
           />
           <div className="space-y-1">
-            <Label htmlFor="confirm" className="cursor-pointer font-medium">
-              I confirm the information provided is true and correct <span className="text-red-500">*</span>
+            <Label htmlFor="confirm" className="cursor-pointer text-sm font-medium text-foreground">
+              By submitting this certification, you acknowledge that the information provided is accurate to the best of your knowledge. <span className="text-destructive">*</span>
             </Label>
-            <p className="text-sm text-muted-foreground">
-              By checking this box, you acknowledge that all information provided is accurate.
-            </p>
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex justify-between">
+        <div className="flex justify-end gap-3 pt-4">
           <Button variant="outline" onClick={onBack}>
             Back
           </Button>
-          <Button onClick={handleSubmit} size="lg" disabled={!confirmed}>
-            Submit Request
+          <Button 
+            onClick={handleSubmit} 
+            disabled={!canSubmit}
+            className="min-w-[120px]"
+          >
+            Submit
           </Button>
         </div>
       </CardContent>
