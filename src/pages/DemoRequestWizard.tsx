@@ -11,7 +11,7 @@ import { ReviewSubmitStep } from "@/components/request/ReviewSubmitStep";
 import { RequestStepper } from "@/components/request/RequestStepper";
 
 export interface RequestData {
-  requestGroup: "Motion" | "Exhibit" | "";
+  requestGroup: "Motion" | "Exhibit" | "Discovery" | "";
   selectedRequestTypes: string[];
   summary: string;
   discoveryData: {
@@ -55,6 +55,10 @@ export default function DemoRequestWizard() {
     
     if (requestData.requestGroup) {
       steps.push(requestData.requestGroup);
+      
+      if (requestData.requestGroup === "Discovery" && requestData.selectedRequestTypes.length > 0) {
+        steps.push(...requestData.selectedRequestTypes);
+      }
     }
     
     steps.push("Documents");
