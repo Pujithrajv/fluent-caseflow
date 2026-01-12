@@ -158,20 +158,6 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
           />
         </div>
 
-        {/* Selected Types Display */}
-        {selectedTypes.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {selectedTypes.map((type) => (
-              <div
-                key={type}
-                className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm"
-              >
-                {type}
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* Actions */}
         <div className="flex justify-end">
           <Button onClick={handleNext} size="lg">
