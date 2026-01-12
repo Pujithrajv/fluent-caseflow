@@ -6,7 +6,7 @@ import { InterrogatoriesStep } from "@/components/request/InterrogatoriesStep";
 import { DocumentProductionStep } from "@/components/request/DocumentProductionStep";
 import { DepositionStep } from "@/components/request/DepositionStep";
 import { InspectionStep } from "@/components/request/InspectionStep";
-import { DocumentsStep } from "@/components/request/DocumentsStep";
+
 import { ReviewSubmitStep } from "@/components/request/ReviewSubmitStep";
 import { RequestStepper } from "@/components/request/RequestStepper";
 
@@ -57,7 +57,6 @@ export default function DemoRequestWizard() {
       steps.push(...requestData.selectedRequestTypes);
     }
     
-    steps.push("Documents");
     steps.push("Review & Submit");
     
     return steps;
@@ -117,14 +116,6 @@ export default function DemoRequestWizard() {
           <InspectionStep
             data={requestData.inspectionData}
             cutoffDate={requestData.discoveryData.cutoffDate}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        );
-      case "Documents":
-        return (
-          <DocumentsStep
-            data={requestData.documents}
             onNext={handleNext}
             onBack={handleBack}
           />
