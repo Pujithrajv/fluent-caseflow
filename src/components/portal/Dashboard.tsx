@@ -477,16 +477,8 @@ export function Dashboard({
                 
                 
                 
-                <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/fdm2')}>
-                  FDM@
-                </Button>
-                
                 <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/tes')}>
                   TES
-                </Button>
-                
-                <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/ruling')}>
-                  Ruling
                 </Button>
               </div>
               
