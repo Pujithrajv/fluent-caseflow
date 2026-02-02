@@ -11,7 +11,7 @@ import { ReviewSubmitStep } from "@/components/request/ReviewSubmitStep";
 import { RequestStepper } from "@/components/request/RequestStepper";
 
 export interface RequestData {
-  requestGroup: "Motion" | "Exhibit" | "Discovery" | "";
+  requestGroup: "Motion" | "Exhibit" | "Discovery" | "Subpoenas" | "";
   selectedRequestTypes: string[];
   summary: string;
   discoveryData: {
@@ -53,7 +53,7 @@ export default function DemoRequestWizard() {
   const generateSteps = () => {
     const steps = ["Request"];
     
-    if (requestData.requestGroup === "Discovery" && requestData.selectedRequestTypes.length > 0) {
+    if ((requestData.requestGroup === "Discovery" || requestData.requestGroup === "Subpoenas") && requestData.selectedRequestTypes.length > 0) {
       steps.push(...requestData.selectedRequestTypes);
     }
     

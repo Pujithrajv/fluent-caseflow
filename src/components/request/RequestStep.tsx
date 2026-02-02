@@ -20,6 +20,11 @@ const discoveryTypes = [
   { id: "Inspection", label: "Inspection" }
 ];
 
+const subpoenaTypes = [
+  { id: "Subpoena ad testificandum", label: "Subpoena ad testificandum" },
+  { id: "Subpoena duces tecum", label: "Subpoena duces tecum" }
+];
+
 export function RequestStep({ data, onNext }: RequestStepProps) {
   const [requestGroup, setRequestGroup] = useState<RequestData["requestGroup"]>(data.requestGroup);
   const [selectedTypes, setSelectedTypes] = useState<string[]>(data.selectedRequestTypes);
@@ -53,6 +58,10 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
       newErrors.requestTypes = "Select at least one Discovery Type";
     }
 
+    if (requestGroup === "Subpoenas" && selectedTypes.length === 0) {
+      newErrors.requestTypes = "Select at least one Subpoena Type";
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -78,9 +87,11 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
           </Label>
           <Select
             value={requestGroup}
-            onValueChange={(value: any) => {
+          onValueChange={(value: any) => {
               setRequestGroup(value);
-              if (value !== "Discovery") {
+              if (value !== "Discovery" && value !== "Subpoenas") {
+                setSelectedTypes([]);
+              } else {
                 setSelectedTypes([]);
               }
               setErrors({});
@@ -93,6 +104,7 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
               <SelectItem value="Motion">Motion</SelectItem>
               <SelectItem value="Exhibit">Exhibit</SelectItem>
               <SelectItem value="Discovery">Discovery</SelectItem>
+              <SelectItem value="Subpoenas">Subpoenas</SelectItem>
             </SelectContent>
           </Select>
           {errors.requestGroup && (
@@ -144,6 +156,40 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
               )}
             </div>
           </>
+        )}
+
+        {requestGroup === "Subpoenas" && (
+          <div className="space-y-2">
+            <Label>
+              Request Type <span className="text-red-500">*</span>
+            </Label>
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription className="text-sm">
+                Select the type of subpoena you wish to request.
+              </AlertDescription>
+            </Alert>
+            <div className="space-y-3 mt-3">
+              {subpoenaTypes.map((type) => (
+                <div key={type.id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={type.id}
+                    checked={selectedTypes.includes(type.id)}
+                    onCheckedChange={() => handleTypeToggle(type.id)}
+                  />
+                  <Label
+                    htmlFor={type.id}
+                    className="text-sm font-normal cursor-pointer"
+                  >
+                    {type.label}
+                  </Label>
+                </div>
+              ))}
+            </div>
+            {errors.requestTypes && (
+              <p className="text-sm text-red-600">{errors.requestTypes}</p>
+            )}
+          </div>
         )}
 
         {/* Summary */}
