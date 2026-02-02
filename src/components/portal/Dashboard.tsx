@@ -456,17 +456,7 @@ export function Dashboard({
 
         {/* Tabs Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0">
-            <TabsTrigger value="cases" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors">
-              Cases
-            </TabsTrigger>
-            <TabsTrigger value="events" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors">
-              Upcoming Events
-            </TabsTrigger>
-            <TabsTrigger value="new-task" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors">
-              New Task
-            </TabsTrigger>
-          </TabsList>
+          
 
           {/* Cases Tab Content */}
           <TabsContent value="cases" className="mt-6">
