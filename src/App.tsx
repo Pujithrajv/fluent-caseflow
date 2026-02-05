@@ -35,6 +35,7 @@ import FinalDecisionDetail2 from "./pages/FinalDecisionDetail2";
 import TesScreen from "./pages/TesScreen";
 import RulingScreen from "./pages/RulingScreen";
 import EventDetails from "./pages/EventDetails";
+ import FillingsWizard from "./pages/FillingsWizard";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ const App = () => (
             <Route path="/fdm2/:id" element={<FinalDecisionDetail2 />} />
             <Route path="/tes" element={<TesScreen />} />
             <Route path="/ruling" element={<RulingScreen />} />
+             <Route path="/fillings" element={<FillingsWizard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
