@@ -191,13 +191,23 @@
  
    const handleNext = () => {
      if (currentStep < steps.length - 1) {
-       setCurrentStep(currentStep + 1);
+      // If on step 0 (Request Details) and "use own documents" is checked, skip to Document Upload (step 2)
+      if (currentStep === 0 && formData.useOwnDocuments) {
+        setCurrentStep(2); // Skip to Document Upload
+      } else {
+        setCurrentStep(currentStep + 1);
+      }
      }
    };
  
    const handleBack = () => {
      if (currentStep > 0) {
-       setCurrentStep(currentStep - 1);
+      // If on Document Upload (step 2) and "use own documents" is checked, go back to Request Details (step 0)
+      if (currentStep === 2 && formData.useOwnDocuments) {
+        setCurrentStep(0); // Go back to Request Details
+      } else {
+        setCurrentStep(currentStep - 1);
+      }
      }
    };
  
