@@ -466,32 +466,6 @@
          />
        </div>
  
-       {/* Available Elsewhere */}
-       <div className="space-y-3">
-         <Label className="text-sm font-medium">Is this information available from another source?</Label>
-         <RadioGroup
-           value={formData.availableElsewhere}
-           onValueChange={(value) => setFormData({ ...formData, availableElsewhere: value })}
-           className="flex gap-6"
-         >
-           <div className="flex items-center space-x-2">
-             <RadioGroupItem value="yes" id="elsewhere-yes" />
-             <Label htmlFor="elsewhere-yes" className="font-normal cursor-pointer">Yes</Label>
-           </div>
-           <div className="flex items-center space-x-2">
-             <RadioGroupItem value="no" id="elsewhere-no" />
-             <Label htmlFor="elsewhere-no" className="font-normal cursor-pointer">No</Label>
-           </div>
-         </RadioGroup>
-         {formData.availableElsewhere === "yes" && (
-           <Textarea
-             placeholder="Explain why the subpoena is still required..."
-             className="min-h-[80px] bg-background border-input resize-none mt-2"
-             value={formData.elsewhereExplanation}
-             onChange={(e) => setFormData({ ...formData, elsewhereExplanation: e.target.value })}
-           />
-         )}
-       </div>
      </div>
    );
  
