@@ -142,11 +142,12 @@
        return "Request Documents";
      }
      if (stepIndex === 0) return "Request Details";
-     if (stepIndex === 2) return "Review and Submit";
+    if (stepIndex === 2) return "Document Upload";
+    if (stepIndex === 3) return "Review and Submit";
      return "";
    };
  
-   const steps = [getStepLabel(0), getStepLabel(1), getStepLabel(2)];
+  const steps = [getStepLabel(0), getStepLabel(1), getStepLabel(2), getStepLabel(3)];
  
    const isStep1Valid = () => {
      return (
@@ -174,6 +175,10 @@
    };
  
    const isStep3Valid = () => {
+    return true; // Document upload step - always valid (documents optional)
+  };
+
+  const isStep4Valid = () => {
      if (formData.requestGroup === "Subpoena") {
        return (
          formData.certifyGoodFaith &&
@@ -859,6 +864,87 @@
    };
  
    // ========== STEP 3: Review and Submit ==========
+  // ========== STEP 3: Document Upload ==========
+  const renderDocumentUpload = () => (
+    <Card className="shadow-sm border border-border">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl font-semibold text-foreground">
+          Document Upload
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <p className="text-sm text-muted-foreground">
+          Upload any supporting documents for your request. Accepted formats: PDF, DOC, DOCX, JPG, PNG.
+        </p>
+
+        {/* Upload Area */}
+        <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
+          <input
+            type="file"
+            id="fileUploadStep3"
+            className="hidden"
+            multiple
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            onChange={handleFileUpload}
+          />
+          <label htmlFor="fileUploadStep3" className="cursor-pointer">
+            <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-sm font-medium text-foreground">Click to upload or drag and drop</p>
+            <p className="text-xs text-muted-foreground mt-1">PDF, DOC, DOCX, JPG, PNG (max 10MB each)</p>
+          </label>
+        </div>
+
+        {/* Uploaded Files List */}
+        {formData.documents.length > 0 && (
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Uploaded Documents</Label>
+            <div className="space-y-2">
+              {formData.documents.map((file, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <span className="text-sm font-medium">{file.name}</span>
+                    <span className="text-xs text-muted-foreground">({(file.size / 1024).toFixed(1)} KB)</span>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => removeDocument(index)} className="text-destructive hover:text-destructive/80">
+                    Remove
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Info callout */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <h4 className="font-medium text-blue-900">Document Guidelines</h4>
+              <p className="text-sm text-blue-700 mt-1">
+                Please ensure all documents are clear, legible, and relevant to your request. 
+                Sensitive information should be properly redacted if necessary.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex justify-between pt-4">
+          <Button variant="outline" onClick={handleBack}>
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+          <Button onClick={handleNext} className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            Next
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  // ========== STEP 4: Review and Submit ==========
    const renderReviewSubmit = () => {
      const isSubpoena = formData.requestGroup === "Subpoena";
  
@@ -984,7 +1070,7 @@
              </Button>
              <Button
                onClick={handleSubmit}
-               disabled={isSubpoena && !isStep3Valid()}
+          disabled={isSubpoena && !isStep4Valid()}
                className="bg-primary hover:bg-primary/90 text-primary-foreground"
              >
                Submit Request
@@ -1003,7 +1089,9 @@
        case 1:
          return renderStep2Content();
        case 2:
-         return renderReviewSubmit();
+        return renderDocumentUpload();
+      case 3:
+        return renderReviewSubmit();
        default:
          return null;
      }
