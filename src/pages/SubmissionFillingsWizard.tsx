@@ -489,25 +489,6 @@
          />
        </div>
  
-       {/* Testimony Basis */}
-       <div className="space-y-3">
-         <Label className="text-sm font-medium">The testimony is based on (select all that apply)</Label>
-         <div className="grid grid-cols-2 gap-3">
-           {testimonyBasisOptions.map((option) => (
-             <div key={option} className="flex items-center space-x-2">
-               <Checkbox
-                 id={`basis-${option}`}
-                 checked={formData.testimonyBasis.includes(option)}
-                 onCheckedChange={() => toggleTestimonyBasis(option)}
-               />
-               <label htmlFor={`basis-${option}`} className="text-sm cursor-pointer">
-                 {option}
-               </label>
-             </div>
-           ))}
-         </div>
-       </div>
- 
        {/* Witness Details */}
        <div className="space-y-4">
          <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Witness Details</h4>
