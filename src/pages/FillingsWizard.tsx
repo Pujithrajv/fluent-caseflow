@@ -53,7 +53,13 @@
      documents: [],
    });
  
-   const steps = ["Request Details", "Request Documents", "Review and Submit"];
+  // Dynamic steps - step 2 shows the selected Request Type
+  const getSteps = () => {
+    const step2Label = fillingData.requestType || "Request Documents";
+    return ["Request Details", step2Label, "Review and Submit"];
+  };
+
+  const steps = getSteps();
  
    const isStep1Valid = () => {
      return (
@@ -262,9 +268,9 @@
    const renderRequestDocuments = () => (
      <Card className="shadow-sm border border-border">
        <CardHeader className="pb-4">
-         <CardTitle className="text-xl font-semibold text-foreground">
-           Request Documents
-         </CardTitle>
+        <CardTitle className="text-xl font-semibold text-foreground">
+            {fillingData.requestType || "Request Documents"}
+          </CardTitle>
        </CardHeader>
        <CardContent className="space-y-6">
          <p className="text-sm text-muted-foreground">
