@@ -36,6 +36,7 @@ import TesScreen from "./pages/TesScreen";
 import RulingScreen from "./pages/RulingScreen";
 import EventDetails from "./pages/EventDetails";
  import FillingsWizard from "./pages/FillingsWizard";
+import SubmissionFillingsWizard from "./pages/SubmissionFillingsWizard";
 
 const queryClient = new QueryClient();
 
@@ -79,6 +80,7 @@ const App = () => (
             <Route path="/tes" element={<TesScreen />} />
             <Route path="/ruling" element={<RulingScreen />} />
              <Route path="/fillings" element={<FillingsWizard />} />
+             <Route path="/submission-fillings" element={<SubmissionFillingsWizard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

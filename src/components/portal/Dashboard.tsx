@@ -475,8 +475,8 @@ export function Dashboard({
                   Discoverys
                 </Button>
                 
-                 <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/fillings')}>
-                   Fillings
+                 <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/submission-fillings')}>
+                   Submission & Fillings
                  </Button>
                 
                 
