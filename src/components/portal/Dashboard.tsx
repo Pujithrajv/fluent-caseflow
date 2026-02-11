@@ -480,9 +480,12 @@ export function Dashboard({
                  </Button>
                 
                 
-                <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/tes')}>
-                  TES
-                </Button>
+                 <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/tes')}>
+                   TES
+                 </Button>
+                 <Button size="lg" className="font-fluent bg-blue-600 hover:bg-blue-700 text-white" onClick={() => navigate('/fillings')}>
+                   Fillings
+                 </Button>
               </div>
               
               <div className="flex items-center space-x-2">
