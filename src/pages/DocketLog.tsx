@@ -135,70 +135,70 @@ export default function DocketLog() {
 
         {/* Timeline */}
         <div className="relative">
-          {/* Center line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 top-0 bottom-0 hidden md:block" />
+          {/* Vertical timeline line */}
+          <div className="absolute left-[260px] w-0.5 bg-gray-300 top-0 bottom-0 hidden md:block" />
 
-          <div className="space-y-6">
-            {docketEntries.map((entry, index) => {
-              const isLeft = index % 2 === 0;
-              return (
-                <div key={index} className="relative flex items-start md:items-center">
-                  {/* Timeline node */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 z-10 hidden md:block">
-                    <div className={`w-4 h-4 rounded-full border-2 border-white shadow ${entry.freeText ? 'bg-red-500' : 'bg-[#1e3a5f]'}`} />
-                  </div>
-
-                  {/* Left side */}
-                  <div className={`w-full md:w-[calc(50%-2rem)] ${isLeft ? 'md:pr-8' : 'md:ml-auto md:pl-8'}`}>
-                    <div className={`flex flex-col ${isLeft ? 'md:items-end' : 'md:items-start'}`}>
-                      {/* Date Card */}
-                      <div className={`inline-flex flex-col rounded-lg border px-4 py-2.5 mb-2 shadow-sm ${getRoleColor(entry.role)}`}>
-                        <span className="text-xs font-semibold uppercase tracking-wide">{entry.date}</span>
-                        <span className="text-xs">{entry.time}</span>
-                        <span className="text-xs font-medium mt-1">
-                          {entry.role}{entry.person ? ` – ${entry.person}` : ''}
-                        </span>
-                      </div>
-
-                      {/* Event Card */}
-                      <Card className={`w-full shadow-md border-0 overflow-hidden ${entry.freeText ? 'border-l-4 border-l-red-500' : ''}`}>
-                        <div className={`${entry.headerColor} px-4 py-2`}>
-                          <h4 className="text-sm font-bold text-white">{entry.title}</h4>
-                        </div>
-                        <CardContent className="p-4 space-y-2">
-                          {entry.description && (
-                            <p className="text-sm text-foreground">{entry.description}</p>
-                          )}
-                          {entry.document && (
-                            <div className="flex items-center gap-2 text-sm text-blue-600">
-                              <FileText className="h-4 w-4" />
-                              <a href="#" className="underline hover:text-blue-800">{entry.document}</a>
-                            </div>
-                          )}
-                          {entry.link && (
-                            <div className="flex items-center gap-2 text-sm text-blue-600">
-                              <LinkIcon className="h-4 w-4" />
-                              <a href="#" className="underline hover:text-blue-800">{entry.link}</a>
-                            </div>
-                          )}
-                          {entry.serviceMethod && (
-                            <p className="text-xs text-muted-foreground">Service Method: <span className="font-medium">{entry.serviceMethod}</span></p>
-                          )}
-                          <div className="flex items-center gap-2 flex-wrap pt-1">
-                            {entry.manualEntry && (
-                              <Badge variant="outline" className="text-[10px] border-amber-400 text-amber-700 bg-amber-50">Manual Entry</Badge>
-                            )}
-                            {entry.internalOnly && (
-                              <Badge variant="outline" className="text-[10px] border-red-400 text-red-700 bg-red-50">Internal Only</Badge>
-                            )}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
+          <div className="space-y-8">
+            {docketEntries.map((entry, index) => (
+              <div key={index} className="relative flex items-start gap-6">
+                {/* Left: Date/Role Card */}
+                <div className="w-[230px] flex-shrink-0 flex justify-end">
+                  <div className={`inline-flex flex-col items-center rounded-full border px-5 py-3 shadow-sm text-center ${getRoleColor(entry.role)}`}>
+                    <span className="text-xs font-bold">{entry.date} {entry.time}</span>
+                    <span className="text-xs font-medium">{entry.person || entry.role}</span>
+                    <span className="text-[10px]">{entry.person ? entry.role : ''}</span>
                   </div>
                 </div>
-              );
-            })}
+
+                {/* Center: Timeline node */}
+                <div className="flex-shrink-0 mt-4 hidden md:block relative z-10">
+                  <div className={`w-3.5 h-3.5 rounded-full border-2 border-white shadow ${entry.freeText ? 'bg-red-500' : 'bg-gray-400'}`} />
+                </div>
+
+                {/* Right: Event Card */}
+                <div className="flex-1 min-w-0">
+                  <Card className={`shadow-sm border-0 overflow-hidden ${entry.internalOnly && entry.freeText ? 'bg-red-50' : ''}`}>
+                    <div className={`${entry.headerColor} px-4 py-2`}>
+                      <h4 className="text-sm font-bold text-white">{entry.title}</h4>
+                    </div>
+                    <CardContent className="p-4 space-y-2">
+                      {entry.description && (
+                        <p className="text-sm text-foreground">{entry.description}</p>
+                      )}
+                      {entry.document && (
+                        <div>
+                          <p className="text-xs font-bold text-foreground mb-1">Documents Uploaded</p>
+                          <div className="flex items-center gap-2 text-sm text-blue-600">
+                            <FileText className="h-4 w-4" />
+                            <a href="#" className="underline hover:text-blue-800">{entry.document}</a>
+                          </div>
+                        </div>
+                      )}
+                      {entry.link && (
+                        <div>
+                          <p className="text-xs font-bold text-foreground mb-1">Link to Recording</p>
+                          <div className="flex items-center gap-2 text-sm text-blue-600">
+                            <LinkIcon className="h-4 w-4" />
+                            <a href="#" className="underline hover:text-blue-800">{entry.link}</a>
+                          </div>
+                        </div>
+                      )}
+                      {entry.serviceMethod && (
+                        <p className="text-xs text-muted-foreground">Service Method: <span className="font-medium">{entry.serviceMethod}</span></p>
+                      )}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {entry.manualEntry && (
+                          <Badge variant="outline" className="text-[10px] border-amber-400 text-amber-700 bg-amber-50">Manual Entry</Badge>
+                        )}
+                        {entry.internalOnly && (
+                          <Badge variant="outline" className="text-[10px] border-red-400 text-red-700 bg-red-50">Internal Only</Badge>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
