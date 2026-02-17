@@ -37,6 +37,7 @@ import RulingScreen from "./pages/RulingScreen";
 import EventDetails from "./pages/EventDetails";
  import FillingsWizard from "./pages/FillingsWizard";
 import SubmissionFillingsWizard from "./pages/SubmissionFillingsWizard";
+import DocketLog from "./pages/DocketLog";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +82,7 @@ const App = () => (
             <Route path="/ruling" element={<RulingScreen />} />
              <Route path="/fillings" element={<FillingsWizard />} />
              <Route path="/submission-fillings" element={<SubmissionFillingsWizard />} />
+             <Route path="/docket" element={<DocketLog />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
