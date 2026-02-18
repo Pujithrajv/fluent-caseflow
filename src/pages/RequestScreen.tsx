@@ -1,35 +1,22 @@
 import { Header } from "@/components/shared/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 export default function RequestScreen() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-vh-100 bg-light">
       <Header />
-      
-      <div className="mx-auto max-w-7xl px-6 py-6 space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="container-xl px-4 py-4">
+        <div className="d-flex align-items-center justify-content-between mb-4">
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">Requests</h1>
-            <p className="text-muted-foreground mt-1">Manage and track your requests</p>
+            <h1 className="h3 fw-semibold text-dark">Requests</h1>
+            <p className="text-muted mt-1">Manage and track your requests</p>
           </div>
-          <Button size="lg">
-            <Plus className="mr-2 h-5 w-5" />
-            Create New Request
-          </Button>
+          <button className="btn btn-primary btn-lg"><Plus size={18} className="me-2" /> Create New Request</button>
         </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Request Management</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Request management content will appear here.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="card">
+          <div className="card-header bg-white"><h5 className="card-title mb-0">Request Management</h5></div>
+          <div className="card-body"><p className="text-muted">Request management content will appear here.</p></div>
+        </div>
       </div>
     </div>
   );

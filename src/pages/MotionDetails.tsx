@@ -1,492 +1,246 @@
 import { Header } from "@/components/shared/Header";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, MessageSquare, HandMetal, Gavel, ExternalLink, HelpCircle } from "lucide-react";
+import { useState } from "react";
+import { FileText, MessageSquare, HandMetal, HelpCircle } from "lucide-react";
+
 const MotionDetails = () => {
-  return <div className="min-h-screen bg-background">
+  const [activeTab, setActiveTab] = useState("motion-details");
+
+  return (
+    <div className="min-vh-100 bg-light">
       <Header />
-      
-      <div className="mx-auto max-w-7xl px-6 py-6">
-        {/* Header Section with Party Information */}
-        <div className="mb-6 flex justify-between items-start">
+
+      <div className="container-xl px-4 py-4">
+        {/* Header Section */}
+        <div className="d-flex justify-content-between align-items-start mb-4">
           <div>
-            <h1 className="text-3xl font-semibold text-foreground mb-2">
-              Discovery: Deposition  
-            </h1>
-            
-            {/* Breadcrumb */}
-            <div className="flex items-center text-sm text-muted-foreground mb-3">
-              <a href="#" className="text-primary hover:underline">Cases</a>
-              <span className="mx-2">/</span>
-              <a href="#" className="text-primary hover:underline">DBE-EC-02025-004</a>
-              <span className="mx-2">/</span>
-              <a href="#" className="text-primary hover:underline">Discovery</a>
-              <span className="mx-2">/</span>
-              <span>Response</span>
-            </div>
-            
-            <Badge className="bg-blue-600 text-white hover:bg-blue-700">
-              Awaiting Response
-            </Badge>
+            <h1 className="h3 fw-semibold text-dark mb-2">Discovery: Deposition</h1>
+            <nav aria-label="breadcrumb" className="mb-2">
+              <ol className="breadcrumb small">
+                <li className="breadcrumb-item"><a href="#" className="text-primary">Cases</a></li>
+                <li className="breadcrumb-item"><a href="#" className="text-primary">DBE-EC-02025-004</a></li>
+                <li className="breadcrumb-item"><a href="#" className="text-primary">Discovery</a></li>
+                <li className="breadcrumb-item active">Response</li>
+              </ol>
+            </nav>
+            <span className="badge bg-primary">Awaiting Response</span>
           </div>
-
-          {/* Party Information */}
-          <div className="gap-4 flex flex-row">
-          <Card className="w-64">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold">Requesting Party</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-1 text-sm">
-              <p className="text-muted-foreground">Department of Natural Resources</p>
-              <p>First Party: <span className="font-medium">Complainant</span></p>
-              <p>Dept#: <span className="font-medium">S14-7311-0025</span></p>
-            </CardContent>
-          </Card>
-
-          <Card className="w-64">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold">Responding Party</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-1 text-sm">
-              <p className="text-muted-foreground">Tommy Welldorf</p>
-              <p>Second Party: <span className="font-medium">Respondent</span></p>
-              <p>Attorney: <span className="font-medium">Dell Spington</span></p>
-            </CardContent>
-          </Card>
+          <div className="d-flex gap-3">
+            <div className="card" style={{ width: "250px" }}>
+              <div className="card-header py-2"><h6 className="card-title small fw-semibold mb-0">Requesting Party</h6></div>
+              <div className="card-body small py-2">
+                <p className="text-muted mb-0">Department of Natural Resources</p>
+                <p className="mb-0">First Party: <strong>Complainant</strong></p>
+                <p className="mb-0">Dept#: <strong>S14-7311-0025</strong></p>
+              </div>
+            </div>
+            <div className="card" style={{ width: "250px" }}>
+              <div className="card-header py-2"><h6 className="card-title small fw-semibold mb-0">Responding Party</h6></div>
+              <div className="card-body small py-2">
+                <p className="text-muted mb-0">Tommy Welldorf</p>
+                <p className="mb-0">Second Party: <strong>Respondent</strong></p>
+                <p className="mb-0">Attorney: <strong>Dell Spington</strong></p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Tabs Navigation */}
-        <Tabs defaultValue="motion-details" className="w-full">
-          <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0 w-full">
-            <TabsTrigger value="motion-details" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
-              <FileText className="mr-2 h-5 w-5" />
-              Discovery Details
-            </TabsTrigger>
-            <TabsTrigger value="request" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
-              <MessageSquare className="mr-2 h-5 w-5" />
-              Request
-            </TabsTrigger>
-            <TabsTrigger value="response" className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-muted px-6 py-4 transition-colors">
-              <HandMetal className="mr-2 h-5 w-5" />
-              Response
-            </TabsTrigger>
-          </TabsList>
+        {/* Tabs */}
+        <ul className="nav nav-tabs mb-0">
+          <li className="nav-item">
+            <button className={`nav-link d-flex align-items-center gap-1 ${activeTab === "motion-details" ? "active" : ""}`} onClick={() => setActiveTab("motion-details")}>
+              <FileText size={16} /> Discovery Details
+            </button>
+          </li>
+          <li className="nav-item">
+            <button className={`nav-link d-flex align-items-center gap-1 ${activeTab === "request" ? "active" : ""}`} onClick={() => setActiveTab("request")}>
+              <MessageSquare size={16} /> Request
+            </button>
+          </li>
+          <li className="nav-item">
+            <button className={`nav-link d-flex align-items-center gap-1 ${activeTab === "response" ? "active" : ""}`} onClick={() => setActiveTab("response")}>
+              <HandMetal size={16} /> Response
+            </button>
+          </li>
+        </ul>
 
-          <TabsContent value="motion-details" className="mt-6">
-            <div className="grid grid-cols-2 gap-6">
-              {/* Left Card - Request Information */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center text-lg">
-                    <FileText className="mr-2 h-5 w-5 text-primary" />
-                    Request Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">Request Group</p>
-                    <p className="text-base">Discovery</p>
+        {/* Discovery Details Tab */}
+        {activeTab === "motion-details" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="row g-4">
+              <div className="col-md-6">
+                <div className="card border">
+                  <div className="card-header bg-white"><h6 className="card-title mb-0 d-flex align-items-center gap-2"><FileText size={16} className="text-primary" /> Request Information</h6></div>
+                  <div className="card-body">
+                    <div className="mb-3"><p className="small fw-semibold text-muted mb-1">Request Group</p><p className="mb-0">Discovery</p></div>
+                    <div className="mb-3"><p className="small fw-semibold text-muted mb-1">Request Type</p><p className="mb-0">Deposition</p></div>
+                    <div><p className="small fw-semibold text-muted mb-1">Request Summary</p><p className="text-muted small lh-lg mb-0">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat.</p></div>
                   </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">Request Type</p>
-                    <p className="text-base">Deposition</p>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="card border">
+                  <div className="card-header bg-white"><h6 className="card-title mb-0">Deposition Questions / Motion to Compel Discovery Questions</h6></div>
+                  <div className="card-body">
+                    <div className="mb-3"><p className="small fw-semibold text-muted mb-1">What did you ask the other side to give you?</p><p className="mb-0">jane doe 7894561230 janedoe@gmail.com</p></div>
+                    <div className="mb-3"><p className="small fw-semibold text-muted mb-1">Why is their deposition necessary?</p><p className="mb-0">Other (please explain)</p></div>
+                    <div><p className="small fw-semibold text-muted mb-1">Can testimony be gotten by interrogatories?</p><p className="mb-0">Yes</p></div>
                   </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">Request Summary</p>
-                    <p className="text-base text-muted-foreground leading-relaxed">
-                      Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien 
-                      vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-                      leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus 
-                      bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut 
-                      hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra 
-                      inceptos himenaeos. Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque 
-                      faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis 
-                      convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus 
-                      nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc 
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Right Card - Motion to Compel Discovery Questions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center text-lg">Deposition Questions<FileText className="mr-2 h-5 w-5 text-primary" />
-                    Motion to Compel Discovery Questions
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      What did you ask the other side to give you?
-                    </p>
-                    <p className="text-base">jane doe     7894561230     janedoe@gmail.com                               </p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      why is their deposition necessary ?     
-                    </p>
-                    <p className="text-base">Other (please explain)</p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      can testimony be gotten by interrogatories ?      
-                    </p>
-                    <p className="text-base">Yes</p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      
-
-                    </p>
-                    <p className="text-base">
-                      
-
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">
-                      
-
-                    </p>
-                    <p className="text-base text-muted-foreground leading-relaxed">
-                      
-
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          <TabsContent value="request" className="mt-6">
-            <div className="grid grid-cols-[400px_1fr] gap-6">
-              {/* Left Sidebar - Request Details */}
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg flex items-center">
-                    <FileText className="mr-2 h-5 w-5 text-primary" />
-                    Request Details
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <p className="text-sm font-semibold mb-3">Requesting Party</p>
-                    <div className="space-y-1 text-sm">
-                      <p className="text-muted-foreground">Department of Natural Resources</p>
-                      <p>First Party: <span className="font-medium">Complainant</span></p>
-                      <p>Case Manager: <span className="font-medium">Fred Appleton</span></p>
-                      <p>General Counsel: <span className="font-medium">Bob Standishn</span></p>
-                      <p>Case Coordinator: <span className="font-medium">Dell Spington</span></p>
-                      <p>Decision Maker: <span className="font-medium">Sara Mc Murry</span></p>
+        {/* Request Tab */}
+        {activeTab === "request" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="row g-4">
+              <div className="col-md-4">
+                <div className="card border">
+                  <div className="card-header bg-white py-2"><h6 className="card-title mb-0 d-flex align-items-center gap-2"><FileText size={16} className="text-primary" /> Request Details</h6></div>
+                  <div className="card-body small">
+                    <div className="mb-3">
+                      <p className="fw-semibold mb-2">Requesting Party</p>
+                      <p className="text-muted mb-0">Department of Natural Resources</p>
+                      <p className="mb-0">First Party: <strong>Complainant</strong></p>
+                      <p className="mb-0">Case Manager: <strong>Fred Appleton</strong></p>
+                      <p className="mb-0">General Counsel: <strong>Bob Standishn</strong></p>
+                      <p className="mb-0">Case Coordinator: <strong>Dell Spington</strong></p>
+                      <p className="mb-0">Decision Maker: <strong>Sara Mc Murry</strong></p>
                     </div>
+                    <div className="mb-2"><p className="fw-semibold mb-0">Requesting Party Due Date</p><p className="mb-0">November 13, 2025</p></div>
+                    <div><p className="fw-semibold mb-0">ALJ Ruling Date</p><p className="mb-0">November 24, 2025</p></div>
                   </div>
-
-                  <div>
-                    <p className="text-sm font-semibold mb-1">Requesting Party Due Date</p>
-                    <p className="text-sm">November 13, 2025</p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold mb-1">ALJ Ruling Date</p>
-                    <p className="text-sm">November 24, 2025</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Right Content Area */}
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg flex items-center">
-                    <MessageSquare className="mr-2 h-5 w-5 text-primary" />
-                    Request
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Comments Section */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Comments</label>
-                    <textarea className="w-full min-h-[120px] px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="Enter notes" />
-                  </div>
-
-                  {/* Document Upload Section */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Document Upload</label>
-                    <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                      <p className="text-base font-medium mb-2">Drag and drop files here, or click to browse</p>
-                      <p className="text-sm text-muted-foreground mb-4">Supported formats: PDF, JPG, PNG (Max 10MB per file)</p>
-                      <Button variant="outline" className="mt-2">Browse Files</Button>
+                </div>
+              </div>
+              <div className="col-md-8">
+                <div className="card border">
+                  <div className="card-header bg-white py-2"><h6 className="card-title mb-0 d-flex align-items-center gap-2"><MessageSquare size={16} className="text-primary" /> Request</h6></div>
+                  <div className="card-body">
+                    <div className="mb-4">
+                      <label className="form-label small fw-semibold">Comments</label>
+                      <textarea className="form-control" rows={4} placeholder="Enter notes" />
                     </div>
-                  </div>
-
-                  {/* Request Documents Table */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Request Documents</label>
-                    <div className="border rounded-lg overflow-hidden">
-                      <table className="w-full">
-                        <thead className="bg-muted">
-                          <tr>
-                            <th className="text-left p-3 text-sm font-semibold">Document Name</th>
-                            <th className="text-left p-3 text-sm font-semibold">Type</th>
-                            <th className="text-left p-3 text-sm font-semibold">Uploaded By</th>
-                            <th className="text-left p-3 text-sm font-semibold">Upload Date</th>
-                            <th className="text-left p-3 text-sm font-semibold">Actions</th>
-                          </tr>
+                    <div className="mb-4">
+                      <label className="form-label small fw-semibold">Document Upload</label>
+                      <div className="border border-2 border-dashed rounded p-5 text-center">
+                        <p className="fw-medium mb-1">Drag and drop files here, or click to browse</p>
+                        <p className="small text-muted mb-2">Supported formats: PDF, JPG, PNG (Max 10MB per file)</p>
+                        <button className="btn btn-outline-secondary btn-sm">Browse Files</button>
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <label className="form-label small fw-semibold">Request Documents</label>
+                      <table className="table table-sm table-bordered">
+                        <thead className="table-light">
+                          <tr><th className="small">Document Name</th><th className="small">Type</th><th className="small">Uploaded By</th><th className="small">Upload Date</th><th className="small">Actions</th></tr>
                         </thead>
                         <tbody>
-                          <tr className="border-t">
-                            <td className="p-3 text-sm">
-                              <a href="#" className="text-primary hover:underline">17AC23-Compel-Discovery.pdf</a>
-                            </td>
-                            <td className="p-3 text-sm">
-                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
-                                <option>Attorney Motion Request</option>
-                              </select>
-                            </td>
-                            <td className="p-3 text-sm">Bob Standish</td>
-                            <td className="p-3 text-sm">2025-10-15</td>
-                            <td className="p-3 text-sm">
-                              <div className="flex gap-2">
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="border-t">
-                            <td className="p-3 text-sm">
-                              <a href="#" className="text-primary hover:underline">Additional_Documentation.pdf</a>
-                            </td>
-                            <td className="p-3 text-sm">
-                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
-                                <option>Supporting Evidence</option>
-                              </select>
-                            </td>
-                            <td className="p-3 text-sm">Sara Mc Murry</td>
-                            <td className="p-3 text-sm">2025-10-15</td>
-                            <td className="p-3 text-sm">
-                              <div className="flex gap-2">
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="border-t">
-                            <td className="p-3 text-sm">
-                              <a href="#" className="text-primary hover:underline">Motion-to-Compel-Discovery.pdf</a>
-                            </td>
-                            <td className="p-3 text-sm">
-                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
-                                <option>System Generated</option>
-                              </select>
-                            </td>
-                            <td className="p-3 text-sm">CMS System</td>
-                            <td className="p-3 text-sm">2025-10-15</td>
-                            <td className="p-3 text-sm">
-                              <div className="flex gap-2">
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="border-t">
-                            <td className="p-3 text-sm">
-                              <a href="#" className="text-primary hover:underline">Sequential-Briefing-Schedule-Order.pdf</a>
-                            </td>
-                            <td className="p-3 text-sm">
-                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
-                                <option>System Generated</option>
-                              </select>
-                            </td>
-                            <td className="p-3 text-sm">CMS System</td>
-                            <td className="p-3 text-sm">2025-10-15</td>
-                            <td className="p-3 text-sm">
-                              <div className="flex gap-2">
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
+                          {[
+                            { name: "17AC23-Compel-Discovery.pdf", type: "Attorney Motion Request", by: "Bob Standish", date: "2025-10-15" },
+                            { name: "Additional_Documentation.pdf", type: "Supporting Evidence", by: "Sara Mc Murry", date: "2025-10-15" },
+                            { name: "Motion-to-Compel-Discovery.pdf", type: "System Generated", by: "CMS System", date: "2025-10-15" },
+                            { name: "Sequential-Briefing-Schedule-Order.pdf", type: "System Generated", by: "CMS System", date: "2025-10-15" }
+                          ].map((doc, i) => (
+                            <tr key={i}>
+                              <td className="small"><a href="#" className="text-primary">{doc.name}</a></td>
+                              <td className="small">{doc.type}</td>
+                              <td className="small">{doc.by}</td>
+                              <td className="small">{doc.date}</td>
+                              <td className="small"><button className="btn btn-sm btn-link p-0"><FileText size={14} /></button></td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
+                    <div>
+                      <label className="form-label small fw-semibold">Request Completed On</label>
+                      <input type="text" className="form-control form-control-sm" placeholder="mm/dd/yyyy" />
+                    </div>
                   </div>
-
-                  {/* Request Completed On */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Request Completed On</label>
-                    <input type="text" className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="mm/dd/yyyy" />
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          <TabsContent value="response" className="mt-6">
-            <div className="grid grid-cols-[400px_1fr] gap-6">
-              {/* Left Sidebar - Response Details */}
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg flex items-center">
-                    <FileText className="mr-2 h-5 w-5 text-primary" />
-                    Response Details
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <p className="text-sm font-semibold mb-3">Responding Party</p>
-                    <div className="space-y-1 text-sm">
-                      <p className="text-muted-foreground">Tommy Welldorf</p>
-                      <p>Second Party: <span className="font-medium">Respondent</span></p>
-                      <p>Attorney: <span className="font-medium">Dell Spington</span></p>
+        {/* Response Tab */}
+        {activeTab === "response" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="row g-4">
+              <div className="col-md-4">
+                <div className="card border">
+                  <div className="card-header bg-white py-2"><h6 className="card-title mb-0 d-flex align-items-center gap-2"><FileText size={16} className="text-primary" /> Response Details</h6></div>
+                  <div className="card-body small">
+                    <div className="mb-3">
+                      <p className="fw-semibold mb-2">Responding Party</p>
+                      <p className="text-muted mb-0">Tommy Welldorf</p>
+                      <p className="mb-0">Second Party: <strong>Respondent</strong></p>
+                      <p className="mb-0">Attorney: <strong>Dell Spington</strong></p>
                     </div>
+                    <div className="mb-2"><p className="fw-semibold mb-0">Responding Party Due Date</p><p className="mb-0">November 13, 2025</p></div>
+                    <div><p className="fw-semibold mb-0">ALJ Ruling Date</p><p className="mb-0">November 24, 2025</p></div>
                   </div>
-
-                  <div>
-                    <p className="text-sm font-semibold mb-1">Responding Party Due Date</p>
-                    <p className="text-sm">November 13, 2025</p>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold mb-1">ALJ Ruling Date</p>
-                    <p className="text-sm">November 24, 2025</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Right Content Area */}
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg flex items-center">
-                    <MessageSquare className="mr-2 h-5 w-5 text-primary" />
-                    Response
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Comments Section */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Comments</label>
-                    <textarea className="w-full min-h-[120px] px-3 py-2 text-sm rounded-md border border-input bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="Enter notes" />
-                  </div>
-
-                  {/* Document Upload Section */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Document Upload</label>
-                    <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                      <p className="text-base font-medium mb-2">Drag and drop files here, or click to browse</p>
-                      <p className="text-sm text-muted-foreground mb-4">Supported formats: PDF, JPG, PNG (Max 10MB per file)</p>
-                      <Button variant="outline" className="mt-2">Browse Files</Button>
+                </div>
+              </div>
+              <div className="col-md-8">
+                <div className="card border">
+                  <div className="card-header bg-white py-2"><h6 className="card-title mb-0 d-flex align-items-center gap-2"><MessageSquare size={16} className="text-primary" /> Response</h6></div>
+                  <div className="card-body">
+                    <div className="mb-4">
+                      <label className="form-label small fw-semibold">Comments</label>
+                      <textarea className="form-control" rows={4} placeholder="Enter notes" />
                     </div>
-                  </div>
-
-                  {/* Response Documents Table */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Response Documents</label>
-                    <div className="border rounded-lg overflow-hidden">
-                      <table className="w-full">
-                        <thead className="bg-muted">
-                          <tr>
-                            <th className="text-left p-3 text-sm font-semibold">Document Name</th>
-                            <th className="text-left p-3 text-sm font-semibold">Type</th>
-                            <th className="text-left p-3 text-sm font-semibold">Uploaded By</th>
-                            <th className="text-left p-3 text-sm font-semibold">Upload Date</th>
-                            <th className="text-left p-3 text-sm font-semibold">Actions</th>
-                          </tr>
+                    <div className="mb-4">
+                      <label className="form-label small fw-semibold">Document Upload</label>
+                      <div className="border border-2 border-dashed rounded p-5 text-center">
+                        <p className="fw-medium mb-1">Drag and drop files here, or click to browse</p>
+                        <p className="small text-muted mb-2">Supported formats: PDF, JPG, PNG (Max 10MB per file)</p>
+                        <button className="btn btn-outline-secondary btn-sm">Browse Files</button>
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <label className="form-label small fw-semibold">Response Documents</label>
+                      <table className="table table-sm table-bordered">
+                        <thead className="table-light">
+                          <tr><th className="small">Document Name</th><th className="small">Type</th><th className="small">Uploaded By</th><th className="small">Upload Date</th><th className="small">Actions</th></tr>
                         </thead>
                         <tbody>
-                          <tr className="border-t">
-                            <td className="p-3 text-sm">
-                              <a href="#" className="text-primary hover:underline">Attorney-Response.pdf</a>
-                            </td>
-                            <td className="p-3 text-sm">
-                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
-                                <option>Attorney Motion Request</option>
-                              </select>
-                            </td>
-                            <td className="p-3 text-sm">Dell Spington</td>
-                            <td className="p-3 text-sm">2025-10-21</td>
-                            <td className="p-3 text-sm">
-                              <div className="flex gap-2">
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="border-t">
-                            <td className="p-3 text-sm">
-                              <a href="#" className="text-primary hover:underline">Support-Documentation.pdf</a>
-                            </td>
-                            <td className="p-3 text-sm">
-                              <select className="text-sm border-0 bg-muted rounded px-2 py-1">
-                                <option>Supporting Evidence</option>
-                              </select>
-                            </td>
-                            <td className="p-3 text-sm">Tommy Welldorf</td>
-                            <td className="p-3 text-sm">2025-10-25</td>
-                            <td className="p-3 text-sm">
-                              <div className="flex gap-2">
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <FileText className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
+                          {[
+                            { name: "Attorney-Response.pdf", type: "Attorney Motion Request", by: "Dell Spington", date: "2025-10-21" },
+                            { name: "Support-Documentation.pdf", type: "Supporting Evidence", by: "Tommy Welldorf", date: "2025-10-25" }
+                          ].map((doc, i) => (
+                            <tr key={i}>
+                              <td className="small"><a href="#" className="text-primary">{doc.name}</a></td>
+                              <td className="small">{doc.type}</td>
+                              <td className="small">{doc.by}</td>
+                              <td className="small">{doc.date}</td>
+                              <td className="small"><button className="btn btn-sm btn-link p-0"><FileText size={14} /></button></td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
-                  </div>
-
-                  {/* Response Complete Checkbox */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Response Complete</label>
-                    <div className="flex items-center gap-2">
-                      <input type="checkbox" id="response-complete" className="h-4 w-4 rounded border-input" />
-                      <label htmlFor="response-complete" className="text-sm">Yes</label>
+                    <div className="mb-3">
+                      <label className="form-label small fw-semibold">Response Complete</label>
+                      <div className="form-check">
+                        <input className="form-check-input" type="checkbox" id="response-complete" />
+                        <label className="form-check-label small" htmlFor="response-complete">Yes</label>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="form-label small fw-semibold">Response Completed On</label>
+                      <input type="text" className="form-control form-control-sm" placeholder="mm/dd/yyyy" />
                     </div>
                   </div>
-
-                  {/* Response Completed On */}
-                  <div>
-                    <label className="text-sm font-semibold mb-2 block">Response Completed On</label>
-                    <input type="text" className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" placeholder="mm/dd/yyyy" />
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        )}
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default MotionDetails;
