@@ -1,184 +1,157 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Shield } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const Consent = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [termsOpen, setTermsOpen] = useState(true);
   const [privacyOpen, setPrivacyOpen] = useState(true);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const navigate = useNavigate();
 
   const handleAcceptAndContinue = () => {
-    if (termsAccepted) {
-      navigate("/portal");
-    }
-  };
-
-  const handleBackToSignIn = () => {
-    navigate("/login");
+    if (termsAccepted) navigate("/portal");
   };
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center font-['Segoe_UI',system-ui,sans-serif]" 
-      style={{ backgroundColor: "#F7F7F7" }}
-    >
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          {/* Logo */}
-          <div className="mb-6">
-            <Shield className="h-8 w-8 text-gray-600" />
-          </div>
+    <div className="min-vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#F7F7F7" }}>
+      <div style={{ maxWidth: '28rem', width: '100%' }}>
+        <div className="card shadow-sm">
+          <div className="card-body p-4">
+            <div className="mb-4">
+              <i className="bi bi-shield-lock fs-3 text-secondary"></i>
+            </div>
+            <h1 className="h5 fw-semibold mb-4">Terms and Consent</h1>
 
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-xl font-semibold text-gray-900 mb-2">Terms and Consent</h1>
-          </div>
-
-          {/* Terms of Service Section */}
-          <div className="mb-4">
-            <Collapsible open={termsOpen} onOpenChange={setTermsOpen}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 text-left bg-gray-50 rounded-md hover:bg-gray-100">
-                <span className="font-medium text-gray-900">Terms of Service</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${termsOpen ? 'rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2 p-3 border border-gray-200 rounded-md bg-white">
-                <p className="text-sm text-gray-600 leading-relaxed">
+            {/* Terms of Service */}
+            <div className="mb-3">
+              <button
+                className="btn btn-light w-100 d-flex justify-content-between align-items-center"
+                onClick={() => setTermsOpen(!termsOpen)}
+              >
+                <span className="fw-medium">Terms of Service</span>
+                <i className={`bi bi-chevron-${termsOpen ? 'up' : 'down'}`}></i>
+              </button>
+              {termsOpen && (
+                <div className="border rounded p-3 mt-2 small text-muted">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
                   incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
-                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui 
-                  officia deserunt mollit anim id est laborum.
-                </p>
-              </CollapsibleContent>
-            </Collapsible>
-          </div>
-
-          {/* Privacy Policy Section */}
-          <div className="mb-6">
-            <Collapsible open={privacyOpen} onOpenChange={setPrivacyOpen}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 text-left bg-gray-50 rounded-md hover:bg-gray-100">
-                <span className="font-medium text-gray-900">Privacy Policy Summary</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${privacyOpen ? 'rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2 p-3 border border-gray-200 rounded-md bg-white">
-                <ul className="text-sm text-gray-600 space-y-2">
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>We collect minimal personal information necessary for service provision</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Your data is encrypted and stored securely using industry standards</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>We do not share your information with third parties without consent</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>You have the right to access, modify, or delete your data at any time</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Cookies are used only for essential functionality and analytics</span>
-                  </li>
-                </ul>
-              </CollapsibleContent>
-            </Collapsible>
-          </div>
-
-          {/* Consent Checkboxes */}
-          <div className="space-y-4 mb-6">
-            <div className="flex items-start space-x-3">
-              <Checkbox
-                id="terms-consent"
-                checked={termsAccepted}
-                onCheckedChange={(checked) => setTermsAccepted(checked === true)}
-                className="mt-0.5 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
-              />
-              <Label htmlFor="terms-consent" className="text-sm text-gray-700 leading-relaxed">
-                I agree to the{" "}
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-blue-600 hover:text-blue-700 underline">
-                      Terms of Service
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Terms of Service</DialogTitle>
-                    </DialogHeader>
-                    <div className="mt-4">
-                      <p className="text-sm text-gray-600">
-                        Full terms of service would be displayed here in a real application.
-                      </p>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-                {" "}and{" "}
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-blue-600 hover:text-blue-700 underline">
-                      Privacy Policy
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Privacy Policy</DialogTitle>
-                    </DialogHeader>
-                    <div className="mt-4">
-                      <p className="text-sm text-gray-600">
-                        Full privacy policy would be displayed here in a real application.
-                      </p>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-                . <span className="text-red-500">*</span>
-              </Label>
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </div>
+              )}
             </div>
 
-            <div className="flex items-start space-x-3">
-              <Checkbox
-                id="email-notifications"
-                checked={emailNotifications}
-                onCheckedChange={(checked) => setEmailNotifications(checked === true)}
-                className="mt-0.5 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
-              />
-              <Label htmlFor="email-notifications" className="text-sm text-gray-700 leading-relaxed">
-                I agree to receive email notifications about account activity and important updates. 
-                You can unsubscribe at any time.
-              </Label>
+            {/* Privacy Policy */}
+            <div className="mb-4">
+              <button
+                className="btn btn-light w-100 d-flex justify-content-between align-items-center"
+                onClick={() => setPrivacyOpen(!privacyOpen)}
+              >
+                <span className="fw-medium">Privacy Policy Summary</span>
+                <i className={`bi bi-chevron-${privacyOpen ? 'up' : 'down'}`}></i>
+              </button>
+              {privacyOpen && (
+                <div className="border rounded p-3 mt-2 small text-muted">
+                  <ul className="mb-0">
+                    <li>We collect minimal personal information necessary for service provision</li>
+                    <li>Your data is encrypted and stored securely using industry standards</li>
+                    <li>We do not share your information with third parties without consent</li>
+                    <li>You have the right to access, modify, or delete your data at any time</li>
+                    <li>Cookies are used only for essential functionality and analytics</li>
+                  </ul>
+                </div>
+              )}
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col space-y-3">
-            <Button
-              onClick={handleAcceptAndContinue}
-              disabled={!termsAccepted}
-              className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
-              style={{ backgroundColor: termsAccepted ? "#1F6FEB" : undefined }}
-            >
-              Accept and Continue →
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={handleBackToSignIn}
-              className="w-full h-10 text-gray-600 hover:text-gray-800 hover:bg-gray-50"
-            >
-              Back to Sign In
-            </Button>
+            {/* Consent Checkboxes */}
+            <div className="mb-4">
+              <div className="form-check mb-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="terms-consent"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                />
+                <label className="form-check-label small" htmlFor="terms-consent">
+                  I agree to the{" "}
+                  <button className="btn btn-link btn-sm p-0 text-decoration-underline" onClick={() => setShowTermsModal(true)}>Terms of Service</button>
+                  {" "}and{" "}
+                  <button className="btn btn-link btn-sm p-0 text-decoration-underline" onClick={() => setShowPrivacyModal(true)}>Privacy Policy</button>.
+                  <span className="text-danger"> *</span>
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="email-notifications"
+                  checked={emailNotifications}
+                  onChange={(e) => setEmailNotifications(e.target.checked)}
+                />
+                <label className="form-check-label small" htmlFor="email-notifications">
+                  I agree to receive email notifications about account activity and important updates.
+                </label>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="d-grid gap-2">
+              <button
+                className="btn btn-primary"
+                onClick={handleAcceptAndContinue}
+                disabled={!termsAccepted}
+              >
+                Accept and Continue →
+              </button>
+              <button className="btn btn-light" onClick={() => navigate("/login")}>
+                Back to Sign In
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Terms Modal */}
+      {showTermsModal && (
+        <>
+          <div className="modal-backdrop show"></div>
+          <div className="modal show d-block" tabIndex={-1}>
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Terms of Service</h5>
+                  <button type="button" className="btn-close" onClick={() => setShowTermsModal(false)}></button>
+                </div>
+                <div className="modal-body">
+                  <p className="small text-muted">Full terms of service would be displayed here in a real application.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Privacy Modal */}
+      {showPrivacyModal && (
+        <>
+          <div className="modal-backdrop show"></div>
+          <div className="modal show d-block" tabIndex={-1}>
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Privacy Policy</h5>
+                  <button type="button" className="btn-close" onClick={() => setShowPrivacyModal(false)}></button>
+                </div>
+                <div className="modal-body">
+                  <p className="small text-muted">Full privacy policy would be displayed here in a real application.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

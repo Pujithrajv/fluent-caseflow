@@ -1,9 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
 import { Header } from "@/components/shared/Header";
 
 const ExternalSignIn = () => {
@@ -15,123 +11,50 @@ const ExternalSignIn = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Reset errors
     setErrors({ username: "", password: "" });
-    
-    // Basic validation
     let hasErrors = false;
-    if (!username.trim()) {
-      setErrors(prev => ({ ...prev, username: "Username is required" }));
-      hasErrors = true;
-    }
-    if (!password.trim()) {
-      setErrors(prev => ({ ...prev, password: "Password is required" }));
-      hasErrors = true;
-    }
-    
-    if (!hasErrors) {
-      navigate("/consent");
-    }
+    if (!username.trim()) { setErrors(prev => ({ ...prev, username: "Username is required" })); hasErrors = true; }
+    if (!password.trim()) { setErrors(prev => ({ ...prev, password: "Password is required" })); hasErrors = true; }
+    if (!hasErrors) navigate("/consent");
   };
 
   return (
-    <div className="min-h-screen bg-background font-fluent">
+    <div className="min-vh-100 bg-light">
       <Header showUserActions={false} />
-      <div className="max-w-md mx-auto px-6 py-8">
-
-        {/* Page Title */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-foreground mb-2">
-            External User Sign-In
-          </h1>
-          <p className="text-muted-foreground">
-            Enter your credentials to continue
-          </p>
+      <div className="container py-5" style={{ maxWidth: '28rem' }}>
+        <div className="text-center mb-4">
+          <h1 className="h4 fw-bold">External User Sign-In</h1>
+          <p className="text-muted">Enter your credentials to continue</p>
         </div>
-
-        <div className="bg-card rounded-lg shadow-fluent-16 p-8 border border-border">
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Label htmlFor="username" className="text-sm font-medium text-foreground">
-                Username
-              </Label>
-              <Input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
-                className="mt-1 h-12 border-input focus:border-ring focus:ring-ring"
-                aria-describedby={errors.username ? "username-error" : undefined}
-              />
-              {errors.username && (
-                <p id="username-error" className="mt-1 text-sm text-destructive">
-                  {errors.username}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label htmlFor="password" className="text-sm font-medium text-foreground">
-                Password
-              </Label>
-              <div className="relative mt-1">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="h-12 pr-12 border-input focus:border-ring focus:ring-ring"
-                  aria-describedby={errors.password ? "password-error" : undefined}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
+        <div className="card shadow-sm">
+          <div className="card-body p-4">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="username" className="form-label small fw-medium">Username</label>
+                <input id="username" type="text" className={`form-control form-control-lg ${errors.username ? 'is-invalid' : ''}`}
+                  value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your username" />
+                {errors.username && <div className="invalid-feedback">{errors.username}</div>}
               </div>
-              {errors.password && (
-                <p id="password-error" className="mt-1 text-sm text-destructive">
-                  {errors.password}
-                </p>
-              )}
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full h-12 bg-primary hover:bg-primary-hover text-primary-foreground font-medium"
-            >
-              Sign In
-            </Button>
-
-            <div className="text-center">
-              <button
-                type="button"
-                className="text-sm text-primary hover:text-primary-hover"
-                onClick={() => {}}
-              >
-                Forgot password?
-              </button>
-            </div>
-          </form>
-
-          {/* Footer Links */}
-          <div className="mt-8 text-center space-y-2">
-            <div className="flex justify-center space-x-4 text-sm text-muted-foreground">
-              <button className="hover:text-foreground">Privacy Policy</button>
-              <span>•</span>
-              <button className="hover:text-foreground">Terms of Service</button>
-              <span>•</span>
-              <button className="hover:text-foreground">Support</button>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label small fw-medium">Password</label>
+                <div className="input-group">
+                  <input id="password" type={showPassword ? "text" : "password"}
+                    className={`form-control form-control-lg ${errors.password ? 'is-invalid' : ''}`}
+                    value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <button type="button" className="btn btn-outline-secondary"
+                    onClick={() => setShowPassword(!showPassword)}>
+                    <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                  </button>
+                  {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                </div>
+              </div>
+              <button type="submit" className="btn btn-primary w-100 btn-lg">Sign In</button>
+              <div className="text-center mt-3">
+                <button type="button" className="btn btn-link btn-sm">Forgot password?</button>
+              </div>
+            </form>
+            <div className="text-center mt-4 small text-muted">
+              Privacy Policy • Terms of Service • Support
             </div>
           </div>
         </div>

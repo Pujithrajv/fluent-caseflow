@@ -1,167 +1,85 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, FileText, User, Calendar, AlertCircle } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
+import { Footer } from '@/components/shared/Footer';
 
 export const AlertDetail: React.FC = () => {
   const navigate = useNavigate();
   const { alertId } = useParams();
   const [isAcknowledged, setIsAcknowledged] = useState(false);
 
-  // Mock alert data - in a real app, this would come from API/state
   const alertData = {
-    id: alertId,
-    caseNumber: 'DBE-2025-001',
-    caseType: 'Abandoned Well',
-    department: 'Department of Natural Resources',
-    status: 'Returned for Correction',
-    alertTitle: 'Case Returned for Correction',
-    triggeredBy: 'Sarah Johnson',
+    id: alertId, caseNumber: 'DBE-2025-001', caseType: 'Abandoned Well',
+    department: 'Department of Natural Resources', status: 'Returned for Correction',
+    alertTitle: 'Case Returned for Correction', triggeredBy: 'Sarah Johnson',
     rejectionDate: 'March 15, 2025',
     reasonForReturn: 'The submitted case documentation is incomplete. The required "Well Records of Inspector" document is missing from the submission. Additionally, the property boundary description in Section 3 appears to have formatting errors.',
-    requiredAction: 'Upload missing "Well Records of Inspector" document and re-verify case details before resubmission. Please ensure all property boundaries are correctly formatted according to state guidelines.',
-    linkedDocuments: [
-      'Application Form - Complete',
-      'Environmental Impact Statement - Complete',
-      'Well Records of Inspector - MISSING',
-      'Property Survey Map - Needs Correction'
-    ],
+    requiredAction: 'Upload missing "Well Records of Inspector" document and re-verify case details before resubmission.',
     assignedTo: 'John Doe'
   };
 
   const handleAcknowledge = () => {
     setIsAcknowledged(true);
-    // In a real app, this would update the backend
-    setTimeout(() => {
-      navigate('/portal');
-    }, 1500);
-  };
-
-  const handleOpenCase = () => {
-    // Navigate to case details
-    navigate(`/case/${alertData.caseNumber}`);
+    setTimeout(() => navigate('/portal'), 1500);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-vh-100 d-flex flex-column bg-light">
       <Header />
-      
-      <div className="container mx-auto px-4 py-6 max-w-6xl">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/portal')}
-          className="mb-4 hover:bg-gray-100"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Dashboard
-        </Button>
+      <div className="container py-4" style={{ maxWidth: '960px' }}>
+        <button className="btn btn-link text-decoration-none mb-3 p-0" onClick={() => navigate('/portal')}>
+          <i className="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
 
         {/* Header Card */}
-        <Card className="mb-6 border-l-4 border-l-red-500">
-          <CardHeader>
-            <div className="flex items-start justify-between">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <AlertCircle className="w-6 h-6 text-red-600" />
-                  <CardTitle className="text-2xl">Alert Details</CardTitle>
-                </div>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <p><strong>Case:</strong> {alertData.caseNumber}</p>
-                  <p><strong>Case Type:</strong> {alertData.caseType}</p>
-                  <p><strong>Department:</strong> {alertData.department}</p>
-                  <div className="flex items-center gap-2">
-                    <strong>Status:</strong>
-                    <Badge variant="destructive" className="bg-red-600">
-                      {alertData.status}
-                    </Badge>
-                  </div>
+        <div className="card shadow-sm border-0 mb-4" style={{ borderLeft: '4px solid #dc3545' }}>
+          <div className="card-body p-4">
+            <div className="d-flex justify-content-between align-items-start">
+              <div>
+                <h2 className="h4 fw-bold d-flex align-items-center gap-2 mb-3">
+                  <i className="bi bi-exclamation-triangle text-danger"></i> Alert Details
+                </h2>
+                <div className="small text-muted">
+                  <p className="mb-1"><strong>Case:</strong> {alertData.caseNumber}</p>
+                  <p className="mb-1"><strong>Case Type:</strong> {alertData.caseType}</p>
+                  <p className="mb-1"><strong>Department:</strong> {alertData.department}</p>
+                  <p className="mb-0"><strong>Status:</strong> <span className="badge bg-danger">{alertData.status}</span></p>
                 </div>
               </div>
-              
-              {isAcknowledged && (
-                <Badge className="bg-green-600 text-white">
-                  Alert Acknowledged
-                </Badge>
-              )}
+              {isAcknowledged && <span className="badge bg-success">Alert Acknowledged</span>}
             </div>
-          </CardHeader>
-        </Card>
+          </div>
+        </div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="details" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0">
-            <TabsTrigger 
-              value="details"
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Alert Details
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="details" className="mt-6">
-            <Card>
-              <CardContent className="p-6 space-y-6">
-                {/* Alert Title */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Alert Title</h3>
-                  <p className="text-lg font-medium text-gray-900">{alertData.alertTitle}</p>
-                </div>
-
-                {/* Triggered By */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Triggered By</h3>
-                  <div className="flex items-center gap-2">
-                    <User className="w-4 h-4 text-gray-600" />
-                    <p className="text-gray-900">{alertData.triggeredBy} (Clerk)</p>
-                  </div>
-                </div>
-
-                {/* Date */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Date</h3>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-gray-600" />
-                    <p className="text-gray-900">{alertData.rejectionDate}</p>
-                  </div>
-                </div>
-
-                {/* Reason for Return */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Reason for Return</h3>
-                  <div className="bg-red-50 border border-red-200 rounded-md p-4">
-                    <p className="text-gray-900">{alertData.reasonForReturn}</p>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-4 pt-4 border-t">
-                  <Button 
-                    variant="default"
-                    size="lg"
-                    onClick={handleOpenCase}
-                    className="flex-1"
-                  >
-                    Open Case
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    onClick={handleAcknowledge}
-                    disabled={isAcknowledged}
-                    className="flex-1"
-                  >
-                    {isAcknowledged ? 'Acknowledged ✓' : 'Acknowledge Alert'}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        {/* Details */}
+        <div className="card shadow-sm border-0">
+          <div className="card-body p-4">
+            <div className="mb-4">
+              <h6 className="text-muted small fw-semibold mb-1">Alert Title</h6>
+              <p className="fs-5 fw-medium">{alertData.alertTitle}</p>
+            </div>
+            <div className="mb-4">
+              <h6 className="text-muted small fw-semibold mb-1">Triggered By</h6>
+              <p><i className="bi bi-person me-1"></i> {alertData.triggeredBy} (Clerk)</p>
+            </div>
+            <div className="mb-4">
+              <h6 className="text-muted small fw-semibold mb-1">Date</h6>
+              <p><i className="bi bi-calendar3 me-1"></i> {alertData.rejectionDate}</p>
+            </div>
+            <div className="mb-4">
+              <h6 className="text-muted small fw-semibold mb-1">Reason for Return</h6>
+              <div className="alert alert-danger">{alertData.reasonForReturn}</div>
+            </div>
+            <div className="d-flex gap-3 pt-3 border-top">
+              <button className="btn btn-primary flex-fill" onClick={() => navigate(`/case/${alertData.caseNumber}`)}>Open Case</button>
+              <button className="btn btn-outline-secondary flex-fill" onClick={handleAcknowledge} disabled={isAcknowledged}>
+                {isAcknowledged ? 'Acknowledged ✓' : 'Acknowledge Alert'}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
