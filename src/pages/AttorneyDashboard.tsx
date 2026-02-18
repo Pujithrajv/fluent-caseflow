@@ -1,356 +1,128 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { StatusBadge } from "@/components/ui/status-badge";
-import { Eye, Shield, ArrowLeft, Calendar, Clock, Video, MapPin, FolderOpen, ExternalLink } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Footer } from "@/components/shared/Footer";
 
-interface CaseItem {
-  id: string;
-  name: string;
-  caseNumber?: string;
-  caseType: string;
-  department: string;
-  primaryPartyName: string;
-  primaryPartyType: string;
-  status: "accepted";
-  stage: string;
-  lastActionDate: string;
-  assignedAttorney?: string;
-}
+const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
-const mockAcceptedCases: CaseItem[] = [
-  {
-    id: "DBE-2024-001-EC",
-    name: "Grain Dealer and Warehouse Licensing - Kirby Neroni",
-    caseNumber: "DBE-2024-001-EC",
-    caseType: "Grain Dealer and Warehouse Licensing",
-    department: "Department of Agriculture",
-    primaryPartyName: "Kirby Neroni",
-    primaryPartyType: "Respondent",
-    status: "accepted",
-    stage: "Pre-Hearing",
-    lastActionDate: "2025-08-11",
-    assignedAttorney: "Greg Miles",
-  }
+const mockAcceptedCases = [
+  { id: "DBE-2024-001-EC", caseNumber: "DBE-2024-001-EC", caseType: "Grain Dealer and Warehouse Licensing", department: "Department of Agriculture", primaryPartyName: "Kirby Neroni", primaryPartyType: "Respondent", stage: "Pre-Hearing", status: "accepted", lastActionDate: "2025-08-11", assignedAttorney: "Greg Miles" }
+];
+
+const mockEvents = [
+  { id: 1, title: "Initial Case Management Conference", date: "2025-08-25", time: "1:00 PM", endTime: "2:00 PM", location: "Microsoft Teams Meeting", meetingId: "392 671 125 846", type: "Conference", isTeamsEvent: true, caseNumber: "DBE-2024-001-EC", caseType: "Grain Dealer and Warehouse Licensing", department: "Department of Agriculture", departmentRole: "Complainant", primaryParty: "Kirby Neroni", primaryPartyRole: "Respondent", timezone: "CST" }
+];
+
+const mockTasks = [
+  { id: "DBE-2024-001-EC", caseNumber: "DBE-2024-001-EC", title: "Document Review Pending", description: "Grain Dealer and Warehouse Licensing case review", primaryParty: "Kirby Neroni", priority: "High Priority", dueDate: "2024-12-22" }
 ];
 
 const AttorneyDashboard = () => {
   const navigate = useNavigate();
-  const [cases] = useState<CaseItem[]>(mockAcceptedCases);
   const [activeTab, setActiveTab] = useState("cases");
 
-  const handleViewCase = (caseId: string) => {
-    navigate(`/attorney/case/${caseId}`);
-  };
-
-  // Mock events for attorney dashboard
-  const mockEvents = [
-    {
-      id: 1,
-      title: "Initial Case Management Conference",
-      subtitle: "Notice of Initial Case Management Conference",
-      date: "2025-08-25",
-      time: "1:00 PM",
-      endDate: "2025-08-25",
-      endTime: "2:00 PM",
-      location: "Microsoft Teams Meeting",
-      meetingId: "392 671 125 846",
-      type: "Conference",
-      eventType: "meeting",
-      isTeamsEvent: true,
-      hasCase: true,
-      caseNumber: "DBE-2024-001-EC",
-      caseType: "Grain Dealer and Warehouse Licensing",
-      department: "Department of Agriculture",
-      departmentRole: "Complainant",
-      primaryParty: "Kirby Neroni",
-      primaryPartyRole: "Respondent",
-      timezone: "CST"
-    }
-  ];
-
-  // Mock tasks for attorney dashboard
-  const mockTasks = [
-    {
-      id: "DBE-2024-001-EC",
-      caseNumber: "DBE-2024-001-EC",
-      title: "Document Review Pending",
-      description: "Grain Dealer and Warehouse Licensing case review",
-      primaryParty: "Kirby Neroni",
-      priority: "High Priority",
-      dueDate: "2024-12-22",
-      priorityClass: "bg-warning/20 border-warning",
-      type: "task"
-    }
-  ];
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-background font-fluent">
+    <div className="min-vh-100 d-flex flex-column bg-light">
       {/* Header */}
-      <div className="w-full bg-white border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <img 
-                src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
-                alt="Illinois Bureau of Administrative Hearings" 
-                className="h-16 w-auto object-contain"
-              />
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" onClick={() => navigate("/profile")}>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Profile
-              </Button>
+      <div className="bg-white border-bottom">
+        <div className="container-lg py-3 d-flex justify-content-between align-items-center">
+          <img src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" alt="Illinois Bureau of Administrative Hearings" style={{ height: '4rem' }} />
+          <button className="btn btn-link text-decoration-none" onClick={() => navigate("/profile")}><i className="bi bi-arrow-left me-1"></i> Back to Profile</button>
+        </div>
+      </div>
+
+      <div className="container-lg py-4">
+        <h1 className="h3 fw-bold mb-1">Attorney Dashboard</h1>
+        <p className="text-muted mb-4">View and manage accepted cases, events, and tasks</p>
+
+        <ul className="nav nav-tabs mb-4">
+          <li className="nav-item"><button className={`nav-link ${activeTab === 'cases' ? 'active' : ''}`} onClick={() => setActiveTab('cases')}>Cases</button></li>
+          <li className="nav-item"><button className={`nav-link ${activeTab === 'events' ? 'active' : ''}`} onClick={() => setActiveTab('events')}>Upcoming Events</button></li>
+          <li className="nav-item"><button className={`nav-link ${activeTab === 'tasks' ? 'active' : ''}`} onClick={() => setActiveTab('tasks')}>Tasks & Alerts</button></li>
+        </ul>
+
+        {activeTab === 'cases' && (
+          <div className="card shadow-sm border-0">
+            <div className="card-header bg-white"><h6 className="fw-semibold mb-0">Accepted Cases</h6></div>
+            <div className="card-body p-0">
+              <div className="table-responsive">
+                <table className="table table-hover mb-0">
+                  <thead className="table-light">
+                    <tr><th>Case Number</th><th>Case Type</th><th>Department</th><th>Primary Party</th><th>Stage</th><th>Status</th><th>Last Action</th><th className="text-end">Actions</th></tr>
+                  </thead>
+                  <tbody>
+                    {mockAcceptedCases.map(c => (
+                      <tr key={c.id}>
+                        <td className="fw-medium">{c.caseNumber}</td>
+                        <td>{c.caseType}</td><td>{c.department}</td>
+                        <td><div className="fw-medium">{c.primaryPartyName}</div><small className="text-muted">{c.primaryPartyType}</small></td>
+                        <td><span className="badge border text-secondary">{c.stage}</span></td>
+                        <td><span className="badge rounded-pill" style={{ backgroundColor: '#3DA546', color: '#fff' }}>Accepted</span></td>
+                        <td>{c.lastActionDate}</td>
+                        <td className="text-end"><button className="btn btn-outline-secondary btn-sm" onClick={() => navigate(`/attorney/case/${c.id}`)}><i className="bi bi-eye me-1"></i>View</button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        )}
 
-      <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
-        {/* Page Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            Attorney Dashboard
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            View and manage accepted cases, events, and tasks
-          </p>
-        </div>
-
-        {/* Tabs Navigation */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0">
-            <TabsTrigger 
-              value="cases" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Cases
-            </TabsTrigger>
-            <TabsTrigger 
-              value="events" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Upcoming Events
-            </TabsTrigger>
-            <TabsTrigger 
-              value="tasks" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Tasks & Alerts
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Cases Tab Content */}
-          <TabsContent value="cases" className="mt-6">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="font-fluent">Accepted Cases</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {cases.length === 0 ? (
-                  <div className="text-center py-8">
-                    <Shield className="mx-auto h-12 w-12 text-muted-foreground" />
-                    <h3 className="mt-4 text-lg font-semibold">No accepted cases</h3>
-                    <p className="text-muted-foreground">You don't have any accepted cases yet.</p>
+        {activeTab === 'events' && (
+          <div className="card shadow-sm border-0">
+            <div className="card-header bg-white"><h6 className="fw-semibold mb-0">Upcoming Events</h6></div>
+            <div className="card-body">
+              <div className="row g-3">
+                {mockEvents.map(event => (
+                  <div key={event.id} className="col-lg-6">
+                    <div className="card border-start border-primary border-3">
+                      <div className="card-body">
+                        <div className="d-flex justify-content-between mb-2"><h6 className="fw-semibold">{event.title}</h6><span className="badge bg-secondary">{event.type}</span></div>
+                        <div className="small text-muted mb-1"><strong>{event.caseNumber}:</strong> {event.caseType}</div>
+                        <div className="small text-muted mb-1">{event.department} ({event.departmentRole})</div>
+                        <div className="small text-muted mb-2">{event.primaryParty} ({event.primaryPartyRole})</div>
+                        <div className="small mb-1"><i className="bi bi-calendar3 me-1"></i> {formatDate(event.date)}</div>
+                        <div className="small mb-2"><i className="bi bi-clock me-1"></i> {event.time} - {event.endTime} {event.timezone}</div>
+                        <div className="d-flex gap-2">
+                          {event.isTeamsEvent && <button className="btn btn-primary btn-sm flex-fill"><i className="bi bi-camera-video me-1"></i>Join Teams</button>}
+                          <button className="btn btn-outline-secondary btn-sm flex-fill"><i className="bi bi-folder2-open me-1"></i>Open Case</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Case Number</TableHead>
-                        <TableHead>Case Type</TableHead>
-                        <TableHead>Department</TableHead>
-                        <TableHead>Primary Party</TableHead>
-                        <TableHead>Stage</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Last Action</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {cases.map((caseItem) => (
-                        <TableRow key={caseItem.id}>
-                          <TableCell className="font-medium">
-                            {caseItem.caseNumber || caseItem.id}
-                          </TableCell>
-                          <TableCell>{caseItem.caseType}</TableCell>
-                          <TableCell>{caseItem.department}</TableCell>
-                          <TableCell>
-                            <div>
-                              <div className="font-medium">{caseItem.primaryPartyName}</div>
-                              <div className="text-sm text-muted-foreground">{caseItem.primaryPartyType}</div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{caseItem.stage}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            <StatusBadge status={caseItem.status} />
-                          </TableCell>
-                          <TableCell>{caseItem.lastActionDate}</TableCell>
-                          <TableCell className="text-right">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleViewCase(caseItem.id)}
-                            >
-                              <Eye className="mr-2 h-4 w-4" />
-                              View
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
-          {/* Upcoming Events Tab Content */}
-          <TabsContent value="events" className="mt-6">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="font-fluent">Upcoming Events</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
-                  {mockEvents.map((event) => (
-                    <Card key={event.id} className="shadow-sm border-l-4 border-l-primary">
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <CardTitle className="text-lg font-semibold leading-tight">
-                            {event.title}
-                          </CardTitle>
-                          <Badge variant="secondary" className="ml-2 shrink-0">
-                            {event.type}
-                          </Badge>
+        {activeTab === 'tasks' && (
+          <div className="card shadow-sm border-0">
+            <div className="card-header bg-white"><h6 className="fw-semibold mb-0">Tasks & Alerts</h6></div>
+            <div className="card-body">
+              {mockTasks.map(task => (
+                <div key={task.id} className="card border-start border-warning border-3 mb-3">
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-start">
+                      <div>
+                        <div className="d-flex gap-2 mb-1">
+                          <span className="badge border text-secondary">{task.caseNumber}</span>
+                          <span className="badge bg-warning text-dark">{task.priority}</span>
                         </div>
-                      </CardHeader>
-                      <CardContent className="pt-0 space-y-4">
-                        {/* Case & Party Metadata */}
-                        <div className="space-y-2 text-sm">
-                          <div>
-                            <span className="font-medium">{event.caseNumber}:</span> {event.caseType}
-                          </div>
-                          <div className="text-muted-foreground">
-                            {event.department} ({event.departmentRole})
-                          </div>
-                          <div className="text-muted-foreground">
-                            {event.primaryParty} ({event.primaryPartyRole})
-                          </div>
-                        </div>
-
-                        {/* Event Details */}
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center">
-                            <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                            <span>{formatDate(event.date)}</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-                            <span>{event.time} - {event.endTime} {event.timezone}</span>
-                          </div>
-                          <div className="flex items-start">
-                            {event.isTeamsEvent ? (
-                              <Video className="mr-2 h-4 w-4 text-muted-foreground mt-0.5" />
-                            ) : (
-                              <MapPin className="mr-2 h-4 w-4 text-muted-foreground mt-0.5" />
-                            )}
-                            <div>
-                              <div>{event.location}</div>
-                              {event.isTeamsEvent && event.meetingId && (
-                                <div className="text-xs text-muted-foreground">Meeting ID: {event.meetingId}</div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Footer Buttons */}
-                        <div className="flex gap-2 pt-2">
-                          {event.isTeamsEvent && (
-                            <Button size="sm" className="flex-1">
-                              <Video className="mr-2 h-4 w-4" />
-                              Join Teams
-                            </Button>
-                          )}
-                          <Button variant="outline" size="sm" className="flex-1">
-                            <FolderOpen className="mr-2 h-4 w-4" />
-                            Open Case
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="flex-1"
-                            onClick={() => navigate(`/appointment/${event.id}`)}
-                          >
-                            <ExternalLink className="mr-2 h-4 w-4" />
-                            Open Appointment
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        <h6 className="fw-semibold">{task.title}</h6>
+                        <p className="small text-muted mb-1">{task.description}</p>
+                        <small className="text-muted">Primary Party: {task.primaryParty} | Due: {formatDate(task.dueDate)}</small>
+                      </div>
+                      <button className="btn btn-outline-secondary btn-sm"><i className="bi bi-eye me-1"></i>View</button>
+                    </div>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Tasks & Alerts Tab Content */}
-          <TabsContent value="tasks" className="mt-6">
-            <Card className="shadow-fluent-8">
-              <CardHeader>
-                <CardTitle className="font-fluent">Tasks & Alerts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {mockTasks.map((task) => (
-                    <Card key={task.id} className={`border-l-4 ${task.priorityClass}`}>
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 space-y-2">
-                            <div className="flex items-center gap-2">
-                              <Badge variant="outline" className="text-xs">
-                                {task.caseNumber}
-                              </Badge>
-                              <Badge variant="secondary" className="text-xs">
-                                {task.priority}
-                              </Badge>
-                            </div>
-                            <h4 className="font-semibold">{task.title}</h4>
-                            <p className="text-sm text-muted-foreground">{task.description}</p>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                              <span>Primary Party: {task.primaryParty}</span>
-                              <span>Due: {formatDate(task.dueDate)}</span>
-                            </div>
-                          </div>
-                          <Button variant="outline" size="sm">
-                            <Eye className="mr-2 h-4 w-4" />
-                            View
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+      <Footer />
     </div>
   );
 };

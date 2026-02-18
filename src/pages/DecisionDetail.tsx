@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, FileText, User, Calendar, Gavel, Mail } from 'lucide-react';
 import { Header } from '@/components/shared/Header';
+import { Footer } from '@/components/shared/Footer';
 import { useToast } from '@/hooks/use-toast';
 
 export const DecisionDetail: React.FC = () => {
@@ -14,18 +10,13 @@ export const DecisionDetail: React.FC = () => {
   const { toast } = useToast();
   const [isReportGenerated, setIsReportGenerated] = useState(false);
 
-  // Mock decision data
   const decisionData = {
-    id: decisionId,
-    caseNumber: 'CASE-2025-004',
-    caseType: 'Food Safety — North District Foods',
-    department: 'Department of Public Health',
-    status: 'Decision Finalized',
-    decisionTitle: 'Final Decision Issued',
-    decidedBy: 'ALJ Rebecca Martinez',
+    id: decisionId, caseNumber: 'CASE-2025-004', caseType: 'Food Safety — North District Foods',
+    department: 'Department of Public Health', status: 'Decision Finalized',
+    decisionTitle: 'Final Decision Issued', decidedBy: 'ALJ Rebecca Martinez',
     decisionDate: 'September 18, 2025',
     outcomeSummary: 'The ALJ has ruled in favor of the respondent and dismissed the complaint. After careful review of all evidence and testimony presented during the hearing, the Administrative Law Judge has determined that the Department of Public Health failed to establish a violation of food safety regulations by clear and convincing evidence.',
-    actionRequired: 'Generate and send the Final Decision Report to all involved parties, including Complainant, Respondent, and their respective attorneys.',
+    actionRequired: 'Generate and send the Final Decision Report to all involved parties.',
     distributionList: [
       { role: 'Complainant', name: 'Department of Public Health', email: 'legal@health.state.gov' },
       { role: 'Respondent', name: 'North District Foods, Inc.', email: 'legal@northdistrictfoods.com' },
@@ -36,177 +27,69 @@ export const DecisionDetail: React.FC = () => {
 
   const handleGenerateReport = () => {
     setIsReportGenerated(true);
-    toast({
-      title: "Report Generated Successfully",
-      description: "Final Decision Report has been generated and distributed to all parties.",
-      duration: 3000,
-    });
-    
-    // Simulate moving to complete after a delay
-    setTimeout(() => {
-      navigate('/portal');
-    }, 2000);
-  };
-
-  const handleOpenCase = () => {
-    navigate(`/case/${decisionData.caseNumber}`);
+    toast({ title: "Report Generated Successfully", description: "Final Decision Report has been generated and distributed.", duration: 3000 });
+    setTimeout(() => navigate('/portal'), 2000);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-vh-100 d-flex flex-column bg-light">
       <Header />
-      
-      <div className="container mx-auto px-4 py-6 max-w-6xl">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/portal')}
-          className="mb-4 hover:bg-gray-100"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Dashboard
-        </Button>
+      <div className="container py-4" style={{ maxWidth: '960px' }}>
+        <button className="btn btn-link text-decoration-none mb-3 p-0" onClick={() => navigate('/portal')}>
+          <i className="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </button>
 
-        {/* Header Card */}
-        <Card className="mb-6 border-l-4 border-l-blue-500">
-          <CardHeader>
-            <div className="flex items-start justify-between">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Gavel className="w-6 h-6 text-blue-600" />
-                  <CardTitle className="text-2xl">Decision Details</CardTitle>
-                </div>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <p><strong>Case:</strong> {decisionData.caseNumber}</p>
-                  <p><strong>Case Type:</strong> {decisionData.caseType}</p>
-                  <p><strong>Department:</strong> {decisionData.department}</p>
-                  <div className="flex items-center gap-2">
-                    <strong>Status:</strong>
-                    <Badge className="bg-blue-600 text-white">
-                      {decisionData.status}
-                    </Badge>
-                  </div>
+        <div className="card shadow-sm border-0 mb-4" style={{ borderLeft: '4px solid #0d6efd' }}>
+          <div className="card-body p-4">
+            <div className="d-flex justify-content-between align-items-start">
+              <div>
+                <h2 className="h4 fw-bold d-flex align-items-center gap-2 mb-3">
+                  <i className="bi bi-briefcase text-primary"></i> Decision Details
+                </h2>
+                <div className="small text-muted">
+                  <p className="mb-1"><strong>Case:</strong> {decisionData.caseNumber}</p>
+                  <p className="mb-1"><strong>Case Type:</strong> {decisionData.caseType}</p>
+                  <p className="mb-1"><strong>Department:</strong> {decisionData.department}</p>
+                  <p className="mb-0"><strong>Status:</strong> <span className="badge bg-primary">{decisionData.status}</span></p>
                 </div>
               </div>
-              
-              {isReportGenerated && (
-                <Badge className="bg-green-600 text-white">
-                  ✓ Report Generated
-                </Badge>
-              )}
+              {isReportGenerated && <span className="badge bg-success">✓ Report Generated</span>}
             </div>
-          </CardHeader>
-        </Card>
+          </div>
+        </div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="details" className="w-full">
-          <TabsList className="w-full justify-start border-b rounded-none bg-transparent p-0">
-            <TabsTrigger 
-              value="details"
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Decision Details
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="details" className="mt-6">
-            <Card>
-              <CardContent className="p-6 space-y-6">
-                {/* Decision Title */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Decision Title</h3>
-                  <p className="text-lg font-medium text-gray-900">{decisionData.decisionTitle}</p>
-                </div>
-
-                {/* Decided By */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Decided By</h3>
-                  <div className="flex items-center gap-2">
-                    <User className="w-4 h-4 text-gray-600" />
-                    <p className="text-gray-900">{decisionData.decidedBy}</p>
-                  </div>
-                </div>
-
-                {/* Date of Decision */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Date of Decision</h3>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-gray-600" />
-                    <p className="text-gray-900">{decisionData.decisionDate}</p>
-                  </div>
-                </div>
-
-                {/* Outcome Summary */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Outcome Summary</h3>
-                  <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-                    <p className="text-gray-900">{decisionData.outcomeSummary}</p>
-                  </div>
-                </div>
-
-                {/* Action Required */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-2">Action Required</h3>
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-                    <p className="text-gray-900">{decisionData.actionRequired}</p>
-                  </div>
-                </div>
-
-                {/* Distribution List */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 mb-3">Distribution List</h3>
-                  <div className="border border-gray-200 rounded-md overflow-hidden">
-                    <table className="w-full">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Role</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Name</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Email</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {decisionData.distributionList.map((party, index) => (
-                          <tr key={index} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 text-sm text-gray-900 font-medium">{party.role}</td>
-                            <td className="px-4 py-3 text-sm text-gray-900">{party.name}</td>
-                            <td className="px-4 py-3 text-sm text-gray-600">
-                              <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4" />
-                                {party.email}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-4 pt-4 border-t">
-                  <Button 
-                    variant="default"
-                    size="lg"
-                    onClick={handleGenerateReport}
-                    disabled={isReportGenerated}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700"
-                  >
-                    <FileText className="w-4 h-4 mr-2" />
-                    {isReportGenerated ? 'Report Generated ✓' : 'Generate Final Report'}
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    onClick={handleOpenCase}
-                    className="flex-1"
-                  >
-                    View Case
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        <div className="card shadow-sm border-0">
+          <div className="card-body p-4">
+            <div className="mb-4"><h6 className="text-muted small fw-semibold mb-1">Decision Title</h6><p className="fs-5 fw-medium">{decisionData.decisionTitle}</p></div>
+            <div className="mb-4"><h6 className="text-muted small fw-semibold mb-1">Decided By</h6><p><i className="bi bi-person me-1"></i> {decisionData.decidedBy}</p></div>
+            <div className="mb-4"><h6 className="text-muted small fw-semibold mb-1">Date of Decision</h6><p><i className="bi bi-calendar3 me-1"></i> {decisionData.decisionDate}</p></div>
+            <div className="mb-4"><h6 className="text-muted small fw-semibold mb-1">Outcome Summary</h6><div className="alert alert-info">{decisionData.outcomeSummary}</div></div>
+            <div className="mb-4"><h6 className="text-muted small fw-semibold mb-1">Action Required</h6><div className="alert alert-warning">{decisionData.actionRequired}</div></div>
+            <div className="mb-4">
+              <h6 className="text-muted small fw-semibold mb-2">Distribution List</h6>
+              <div className="table-responsive">
+                <table className="table table-hover">
+                  <thead className="table-light">
+                    <tr><th className="small">Role</th><th className="small">Name</th><th className="small">Email</th></tr>
+                  </thead>
+                  <tbody>
+                    {decisionData.distributionList.map((party, index) => (
+                      <tr key={index}><td className="small fw-medium">{party.role}</td><td className="small">{party.name}</td><td className="small text-muted"><i className="bi bi-envelope me-1"></i>{party.email}</td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="d-flex gap-3 pt-3 border-top">
+              <button className="btn btn-primary flex-fill" onClick={handleGenerateReport} disabled={isReportGenerated}>
+                <i className="bi bi-file-earmark-text me-1"></i> {isReportGenerated ? 'Report Generated ✓' : 'Generate Final Report'}
+              </button>
+              <button className="btn btn-outline-secondary flex-fill" onClick={() => navigate(`/case/${decisionData.caseNumber}`)}>View Case</button>
+            </div>
+          </div>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
