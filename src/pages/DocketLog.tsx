@@ -1,4 +1,5 @@
 import { Header } from "@/components/shared/Header";
+import { Footer } from "@/components/shared/Footer";
 
 interface DocketEntry {
   date: string;
@@ -200,12 +201,7 @@ export default function DocketLog() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="border-top bg-white mt-5">
-        <div className="container py-3 text-center">
-          <small className="text-muted">© 2026 Illinois Department of Central Management Services. All rights reserved.</small>
-        </div>
-      </footer>
+      <Footer className="mt-5" />
     </div>
   );
 }
