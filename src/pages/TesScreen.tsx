@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Download, HelpCircle, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import logo from "@/assets/logo.png";
+
 const TesScreen = () => {
   const navigate = useNavigate();
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("ruling");
+
   const caseData = {
     caseNumber: "DBE-EC-02025-004",
     title: "Abandoned Well",
@@ -31,305 +28,268 @@ const TesScreen = () => {
       summary: "The Administrative Law Judge recommends granting the petitioner's request for remediation assistance based on the evidence presented during the hearing. The respondent failed to demonstrate compliance with environmental regulations as required under statute."
     }
   };
-  const rulingDocuments = [{
-    id: 1,
-    name: "final ruling.pdf",
-    type: "Recommended Decision",
-    uploadedBy: "Patricia Martinez",
-    uploadDate: "2025-11-11"
-  }, {
-    id: 2,
-    name: "Briefing-Schedule-Sequential.pdf",
-    type: "Briefing Schedule",
-    uploadedBy: "CMS System",
-    uploadDate: "2025-11-11"
-  }];
-  return <div className="min-h-screen bg-gray-50">
+
+  const rulingDocuments = [
+    { id: 1, name: "final ruling.pdf", type: "Recommended Decision", uploadedBy: "Patricia Martinez", uploadDate: "2025-11-11" },
+    { id: 2, name: "Briefing-Schedule-Sequential.pdf", type: "Briefing Schedule", uploadedBy: "CMS System", uploadDate: "2025-11-11" }
+  ];
+
+  return (
+    <div className="min-vh-100 bg-light">
       {/* Header */}
-      <header className="bg-[#0f2a4e] text-white">
-        <div className="flex items-center justify-between px-6 py-3">
-          <div className="flex items-center space-x-4">
-            <img src={logo} alt="Logo" className="h-10" />
-            <span className="text-xl font-semibold">Case Management System</span>
+      <header className="text-white" style={{ backgroundColor: "#0f2a4e" }}>
+        <div className="d-flex align-items-center justify-content-between px-4 py-3">
+          <div className="d-flex align-items-center gap-3">
+            <img src={logo} alt="Logo" style={{ height: "40px" }} />
+            <span className="fs-5 fw-semibold">Case Management System</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-              <HelpCircle className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-              <User className="h-5 w-5" />
-            </Button>
+          <div className="d-flex align-items-center gap-2">
+            <button className="btn btn-link text-white p-1"><HelpCircle size={20} /></button>
+            <button className="btn btn-link text-white p-1"><User size={20} /></button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="p-6">
-        {/* Back Button and Breadcrumb */}
-        <div className="mb-4">
-          <Button variant="ghost" onClick={() => navigate('/portal')} className="text-blue-600 hover:text-blue-800 p-0 h-auto">
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Back
-          </Button>
+      <main className="p-4">
+        {/* Back Button */}
+        <div className="mb-3">
+          <button className="btn btn-link text-primary p-0" onClick={() => navigate('/portal')}>
+            <ArrowLeft size={16} className="me-1" /> Back
+          </button>
         </div>
 
         {/* Case Header */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="d-flex justify-content-between align-items-start mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">
+            <h1 className="h3 fw-bold text-dark mb-1">
               {caseData.title}: {caseData.caseNumber}
             </h1>
-            <p className="text-sm text-blue-600 mb-2">
-              Cases / Case Summary / Case Details
-            </p>
-            <div className="flex gap-2">
-              <Badge className="bg-blue-600 text-white">Confidential</Badge>
-              <Badge className="bg-orange-500 text-white">Complex</Badge>
-              <Badge className="bg-red-600 text-white">Expedited</Badge>
+            <p className="small text-primary mb-2">Cases / Case Summary / Case Details</p>
+            <div className="d-flex gap-2">
+              <span className="badge bg-primary">Confidential</span>
+              <span className="badge bg-warning text-dark">Complex</span>
+              <span className="badge bg-danger">Expedited</span>
             </div>
           </div>
-          
-          <div className="flex gap-8 text-sm">
-            <div className="text-right">
-              <p className="font-semibold text-gray-700">Requesting Party</p>
-              <p className="text-gray-600">{caseData.requestingParty.name}</p>
-              <p className="text-gray-500">{caseData.requestingParty.type}</p>
-              <p className="text-gray-500">Dept#: {caseData.requestingParty.deptNumber}</p>
+          <div className="d-flex gap-4 small">
+            <div className="text-end">
+              <p className="fw-semibold text-secondary mb-0">Requesting Party</p>
+              <p className="text-muted mb-0">{caseData.requestingParty.name}</p>
+              <p className="text-muted mb-0">{caseData.requestingParty.type}</p>
+              <p className="text-muted mb-0">Dept#: {caseData.requestingParty.deptNumber}</p>
             </div>
-            <div className="text-right">
-              <p className="font-semibold text-gray-700">Responding Party</p>
-              <p className="text-gray-600">{caseData.respondingParty.name}</p>
-              <p className="text-gray-500">{caseData.respondingParty.type}</p>
-              <p className="text-gray-500">Attorney: {caseData.respondingParty.attorney}</p>
+            <div className="text-end">
+              <p className="fw-semibold text-secondary mb-0">Responding Party</p>
+              <p className="text-muted mb-0">{caseData.respondingParty.name}</p>
+              <p className="text-muted mb-0">{caseData.respondingParty.type}</p>
+              <p className="text-muted mb-0">Attorney: {caseData.respondingParty.attorney}</p>
             </div>
-            <Button variant="ghost" size="icon" className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-              <HelpCircle className="h-5 w-5" />
-            </Button>
+            <button className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "36px", height: "36px" }}>
+              <HelpCircle size={18} />
+            </button>
           </div>
         </div>
 
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="bg-transparent border-b border-gray-200 w-full justify-start rounded-none h-auto p-0 mb-6">
-            <TabsTrigger value="case-details" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
-              Case Details
-            </TabsTrigger>
-            <TabsTrigger value="participants" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
-              👥 Participants
-            </TabsTrigger>
-            <TabsTrigger value="submissions" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
-              📄 Submissions and Requests
-            </TabsTrigger>
-            <TabsTrigger value="docket" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
-              📋 Docket
-            </TabsTrigger>
-            <TabsTrigger value="ruling" className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:bg-transparent px-6 py-3">
-              ⚖️ FDM
-            </TabsTrigger>
-          </TabsList>
+        <ul className="nav nav-tabs mb-4">
+          <li className="nav-item">
+            <button className={`nav-link ${activeTab === "case-details" ? "active" : ""}`} onClick={() => setActiveTab("case-details")}>Case Details</button>
+          </li>
+          <li className="nav-item">
+            <button className={`nav-link ${activeTab === "participants" ? "active" : ""}`} onClick={() => setActiveTab("participants")}>👥 Participants</button>
+          </li>
+          <li className="nav-item">
+            <button className={`nav-link ${activeTab === "submissions" ? "active" : ""}`} onClick={() => setActiveTab("submissions")}>📄 Submissions and Requests</button>
+          </li>
+          <li className="nav-item">
+            <button className={`nav-link ${activeTab === "docket" ? "active" : ""}`} onClick={() => setActiveTab("docket")}>📋 Docket</button>
+          </li>
+          <li className="nav-item">
+            <button className={`nav-link ${activeTab === "ruling" ? "active" : ""}`} onClick={() => setActiveTab("ruling")}>⚖️ FDM</button>
+          </li>
+        </ul>
 
-          <TabsContent value="ruling" className="mt-0">
-            <div className="grid grid-cols-12 gap-6">
-              {/* Left Sidebar */}
-              <div className="col-span-3 space-y-6">
-                <Card className="border shadow-sm">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <span className="text-blue-600">📋</span>
-                      Recommended Decision Details
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <p className="text-sm text-gray-500">ALJ Name</p>
-                      <p className="text-sm font-medium flex items-center gap-1">
-                        <User className="h-4 w-4" />
-                        {caseData.recommendedDecision.aljName}
-                      </p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-500">Recommended Decision Date</p>
-                        <p className="text-sm font-medium flex items-center gap-1">
-                          📅 {caseData.recommendedDecision.decisionDate}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Days Remaining</p>
-                        <p className="text-sm font-medium text-green-600">
-                          ⏱️ {caseData.recommendedDecision.daysRemaining}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border shadow-sm">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg">Recommended Documents</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center gap-2 text-sm text-blue-600 hover:underline cursor-pointer">
-                      <span>📄</span>
-                      <span>Recommended Decision Report</span>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">
-                      System Generated • ALJ Patricia Martinez • 11/25/2024
+        {/* FDM Tab Content */}
+        {activeTab === "ruling" && (
+          <div className="row g-4">
+            {/* Left Sidebar */}
+            <div className="col-md-3">
+              <div className="card border shadow-sm mb-4">
+                <div className="card-header bg-white pb-2">
+                  <h5 className="card-title mb-0 d-flex align-items-center gap-2">
+                    <span className="text-primary">📋</span> Recommended Decision Details
+                  </h5>
+                </div>
+                <div className="card-body">
+                  <div className="mb-3">
+                    <p className="small text-muted mb-0">ALJ Name</p>
+                    <p className="small fw-medium d-flex align-items-center gap-1 mb-0">
+                      <User size={14} /> {caseData.recommendedDecision.aljName}
                     </p>
-                    <Button variant="ghost" size="sm" className="mt-2 p-0 h-auto text-blue-600">
-                      <Download className="h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <div className="row g-3">
+                    <div className="col-6">
+                      <p className="small text-muted mb-0">Recommended Decision Date</p>
+                      <p className="small fw-medium mb-0">📅 {caseData.recommendedDecision.decisionDate}</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="small text-muted mb-0">Days Remaining</p>
+                      <p className="small fw-medium text-success mb-0">⏱️ {caseData.recommendedDecision.daysRemaining}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Right Content */}
-              <div className="col-span-9 space-y-6">
-                <Card className="border shadow-sm">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <span className="text-blue-600">💬</span>
-                      Recommended Decision Details
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div>
-                      <h4 className="font-medium text-gray-700 mb-2">Summary</h4>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        {caseData.recommendedDecision.summary}
+              <div className="card border shadow-sm">
+                <div className="card-header bg-white pb-2">
+                  <h5 className="card-title mb-0">Recommended Documents</h5>
+                </div>
+                <div className="card-body">
+                  <div className="d-flex align-items-center gap-2 small text-primary" style={{ cursor: "pointer" }}>
+                    <span>📄</span><span>Recommended Decision Report</span>
+                  </div>
+                  <p className="text-muted mt-1 mb-1" style={{ fontSize: "0.75rem" }}>
+                    System Generated • ALJ Patricia Martinez • 11/25/2024
+                  </p>
+                  <button className="btn btn-link text-primary p-0"><Download size={16} /></button>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Content */}
+            <div className="col-md-9">
+              <div className="card border shadow-sm">
+                <div className="card-header bg-white pb-2">
+                  <h5 className="card-title mb-0 d-flex align-items-center gap-2">
+                    <span className="text-primary">💬</span> Recommended Decision Details
+                  </h5>
+                </div>
+                <div className="card-body">
+                  <div className="mb-4">
+                    <h6 className="fw-medium text-secondary mb-2">Summary</h6>
+                    <p className="small text-muted lh-lg">{caseData.recommendedDecision.summary}</p>
+                  </div>
+
+                  <hr />
+
+                  <div className="d-flex justify-content-between align-items-center mb-3 pt-3">
+                    <h5 className="fw-semibold mb-0">Final Decision Maker Action</h5>
+                    <span className="badge bg-warning bg-opacity-25 text-dark border border-warning">FDM Pending</span>
+                  </div>
+
+                  <p className="small text-muted mb-3">Choose Your Action</p>
+
+                  <div className="row g-3 mb-4">
+                    <div className="col-6">
+                      <button
+                        onClick={() => setSelectedAction('approve')}
+                        className={`w-100 p-3 border rounded text-center ${selectedAction === 'approve' ? 'border-success bg-success text-white' : 'border-secondary-subtle'}`}
+                        style={{ borderWidth: "2px" }}
+                      >
+                        <div className="fs-5 mb-1">⊙</div>
+                        <p className="fw-medium mb-0">Approve Recommended Decision</p>
+                      </button>
+                    </div>
+                    <div className="col-6">
+                      <button
+                        onClick={() => setSelectedAction('disagree')}
+                        className={`w-100 p-3 border rounded text-center ${selectedAction === 'disagree' ? 'text-white' : 'border-secondary-subtle'}`}
+                        style={{ borderWidth: "2px", backgroundColor: selectedAction === 'disagree' ? '#fd7e14' : undefined, borderColor: selectedAction === 'disagree' ? '#fd7e14' : undefined }}
+                      >
+                        <div className="fs-5 mb-1">⊗</div>
+                        <p className="fw-medium mb-0">Disagree / Upload Own Ruling</p>
+                      </button>
+                    </div>
+                  </div>
+
+                  {selectedAction === 'approve' && (
+                    <div className="bg-light border rounded p-4 mb-4">
+                      <p className="small text-secondary mb-3">
+                        Approving will automatically generate a Final Ruling Report based on the ALJ's recommendation.
                       </p>
+                      <div className="mb-4">
+                        <p className="small fw-medium text-secondary mb-2">Upload Supporting Documents (Optional)</p>
+                        <div className="border border-2 border-dashed border-success rounded p-4 text-center bg-white" style={{ cursor: "pointer" }}>
+                          <div className="text-success fs-3 mb-2">↑</div>
+                          <p className="text-muted mb-1">Drag and drop files here, or click to browse</p>
+                          <p className="small text-muted">PDF- max 10 MB</p>
+                        </div>
+                      </div>
+                      <p className="small fw-medium text-secondary mb-2">Optional comments to accompany your approval</p>
+                      <textarea className="form-control mb-3" rows={4} placeholder="Enter any additional comments..." />
+                      <button className="btn btn-success">Generate Final Ruling Report</button>
                     </div>
+                  )}
 
-                    <div className="border-t pt-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold">Final Decision Maker Action</h3>
-                        <Badge className="bg-amber-100 text-amber-800 border border-amber-300">
-                          FDM Pending
-                        </Badge>
+                  {selectedAction === 'disagree' && (
+                    <div className="bg-light border rounded p-4 mb-4">
+                      <div className="d-flex align-items-start gap-2 mb-3">
+                        <span className="text-warning fs-5">⚠</span>
+                        <p className="small text-secondary mb-0">
+                          Upload your own final ruling PDF. This will replace the ALJ's recommendation as the Final Administrative Decision.
+                        </p>
                       </div>
-
-                      <p className="text-sm text-gray-600 mb-4">Choose Your Action</p>
-                      
-                      <div className="grid grid-cols-2 gap-4 mb-6">
-                        <button onClick={() => setSelectedAction('approve')} className={`p-4 border-2 rounded-lg text-center transition-all ${selectedAction === 'approve' ? 'border-green-600 bg-green-600 text-white' : 'border-gray-200 hover:border-gray-300'}`}>
-                          <div className="text-xl mb-1">⊙</div>
-                          <p className="font-medium">Approve Recommended Decision</p>
-                        </button>
-                        <button onClick={() => setSelectedAction('disagree')} className={`p-4 border-2 rounded-lg text-center transition-all ${selectedAction === 'disagree' ? 'border-orange-500 bg-orange-500 text-white' : 'border-gray-200 hover:border-gray-300'}`}>
-                          <div className="text-xl mb-1">⊗</div>
-                          <p className="font-medium">Disagree / Upload Own Ruling</p>
-                        </button>
+                      <div className="border border-2 border-dashed rounded p-5 text-center bg-white mb-4" style={{ borderColor: "#fd7e14", cursor: "pointer" }}>
+                        <div style={{ color: "#fd7e14" }} className="fs-3 mb-2">↑</div>
+                        <p className="text-muted mb-1">Drag and drop files here, or click to browse</p>
+                        <p className="small text-muted">PDF only, max 10 MB</p>
                       </div>
-
-                      {selectedAction === 'approve' && <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
-                          <p className="text-sm text-gray-700 mb-4">
-                            Approving will automatically generate a Final Ruling Report based on the ALJ's recommendation.
-                          </p>
-                          
-                          <div className="mb-5">
-                            <p className="text-sm font-medium text-gray-700 mb-2">
-                              Upload Supporting Documents (Optional)
-                            </p>
-                            <div className="border-2 border-dashed border-green-300 rounded-lg p-6 text-center bg-white cursor-pointer hover:border-green-400 transition-colors">
-                              <div className="text-green-500 text-3xl mb-2">↑</div>
-                              <p className="text-gray-600 mb-1">Drag and drop files here, or click to browse</p>
-                              <p className="text-sm text-gray-400">PDF- max 10 MB</p>
-                            </div>
-                          </div>
-
-                          <p className="text-sm font-medium text-gray-700 mb-2">
-                            Optional comments to accompany your approval
-                          </p>
-                          <textarea className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows={4} placeholder="Enter any additional comments..." />
-                          <Button className="mt-4 bg-green-600 hover:bg-green-700 text-white">
-                            Generate Final Ruling Report
-                          </Button>
-                        </div>}
-
-                      {selectedAction === 'disagree' && <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
-                          <div className="flex items-start gap-2 mb-4">
-                            <span className="text-orange-500 text-lg">⚠</span>
-                            <p className="text-sm text-gray-700">
-                              Upload your own final ruling PDF. This will replace the ALJ's recommendation as the Final Administrative Decision.
-                            </p>
-                          </div>
-                          
-                          <div className="border-2 border-dashed border-orange-300 rounded-lg p-8 text-center mb-5 bg-white cursor-pointer hover:border-orange-400 transition-colors">
-                            <div className="text-orange-400 text-3xl mb-2">↑</div>
-                            <p className="text-gray-600 mb-1">Drag and drop files here, or click to browse</p>
-                            <p className="text-sm text-gray-400">PDF only, max 10 MB</p>
-                          </div>
-
-                          <p className="text-sm font-medium text-gray-700 mb-2">
-                            Required justification for rejecting the recommendation <span className="text-red-500">*</span>
-                          </p>
-                          <textarea className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" rows={4} placeholder="Explain why you are disagreeing with the ALJ's recommendation..." />
-                          <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white">
-                            Upload Final Ruling & Mark as Final
-                          </Button>
-                        </div>}
-
-                      <div className="flex justify-end gap-3">
-                        <Button variant="outline" onClick={() => navigate('/portal')}>
-                          Cancel
-                        </Button>
-                        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                          Submit Final Decision
-                        </Button>
-                      </div>
+                      <p className="small fw-medium text-secondary mb-2">
+                        Required justification for rejecting the recommendation <span className="text-danger">*</span>
+                      </p>
+                      <textarea className="form-control mb-3" rows={4} placeholder="Explain why you are disagreeing with the ALJ's recommendation..." />
+                      <button className="btn text-white" style={{ backgroundColor: "#fd7e14" }}>Upload Final Ruling & Mark as Final</button>
                     </div>
-                  </CardContent>
-                </Card>
+                  )}
 
+                  <div className="d-flex justify-content-end gap-2">
+                    <button className="btn btn-outline-secondary" onClick={() => navigate('/portal')}>Cancel</button>
+                    <button className="btn btn-primary">Submit Final Decision</button>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+        )}
 
-            {/* Footer Info Banner */}
-            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center gap-3">
-              <span className="text-blue-600">ℹ️</span>
-              <p className="text-sm text-gray-700">
-                This recommended decision has been routed to you as Final Decision Maker. Approve it to generate a Final Ruling Report, or upload your own final ruling if you disagree.
-              </p>
-            </div>
-          </TabsContent>
+        {activeTab === "case-details" && (
+          <div className="text-center py-5 text-muted">Case Details content would go here</div>
+        )}
+        {activeTab === "participants" && (
+          <div className="text-center py-5 text-muted">Participants content would go here</div>
+        )}
+        {activeTab === "submissions" && (
+          <div className="text-center py-5 text-muted">Submissions and Requests content would go here</div>
+        )}
+        {activeTab === "docket" && (
+          <div className="text-center py-5 text-muted">Docket content would go here</div>
+        )}
 
-          <TabsContent value="case-details">
-            <div className="text-center py-12 text-gray-500">
-              Case Details content would go here
-            </div>
-          </TabsContent>
-
-          <TabsContent value="participants">
-            <div className="text-center py-12 text-gray-500">
-              Participants content would go here
-            </div>
-          </TabsContent>
-
-          <TabsContent value="submissions">
-            <div className="text-center py-12 text-gray-500">
-              Submissions and Requests content would go here
-            </div>
-          </TabsContent>
-
-          <TabsContent value="docket">
-            <div className="text-center py-12 text-gray-500">
-              Docket content would go here
-            </div>
-          </TabsContent>
-        </Tabs>
+        {/* Footer Info Banner */}
+        {activeTab === "ruling" && (
+          <div className="mt-4 alert alert-info d-flex align-items-center gap-2">
+            <span className="text-primary">ℹ️</span>
+            <p className="small text-secondary mb-0">
+              This recommended decision has been routed to you as Final Decision Maker. Approve it to generate a Final Ruling Report, or upload your own final ruling if you disagree.
+            </p>
+          </div>
+        )}
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#0f2a4e] text-white py-4 px-6 mt-auto">
-        <div className="flex items-center justify-between">
-          <p className="text-sm">© 2024 Case Management System. All rights reserved.</p>
-          <div className="flex items-center space-x-4 text-sm">
-            <a href="#" className="hover:underline">Privacy Policy</a>
-            <a href="#" className="hover:underline">Terms of Service</a>
-            <a href="#" className="hover:underline">Contact Support</a>
+      <footer className="text-white py-3 px-4 mt-auto" style={{ backgroundColor: "#0f2a4e" }}>
+        <div className="d-flex align-items-center justify-content-between">
+          <p className="small mb-0">© 2024 Case Management System. All rights reserved.</p>
+          <div className="d-flex gap-3 small">
+            <a href="#" className="text-white text-decoration-none">Privacy Policy</a>
+            <a href="#" className="text-white text-decoration-none">Terms of Service</a>
+            <a href="#" className="text-white text-decoration-none">Contact Support</a>
           </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default TesScreen;

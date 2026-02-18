@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Header } from "@/components/shared/Header";
 import { RequestStep } from "@/components/request/RequestStep";
-
 import { InterrogatoriesStep } from "@/components/request/InterrogatoriesStep";
 import { DocumentProductionStep } from "@/components/request/DocumentProductionStep";
 import { DepositionStep } from "@/components/request/DepositionStep";
 import { InspectionStep } from "@/components/request/InspectionStep";
-
 import { ReviewSubmitStep } from "@/components/request/ReviewSubmitStep";
 import { RequestStepper } from "@/components/request/RequestStepper";
 
@@ -35,14 +33,7 @@ export default function DemoRequestWizard() {
     requestGroup: "",
     selectedRequestTypes: [],
     summary: "",
-    discoveryData: {
-      startDate: "2024-01-15",
-      cutoffDate: "2024-06-30",
-      conferenceDate: "2024-02-01",
-      caseId: "CASE-2024-001",
-      processStage: "Discovery Active",
-      discoverySummary: ""
-    },
+    discoveryData: { startDate: "2024-01-15", cutoffDate: "2024-06-30", conferenceDate: "2024-02-01", caseId: "CASE-2024-001", processStage: "Discovery Active", discoverySummary: "" },
     interrogatoriesData: null,
     documentProductionData: null,
     depositionData: null,
@@ -52,13 +43,10 @@ export default function DemoRequestWizard() {
 
   const generateSteps = () => {
     const steps = ["Request"];
-    
     if ((requestData.requestGroup === "Discovery" || requestData.requestGroup === "Subpoenas") && requestData.selectedRequestTypes.length > 0) {
       steps.push(...requestData.selectedRequestTypes);
     }
-    
     steps.push("Review & Submit");
-    
     return steps;
   };
 
@@ -69,82 +57,30 @@ export default function DemoRequestWizard() {
     setCurrentStep(currentStep + 1);
   };
 
-  const handleBack = () => {
-    setCurrentStep(currentStep - 1);
-  };
+  const handleBack = () => setCurrentStep(currentStep - 1);
 
   const renderStep = () => {
     const stepName = steps[currentStep];
-
     switch (stepName) {
-      case "Request":
-        return (
-          <RequestStep
-            data={requestData}
-            onNext={handleNext}
-          />
-        );
-      case "Interrogatories":
-        return (
-          <InterrogatoriesStep
-            data={requestData.interrogatoriesData}
-            cutoffDate={requestData.discoveryData.cutoffDate}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        );
-      case "Document Production":
-        return (
-          <DocumentProductionStep
-            data={requestData.documentProductionData}
-            cutoffDate={requestData.discoveryData.cutoffDate}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        );
-      case "Deposition":
-        return (
-          <DepositionStep
-            data={requestData.depositionData}
-            cutoffDate={requestData.discoveryData.cutoffDate}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        );
-      case "Inspection":
-        return (
-          <InspectionStep
-            data={requestData.inspectionData}
-            cutoffDate={requestData.discoveryData.cutoffDate}
-            onNext={handleNext}
-            onBack={handleBack}
-          />
-        );
-      case "Review & Submit":
-        return (
-          <ReviewSubmitStep
-            data={requestData}
-            onBack={handleBack}
-          />
-        );
-      default:
-        return null;
+      case "Request": return <RequestStep data={requestData} onNext={handleNext} />;
+      case "Interrogatories": return <InterrogatoriesStep data={requestData.interrogatoriesData} cutoffDate={requestData.discoveryData.cutoffDate} onNext={handleNext} onBack={handleBack} />;
+      case "Document Production": return <DocumentProductionStep data={requestData.documentProductionData} cutoffDate={requestData.discoveryData.cutoffDate} onNext={handleNext} onBack={handleBack} />;
+      case "Deposition": return <DepositionStep data={requestData.depositionData} cutoffDate={requestData.discoveryData.cutoffDate} onNext={handleNext} onBack={handleBack} />;
+      case "Inspection": return <InspectionStep data={requestData.inspectionData} cutoffDate={requestData.discoveryData.cutoffDate} onNext={handleNext} onBack={handleBack} />;
+      case "Review & Submit": return <ReviewSubmitStep data={requestData} onBack={handleBack} />;
+      default: return null;
     }
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-vh-100 bg-light">
       <Header />
-      
-      <div className="mx-auto max-w-7xl px-6 py-6">
-        <div className="grid grid-cols-12 gap-6">
-          {/* Left Stepper */}
-          <div className="col-span-3">
+      <div className="container-xl px-4 py-4">
+        <div className="row g-4">
+          <div className="col-md-3">
             <RequestStepper steps={steps} currentStep={currentStep} />
           </div>
-
-          {/* Main Content */}
-          <div className="col-span-9">
+          <div className="col-md-9">
             {renderStep()}
           </div>
         </div>

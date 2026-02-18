@@ -1,21 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ArrowLeft, Info, HelpCircle, Edit, Trash2, Save, X, Plus, AlertTriangle } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Header } from "@/components/shared/Header";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { AgencyManagementDashboard } from "@/components/portal/AgencyManagementDashboard";
@@ -29,162 +13,44 @@ import { AgencyTest1Screen } from "@/components/portal/AgencyTest1Screen";
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
-  // Personal Information state
-  const [personalInfo, setPersonalInfo] = useState({
-    firstName: "",
-    middleInitial: "",
-    lastName: "",
-    salutation: "",
-    suffix: "",
-    pronouns: "",
-    participationType: "",
-    preferredLanguage: ""
-  });
 
-  // Address Information state
-  const [addressInfo, setAddressInfo] = useState({
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    country: "United States"
-  });
-
-  // Contact Information state
-  const [contactInfo, setContactInfo] = useState({
-    email: "user@example.com", // Read-only from OKTA
-    phoneHome: "",
-    phoneMobile: "",
-    phoneBusiness: "",
-    phoneOther: "",
-    preferredPhone: ""
-  });
-
-  const [accountProfile, setAccountProfile] = useState({
-    organizationName: "",
-    website: "",
-    telephone: "",
-    address: "",
-    address2: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "United States",
-    participationType: ""
-  });
+  const [personalInfo, setPersonalInfo] = useState({ firstName: "", middleInitial: "", lastName: "", salutation: "", suffix: "", pronouns: "", participationType: "", preferredLanguage: "" });
+  const [addressInfo, setAddressInfo] = useState({ address1: "", address2: "", city: "", state: "", postalCode: "", country: "United States" });
+  const [contactInfo, setContactInfo] = useState({ email: "user@example.com", phoneHome: "", phoneMobile: "", phoneBusiness: "", phoneOther: "", preferredPhone: "" });
+  const [accountProfile, setAccountProfile] = useState({ organizationName: "", website: "", telephone: "", address: "", address2: "", city: "", state: "", zipCode: "", country: "United States", participationType: "" });
 
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [termsOpen, setTermsOpen] = useState(true);
   const [privacyOpen, setPrivacyOpen] = useState(true);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile");
 
-  // Additional consent preferences
   const [emailCommunicationsConsent, setEmailCommunicationsConsent] = useState("allow");
   const [postalMailConsent, setPostalMailConsent] = useState("allow");
   const [smsNotificationsConsent, setSmsNotificationsConsent] = useState("do-not-allow");
   const [phoneCallsConsent, setPhoneCallsConsent] = useState("ask-each-time");
   const [marketingCommunicationsConsent, setMarketingCommunicationsConsent] = useState("do-not-allow");
 
-  // Contacts state
   const [contacts, setContacts] = useState([
-    {
-      id: "1",
-      name: "John Smith",
-      email: "j.smith@agr.gov",
-      phone: "555-111-2222",
-      role: "Attorney",
-      lastUpdatedBy: "Case Manager Smith",
-      lastUpdatedDate: "2024-01-15"
-    },
-    {
-      id: "2",
-      name: "Jane Doe",
-      email: "j.doe@agr.gov",
-      phone: "555-333-4444",
-      role: "Case Manager",
-      lastUpdatedBy: "Case Manager Johnson",
-      lastUpdatedDate: "2024-01-10"
-    },
-    {
-      id: "3",
-      name: "Michael Brown",
-      email: "m.brown@agr.gov",
-      phone: "555-555-6666",
-      role: "FDM (Final Decision Maker)",
-      lastUpdatedBy: "Case Manager Davis",
-      lastUpdatedDate: "2024-01-08"
-    }
+    { id: "1", name: "John Smith", email: "j.smith@agr.gov", phone: "555-111-2222", role: "Attorney", lastUpdatedBy: "Case Manager Smith", lastUpdatedDate: "2024-01-15" },
+    { id: "2", name: "Jane Doe", email: "j.doe@agr.gov", phone: "555-333-4444", role: "Case Manager", lastUpdatedBy: "Case Manager Johnson", lastUpdatedDate: "2024-01-10" },
+    { id: "3", name: "Michael Brown", email: "m.brown@agr.gov", phone: "555-555-6666", role: "FDM (Final Decision Maker)", lastUpdatedBy: "Case Manager Davis", lastUpdatedDate: "2024-01-08" }
   ]);
   const [isAddingContact, setIsAddingContact] = useState(false);
   const [editingContactId, setEditingContactId] = useState<string | null>(null);
-  const [newContact, setNewContact] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    role: ""
-  });
-  const [editContact, setEditContact] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    role: ""
-  });
+  const [newContact, setNewContact] = useState({ name: "", email: "", phone: "", role: "" });
+  const [editContact, setEditContact] = useState({ name: "", email: "", phone: "", role: "" });
 
-  const handlePersonalInfoChange = (field: string, value: string) => {
-    setPersonalInfo(prev => ({ ...prev, [field]: value }));
-    setHasUnsavedChanges(true);
-  };
-
-  const handleAddressInfoChange = (field: string, value: string) => {
-    setAddressInfo(prev => ({ ...prev, [field]: value }));
-    setHasUnsavedChanges(true);
-  };
-
-  const handleContactInfoChange = (field: string, value: string) => {
-    setContactInfo(prev => ({ ...prev, [field]: value }));
-    setHasUnsavedChanges(true);
-  };
-
-  const handleAccountChange = (field: string, value: string) => {
-    setAccountProfile(prev => ({ ...prev, [field]: value }));
-  };
+  const handlePersonalInfoChange = (field: string, value: string) => { setPersonalInfo(prev => ({ ...prev, [field]: value })); setHasUnsavedChanges(true); };
+  const handleAddressInfoChange = (field: string, value: string) => { setAddressInfo(prev => ({ ...prev, [field]: value })); setHasUnsavedChanges(true); };
+  const handleContactInfoChange = (field: string, value: string) => { setContactInfo(prev => ({ ...prev, [field]: value })); setHasUnsavedChanges(true); };
 
   const handleSaveProfile = () => {
-    // Validate required fields
-    const requiredFieldsValid = personalInfo.firstName && personalInfo.lastName && 
-      addressInfo.address1 && addressInfo.city && addressInfo.state && addressInfo.postalCode;
-    
-    if (!requiredFieldsValid) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Save profile logic here
+    const requiredFieldsValid = personalInfo.firstName && personalInfo.lastName && addressInfo.address1 && addressInfo.city && addressInfo.state && addressInfo.postalCode;
+    if (!requiredFieldsValid) { toast({ title: "Validation Error", description: "Please fill in all required fields.", variant: "destructive" }); return; }
     setHasUnsavedChanges(false);
-    toast({
-      title: "Success",
-      description: "Profile updated."
-    });
-  };
-
-  const handleCancel = () => {
-    navigate("/portal");
-  };
-
-  const validateURL = (url: string) => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
+    toast({ title: "Success", description: "Profile updated." });
   };
 
   const formatPhone = (value: string) => {
@@ -194,1247 +60,425 @@ const Profile = () => {
     return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`;
   };
 
-  const formatZip = (value: string) => {
-    return value.replace(/\D/g, '').slice(0, 5);
-  };
-
-  const getRoleBadgeColor = (role: string) => {
+  const getRoleBadgeClass = (role: string) => {
     switch (role) {
-      case "Attorney":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "Case Manager":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "FDM (Final Decision Maker)":
-        return "bg-orange-100 text-orange-800 border-orange-200";
-      case "Paralegal":
-        return "bg-purple-100 text-purple-800 border-purple-200";
-      case "Support Staff":
-        return "bg-gray-100 text-gray-800 border-gray-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+      case "Attorney": return "bg-primary bg-opacity-10 text-primary border border-primary";
+      case "Case Manager": return "bg-success bg-opacity-10 text-success border border-success";
+      case "FDM (Final Decision Maker)": return "bg-warning bg-opacity-10 text-dark border border-warning";
+      default: return "bg-secondary bg-opacity-10 text-secondary border border-secondary";
     }
   };
 
-  const handleAddContact = () => {
-    setIsAddingContact(true);
-    setNewContact({ name: "", email: "", phone: "", role: "" });
-  };
-
+  const handleAddContact = () => { setIsAddingContact(true); setNewContact({ name: "", email: "", phone: "", role: "" }); };
   const handleSaveNewContact = () => {
-    if (!newContact.name || !newContact.email || !newContact.role) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const contactToAdd = {
-      id: Date.now().toString(),
-      ...newContact,
-      lastUpdatedBy: "Current Case Manager",
-      lastUpdatedDate: new Date().toISOString().split('T')[0]
-    };
-
-    setContacts(prev => [...prev, contactToAdd]);
-    setIsAddingContact(false);
-    setNewContact({ name: "", email: "", phone: "", role: "" });
-    toast({
-      title: "Success",
-      description: "Contact added successfully."
-    });
+    if (!newContact.name || !newContact.email || !newContact.role) { toast({ title: "Validation Error", description: "Please fill in all required fields.", variant: "destructive" }); return; }
+    setContacts(prev => [...prev, { id: Date.now().toString(), ...newContact, lastUpdatedBy: "Current Case Manager", lastUpdatedDate: new Date().toISOString().split('T')[0] }]);
+    setIsAddingContact(false); toast({ title: "Success", description: "Contact added successfully." });
   };
-
-  const handleEditContact = (contact: any) => {
-    setEditingContactId(contact.id);
-    setEditContact({
-      name: contact.name,
-      email: contact.email,
-      phone: contact.phone,
-      role: contact.role
-    });
-  };
-
+  const handleEditContact = (contact: any) => { setEditingContactId(contact.id); setEditContact({ name: contact.name, email: contact.email, phone: contact.phone, role: contact.role }); };
   const handleSaveEditContact = (contactId: string) => {
-    if (!editContact.name || !editContact.email || !editContact.role) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setContacts(prev => prev.map(contact => 
-      contact.id === contactId 
-        ? {
-            ...contact,
-            ...editContact,
-            lastUpdatedBy: "Current Case Manager",
-            lastUpdatedDate: new Date().toISOString().split('T')[0]
-          }
-        : contact
-    ));
-    setEditingContactId(null);
-    toast({
-      title: "Success",
-      description: "Contact updated successfully."
-    });
+    if (!editContact.name || !editContact.email || !editContact.role) { toast({ title: "Validation Error", description: "Please fill in all required fields.", variant: "destructive" }); return; }
+    setContacts(prev => prev.map(c => c.id === contactId ? { ...c, ...editContact, lastUpdatedBy: "Current Case Manager", lastUpdatedDate: new Date().toISOString().split('T')[0] } : c));
+    setEditingContactId(null); toast({ title: "Success", description: "Contact updated successfully." });
   };
-
-  const handleDeleteContact = (contactId: string) => {
-    setContacts(prev => prev.filter(contact => contact.id !== contactId));
-    toast({
-      title: "Success",
-      description: "Contact deleted successfully."
-    });
-  };
-
+  const handleDeleteContact = (contactId: string) => { setContacts(prev => prev.filter(c => c.id !== contactId)); toast({ title: "Success", description: "Contact deleted successfully." }); };
   const handleRoleChange = (contactId: string, newRole: string) => {
-    setContacts(prev => prev.map(contact => 
-      contact.id === contactId 
-        ? {
-            ...contact,
-            role: newRole,
-            lastUpdatedBy: "Current Case Manager",
-            lastUpdatedDate: new Date().toISOString().split('T')[0]
-          }
-        : contact
-    ));
-    toast({
-      title: "Success",
-      description: "Role updated successfully."
-    });
+    setContacts(prev => prev.map(c => c.id === contactId ? { ...c, role: newRole, lastUpdatedBy: "Current Case Manager", lastUpdatedDate: new Date().toISOString().split('T')[0] } : c));
+    toast({ title: "Success", description: "Role updated successfully." });
   };
+
+  const tabs = [
+    { key: "profile", label: "My Profile" }, { key: "account", label: "Organization" },
+    { key: "consent", label: "Consent and Settings" }, { key: "attorneys", label: "Attorneys" },
+    { key: "testing", label: "Testing Tab" }, { key: "agency-test", label: "Agency Test" },
+    { key: "test2", label: "Test2" }, { key: "test1", label: "Test1" }, { key: "organization2", label: "Organization2" }
+  ];
 
   return (
-    <div className="min-h-screen bg-background font-fluent">
-      <div className="w-full bg-white border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <img 
-                src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" 
-                alt="Illinois Bureau of Administrative Hearings" 
-                className="h-16 w-auto object-contain"
-              />
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" onClick={() => navigate("/portal")}>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Dashboard
-              </Button>
-              <Button variant="ghost" size="icon">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </Button>
+    <div className="min-vh-100 bg-light">
+      {/* Header */}
+      <div className="bg-white border-bottom">
+        <div className="container py-3">
+          <div className="d-flex align-items-center justify-content-between">
+            <img src="/lovable-uploads/ecada5cc-ee5a-4470-8e12-b8bb75355c68.png" alt="Illinois Bureau of Administrative Hearings" style={{ height: "64px" }} className="object-fit-contain" />
+            <div className="d-flex align-items-center gap-2">
+              <button className="btn btn-outline-secondary btn-sm" onClick={() => navigate("/portal")}><ArrowLeft size={16} className="me-1" /> Back to Dashboard</button>
+              <button className="btn btn-link text-muted p-1"><HelpCircle size={20} /></button>
             </div>
           </div>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Page Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            My Profile Page
-          </h1>
-        </div>
+
+      <div className="container py-4" style={{ maxWidth: "1200px" }}>
+        <h1 className="h3 fw-bold text-dark mb-4">My Profile Page</h1>
 
         {/* Tabs */}
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="justify-start bg-transparent border-b border-border h-14 rounded-none p-0">
-            <TabsTrigger 
-              value="profile" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              My Profile
-            </TabsTrigger>
-            <TabsTrigger 
-              value="account" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-            Organization
-            </TabsTrigger>
-            <TabsTrigger 
-              value="consent" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Consent and Settings
-            </TabsTrigger>
-            <TabsTrigger 
-              value="attorneys" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Attorneys
-            </TabsTrigger>
-            <TabsTrigger 
-              value="testing" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Testing Tab
-            </TabsTrigger>
-            <TabsTrigger 
-              value="agency-test" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Agency Test
-            </TabsTrigger>
-            <TabsTrigger 
-              value="test2" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Test2
-            </TabsTrigger>
-            <TabsTrigger 
-              value="test1" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Test1
-            </TabsTrigger>
-            <TabsTrigger 
-              value="organization2" 
-              className="font-fluent text-base rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none hover:bg-gray-50 px-6 py-4 transition-colors"
-            >
-              Organization2
-            </TabsTrigger>
-          </TabsList>
+        <ul className="nav nav-tabs flex-nowrap overflow-auto mb-0" style={{ whiteSpace: "nowrap" }}>
+          {tabs.map(tab => (
+            <li className="nav-item" key={tab.key}>
+              <button className={`nav-link ${activeTab === tab.key ? "active" : ""}`} onClick={() => setActiveTab(tab.key)}>{tab.label}</button>
+            </li>
+          ))}
+        </ul>
 
-          {/* My Profile Tab */}
-          <TabsContent value="profile" className="mt-6">
-            <div className="max-w-screen-xl mx-auto space-y-6">
-              {/* Page content with help icon */}
-              <div className="flex items-center justify-between mb-6">
-                <div></div>
-                <Button variant="ghost" size="icon" className="text-muted-foreground">
-                  <HelpCircle className="h-5 w-5" />
-                </Button>
-              </div>
-
-              {/* Two-column layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Personal Information Card */}
-                <Card className="shadow-sm">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-semibold text-foreground">Personal Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 gap-4">
-                      <div>
-                        <Label htmlFor="firstName" className="text-sm font-medium">
-                          First Name <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                          id="firstName"
-                          value={personalInfo.firstName}
-                          onChange={(e) => handlePersonalInfoChange("firstName", e.target.value)}
-                          className="mt-1"
-                          required
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="middleInitial" className="text-sm font-medium">Middle Initial</Label>
-                        <Input
-                          id="middleInitial"
-                          value={personalInfo.middleInitial}
-                          onChange={(e) => handlePersonalInfoChange("middleInitial", e.target.value)}
-                          className="mt-1"
-                          maxLength={1}
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="lastName" className="text-sm font-medium">
-                          Last Name <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                          id="lastName"
-                          value={personalInfo.lastName}
-                          onChange={(e) => handlePersonalInfoChange("lastName", e.target.value)}
-                          className="mt-1"
-                          required
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="salutation" className="text-sm font-medium">Salutation</Label>
-                        <Select value={personalInfo.salutation} onValueChange={(value) => handlePersonalInfoChange("salutation", value)}>
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select salutation" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="mr">Mr.</SelectItem>
-                            <SelectItem value="mrs">Mrs.</SelectItem>
-                            <SelectItem value="ms">Ms.</SelectItem>
-                            <SelectItem value="dr">Dr.</SelectItem>
-                            <SelectItem value="prof">Prof.</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="suffix" className="text-sm font-medium">Suffix</Label>
-                        <Select value={personalInfo.suffix} onValueChange={(value) => handlePersonalInfoChange("suffix", value)}>
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select suffix" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="jr">Jr.</SelectItem>
-                            <SelectItem value="sr">Sr.</SelectItem>
-                            <SelectItem value="ii">II</SelectItem>
-                            <SelectItem value="iii">III</SelectItem>
-                            <SelectItem value="iv">IV</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="pronouns" className="text-sm font-medium">Pronouns</Label>
-                        <Select value={personalInfo.pronouns} onValueChange={(value) => handlePersonalInfoChange("pronouns", value)}>
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select pronouns" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="he-him">He/Him</SelectItem>
-                            <SelectItem value="she-her">She/Her</SelectItem>
-                            <SelectItem value="they-them">They/Them</SelectItem>
-                            <SelectItem value="custom">Custom</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="participationType" className="text-sm font-medium">Participation Type</Label>
-                        <Select value={personalInfo.participationType} onValueChange={(value) => handlePersonalInfoChange("participationType", value)}>
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select participation type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="petitioner">Petitioner</SelectItem>
-                            <SelectItem value="respondent">Respondent</SelectItem>
-                            <SelectItem value="department-representative">Department Representative</SelectItem>
-                            <SelectItem value="attorney">Attorney</SelectItem>
-                            <SelectItem value="interpreter">Interpreter</SelectItem>
-                            <SelectItem value="witness">Witness</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="preferredLanguage" className="text-sm font-medium">Preferred Language</Label>
-                        <Select value={personalInfo.preferredLanguage} onValueChange={(value) => handlePersonalInfoChange("preferredLanguage", value)}>
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select language" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="english">English</SelectItem>
-                            <SelectItem value="spanish">Spanish</SelectItem>
-                            <SelectItem value="cantonese">Cantonese</SelectItem>
-                            <SelectItem value="mandarin">Mandarin</SelectItem>
-                            <SelectItem value="polish">Polish</SelectItem>
-                            <SelectItem value="arabic">Arabic</SelectItem>
-                            <SelectItem value="gujarati">Gujarati</SelectItem>
-                            <SelectItem value="korean">Korean</SelectItem>
-                            <SelectItem value="russian">Russian</SelectItem>
-                            <SelectItem value="tagalog">Tagalog</SelectItem>
-                            <SelectItem value="urdu">Urdu</SelectItem>
-                            <SelectItem value="ukrainian">Ukrainian</SelectItem>
-                            <SelectItem value="vietnamese">Vietnamese</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+        {/* My Profile Tab */}
+        {activeTab === "profile" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="row g-4">
+              {/* Personal Information */}
+              <div className="col-lg-6">
+                <div className="card shadow-sm">
+                  <div className="card-header bg-white"><h5 className="card-title mb-0 fw-semibold">Personal Information</h5></div>
+                  <div className="card-body">
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">First Name <span className="text-danger">*</span></label>
+                      <input className="form-control" value={personalInfo.firstName} onChange={e => handlePersonalInfoChange("firstName", e.target.value)} />
                     </div>
-                  </CardContent>
-                </Card>
-
-                {/* Address Information Card */}
-                <Card className="shadow-sm">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label htmlFor="address1" className="text-sm font-medium">
-                        Address Line 1 <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="address1"
-                        value={addressInfo.address1}
-                        onChange={(e) => handleAddressInfoChange("address1", e.target.value)}
-                        className="mt-1"
-                        required
-                      />
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Middle Initial</label>
+                      <input className="form-control" maxLength={1} value={personalInfo.middleInitial} onChange={e => handlePersonalInfoChange("middleInitial", e.target.value)} />
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="address2" className="text-sm font-medium">Address Line 2</Label>
-                      <Input
-                        id="address2"
-                        value={addressInfo.address2}
-                        onChange={(e) => handleAddressInfoChange("address2", e.target.value)}
-                        className="mt-1"
-                      />
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Last Name <span className="text-danger">*</span></label>
+                      <input className="form-control" value={personalInfo.lastName} onChange={e => handlePersonalInfoChange("lastName", e.target.value)} />
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="city" className="text-sm font-medium">
-                        City <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="city"
-                        value={addressInfo.city}
-                        onChange={(e) => handleAddressInfoChange("city", e.target.value)}
-                        className="mt-1"
-                        required
-                      />
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Salutation</label>
+                      <select className="form-select" value={personalInfo.salutation} onChange={e => handlePersonalInfoChange("salutation", e.target.value)}>
+                        <option value="">Select salutation</option><option value="mr">Mr.</option><option value="mrs">Mrs.</option><option value="ms">Ms.</option><option value="dr">Dr.</option><option value="prof">Prof.</option>
+                      </select>
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="state" className="text-sm font-medium">
-                        State / Province <span className="text-destructive">*</span>
-                      </Label>
-                      <Select value={addressInfo.state} onValueChange={(value) => handleAddressInfoChange("state", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select state/province" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="il">Illinois</SelectItem>
-                          <SelectItem value="ca">California</SelectItem>
-                          <SelectItem value="ny">New York</SelectItem>
-                          <SelectItem value="tx">Texas</SelectItem>
-                          <SelectItem value="fl">Florida</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Suffix</label>
+                      <select className="form-select" value={personalInfo.suffix} onChange={e => handlePersonalInfoChange("suffix", e.target.value)}>
+                        <option value="">Select suffix</option><option value="jr">Jr.</option><option value="sr">Sr.</option><option value="ii">II</option><option value="iii">III</option><option value="iv">IV</option>
+                      </select>
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="postalCode" className="text-sm font-medium">
-                        Postal Code <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="postalCode"
-                        value={addressInfo.postalCode}
-                        onChange={(e) => handleAddressInfoChange("postalCode", e.target.value)}
-                        className="mt-1"
-                        placeholder="12345"
-                        required
-                      />
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Pronouns</label>
+                      <select className="form-select" value={personalInfo.pronouns} onChange={e => handlePersonalInfoChange("pronouns", e.target.value)}>
+                        <option value="">Select pronouns</option><option value="he-him">He/Him</option><option value="she-her">She/Her</option><option value="they-them">They/Them</option><option value="custom">Custom</option>
+                      </select>
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="country" className="text-sm font-medium">
-                        Country <span className="text-destructive">*</span>
-                      </Label>
-                      <Select value={addressInfo.country} onValueChange={(value) => handleAddressInfoChange("country", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="United States">United States</SelectItem>
-                          <SelectItem value="Canada">Canada</SelectItem>
-                          <SelectItem value="Mexico">Mexico</SelectItem>
-                          <SelectItem value="United Kingdom">United Kingdom</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Participation Type</label>
+                      <select className="form-select" value={personalInfo.participationType} onChange={e => handlePersonalInfoChange("participationType", e.target.value)}>
+                        <option value="">Select</option><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option><option value="department-representative">Department Representative</option><option value="attorney">Attorney</option><option value="interpreter">Interpreter</option><option value="witness">Witness</option>
+                      </select>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Contact Information Card - Full width */}
-              <Card className="shadow-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-foreground">Contact Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="email" className="text-sm font-medium">
-                        Email <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={contactInfo.email}
-                        className="mt-1 bg-muted"
-                        disabled
-                        required
-                      />
-                      <div className="flex items-center mt-1 text-xs text-muted-foreground">
-                        <Info className="h-3 w-3 mr-1" />
-                        This email is managed by OKTA and cannot be edited here.
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="phoneHome" className="text-sm font-medium">Home Phone</Label>
-                      <Input
-                        id="phoneHome"
-                        value={contactInfo.phoneHome}
-                        onChange={(e) => handleContactInfoChange("phoneHome", formatPhone(e.target.value))}
-                        className="mt-1"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="phoneMobile" className="text-sm font-medium">Mobile Phone</Label>
-                      <Input
-                        id="phoneMobile"
-                        value={contactInfo.phoneMobile}
-                        onChange={(e) => handleContactInfoChange("phoneMobile", formatPhone(e.target.value))}
-                        className="mt-1"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="phoneBusiness" className="text-sm font-medium">Business Phone</Label>
-                      <Input
-                        id="phoneBusiness"
-                        value={contactInfo.phoneBusiness}
-                        onChange={(e) => handleContactInfoChange("phoneBusiness", formatPhone(e.target.value))}
-                        className="mt-1"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="phoneOther" className="text-sm font-medium">Other Phone</Label>
-                      <Input
-                        id="phoneOther"
-                        value={contactInfo.phoneOther}
-                        onChange={(e) => handleContactInfoChange("phoneOther", formatPhone(e.target.value))}
-                        className="mt-1"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="preferredPhone" className="text-sm font-medium">Preferred Phone</Label>
-                      <Select value={contactInfo.preferredPhone} onValueChange={(value) => handleContactInfoChange("preferredPhone", value)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select preferred phone" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="home">Home</SelectItem>
-                          <SelectItem value="mobile">Mobile</SelectItem>
-                          <SelectItem value="business">Business</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Preferred Language</label>
+                      <select className="form-select" value={personalInfo.preferredLanguage} onChange={e => handlePersonalInfoChange("preferredLanguage", e.target.value)}>
+                        <option value="">Select language</option><option value="english">English</option><option value="spanish">Spanish</option><option value="cantonese">Cantonese</option><option value="mandarin">Mandarin</option><option value="polish">Polish</option><option value="arabic">Arabic</option><option value="korean">Korean</option><option value="russian">Russian</option><option value="tagalog">Tagalog</option><option value="vietnamese">Vietnamese</option>
+                      </select>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
-              {/* Sticky Action Bar */}
-              <div className="sticky bottom-0 bg-background border-t border-border p-4 mt-8">
-                <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
-                  <Button variant="outline" onClick={handleCancel} className="sm:w-auto">
-                    Cancel
-                  </Button>
-                  <Button 
-                    onClick={handleSaveProfile}
-                    disabled={!hasUnsavedChanges}
-                    className="sm:w-auto"
-                  >
-                    Save Changes
-                  </Button>
+              {/* Address Information */}
+              <div className="col-lg-6">
+                <div className="card shadow-sm">
+                  <div className="card-header bg-white"><h5 className="card-title mb-0 fw-semibold">Address Information</h5></div>
+                  <div className="card-body">
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Address Line 1 <span className="text-danger">*</span></label>
+                      <input className="form-control" value={addressInfo.address1} onChange={e => handleAddressInfoChange("address1", e.target.value)} />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Address Line 2</label>
+                      <input className="form-control" value={addressInfo.address2} onChange={e => handleAddressInfoChange("address2", e.target.value)} />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">City <span className="text-danger">*</span></label>
+                      <input className="form-control" value={addressInfo.city} onChange={e => handleAddressInfoChange("city", e.target.value)} />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">State / Province <span className="text-danger">*</span></label>
+                      <select className="form-select" value={addressInfo.state} onChange={e => handleAddressInfoChange("state", e.target.value)}>
+                        <option value="">Select state</option><option value="il">Illinois</option><option value="ca">California</option><option value="ny">New York</option><option value="tx">Texas</option><option value="fl">Florida</option><option value="other">Other</option>
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Postal Code <span className="text-danger">*</span></label>
+                      <input className="form-control" value={addressInfo.postalCode} onChange={e => handleAddressInfoChange("postalCode", e.target.value)} placeholder="12345" />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label small fw-medium">Country <span className="text-danger">*</span></label>
+                      <select className="form-select" value={addressInfo.country} onChange={e => handleAddressInfoChange("country", e.target.value)}>
+                        <option>United States</option><option>Canada</option><option>Mexico</option><option>United Kingdom</option><option>Other</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </TabsContent>
 
-          {/* Organization Tab */}
-          <TabsContent value="account" className="mt-6">
-            <div className="max-w-screen-xl mx-auto space-y-6">
-              {/* Two-column layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Organization Information Card */}
-                <Card className="shadow-sm border-border">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg font-semibold text-foreground">Organization Information</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">Your organization's contact details.</p>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label htmlFor="organizationName" className="text-sm font-medium text-foreground">
-                        Organization Name <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="organizationName"
-                        value="Department of Natural Resources"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="website" className="text-sm font-medium text-foreground">Website</Label>
-                      <Input
-                        id="website"
-                        type="url"
-                        value="https://dnr.illinois.gov"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="businessPhone" className="text-sm font-medium text-foreground">Business Phone</Label>
-                        <Input
-                          id="businessPhone"
-                          value=""
-                          className="mt-1 bg-muted"
-                          readOnly
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="fax" className="text-sm font-medium text-foreground">Fax</Label>
-                        <Input
-                          id="fax"
-                          value=""
-                          className="mt-1 bg-muted"
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="businessForm" className="text-sm font-medium text-foreground">Business Form</Label>
-                      <Input
-                        id="businessForm"
-                        value="Government"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Address Information Card */}
-                <Card className="shadow-sm border-border">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg font-semibold text-foreground">Address Information</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">Your organization's primary mailing location.</p>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label htmlFor="addressLine1" className="text-sm font-medium text-foreground">Address Line 1</Label>
-                      <Input
-                        id="addressLine1"
-                        value="100 Gold St"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="addressLine2" className="text-sm font-medium text-foreground">Address Line 2</Label>
-                      <Input
-                        id="addressLine2"
-                        value=""
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="city" className="text-sm font-medium text-foreground">City</Label>
-                        <Input
-                          id="city"
-                          value="New York"
-                          className="mt-1 bg-muted"
-                          readOnly
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="county" className="text-sm font-medium text-foreground">County</Label>
-                        <Input
-                          id="county"
-                          value=""
-                          className="mt-1 bg-muted"
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="state" className="text-sm font-medium text-foreground">State/Province</Label>
-                        <Input
-                          id="state"
-                          value="NY"
-                          className="mt-1 bg-muted"
-                          readOnly
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor="postalCode" className="text-sm font-medium text-foreground">Postal Code</Label>
-                        <Input
-                          id="postalCode"
-                          value="10038"
-                          className="mt-1 bg-muted"
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="country" className="text-sm font-medium text-foreground">Country</Label>
-                      <Input
-                        id="country"
-                        value="United States"
-                        className="mt-1 bg-muted"
-                        readOnly
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
+            {/* Contact Information */}
+            <div className="card shadow-sm mt-4">
+              <div className="card-header bg-white"><h5 className="card-title mb-0 fw-semibold">Contact Information</h5></div>
+              <div className="card-body">
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <label className="form-label small fw-medium">Email <span className="text-danger">*</span></label>
+                    <input className="form-control bg-light" value={contactInfo.email} disabled />
+                    <div className="d-flex align-items-center mt-1 small text-muted"><Info size={12} className="me-1" /> This email is managed by OKTA and cannot be edited here.</div>
+                  </div>
+                  <div className="col-md-6"><label className="form-label small fw-medium">Home Phone</label><input className="form-control" value={contactInfo.phoneHome} onChange={e => handleContactInfoChange("phoneHome", formatPhone(e.target.value))} placeholder="(555) 123-4567" /></div>
+                  <div className="col-md-6"><label className="form-label small fw-medium">Mobile Phone</label><input className="form-control" value={contactInfo.phoneMobile} onChange={e => handleContactInfoChange("phoneMobile", formatPhone(e.target.value))} placeholder="(555) 123-4567" /></div>
+                  <div className="col-md-6"><label className="form-label small fw-medium">Business Phone</label><input className="form-control" value={contactInfo.phoneBusiness} onChange={e => handleContactInfoChange("phoneBusiness", formatPhone(e.target.value))} placeholder="(555) 123-4567" /></div>
+                  <div className="col-md-6"><label className="form-label small fw-medium">Other Phone</label><input className="form-control" value={contactInfo.phoneOther} onChange={e => handleContactInfoChange("phoneOther", formatPhone(e.target.value))} placeholder="(555) 123-4567" /></div>
+                  <div className="col-md-6">
+                    <label className="form-label small fw-medium">Preferred Phone</label>
+                    <select className="form-select" value={contactInfo.preferredPhone} onChange={e => handleContactInfoChange("preferredPhone", e.target.value)}>
+                      <option value="">Select preferred phone</option><option value="home">Home</option><option value="mobile">Mobile</option><option value="business">Business</option><option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
-          </TabsContent>
 
-          {/* Consent and Settings Tab */}
-          <TabsContent value="consent" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Terms and Consent</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Terms of Service Section */}
+            {/* Actions */}
+            <div className="d-flex justify-content-end gap-2 mt-4 sticky-bottom bg-white border-top p-3">
+              <button className="btn btn-outline-secondary" onClick={() => navigate("/portal")}>Cancel</button>
+              <button className="btn btn-primary" disabled={!hasUnsavedChanges} onClick={handleSaveProfile}>Save Changes</button>
+            </div>
+          </div>
+        )}
+
+        {/* Organization Tab */}
+        {activeTab === "account" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="row g-4">
+              <div className="col-lg-6">
+                <div className="card shadow-sm">
+                  <div className="card-header bg-white"><h5 className="card-title mb-0 fw-semibold">Organization Information</h5><p className="small text-muted mt-1 mb-0">Your organization's contact details.</p></div>
+                  <div className="card-body">
+                    <div className="mb-3"><label className="form-label small fw-medium">Organization Name <span className="text-danger">*</span></label><input className="form-control bg-light" value="Department of Natural Resources" readOnly /></div>
+                    <div className="mb-3"><label className="form-label small fw-medium">Website</label><input className="form-control bg-light" value="https://dnr.illinois.gov" readOnly /></div>
+                    <div className="row g-3">
+                      <div className="col-6"><label className="form-label small fw-medium">Business Phone</label><input className="form-control bg-light" readOnly /></div>
+                      <div className="col-6"><label className="form-label small fw-medium">Participation Type</label><input className="form-control bg-light" value="Department" readOnly /></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-6">
+                <div className="card shadow-sm">
+                  <div className="card-header bg-white"><h5 className="card-title mb-0 fw-semibold">Organization Address</h5></div>
+                  <div className="card-body">
+                    <div className="mb-3"><label className="form-label small fw-medium">Address</label><input className="form-control bg-light" value="One Natural Resources Way" readOnly /></div>
+                    <div className="row g-3">
+                      <div className="col-4"><label className="form-label small fw-medium">City</label><input className="form-control bg-light" value="Springfield" readOnly /></div>
+                      <div className="col-4"><label className="form-label small fw-medium">State</label><input className="form-control bg-light" value="Illinois" readOnly /></div>
+                      <div className="col-4"><label className="form-label small fw-medium">Zip</label><input className="form-control bg-light" value="62702" readOnly /></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contacts Table */}
+            <div className="card shadow-sm mt-4">
+              <div className="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 className="card-title mb-0 fw-semibold">Contacts</h5>
+                <button className="btn btn-primary btn-sm" onClick={handleAddContact}><Plus size={14} className="me-1" /> Add Contact</button>
+              </div>
+              <div className="card-body p-0">
+                <table className="table table-sm table-hover mb-0">
+                  <thead className="table-light">
+                    <tr><th className="small">Name</th><th className="small">Email</th><th className="small">Phone</th><th className="small">Role</th><th className="small">Last Updated</th><th className="small">Actions</th></tr>
+                  </thead>
+                  <tbody>
+                    {isAddingContact && (
+                      <tr>
+                        <td><input className="form-control form-control-sm" placeholder="Name" value={newContact.name} onChange={e => setNewContact({ ...newContact, name: e.target.value })} /></td>
+                        <td><input className="form-control form-control-sm" placeholder="Email" value={newContact.email} onChange={e => setNewContact({ ...newContact, email: e.target.value })} /></td>
+                        <td><input className="form-control form-control-sm" placeholder="Phone" value={newContact.phone} onChange={e => setNewContact({ ...newContact, phone: e.target.value })} /></td>
+                        <td>
+                          <select className="form-select form-select-sm" value={newContact.role} onChange={e => setNewContact({ ...newContact, role: e.target.value })}>
+                            <option value="">Select role</option><option>Attorney</option><option>Case Manager</option><option>FDM (Final Decision Maker)</option><option>Paralegal</option><option>Support Staff</option>
+                          </select>
+                        </td>
+                        <td>—</td>
+                        <td>
+                          <button className="btn btn-sm btn-success me-1" onClick={handleSaveNewContact}><Save size={12} /></button>
+                          <button className="btn btn-sm btn-outline-secondary" onClick={() => setIsAddingContact(false)}><X size={12} /></button>
+                        </td>
+                      </tr>
+                    )}
+                    {contacts.map(contact => (
+                      <tr key={contact.id}>
+                        {editingContactId === contact.id ? (
+                          <>
+                            <td><input className="form-control form-control-sm" value={editContact.name} onChange={e => setEditContact({ ...editContact, name: e.target.value })} /></td>
+                            <td><input className="form-control form-control-sm" value={editContact.email} onChange={e => setEditContact({ ...editContact, email: e.target.value })} /></td>
+                            <td><input className="form-control form-control-sm" value={editContact.phone} onChange={e => setEditContact({ ...editContact, phone: e.target.value })} /></td>
+                            <td>
+                              <select className="form-select form-select-sm" value={editContact.role} onChange={e => setEditContact({ ...editContact, role: e.target.value })}>
+                                <option>Attorney</option><option>Case Manager</option><option>FDM (Final Decision Maker)</option><option>Paralegal</option><option>Support Staff</option>
+                              </select>
+                            </td>
+                            <td className="small">{contact.lastUpdatedDate}</td>
+                            <td>
+                              <button className="btn btn-sm btn-success me-1" onClick={() => handleSaveEditContact(contact.id)}><Save size={12} /></button>
+                              <button className="btn btn-sm btn-outline-secondary" onClick={() => setEditingContactId(null)}><X size={12} /></button>
+                            </td>
+                          </>
+                        ) : (
+                          <>
+                            <td className="small fw-medium">{contact.name}</td>
+                            <td className="small">{contact.email}</td>
+                            <td className="small">{contact.phone}</td>
+                            <td><span className={`badge ${getRoleBadgeClass(contact.role)}`}>{contact.role}</span></td>
+                            <td className="small text-muted">{contact.lastUpdatedBy} — {contact.lastUpdatedDate}</td>
+                            <td>
+                              <button className="btn btn-sm btn-link p-0 me-2" onClick={() => handleEditContact(contact)}><Edit size={14} /></button>
+                              <button className="btn btn-sm btn-link text-danger p-0" onClick={() => handleDeleteContact(contact.id)}><Trash2 size={14} /></button>
+                            </td>
+                          </>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Consent Tab */}
+        {activeTab === "consent" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="card shadow-sm">
+              <div className="card-header bg-white"><h5 className="card-title mb-0 fw-semibold">Terms and Consent</h5></div>
+              <div className="card-body">
+                {/* Terms of Service */}
+                <div className="mb-3">
+                  <button className="btn btn-light w-100 d-flex justify-content-between align-items-center" onClick={() => setTermsOpen(!termsOpen)}>
+                    <span className="fw-medium">Terms of Service</span>
+                    <ChevronDown size={16} className={termsOpen ? "rotate-180" : ""} style={{ transition: "transform 0.2s" }} />
+                  </button>
+                  {termsOpen && (
+                    <div className="border rounded p-3 mt-2 small text-muted">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </div>
+                  )}
+                </div>
+
+                {/* Privacy Policy */}
                 <div className="mb-4">
-                  <Collapsible open={termsOpen} onOpenChange={setTermsOpen}>
-                    <CollapsibleTrigger className="flex items-center justify-between w-full p-3 text-left bg-gray-50 rounded-md hover:bg-gray-100">
-                      <span className="font-medium text-foreground">Terms of Service</span>
-                      <ChevronDown className={`h-4 w-4 transition-transform ${termsOpen ? 'rotate-180' : ''}`} />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 p-3 border border-border rounded-md bg-white">
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
-                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui 
-                        officia deserunt mollit anim id est laborum.
-                      </p>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </div>
-
-                {/* Privacy Policy Section */}
-                <div className="mb-6">
-                  <Collapsible open={privacyOpen} onOpenChange={setPrivacyOpen}>
-                    <CollapsibleTrigger className="flex items-center justify-between w-full p-3 text-left bg-gray-50 rounded-md hover:bg-gray-100">
-                      <span className="font-medium text-foreground">Privacy Policy Summary</span>
-                      <ChevronDown className={`h-4 w-4 transition-transform ${privacyOpen ? 'rotate-180' : ''}`} />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 p-3 border border-border rounded-md bg-white">
-                      <ul className="text-sm text-muted-foreground space-y-2">
-                        <li className="flex items-start">
-                          <span className="mr-2">•</span>
-                          <span>We collect minimal personal information necessary for service provision</span>
-                        </li>
-                        <li className="flex items-start">
-                          <span className="mr-2">•</span>
-                          <span>Your data is encrypted and stored securely using industry standards</span>
-                        </li>
-                        <li className="flex items-start">
-                          <span className="mr-2">•</span>
-                          <span>We do not share your information with third parties without consent</span>
-                        </li>
-                        <li className="flex items-start">
-                          <span className="mr-2">•</span>
-                          <span>You have the right to access, modify, or delete your data at any time</span>
-                        </li>
-                        <li className="flex items-start">
-                          <span className="mr-2">•</span>
-                          <span>Cookies are used only for essential functionality and analytics</span>
-                        </li>
+                  <button className="btn btn-light w-100 d-flex justify-content-between align-items-center" onClick={() => setPrivacyOpen(!privacyOpen)}>
+                    <span className="fw-medium">Privacy Policy Summary</span>
+                    <ChevronDown size={16} className={privacyOpen ? "rotate-180" : ""} style={{ transition: "transform 0.2s" }} />
+                  </button>
+                  {privacyOpen && (
+                    <div className="border rounded p-3 mt-2">
+                      <ul className="small text-muted mb-0">
+                        <li>We collect minimal personal information necessary for service provision</li>
+                        <li>Your data is encrypted and stored securely</li>
+                        <li>We do not share your information with third parties without consent</li>
+                        <li>You have the right to access, modify, or delete your data</li>
+                        <li>Cookies are used only for essential functionality and analytics</li>
                       </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
+                    </div>
+                  )}
                 </div>
 
                 {/* Consent Checkboxes */}
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-start space-x-3">
-                    <Checkbox
-                      id="terms-consent"
-                      checked={termsAccepted}
-                      onCheckedChange={(checked) => setTermsAccepted(checked === true)}
-                      className="mt-0.5"
-                    />
-                    <Label htmlFor="terms-consent" className="text-sm text-foreground leading-relaxed">
-                      I agree to the{" "}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <button className="text-primary hover:text-primary-hover underline">
-                            Terms of Service
-                          </button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-md">
-                          <DialogHeader>
-                            <DialogTitle>Terms of Service</DialogTitle>
-                          </DialogHeader>
-                          <div className="mt-4">
-                            <p className="text-sm text-muted-foreground">
-                              Full terms of service would be displayed here in a real application.
-                            </p>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                      {" "}and{" "}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <button className="text-primary hover:text-primary-hover underline">
-                            Privacy Policy
-                          </button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-md">
-                          <DialogHeader>
-                            <DialogTitle>Privacy Policy</DialogTitle>
-                          </DialogHeader>
-                          <div className="mt-4">
-                            <p className="text-sm text-muted-foreground">
-                              Full privacy policy would be displayed here in a real application.
-                            </p>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                      . <span className="text-destructive">*</span>
-                    </Label>
+                <div className="mb-4">
+                  <div className="form-check mb-2">
+                    <input className="form-check-input" type="checkbox" id="terms-consent" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)} />
+                    <label className="form-check-label small" htmlFor="terms-consent">
+                      I agree to the <a href="#" className="text-primary">Terms of Service</a> and <a href="#" className="text-primary">Privacy Policy</a>. <span className="text-danger">*</span>
+                    </label>
                   </div>
-
-                  <div className="flex items-start space-x-3">
-                    <Checkbox
-                      id="email-notifications"
-                      checked={emailNotifications}
-                      onCheckedChange={(checked) => setEmailNotifications(checked === true)}
-                      className="mt-0.5"
-                    />
-                    <Label htmlFor="email-notifications" className="text-sm text-foreground leading-relaxed">
-                      I agree to receive email notifications about account activity and important updates. 
-                      You can unsubscribe at any time.
-                    </Label>
+                  <div className="form-check">
+                    <input className="form-check-input" type="checkbox" id="email-notifications" checked={emailNotifications} onChange={e => setEmailNotifications(e.target.checked)} />
+                    <label className="form-check-label small" htmlFor="email-notifications">I agree to receive email notifications about account activity and important updates.</label>
                   </div>
                 </div>
 
-                {/* Communication Consent Preferences */}
-                <div className="space-y-6 border-t border-border pt-6">
-                  <h3 className="text-lg font-medium text-foreground">Communication Preferences</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Email Communications */}
-                    <div className="space-y-2">
-                      <Label htmlFor="email-communications" className="text-sm font-medium">
-                        Email Communications
-                      </Label>
-                      <Select value={emailCommunicationsConsent} onValueChange={setEmailCommunicationsConsent}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="allow">Allow</SelectItem>
-                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
-                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-xs text-muted-foreground">
-                        Receive case updates, notices, and administrative communications via email.
-                      </p>
+                {/* Communication Preferences */}
+                <hr />
+                <h5 className="fw-medium mb-3">Communication Preferences</h5>
+                <div className="row g-3">
+                  {[
+                    { label: "Email Communications", value: emailCommunicationsConsent, setter: setEmailCommunicationsConsent, desc: "Receive case updates via email." },
+                    { label: "Postal Mail Services", value: postalMailConsent, setter: setPostalMailConsent, desc: "Receive official documents via postal mail." },
+                    { label: "SMS/Text Notifications", value: smsNotificationsConsent, setter: setSmsNotificationsConsent, desc: "Receive urgent notifications via text." },
+                    { label: "Phone Calls", value: phoneCallsConsent, setter: setPhoneCallsConsent, desc: "Receive phone calls for urgent matters." },
+                    { label: "Marketing Communications", value: marketingCommunicationsConsent, setter: setMarketingCommunicationsConsent, desc: "Receive information about new services." }
+                  ].map((pref, i) => (
+                    <div className="col-md-6" key={i}>
+                      <label className="form-label small fw-medium">{pref.label}</label>
+                      <select className="form-select form-select-sm" value={pref.value} onChange={e => pref.setter(e.target.value)}>
+                        <option value="allow">Allow</option><option value="do-not-allow">Do Not Allow</option><option value="ask-each-time">Ask Each Time</option>
+                      </select>
+                      <p className="small text-muted mt-1">{pref.desc}</p>
                     </div>
-
-                    {/* Postal Mail Services */}
-                    <div className="space-y-2">
-                      <Label htmlFor="postal-mail" className="text-sm font-medium">
-                        Postal Mail Services
-                      </Label>
-                      <Select value={postalMailConsent} onValueChange={setPostalMailConsent}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="allow">Allow</SelectItem>
-                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
-                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-xs text-muted-foreground">
-                        Receive official documents and notices via postal mail.
-                      </p>
-                    </div>
-
-                    {/* SMS/Text Notifications */}
-                    <div className="space-y-2">
-                      <Label htmlFor="sms-notifications" className="text-sm font-medium">
-                        SMS/Text Notifications
-                      </Label>
-                      <Select value={smsNotificationsConsent} onValueChange={setSmsNotificationsConsent}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="allow">Allow</SelectItem>
-                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
-                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-xs text-muted-foreground">
-                        Receive urgent notifications and reminders via text message.
-                      </p>
-                    </div>
-
-                    {/* Phone Calls */}
-                    <div className="space-y-2">
-                      <Label htmlFor="phone-calls" className="text-sm font-medium">
-                        Phone Calls
-                      </Label>
-                      <Select value={phoneCallsConsent} onValueChange={setPhoneCallsConsent}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="allow">Allow</SelectItem>
-                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
-                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-xs text-muted-foreground">
-                        Receive phone calls for urgent matters and scheduling.
-                      </p>
-                    </div>
-
-                    {/* Marketing Communications */}
-                    <div className="space-y-2">
-                      <Label htmlFor="marketing-communications" className="text-sm font-medium">
-                        Marketing Communications
-                      </Label>
-                      <Select value={marketingCommunicationsConsent} onValueChange={setMarketingCommunicationsConsent}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="allow">Allow</SelectItem>
-                          <SelectItem value="do-not-allow">Do Not Allow</SelectItem>
-                          <SelectItem value="ask-each-time">Ask Each Time</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-xs text-muted-foreground">
-                        Receive information about new services and updates.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
-
-                {/* Action Buttons */}
-                <div className="flex flex-col space-y-3">
-                  <Button
-                    disabled={!termsAccepted}
-                    className="w-full h-10"
-                  >
-                    Update Consent Settings
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Attorneys Tab */}
-          <TabsContent value="attorneys" className="mt-6">
-            <div className="max-w-screen-xl mx-auto space-y-6">
-              <Card className="shadow-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-foreground">Attorney Dashboard</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Access the attorney dashboard to view and manage accepted cases.
-                  </p>
-                  <Button onClick={() => navigate("/attorney/dashboard")}>
-                    Go to Attorney Dashboard
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-
-
-          {/* Testing Tab - Dynamics 365 Single Page Style */}
-          <TabsContent value="testing" className="mt-0 p-0">
-            <Dynamics365SinglePageDashboard />
-          </TabsContent>
-
-          {/* Agency Test Tab - Agency Test Screen */}
-          <TabsContent value="agency-test" className="mt-0 p-0">
-            <AgencyTestScreen />
-          </TabsContent>
-
-          {/* Test2 Tab - Power Pages Style Agency Management */}
-          <TabsContent value="test2" className="mt-0 p-0">
-            <AgencyTest2Screen />
-          </TabsContent>
-
-          {/* Test1 Tab - Copy of Agency Test Screen */}
-          <TabsContent value="test1" className="mt-0 p-0">
-            <AgencyTest1Screen />
-          </TabsContent>
-
-          {/* Organization2 Tab - Copy of Organization Tab */}
-          <TabsContent value="organization2" className="mt-6">
-            <div className="max-w-screen-xl mx-auto space-y-6">
-              {/* Two-column layout */}
-              <div className="grid grid-cols-2 gap-6">
-                {/* Entity Information Card */}
-                <Card className="shadow-sm border aspect-square">
-                  <CardHeader className="bg-gray-50 border-b">
-                    <CardTitle className="text-lg font-semibold">Entity Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Department Name</Label>
-                        <Input 
-                          value="Department of Natural Resources" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Department Code</Label>
-                        <Input 
-                          value="DNR" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Parent Entity</Label>
-                        <Input 
-                          value="" 
-                          disabled
-                          placeholder="(None)"
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Participation Group</Label>
-                        <Input 
-                          value="State Entities" 
-                          disabled
-                          className="mt-1 bg-muted"
-                        />
-                      </div>
-                      <div className="col-span-2">
-                        <Label className="text-sm font-medium text-gray-700">Participation Type</Label>
-                        <Input 
-                          value="Department" 
-                          disabled
-                          className="mt-1 bg-muted"
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Department Details Card */}
-                <Card className="shadow-sm border aspect-square">
-                  <CardHeader className="bg-gray-50 border-b">
-                    <CardTitle className="text-lg font-semibold">Department Details</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Street</Label>
-                        <Input 
-                          value="465 Conservation Drive" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">City</Label>
-                        <Input 
-                          value="Springfield" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">State</Label>
-                        <Input 
-                          value="IL" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Postal Code</Label>
-                        <Input 
-                          value="62701" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Phone</Label>
-                        <Input 
-                          value="(217) 555-1000" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700">Primary Contact</Label>
-                        <Input 
-                          value="Laura Chen" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                      <div className="col-span-2">
-                        <Label className="text-sm font-medium text-gray-700">Website</Label>
-                        <Input 
-                          value="https://dnr.illinois.gov" 
-                          disabled
-                          className="mt-1"
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <button className="btn btn-primary w-100 mt-4" disabled={!termsAccepted}>Update Consent Settings</button>
               </div>
-
-              {/* Divisions List from test1 */}
-              <Card className="shadow-sm border">
-                <CardHeader className="bg-gray-50 border-b">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold">Divisions</CardTitle>
-                    <div className="flex gap-2">
-                      <Button size="sm" className="bg-[#0078D4] hover:bg-[#106EBE]">Create New</Button>
-                      <Button size="sm" variant="outline">Edit</Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-gray-50">
-                        <TableHead className="font-semibold">Division Name</TableHead>
-                        <TableHead className="font-semibold">City</TableHead>
-                        <TableHead className="font-semibold">Phone</TableHead>
-                        <TableHead className="font-semibold">Primary Contact</TableHead>
-                        <TableHead className="font-semibold">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow className="hover:bg-gray-50">
-                        <TableCell className="font-medium">Office of Forestry</TableCell>
-                        <TableCell>Springfield</TableCell>
-                        <TableCell>(217) 555-2100</TableCell>
-                        <TableCell>Rachel Evans</TableCell>
-                        <TableCell>
-                          <Button size="sm" variant="outline">View Details</Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="hover:bg-gray-50">
-                        <TableCell className="font-medium">Office of Oil & Gas Management</TableCell>
-                        <TableCell>Springfield</TableCell>
-                        <TableCell>(217) 555-2200</TableCell>
-                        <TableCell>Tom Reyes</TableCell>
-                        <TableCell>
-                          <Button size="sm" variant="outline">View Details</Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="hover:bg-gray-50">
-                        <TableCell className="font-medium">Office of Water Resources</TableCell>
-                        <TableCell>Springfield</TableCell>
-                        <TableCell>(217) 555-2300</TableCell>
-                        <TableCell>Priya Nair</TableCell>
-                        <TableCell>
-                          <Button size="sm" variant="outline">View Details</Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-
-              {/* Department Contacts from test1 */}
-              <Card className="shadow-sm border">
-                <CardHeader className="bg-gray-50 border-b">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold">Department Contacts</CardTitle>
-                    <div className="flex gap-2">
-                      <Button size="sm" className="bg-[#0078D4] hover:bg-[#106EBE]">Create New</Button>
-                      <Button size="sm" variant="outline">Edit</Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Alert className="m-4 bg-blue-50 border-blue-200">
-                    <AlertTriangle className="h-4 w-4 text-blue-600" />
-                    <AlertDescription className="text-blue-800">
-                      Restrict roles to <strong>Agency Manager</strong> and <strong>Case Manager</strong>.
-                    </AlertDescription>
-                  </Alert>
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-gray-50">
-                        <TableHead className="font-semibold">Name</TableHead>
-                        <TableHead className="font-semibold">Contact Role</TableHead>
-                        <TableHead className="font-semibold">Email</TableHead>
-                        <TableHead className="font-semibold">Phone</TableHead>
-                        <TableHead className="font-semibold">Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow className="hover:bg-gray-50">
-                        <TableCell className="font-medium">Laura Chen</TableCell>
-                        <TableCell>Agency Manager</TableCell>
-                        <TableCell className="text-[#0078D4]">l.chen@dnr.gov</TableCell>
-                        <TableCell>(217) 555-1111</TableCell>
-                        <TableCell>
-                          <Badge className="bg-green-100 text-green-800 border-green-200">Active</Badge>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="hover:bg-gray-50">
-                        <TableCell className="font-medium">Peter Morales</TableCell>
-                        <TableCell>Case Manager</TableCell>
-                        <TableCell className="text-[#0078D4]">p.morales@dnr.gov</TableCell>
-                        <TableCell>(217) 555-1112</TableCell>
-                        <TableCell>
-                          <Badge className="bg-green-100 text-green-800 border-green-200">Active</Badge>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow className="hover:bg-gray-50">
-                        <TableCell className="font-medium">Kelly Zhou</TableCell>
-                        <TableCell>Attorney</TableCell>
-                        <TableCell className="text-[#0078D4]">k.zhou@dnr.gov</TableCell>
-                        <TableCell>(217) 555-1113</TableCell>
-                        <TableCell>
-                          <Badge className="bg-green-100 text-green-800 border-green-200">Active</Badge>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        )}
+
+        {/* Attorneys Tab */}
+        {activeTab === "attorneys" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="card shadow-sm">
+              <div className="card-header bg-white"><h5 className="card-title mb-0 fw-semibold">Attorney Dashboard</h5></div>
+              <div className="card-body">
+                <p className="text-muted">Access the attorney dashboard to view and manage accepted cases.</p>
+                <button className="btn btn-primary" onClick={() => navigate("/attorney/dashboard")}>Go to Attorney Dashboard</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Child component tabs */}
+        {activeTab === "testing" && <Dynamics365SinglePageDashboard />}
+        {activeTab === "agency-test" && <AgencyTestScreen />}
+        {activeTab === "test2" && <AgencyTest2Screen />}
+        {activeTab === "test1" && <AgencyTest1Screen />}
+
+        {/* Organization2 Tab */}
+        {activeTab === "organization2" && (
+          <div className="bg-white border border-top-0 p-4">
+            <div className="row g-4">
+              <div className="col-md-6">
+                <div className="card shadow-sm">
+                  <div className="card-header bg-light border-bottom"><h5 className="card-title mb-0 fw-semibold">Entity Information</h5></div>
+                  <div className="card-body">
+                    <div className="row g-3">
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">Department Name</label><input className="form-control" value="Department of Natural Resources" disabled /></div>
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">Department Code</label><input className="form-control" value="DNR" disabled /></div>
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">Parent Entity</label><input className="form-control" disabled placeholder="(None)" /></div>
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">Participation Group</label><input className="form-control bg-light" value="State Entities" disabled /></div>
+                      <div className="col-12"><label className="form-label small fw-medium text-secondary">Participation Type</label><input className="form-control bg-light" value="Department" disabled /></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="card shadow-sm">
+                  <div className="card-header bg-light border-bottom"><h5 className="card-title mb-0 fw-semibold">Department Details</h5></div>
+                  <div className="card-body">
+                    <div className="row g-3">
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">Case Coordinator</label><input className="form-control" value="John Smith" disabled /></div>
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">Department Attorney</label><input className="form-control" value="Jane Legal" disabled /></div>
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">FDM</label><input className="form-control" value="Michael Brown" disabled /></div>
+                      <div className="col-6"><label className="form-label small fw-medium text-secondary">General Counsel</label><input className="form-control" value="Sarah White" disabled /></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
