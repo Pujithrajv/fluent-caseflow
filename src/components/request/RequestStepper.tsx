@@ -7,15 +7,28 @@ interface RequestStepperProps {
 
 const getStepDescription = (step: string): string => {
   const descriptions: Record<string, string> = {
-    "Request Details": "Select request group and type",
-    "Request Documents": "Upload required documents",
-    "Review and Submit": "Verify and submit your request",
-    "Interrogatories": "Provide interrogatories details",
-    "Document Production": "Provide document production details",
-    "Deposition": "Provide deposition details",
-    "Inspection": "Provide inspection details",
+    "Request Details": "Get started submitting your filings",
+    "Request Documents": "Upload documents specific to this type of filing",
+    "Review and Submit": "Verify and submit your filing",
+    "Interrogatories": "Answer questions specific to this type of filing",
+    "Document Production": "Answer questions specific to this type of filing",
+    "Deposition": "Answer questions specific to this type of filing",
+    "Inspection": "Answer questions specific to this type of filing",
   };
   return descriptions[step] || "Complete this step";
+};
+
+const getStepLabel = (step: string): string => {
+  const labels: Record<string, string> = {
+    "Request Details": "Filings Summary",
+    "Request Documents": "Filings Documents",
+    "Review and Submit": "Review & Submit",
+    "Interrogatories": "Filing Type Question",
+    "Document Production": "Filing Type Question",
+    "Deposition": "Filing Type Question",
+    "Inspection": "Filing Type Question",
+  };
+  return labels[step] || step;
 };
 
 export function RequestStepper({ steps, currentStep }: RequestStepperProps) {
@@ -37,7 +50,7 @@ export function RequestStepper({ steps, currentStep }: RequestStepperProps) {
                   className="flex-grow-1"
                   style={{
                     width: 4,
-                    backgroundColor: isActive ? "#0B3A78" : isCompleted ? "#0B3A78" : "#dee2e6",
+                    backgroundColor: isActive || isCompleted ? "#0B3A78" : "#dee2e6",
                     borderRadius: index === 0 ? "4px 4px 0 0" : index === steps.length - 1 ? "0 0 4px 4px" : 0,
                   }}
                 />
@@ -49,9 +62,9 @@ export function RequestStepper({ steps, currentStep }: RequestStepperProps) {
                 style={{ cursor: "default" }}
               >
                 <div className="fw-semibold text-dark" style={{ fontSize: "0.9rem" }}>
-                  {step}
+                  {getStepLabel(step)}
                 </div>
-                <div className="text-muted" style={{ fontSize: "0.8rem" }}>
+                <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                   {getStepDescription(step)}
                 </div>
               </div>
