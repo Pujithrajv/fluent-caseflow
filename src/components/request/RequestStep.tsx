@@ -53,6 +53,10 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
       <h3 className="fw-bold mb-4" style={{ fontSize: "1.5rem" }}>Request Details</h3>
 
       {/* Request Group */}
+      <div className="mb-2 d-flex align-items-center gap-2">
+        <small className="text-muted">Unsure about the options? <a href="#" className="text-primary text-decoration-none fw-semibold">Click here</a></small>
+        <a href="#" className="text-primary" title="View documentation"><i className="bi bi-file-earmark-text" style={{ fontSize: "1.1rem" }}></i></a>
+      </div>
       <div className="mb-4">
         <label htmlFor="requestGroup" className="form-label fw-semibold">
           Request Group <span className="text-danger">*</span>
