@@ -1,5 +1,4 @@
 import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface RequestStepperProps {
   steps: string[];
@@ -8,73 +7,52 @@ interface RequestStepperProps {
 
 const getStepDescription = (step: string): string => {
   const descriptions: Record<string, string> = {
-    "Request": "Select request group and type",
-    "Motion": "Provide motion details",
-    "Exhibit": "Provide exhibit details",
-    "Discovery": "Provide discovery details",
+    "Request Details": "Select request group and type",
+    "Request Documents": "Upload required documents",
+    "Review and Submit": "Verify and submit your request",
     "Interrogatories": "Provide interrogatories details",
     "Document Production": "Provide document production details",
     "Deposition": "Provide deposition details",
     "Inspection": "Provide inspection details",
-    "Documents": "Upload required documents",
-    "Review & Submit": "Review and submit your request"
   };
   return descriptions[step] || "Complete this step";
 };
 
 export function RequestStepper({ steps, currentStep }: RequestStepperProps) {
   return (
-    <div className="bg-card rounded-lg border border-border p-6 sticky top-6">
-      <h3 className="text-lg font-semibold mb-6">Request Steps</h3>
-      <div className="space-y-3">
+    <div className="card border-0 shadow-sm sticky-top" style={{ top: "1.5rem" }}>
+      <div className="card-body p-0">
         {steps.map((step, index) => {
           const isActive = index === currentStep;
           const isCompleted = index < currentStep;
-          
+
           return (
             <div
               key={index}
-              className={cn(
-                "rounded-lg p-4 transition-all",
-                isActive && "bg-primary border-2 border-primary"
-              )}
+              className="d-flex align-items-stretch"
             >
-              <div className="flex items-start gap-3">
+              {/* Vertical progress line */}
+              <div className="d-flex flex-column align-items-center" style={{ width: 4 }}>
                 <div
-                  className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors flex-shrink-0",
-                    isActive && "bg-white text-primary",
-                    isCompleted && "bg-green-600 text-white",
-                    !isActive && !isCompleted && "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {isCompleted ? (
-                    <Check className="h-5 w-5" />
-                  ) : (
-                    <span>{index + 1}</span>
-                  )}
+                  className="flex-grow-1"
+                  style={{
+                    width: 4,
+                    backgroundColor: isActive ? "#0B3A78" : isCompleted ? "#0B3A78" : "#dee2e6",
+                    borderRadius: index === 0 ? "4px 4px 0 0" : index === steps.length - 1 ? "0 0 4px 4px" : 0,
+                  }}
+                />
+              </div>
+
+              {/* Step content */}
+              <div
+                className={`flex-grow-1 px-3 py-3 ${isActive ? "bg-light" : ""}`}
+                style={{ cursor: "default" }}
+              >
+                <div className="fw-semibold text-dark" style={{ fontSize: "0.9rem" }}>
+                  {step}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p
-                    className={cn(
-                      "text-sm font-semibold leading-tight",
-                      isActive && "text-white",
-                      isCompleted && "text-foreground",
-                      !isActive && !isCompleted && "text-foreground"
-                    )}
-                  >
-                    {step === "Discovery" ? "Discovery only CRM information" : step}
-                  </p>
-                  <p
-                    className={cn(
-                      "text-xs mt-1 leading-tight",
-                      isActive && "text-white/90",
-                      isCompleted && "text-muted-foreground",
-                      !isActive && !isCompleted && "text-muted-foreground"
-                    )}
-                  >
-                    {getStepDescription(step)}
-                  </p>
+                <div className="text-muted" style={{ fontSize: "0.8rem" }}>
+                  {getStepDescription(step)}
                 </div>
               </div>
             </div>
