@@ -58,6 +58,7 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
         <a href="#" className="text-primary" title="View documentation"><i className="bi bi-file-earmark-text" style={{ fontSize: "1.1rem" }}></i></a>
       </div>
       <div className="mb-4">
+        <label htmlFor="requestGroup" className="form-label fw-semibold">
           Request Group <span className="text-danger">*</span>
         </label>
         <select
