@@ -185,7 +185,10 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
       </div>
 
       {/* Actions */}
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-between">
+        <button className="btn btn-outline-secondary btn-lg" onClick={() => window.history.back()}>
+          Back
+        </button>
         <button className="btn btn-primary btn-lg" onClick={handleNext}>
           Next
         </button>
