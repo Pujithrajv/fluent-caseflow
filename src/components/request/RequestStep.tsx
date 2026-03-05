@@ -131,8 +131,8 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
         </div>
       )}
 
-      {/* Request Type dropdown for Motion/Exhibit */}
-      {(requestGroup === "Motion" || requestGroup === "Exhibit") && (
+      {/* Request Type dropdown - always visible */}
+      {requestGroup && requestGroup !== "Discovery" && requestGroup !== "Subpoenas" && (
         <div className="mb-4">
           <label className="form-label fw-semibold">
             Request Type <span className="text-danger">*</span>
@@ -153,6 +153,18 @@ export function RequestStep({ data, onNext }: RequestStepProps) {
                 <option value="exhibit-physical">Physical Exhibit</option>
               </>
             )}
+          </select>
+        </div>
+      )}
+
+      {/* Request Type - always show as dropdown when no group selected */}
+      {!requestGroup && (
+        <div className="mb-4">
+          <label className="form-label fw-semibold">
+            Request Type <span className="text-danger">*</span>
+          </label>
+          <select className="form-select" disabled>
+            <option value="">Select</option>
           </select>
         </div>
       )}
